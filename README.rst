@@ -2,6 +2,7 @@
 .. image:: avnu_logo.png
 
 |
+![CI](https://github.com/AVnu/OpenAvnu/actions/workflows/ci.yml/badge.svg)
 
 .. image:: https://travis-ci.org/AVnu/OpenAvnu.svg?branch=open-avb-next
    :target: https://travis-ci.org/AVnu/OpenAvnu
