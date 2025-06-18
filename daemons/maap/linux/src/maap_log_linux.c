@@ -285,10 +285,12 @@ void maapLogFn(
 		}
 
 		// using sprintf and puts allows using static buffers rather than heap.
-		if (MAAP_LOG_EXTRA_NEWLINE)
-			/* int32_t full_msg_len = */ sprintf(full_msg, "[%s%s%s%s %s %s%s] %s: %s\n", time_msg, timestamp_msg, proc_msg, thread_msg, company, component, file_msg, tag, msg);
-		else
-			/* int32_t full_msg_len = */ sprintf(full_msg, "[%s%s%s%s %s %s%s] %s: %s", time_msg, timestamp_msg, proc_msg, thread_msg, company, component, file_msg, tag, msg);
+               int32_t full_msg_len;
+               if (MAAP_LOG_EXTRA_NEWLINE)
+                       full_msg_len = snprintf(full_msg, LOG_FULL_MSG_LEN, "[%s%s%s%s %s %s%s] %s: %s\n", time_msg, timestamp_msg, proc_msg, thread_msg, company, component, file_msg, tag, msg);
+               else
+                       full_msg_len = snprintf(full_msg, LOG_FULL_MSG_LEN, "[%s%s%s%s %s %s%s] %s: %s", time_msg, timestamp_msg, proc_msg, thread_msg, company, component, file_msg, tag, msg);
+               (void)full_msg_len;
 
 		if (!MAAP_LOG_FROM_THREAD && !MAAP_LOG_PULL_MODE) {
 			fputs(full_msg, MAAP_LOG_OUTPUT_FD);
