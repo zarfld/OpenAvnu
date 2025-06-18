@@ -51,6 +51,14 @@ jobs:
         run: |
           make avdecc
         continue-on-error: true
+
+      - name: Configure and build CppUTest
+        run: |
+          mkdir -p cpputest_build
+          cd cpputest_build
+          cmake ../thirdparty/cpputest -DCPPUTEST_USE_STD_CPP_LIB=ON
+          make
+          make install
           
       - name: Configure CMake project
         run: |
@@ -58,8 +66,7 @@ jobs:
           cd build
           cmake .. -G "Unix Makefiles" \
             -DCMAKE_CXX_FLAGS="-fexceptions -funwind-tables" \
-            -DCPPUTEST_USE_STD_CPP_LIB=ON
-
+            -DCMAKE_PREFIX_PATH=../cpputest_install
 
       - name: Build project
         run: |
