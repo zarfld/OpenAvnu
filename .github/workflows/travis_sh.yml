@@ -56,7 +56,10 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G "Unix Makefiles" -DCMAKE_CXX_FLAGS="-fexceptions -funwind-tables"
+          cmake .. -G "Unix Makefiles" \
+            -DCMAKE_CXX_FLAGS="-fexceptions -funwind-tables" \
+            -DCPPUTEST_USE_STD_CPP_LIB=ON
+
 
       - name: Build project
         run: |
