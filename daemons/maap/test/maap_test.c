@@ -225,23 +225,24 @@ int send_packet(int rawsock, maap_packet_t *mp) {
 }
 
 int main(int argc, char *argv[]) {
-	char *dev, errbuf[PCAP_ERRBUF_SIZE];
+        char *dev, errbuf[PCAP_ERRBUF_SIZE];
+        pcap_if_t *alldevs;
 	pcap_t *handle;
 	struct bpf_program fp;
 	char filter_exp[] = "ether proto 0x22F0";
 	bpf_u_int32 mask;
 	bpf_u_int32 net;
 
-	if (argc < 2) {
-		dev = pcap_lookupdev(errbuf);
-		if (dev == NULL) {
-			fprintf(stderr, "Couldn't find default device: %s\n", errbuf);
-			fprintf(stderr, "Try specifying the device you want: %s <device>\n", argv[0]);
-			return 2;
-		}
-	} else {
-		dev = argv[1];
-	}
+        if (argc < 2) {
+                if (pcap_findalldevs(&alldevs, errbuf) == -1 || alldevs == NULL) {
+                        fprintf(stderr, "Couldn't find default device: %s\n", errbuf);
+                        fprintf(stderr, "Try specifying the device you want: %s <device>\n", argv[0]);
+                        return 2;
+                }
+                dev = alldevs->name;
+        } else {
+                dev = argv[1];
+        }
 
 	if (pcap_lookupnet(dev, &net, &mask, errbuf) == -1) {
 		fprintf(stderr, "Couldn't get netmask for device: %s\n", dev);
@@ -249,13 +250,17 @@ int main(int argc, char *argv[]) {
 		mask = 0;
 	}
 
-	handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
-	if (handle == NULL) {
-		fprintf(stderr, "Couldn't open device: %s\n", dev);
-		return 2;
-	}
+        handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
+        if (handle == NULL) {
+                fprintf(stderr, "Couldn't open device: %s\n", dev);
+                if (argc < 2)
+                        pcap_freealldevs(alldevs);
+                return 2;
+        }
 
-	printf("Listening on device: %s\n", dev);
+        printf("Listening on device: %s\n", dev);
+        if (argc < 2)
+                pcap_freealldevs(alldevs);
 
 	if (pcap_compile(handle, &fp, filter_exp, 0, net) == -1) {
 		fprintf(stderr, "Couldn't parse filter %s: %s\n", filter_exp,
