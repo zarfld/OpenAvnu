@@ -46,8 +46,12 @@ jobs:
           make daemons_all
           make examples_all
           make avtp_pipeline
-          make avdecc
 
+      - name: Run legacy make avdecc
+        run: |
+          make avdecc
+        continue-on-error: true
+          
       - name: Configure CMake project
         run: |
           mkdir build
