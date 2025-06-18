@@ -55,8 +55,8 @@ jobs:
       - name: Update to latest CppUTest
         run: |
           cd thirdparty/cpputest
-          git checkout master
-          git pull origin master
+          git checkout avnu
+          git pull origin avnu
 
       - name: Configure and build CppUTest
         run: |
