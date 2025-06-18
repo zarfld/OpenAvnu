@@ -7,9 +7,6 @@
    :alt: Build status
 
 
-.. image:: https://travis-ci.org/AVnu/OpenAvnu.svg?branch=open-avb-next
-   :target: https://travis-ci.org/AVnu/OpenAvnu
-
 OpenAvnu
 ========
 
