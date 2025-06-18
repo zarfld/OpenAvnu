@@ -3,10 +3,9 @@ name: OpenAvnu Build CI
 on:
   push:
     branches:
-      - main
-      - master
-      - open-avb-next
+      - '**'
   pull_request:
+      - '**'
   workflow_dispatch:
 
 jobs:
