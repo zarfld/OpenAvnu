@@ -43,7 +43,7 @@ jobs:
 
       - name: Build all
         run: |
-          make -C lib/igb_avb/lib all
+          make all
 
       - name: Build daemons/gptp seperately
         if: failure()
