@@ -273,6 +273,8 @@ int process_mrp_msg(char *buf, int buflen, struct mrp_talker_ctx *ctx)
 				break;
                        case 'J':
                                /* fall through */
+			       printf("fall through\n");
+				break;
                        case 'N':
                                printf("got a new/join indication\n");
                                if (substate > MSRP_LISTENER_ASKFAILED) {
