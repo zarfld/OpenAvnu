@@ -2,7 +2,10 @@
 .. image:: avnu_logo.png
 
 |
-.. image:: ![CI](https://github.com/zarfld/OpenAvnu/actions/workflows/travis_sh.yml/badge.svg)
+.. image:: https://github.com/zarfld/OpenAvnu/actions/workflows/travis_sh.yml/badge.svg
+   :target: https://github.com/zarfld/OpenAvnu/actions/workflows/travis_sh.yml
+   :alt: Build status
+
 
 .. image:: https://travis-ci.org/AVnu/OpenAvnu.svg?branch=open-avb-next
    :target: https://travis-ci.org/AVnu/OpenAvnu
