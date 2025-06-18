@@ -38,7 +38,7 @@ jobs:
           git submodule sync
           git submodule update --init --recursive
 
-      - name: Build daemons/gptp seperately
+      - name: Build daemons/maap seperately
         run: |
           make -C daemons/maap
         continue-on-error: true
