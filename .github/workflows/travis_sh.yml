@@ -51,7 +51,7 @@ jobs:
 
       - name: Run legacy make avdecc
         run: |
-          make avdecc
+          make avtp_avdecc
         continue-on-error: true
 
       - name: Update to latest CppUTest
