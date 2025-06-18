@@ -52,6 +52,12 @@ jobs:
           make avdecc
         continue-on-error: true
 
+      - name: Update to latest CppUTest
+        run: |
+          cd thirdparty/cpputest
+          git checkout master
+          git pull origin master
+
       - name: Configure and build CppUTest
         run: |
           mkdir -p cpputest_build
