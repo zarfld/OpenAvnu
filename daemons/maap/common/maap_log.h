@@ -85,7 +85,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define LOG_MSG_LEN 1024
 
 // The length of the full message
-#define LOG_FULL_MSG_LEN 1024
+#define LOG_FULL_MSG_LEN 2048
 
 #ifndef TRUE
 #define TRUE  1
