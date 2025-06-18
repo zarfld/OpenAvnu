@@ -1,0 +1,60 @@
+name: Copy Issues from Avnu/OpenAvnu
+
+on:
+  workflow_dispatch:
+
+jobs:
+  copy-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install GitHub CLI & jq
+        run: sudo apt-get update && sudo apt-get install -y gh jq
+
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.GH_PAT }}" | gh auth login --with-token
+
+      - name: Copy Issues with Labels, Comments, and Deduplication
+        env:
+          SOURCE_REPO: "Avnu/OpenAvnu"
+          DEST_REPO: "zarfld/OpenAvnu"
+        run: |
+          gh issue list -R "$SOURCE_REPO" --limit 100 | while read -r issue; do
+            number=$(echo "$issue" | awk '{print $1}')
+            title=$(gh issue view "$number" -R "$SOURCE_REPO" --json title -q .title)
+            new_title="[Avnu#$number] $title"
+
+            # Skip if already exists
+            existing=$(gh issue list -R "$DEST_REPO" --state all --search "$new_title" --json number -q '.[0].number')
+            if [[ -n "$existing" ]]; then
+              echo "Issue #$number already exists. Skipping."
+              continue
+            fi
+
+            body=$(gh issue view "$number" -R "$SOURCE_REPO" --json body -q .body)
+            labels=$(gh issue view "$number" -R "$SOURCE_REPO" --json labels -q '[.labels[].name] | join(",")')
+
+            # Create issue in destination repo
+            if [[ -n "$labels" ]]; then
+              new_issue_url=$(gh issue create -R "$DEST_REPO" --title "$new_title" --body "$body" --label "$labels" --json url -q .url)
+            else
+              new_issue_url=$(gh issue create -R "$DEST_REPO" --title "$new_title" --body "$body" --json url -q .url)
+            fi
+
+            # Extract new issue number from URL
+            new_number=$(basename "$new_issue_url")
+
+            echo "Created issue #$new_number in $DEST_REPO for Avnu#$number"
+
+            # Copy comments
+            gh issue view "$number" -R "$SOURCE_REPO" --json comments -q '.comments[].body' | while IFS= read -r comment; do
+              # Avoid empty comments
+              if [[ -n "$comment" ]]; then
+                gh issue comment "$new_number" -R "$DEST_REPO" --body "$comment"
+              fi
+            done
+
+          done
