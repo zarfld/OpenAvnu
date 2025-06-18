@@ -1,0 +1,65 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+
+      - name: Set up dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            git build-essential cmake g++ \
+            libpcap-dev libnl-3-dev libnl-genl-3-dev \
+            uuid-dev libavahi-client-dev \
+            linux-headers-generic libglib2.0-dev \
+            libpci-dev libsndfile1-dev libjack-dev \
+            libasound2-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+
+      - name: Fix submodule URLs
+        run: |
+          git config --file .gitmodules submodule.avdecc-lib.url https://github.com/AVnu/avdecc-lib.git
+          git config --file .gitmodules submodule.lib/atl_avb.url https://github.com/zarfld/atl_avb.git
+          git config --file .gitmodules submodule.lib/igb_avb.url https://github.com/AVnu/igb_avb.git
+          git config --file .gitmodules submodule.thirdparty/cpputest.url https://github.com/cpputest/cpputest.git
+          git submodule sync
+          git submodule update --init --recursive
+          
+      - name: Run legacy make tasks
+        run: |
+          set -ev
+          make daemons_all
+          make examples_all
+          make avtp_pipeline
+          make avdecc
+
+      - name: Configure CMake project
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "Unix Makefiles"
+
+      - name: Build project
+        run: |
+          cd build
+          make
+
+      - name: Run tests
+        run: |
+          cd build
+          ARGS=--output-on-failure make test
