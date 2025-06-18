@@ -40,7 +40,7 @@ jobs:
 
       - name: Build daemons/gptp seperately
         run: |
-          make -C daemons/gptp
+          make -C daemons/maap
         continue-on-error: true
 
       - name: Build daemons/mrpd seperately
@@ -48,6 +48,11 @@ jobs:
           make -C daemons/mrpd
         continue-on-error: true
 
+      - name: Build daemons/shaper seperately
+        run: |
+          make -C daemons/shaper
+        continue-on-error: true
+        
       - name: Build examples/simple_listener seperately
         run: |
           make -C examples/simple_listener
