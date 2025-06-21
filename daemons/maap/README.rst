@@ -123,9 +123,10 @@ the same command line options as the Linux binary::
 
   maap_daemon [ -c | -i interface_name [-d log_file] ] [-p port_num]
 
-Administrative privileges are required when running in server mode.  The
-``cmake`` build rules also include targets for automatically running unit
-tests.
+Administrative privileges are required when running in server mode.  When
+the ``-d`` option is supplied, the process detaches from its console and
+redirects ``stderr`` to the named log file.  The ``cmake`` build rules also
+include targets for automatically running unit tests.
 
 Tests
 +++++
@@ -134,6 +135,13 @@ The code includes unit tests and an integration test program for testing basic
 protocol operation. The unit tests are found in the ``tests`` subdirectory, and
 they are integrated into the ``cmake`` builds. Some support code for the unit
 tests can be found in the files matching the pattern ``test/maap_*_dummy.*``.
+
+On Windows the ``-d`` option can be verified manually by running::
+
+    maap_daemon -i <iface> -d log.txt
+
+which should create ``log.txt`` and close the console window while the daemon
+continues to run.
 
 A stress test for the interval tree library is also built and run by the
 ``cmake`` test rules; the code for this is in ``test/test_intervals.c``.

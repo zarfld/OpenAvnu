@@ -31,6 +31,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
 #include <pcap.h>
+#include <io.h>
+#include <fcntl.h>
 
 #include "platform.h"
 #include "maap.h"
@@ -49,7 +51,8 @@ static pcap_t *init_maap_networking(const char *iface,
                                     uint8_t dest_mac[ETH_ALEN]);
 static SOCKET get_listener_socket(const char *listenport);
 static int act_as_client(const char *listenport);
-static int act_as_server(const char *listenport, char *iface, int daemonize);
+static int act_as_server(const char *listenport, char *iface, int daemonize,
+                        char *logfile);
 
 static void log_print_notify_result(void *callback_data, int logLevel, const char *notifyText);
 static void display_print_notify_result(void *callback_data, int logLevel, const char *notifyText);
@@ -149,12 +152,13 @@ int main(int argc, char *argv[])
         if (as_client) {
                 ret = act_as_client(listenport);
         } else {
-                ret = act_as_server(listenport, iface, daemonize);
+                ret = act_as_server(listenport, iface, daemonize, logfile);
         }
 
         maapLogExit();
         WSACleanup();
         free(listenport);
+        free(logfile);
         return ret;
 }
 
@@ -376,7 +380,8 @@ static int act_as_client(const char *listenport)
 }
 
 /* Server side networking. */
-static int act_as_server(const char *listenport, char *iface, int daemonize)
+static int act_as_server(const char *listenport, char *iface, int daemonize,
+                         char *logfile)
 {
         Maap_Client mc;
         uint8_t dest_mac[ETH_ALEN] = MAAP_DEST_MAC;
@@ -398,6 +403,8 @@ static int act_as_server(const char *listenport, char *iface, int daemonize)
         uintptr_t notifysocket;
         int exit_received = 0;
         int ret;
+        HANDLE log_handle = INVALID_HANDLE_VALUE;
+        int log_fd = -1;
 
         pcap_handle = init_maap_networking(iface, src_mac, dest_mac);
         if (!pcap_handle) {
@@ -405,6 +412,30 @@ static int act_as_server(const char *listenport, char *iface, int daemonize)
         }
         free(iface);
         iface = NULL;
+
+        if (daemonize && logfile) {
+                FreeConsole();
+                log_handle = CreateFileA(logfile, FILE_APPEND_DATA,
+                                        FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                        NULL, OPEN_ALWAYS,
+                                        FILE_ATTRIBUTE_NORMAL, NULL);
+                if (log_handle != INVALID_HANDLE_VALUE) {
+                        SetFilePointer(log_handle, 0, NULL, FILE_END);
+                        log_fd = _open_osfhandle((intptr_t)log_handle,
+                                                _O_APPEND | _O_WRONLY);
+                        if (log_fd != -1) {
+                                _dup2(log_fd, _fileno(stderr));
+                                SetStdHandle(STD_ERROR_HANDLE,
+                                            (HANDLE)_get_osfhandle(_fileno(stderr)));
+                                _close(log_fd);
+                                log_handle = INVALID_HANDLE_VALUE;
+                        } else {
+                                CloseHandle(log_handle);
+                                log_handle = INVALID_HANDLE_VALUE;
+                        }
+                }
+        }
+
 
         FD_ZERO(&read_fds);
         FD_ZERO(&master);
@@ -583,6 +614,10 @@ static int act_as_server(const char *listenport, char *iface, int daemonize)
         closesocket(listener);
         for (i = 0; i < MAX_CLIENT_CONNECTIONS; ++i) {
                 if (clientfd[i] != INVALID_SOCKET) closesocket(clientfd[i]);
+        }
+        if (daemonize && logfile) {
+                fflush(stderr);
+                _close(_fileno(stderr));
         }
         return 0;
 }
