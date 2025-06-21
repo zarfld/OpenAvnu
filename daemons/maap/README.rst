@@ -115,13 +115,17 @@ plain text and they are printed to ``stdout``.
 Windows Specific
 ++++++++++++++++
 
-A Windows build of the ``common`` code and unit tests has been implemented, but
-platform-specific client and server code still needs to be written.
+The Windows daemon is built using ``cmake``.  Install WinPcap or Npcap and
+set the ``WPCAP_DIR`` environment variable to the root of the developer pack.
+Create a build directory, run ``cmake ..`` with a Visual Studio generator and
+build the ``maap_daemon`` target.  The resulting ``maap_daemon.exe`` accepts
+the same command line options as the Linux binary::
 
-The Windows build must be performed with ``cmake``, either from the top-level
-``CMakeLists.txt`` of the OpenAvnu repository or from the ``CMakeLists.txt`` of
-the ``maap`` directory. The ``cmake`` build rules include testing targets for
-automatically running unit tests.
+  maap_daemon [ -c | -i interface_name [-d log_file] ] [-p port_num]
+
+Administrative privileges are required when running in server mode.  The
+``cmake`` build rules also include targets for automatically running unit
+tests.
 
 Tests
 +++++
@@ -151,8 +155,6 @@ Known Issues and Future Enhancements
   sending plain text notifications when commands are sent in plain text would
   allow using ``telnet`` or ``netcat`` for command line clients instead of the
   ``-c`` flag to the binary.
-
-- The Windows platform-specific code is incomplete and nonfunctional.
 
 API Documentation
 -----------------

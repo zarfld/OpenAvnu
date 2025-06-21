@@ -18,7 +18,8 @@
  * 
  * Windows Version
  * ---------------
- * 
- * Windows is not supported.
+ *
+ * The daemon also builds on Windows using CMake. Install WinPcap or Npcap and
+ * set the WPCAP_DIR environment variable before generating the project files.
 */
 
