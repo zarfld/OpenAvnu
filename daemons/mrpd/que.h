@@ -32,7 +32,7 @@
 ******************************************************************************/
 
 /*
- * Windwos specific - queue messages in a thread safe way between threads.
+ * Windows specific - queue messages in a thread safe way between threads.
  */
 
 #ifndef _QUE_H_
