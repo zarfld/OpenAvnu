@@ -1,6 +1,14 @@
 cmake_minimum_required ( VERSION 2.6 ) 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-project ( AVB ) 
+
+project ( AVB )
+
+# Select the OS abstraction layer implementation
+if (WIN32 AND NOT DEFINED OPENAVB_OSAL)
+  set(OPENAVB_OSAL Windows)
+elseif(NOT DEFINED OPENAVB_OSAL)
+  set(OPENAVB_OSAL Linux)
+endif()
 
 # point to AVB SRC directory
 set ( AVB_SRC_DIR ${CMAKE_SOURCE_DIR} )
