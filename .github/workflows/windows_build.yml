@@ -1,0 +1,49 @@
+name: Windows Build CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - open-avb-next
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      WPCAP_DIR: ${{ github.workspace }}\WpdPack
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Fix submodule URLs
+        run: |
+          git config --file .gitmodules submodule.avdecc-lib.url https://github.com/AVnu/avdecc-lib.git
+          git config --file .gitmodules submodule.lib/atl_avb.url https://github.com/zarfld/atl_avb.git
+          git config --file .gitmodules submodule.lib/igb_avb.url https://github.com/AVnu/igb_avb.git
+          git config --file .gitmodules submodule.thirdparty/cpputest.url https://github.com/cpputest/cpputest.git
+          git submodule sync
+          git submodule update --init --recursive
+        shell: bash
+
+      - name: Download WinPcap developer pack
+        run: |
+          Invoke-WebRequest -Uri https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip -OutFile WpdPack.zip
+          7z x WpdPack.zip -oWpdPack
+        shell: powershell
+
+      - name: Configure project
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Build project
+        run: cmake --build build --config Release
+
+      - name: Run tests
+        run: |
+          cd build
+          ctest -C Release --output-on-failure
