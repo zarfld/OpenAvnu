@@ -19,6 +19,7 @@ install ( FILES ../map_pipe/openavb_map_pipe_pub.h DESTINATION ${SDK_INSTALL_SDK
 install ( FILES ../intf_ctrl/openavb_intf_ctrl_pub.h DESTINATION ${SDK_INSTALL_SDK_INTF_MOD_DIR} )
 install ( FILES ../platform/${OPENAVB_OSAL}/openavb_osal_pub.h DESTINATION ${SDK_INSTALL_SDK_INTF_MOD_DIR} )
 install ( FILES ../platform/${OPENAVB_OSAL}/openavb_time_osal_pub.h DESTINATION ${SDK_INSTALL_SDK_INTF_MOD_DIR} )
+install ( FILES ../platform/${OPENAVB_OSAL}/openavb_grandmaster_osal_pub.h DESTINATION ${SDK_INSTALL_SDK_INTF_MOD_DIR} )
 
 # Sample source files
 install ( FILES ../intf_echo/openavb_intf_echo.c DESTINATION ${SDK_INSTALL_SDK_INTF_MOD_DIR} )
@@ -54,6 +55,7 @@ install ( FILES ../tl/openavb_tl_pub.h DESTINATION ${SDK_INSTALL_SDK_EAVB_DIR} )
 install ( FILES ../mediaq/openavb_mediaq_pub.h DESTINATION ${SDK_INSTALL_SDK_EAVB_DIR} )
 install ( FILES ../platform/${OPENAVB_OSAL}/openavb_osal_pub.h DESTINATION ${SDK_INSTALL_SDK_EAVB_DIR} )
 install ( FILES ../platform/${OPENAVB_OSAL}/openavb_time_osal_pub.h DESTINATION ${SDK_INSTALL_SDK_EAVB_DIR} )
+install ( FILES ../platform/${OPENAVB_OSAL}/openavb_grandmaster_osal_pub.h DESTINATION ${SDK_INSTALL_SDK_EAVB_DIR} )
 install ( FILES ../include/openavb_platform_pub.h DESTINATION ${SDK_INSTALL_SDK_EAVB_DIR} )
 install ( FILES ../tl/openavb_tl_pub.h DESTINATION ${SDK_INSTALL_SDK_EAVB_DIR} )
 install ( FILES ../include/openavb_map_pub.h DESTINATION ${SDK_INSTALL_SDK_EAVB_DIR} )
