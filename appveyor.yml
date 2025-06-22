@@ -5,13 +5,13 @@ clone_depth: 20
 
 environment:
   # Config for mrp Windows build
-  WPCAP_DIR: c:\oavb\WpdPack
+  WPCAP_DIR: c:\oavb\npcap-sdk
   
 install:
   - git submodule update --init --recursive
-  # download WinPcap developer module and unzip it
-  - ps: Start-FileDownload 'https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip'
-  - ps: 7z x WpdPack_4_1_2.zip
+  # download Npcap developer pack and unzip it
+  - ps: Start-FileDownload 'https://npcap.com/dist/npcap-sdk.zip'
+  - ps: 7z x npcap-sdk.zip
 
 before_build:
   # cmake
