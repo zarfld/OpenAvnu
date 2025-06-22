@@ -1,0 +1,36 @@
+name: Windows Build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - open-avb-next
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      WPCAP_DIR: ${{ github.workspace }}\npcap-sdk
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download Npcap SDK
+        shell: powershell
+        run: |
+          Invoke-WebRequest -Uri https://npcap.com/dist/npcap-sdk.zip -OutFile npcap-sdk.zip
+          Expand-Archive npcap-sdk.zip -DestinationPath .
+
+      - name: Set up CMake
+        uses: lukka/get-cmake@v3
+
+      - name: Configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022"
+
+      - name: Build
+        run: cmake --build build --config Release
