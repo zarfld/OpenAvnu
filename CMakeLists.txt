@@ -17,6 +17,7 @@ add_subdirectory("thirdparty/cpputest")
 add_subdirectory("daemons/common/tests")
 add_subdirectory("daemons/mrpd")
 add_subdirectory("daemons/maap")
+add_subdirectory("lib/avtp_pipeline/tests")
 
 message("
 -------------------------------------------------------
