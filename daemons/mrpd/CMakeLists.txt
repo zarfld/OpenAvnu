@@ -20,7 +20,7 @@ elseif(WIN32)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
   include_directories( include $ENV{WPCAP_DIR}/Include )
   add_executable (mrpd ${MRPD_SRC} "mrpw.c" "que.c")
-  target_link_libraries(mrpd wpcap Iphlpapi Ws2_32)
+  target_link_libraries(mrpd wpcap Packet Iphlpapi Ws2_32)
 endif()
 
 add_subdirectory("tests/simple")

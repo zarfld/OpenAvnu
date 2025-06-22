@@ -37,7 +37,7 @@ elseif(WIN32)
     link_directories($ENV{WPCAP_DIR}/Lib)
   endif()
   add_executable(maap_daemon ${ComSource} ${OsSource})
-  target_link_libraries(maap_daemon wpcap Iphlpapi ws2_32)
+  target_link_libraries(maap_daemon wpcap Packet Iphlpapi ws2_32)
 endif()
 
 add_subdirectory("test")

@@ -40,7 +40,7 @@ elseif(WIN32)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
   include_directories( include $ENV{WPCAP_DIR}/Include )
   add_executable (mrpd_simple_test ${MRPD_SRC} ${CPPUTEST_SRC} ${SRC_DIR}/que.c mrp_doubles.c)
-  target_link_libraries(mrpd_simple_test wpcap Iphlpapi Ws2_32 CppUTest CppUTestExt)
+  target_link_libraries(mrpd_simple_test wpcap Packet Iphlpapi Ws2_32 CppUTest CppUTestExt)
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CPPUTEST_C_FLAGS}")
