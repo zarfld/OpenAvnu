@@ -77,6 +77,7 @@ static shaper_reservation shaperReservationList[MAX_SHAPER_RESERVATIONS];
 static bool shaperRunning = FALSE;
 static pthread_t shaperThreadHandle;
 static void* shaperThread(void *arg);
+static bool send_shaper_command(const char *cmd);
 
 enum shaperState_t {
 	SHAPER_STATE_UNKNOWN,
@@ -95,144 +96,176 @@ static MUTEX_HANDLE(shaperMutex);
 #define SHAPER_LOCK() { MUTEX_CREATE_ERR(); MUTEX_LOCK(shaperMutex); MUTEX_LOG_ERR("Mutex lock failure"); }
 #define SHAPER_UNLOCK() { MUTEX_CREATE_ERR(); MUTEX_UNLOCK(shaperMutex); MUTEX_LOG_ERR("Mutex unlock failure"); }
 
+static bool send_shaper_command(const char *cmd)
+{
+        if (socketfd < 0)
+                return false;
+
+        SHAPER_LOCK();
+
+        if (send(socketfd, cmd, strlen(cmd), 0) < 0) {
+                AVB_LOGF_ERROR("Shaper:  Error %d writing to network socket (%s)", errno, strerror(errno));
+                SHAPER_UNLOCK();
+                shaperState = SHAPER_STATE_ERROR;
+                return false;
+        }
+
+        fd_set rfds;
+        struct timeval tv = { 1, 0 };
+        FD_ZERO(&rfds);
+        FD_SET(socketfd, &rfds);
+        int ret = select(socketfd + 1, &rfds, NULL, NULL, &tv);
+        if (ret > 0 && FD_ISSET(socketfd, &rfds)) {
+                char resp[200];
+                int r = recv(socketfd, resp, sizeof(resp) - 1, 0);
+                if (r > 0) {
+                        resp[r] = '\0';
+                        if (!strncmp(resp, "ERROR:", 6)) {
+                                AVB_LOGF_ERROR("Shaper Response:  %s", resp + 7);
+                                SHAPER_UNLOCK();
+                                shaperState = SHAPER_STATE_ERROR;
+                                return false;
+                        }
+                }
+        }
+
+        SHAPER_UNLOCK();
+        return true;
+}
+
 
 /* Local function to interact with the SHAPER daemon. */
 static void* shaperThread(void *arg)
 {
-	struct addrinfo hints, *ai, *p;
-	int ret;
+        struct addrinfo hints, *ai, *p;
+        int ret;
 
-	fd_set master, read_fds;
-	int fdmax;
+        fd_set master, read_fds;
+        int fdmax;
 
-	char recvbuffer[200];
-	int recvbytes;
+        char recvbuffer[200];
+        int recvbytes;
 
-	AVB_LOG_DEBUG("Shaper Thread Starting");
+        AVB_LOG_DEBUG("Shaper Thread Starting");
 
-	/* Create a localhost socket. */
-	memset(&hints, 0, sizeof hints);
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = 0;
-	if ((ret = getaddrinfo("localhost", shaperDaemonPort, &hints, &ai)) != 0) {
-		AVB_LOGF_ERROR("getaddrinfo failure %s", gai_strerror(ret));
-		shaperState = SHAPER_STATE_ERROR;
-		return NULL;
-	}
+        while (shaperRunning || shaperState == SHAPER_STATE_ENABLED) {
+                memset(&hints, 0, sizeof hints);
+                hints.ai_family = AF_UNSPEC;
+                hints.ai_socktype = SOCK_STREAM;
+                hints.ai_flags = 0;
+                if ((ret = getaddrinfo("localhost", shaperDaemonPort, &hints, &ai)) != 0) {
+                        AVB_LOGF_ERROR("getaddrinfo failure %s", gai_strerror(ret));
+                        shaperState = SHAPER_STATE_ERROR;
+                        break;
+                }
 
-	for(p = ai; p != NULL; p = p->ai_next) {
-		socketfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-		if (socketfd == -1) {
-			continue;
-		}
-		ret = connect(socketfd, p->ai_addr, p->ai_addrlen);
-		if (ret == -1) {
-			close(socketfd);
-			socketfd = -1;
-			continue;
-		} else {
-			break;
-		}
-	}
+                for(p = ai; p != NULL; p = p->ai_next) {
+                        socketfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+                        if (socketfd == -1)
+                                continue;
+                        ret = connect(socketfd, p->ai_addr, p->ai_addrlen);
+                        if (ret == -1) {
+                                close(socketfd);
+                                socketfd = -1;
+                                continue;
+                        } else {
+                                break;
+                        }
+                }
 
-	freeaddrinfo(ai);
+                freeaddrinfo(ai);
 
-	if (p == NULL) {
-		AVB_LOGF_ERROR("Shaper:  Unable to connect to the daemon, error %d (%s)", errno, strerror(errno));
-		shaperState = SHAPER_STATE_ERROR;
-		return NULL;
-	}
+                if (p == NULL) {
+                        AVB_LOGF_ERROR("Shaper:  Unable to connect to the daemon, error %d (%s)", errno, strerror(errno));
+                        shaperState = SHAPER_STATE_ERROR;
+                        if (!shaperRunning)
+                                break;
+                        SLEEP_MSEC(1000);
+                        continue;
+                }
 
-	if (fcntl(socketfd, F_SETFL, O_NONBLOCK) < 0)
-	{
-		AVB_LOG_ERROR("Shaper:  Could not set the socket to non-blocking");
-		close(socketfd);
-		socketfd = -1;
-		shaperState = SHAPER_STATE_ERROR;
-		return NULL;
-	}
+                if (fcntl(socketfd, F_SETFL, O_NONBLOCK) < 0) {
+                        AVB_LOG_ERROR("Shaper:  Could not set the socket to non-blocking");
+                        close(socketfd);
+                        socketfd = -1;
+                        shaperState = SHAPER_STATE_ERROR;
+                        if (!shaperRunning)
+                                break;
+                        SLEEP_MSEC(1000);
+                        continue;
+                }
 
-	FD_ZERO(&read_fds);
-	FD_ZERO(&master);
-	FD_SET(STDIN_FILENO, &master);
-	FD_SET(socketfd, &master);
-	fdmax = socketfd;
+                FD_ZERO(&read_fds);
+                FD_ZERO(&master);
+                FD_SET(STDIN_FILENO, &master);
+                FD_SET(socketfd, &master);
+                fdmax = socketfd;
 
+                shaperState = SHAPER_STATE_CONNECTED;
+                AVB_LOG_INFO("Shaper daemon available");
 
-	/*
-	 * Main event loop
-	 */
+                while (shaperRunning || shaperState == SHAPER_STATE_ENABLED) {
+                        if (!shaperRunning && shaperState == SHAPER_STATE_ENABLED) {
+                                send_shaper_command("-q\n");
+                                break;
+                        }
 
-	shaperState = SHAPER_STATE_CONNECTED;
-	AVB_LOG_INFO("Shaper daemon available");
+                        struct timeval tv_timeout = { 1, 0 };
+                        SHAPER_LOCK();
+                        read_fds = master;
+                        ret = select(fdmax+1, &read_fds, NULL, NULL, &tv_timeout);
+                        if (ret < 0) {
+                                SHAPER_UNLOCK();
+                                AVB_LOGF_ERROR("Shaper:  select() error %d (%s)", errno, strerror(errno));
+                                shaperState = SHAPER_STATE_ERROR;
+                                break;
+                        }
 
-	while (shaperRunning || shaperState == SHAPER_STATE_ENABLED)
-	{
-		if (!shaperRunning && shaperState == SHAPER_STATE_ENABLED)
-		{
-			// TODO:  Tell the SHAPER daemon to stop shaping.
-			break;
-		}
+                        if (FD_ISSET(socketfd, &read_fds)) {
+                                while ((recvbytes = recv(socketfd, recvbuffer, sizeof(recvbuffer) - 1, 0)) > 0) {
+                                        recvbuffer[recvbytes] = '\0';
+                                        if (!strncmp(recvbuffer, "ERROR:", 6)) {
+                                                AVB_LOGF_ERROR("Shaper Response:  %s", recvbuffer + 7);
+                                                shaperState = SHAPER_STATE_ERROR;
+                                        } else if (!strncmp(recvbuffer, "WARNING:", 8)) {
+                                                AVB_LOGF_WARNING("Shaper Response:  %s", recvbuffer + 9);
+                                        } else if (!strncmp(recvbuffer, "DEBUG:", 6)) {
+                                                AVB_LOGF_DEBUG("Shaper Response:  %s", recvbuffer + 7);
+                                        } else {
+                                                AVB_LOGF_DEBUG("Shaper Response:  %s", recvbuffer);
+                                        }
+                                }
+                                if (recvbytes == 0) {
+                                        SHAPER_UNLOCK();
+                                        AVB_LOG_ERROR("Shaper daemon exited.");
+                                        shaperState = SHAPER_STATE_ERROR;
+                                        break;
+                                }
+                                if (recvbytes < 0 && errno != EWOULDBLOCK) {
+                                        SHAPER_UNLOCK();
+                                        AVB_LOGF_ERROR("Shaper:  Error %d reading from network socket (%s)", errno, strerror(errno));
+                                        shaperState = SHAPER_STATE_ERROR;
+                                        break;
+                                }
+                        }
+                        SHAPER_UNLOCK();
+                }
 
-		/* Wait for something to happen. */
-		struct timeval tv_timeout = { 1, 0 };
-		read_fds = master;
-		ret = select(fdmax+1, &read_fds, NULL, NULL, &tv_timeout);
-		if (ret < 0)
-		{
-			AVB_LOGF_ERROR("Shaper:  select() error %d (%s)", errno, strerror(errno));
-			shaperState = SHAPER_STATE_ERROR;
-			break;
-		}
+                close(socketfd);
+                socketfd = -1;
 
-		/* Handle any responses received. */
-		if (FD_ISSET(socketfd, &read_fds))
-		{
-			while ((recvbytes = recv(socketfd, recvbuffer, sizeof(recvbuffer) - 1, 0)) > 0)
-			{
-				/* Log the response data */
-				recvbuffer[recvbytes] = '\0';
-				if (strncmp(recvbuffer, "ERROR:", 6) == 0) {
-					AVB_LOGF_ERROR("Shaper Response:  %s", recvbuffer + 7);
-				}
-				else if (strncmp(recvbuffer, "WARNING:", 8) == 0) {
-					AVB_LOGF_WARNING("Shaper Response:  %s", recvbuffer + 9);
-				}
-				else if (strncmp(recvbuffer, "DEBUG:", 6) == 0) {
-					AVB_LOGF_DEBUG("Shaper Response:  %s", recvbuffer + 7);
-				}
-				else {
-					AVB_LOGF_DEBUG("Shaper Response:  %s", recvbuffer);
-				}
-			}
-			if (recvbytes == 0)
-			{
-				/* The SHAPER daemon closed the connection.  Assume it shut down, and we should too. */
-				// AVDECC_TODO:  Should we try to reconnect?
-				AVB_LOG_ERROR("Shaper daemon exited.");
-				shaperState = SHAPER_STATE_ERROR;
-				break;
-			}
-			if (recvbytes < 0 && errno != EWOULDBLOCK)
-			{
-				/* Something went wrong.  Abort! */
-				AVB_LOGF_ERROR("Shaper:  Error %d reading from network socket (%s)", errno, strerror(errno));
-				shaperState = SHAPER_STATE_ERROR;
-				break;
-			}
-		}
-	}
+                if (!shaperRunning)
+                        break;
 
-	if (shaperState < SHAPER_STATE_NOT_AVAILABLE) {
-		shaperState = SHAPER_STATE_NOT_AVAILABLE;
-	}
+                AVB_LOG_INFO("Shaper daemon disconnected. Reconnecting...");
+                SLEEP_MSEC(1000);
+        }
 
-	close(socketfd);
-	socketfd = -1;
+        if (shaperState < SHAPER_STATE_NOT_AVAILABLE)
+                shaperState = SHAPER_STATE_NOT_AVAILABLE;
 
-	AVB_LOG_DEBUG("Shaper Thread Done");
-	return NULL;
+        AVB_LOG_DEBUG("Shaper Thread Done");
+        return NULL;
 }
 
 bool openavbShaperInitialize(const char *ifname, unsigned int shaperPort)
@@ -370,20 +403,15 @@ void* openavbShaperHandle(SRClassIdx_t sr_class, int measurement_interval_usec, 
 		shaperReservationList[i].stream_da[4],
 		shaperReservationList[i].stream_da[5]);
 	AVB_LOGF_DEBUG("Sending Shaper command:  %s", szCommand);
-	strcat(szCommand, "\n");
-	if (send(socketfd, szCommand, strlen(szCommand), 0) < 0)
-	{
-		/* Something went wrong.  Abort! */
-		AVB_LOGF_ERROR("Shaper:  Error %d writing to network socket (%s)", errno, strerror(errno));
-		shaperState = SHAPER_STATE_ERROR;
-		return NULL;
-	}
+        strcat(szCommand, "\n");
+        if (!send_shaper_command(szCommand))
+        {
+                return NULL;
+        }
 
-	shaperState = SHAPER_STATE_ENABLED;
+        shaperState = SHAPER_STATE_ENABLED;
 
-	// TODO:  Verify that the command was successful.
-
-	return (void *)(&(shaperReservationList[i]));
+        return (void *)(&(shaperReservationList[i]));
 }
 
 void openavbShaperRelease(void* handle)
@@ -409,18 +437,13 @@ void openavbShaperRelease(void* handle)
 				shaperReservationList[i].in_use = FALSE;
 
 				AVB_LOGF_DEBUG("Sending Shaper command:  %s", szCommand);
-				strcat(szCommand, "\n");
-				if (send(socketfd, szCommand, strlen(szCommand), 0) < 0)
-				{
-					/* Something went wrong. */
-					AVB_LOGF_ERROR("Shaper:  Error %d writing to network socket (%s)", errno, strerror(errno));
-					shaperState = SHAPER_STATE_ERROR;
-				}
-				else {
-					// TODO:  Verify that the command was successful.
-				}
-			}
-			break;
-		}
-	}
+                                strcat(szCommand, "\n");
+                                if (!send_shaper_command(szCommand))
+                                {
+                                        /* Error already logged. */
+                                }
+                        }
+                        break;
+                }
+        }
 }
