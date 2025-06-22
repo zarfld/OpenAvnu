@@ -294,160 +294,143 @@ static void process_maap_notify(Maap_Notify *mn, int socketfd)
 /* Local function to interact with the MAAP daemon. */
 static void* maapThread(void *arg)
 {
-	int socketfd;
-	struct addrinfo hints, *ai, *p;
-	int ret;
+        int socketfd;
+        struct addrinfo hints, *ai, *p;
+        int ret;
 
-	fd_set master, read_fds;
-	int fdmax;
+        fd_set master, read_fds;
+        int fdmax;
 
-	char recvbuffer[200];
-	int recvbytes;
-	Maap_Cmd maapcmd;
+        char recvbuffer[200];
+        int recvbytes;
+        Maap_Cmd maapcmd;
 
-	AVB_LOG_DEBUG("MAAP Thread Starting");
+        AVB_LOG_DEBUG("MAAP Thread Starting");
 
-	/* Create a localhost socket. */
-	memset(&hints, 0, sizeof hints);
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = 0;
-	if ((ret = getaddrinfo("localhost", maapDaemonPort, &hints, &ai)) != 0) {
-		AVB_LOGF_ERROR("getaddrinfo failure %s", gai_strerror(ret));
-		maapState = MAAP_STATE_ERROR;
-		return NULL;
-	}
+        while (maapRunning || maapState <= MAAP_STATE_CONNECTED) {
+                memset(&hints, 0, sizeof hints);
+                hints.ai_family = AF_UNSPEC;
+                hints.ai_socktype = SOCK_STREAM;
+                hints.ai_flags = 0;
+                if ((ret = getaddrinfo("localhost", maapDaemonPort, &hints, &ai)) != 0) {
+                        AVB_LOGF_ERROR("getaddrinfo failure %s", gai_strerror(ret));
+                        maapState = MAAP_STATE_ERROR;
+                        break;
+                }
 
-	for(p = ai; p != NULL; p = p->ai_next) {
-		socketfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-		if (socketfd == -1) {
-			continue;
-		}
-		ret = connect(socketfd, p->ai_addr, p->ai_addrlen);
-		if (ret == -1) {
-			close(socketfd);
-			continue;
-		} else {
-			break;
-		}
-	}
+                for (p = ai; p != NULL; p = p->ai_next) {
+                        socketfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+                        if (socketfd == -1)
+                                continue;
+                        ret = connect(socketfd, p->ai_addr, p->ai_addrlen);
+                        if (ret == -1) {
+                                close(socketfd);
+                                continue;
+                        } else {
+                                break;
+                        }
+                }
 
-	freeaddrinfo(ai);
+                freeaddrinfo(ai);
 
-	if (p == NULL) {
-		AVB_LOGF_ERROR("MAAP:  Unable to connect to the daemon, error %d (%s)", errno, strerror(errno));
-		maapState = MAAP_STATE_ERROR;
-		return NULL;
-	}
+                if (p == NULL) {
+                        AVB_LOGF_ERROR("MAAP:  Unable to connect to the daemon, error %d (%s)", errno, strerror(errno));
+                        maapState = MAAP_STATE_ERROR;
+                        if (!maapRunning)
+                                break;
+                        SLEEP_MSEC(1000);
+                        continue;
+                }
 
-	if (fcntl(socketfd, F_SETFL, O_NONBLOCK) < 0)
-	{
-		AVB_LOG_ERROR("MAAP:  Could not set the socket to non-blocking");
-		close(socketfd);
-		maapState = MAAP_STATE_ERROR;
-		return NULL;
-	}
+                if (fcntl(socketfd, F_SETFL, O_NONBLOCK) < 0) {
+                        AVB_LOG_ERROR("MAAP:  Could not set the socket to non-blocking");
+                        close(socketfd);
+                        maapState = MAAP_STATE_ERROR;
+                        if (!maapRunning)
+                                break;
+                        SLEEP_MSEC(1000);
+                        continue;
+                }
 
-	FD_ZERO(&read_fds);
-	FD_ZERO(&master);
-	FD_SET(STDIN_FILENO, &master);
-	FD_SET(socketfd, &master);
-	fdmax = socketfd;
+                FD_ZERO(&read_fds);
+                FD_ZERO(&master);
+                FD_SET(STDIN_FILENO, &master);
+                FD_SET(socketfd, &master);
+                fdmax = socketfd;
 
-	// Initialize the MAAP daemon.
-	// We will request a block of addresses when we get a response to the initialization.
-	maapState = MAAP_STATE_INITIALIZING;
-	memset(&maapcmd, 0, sizeof(Maap_Cmd));
-	maapcmd.kind = MAAP_CMD_INIT;
-	maapcmd.start = MAAP_DYNAMIC_POOL_BASE;
-	maapcmd.count = MAAP_DYNAMIC_POOL_SIZE;
-	if (send(socketfd, (char *) &maapcmd, sizeof(Maap_Cmd), 0) < 0)
-	{
-		/* Something went wrong.  Abort! */
-		AVB_LOGF_ERROR("MAAP:  Error %d writing to network socket (%s)", errno, strerror(errno));
-		maapState = MAAP_STATE_ERROR;
-		return NULL;
-	}
+                maapState = MAAP_STATE_INITIALIZING;
+                memset(&maapcmd, 0, sizeof(Maap_Cmd));
+                maapcmd.kind = MAAP_CMD_INIT;
+                maapcmd.start = MAAP_DYNAMIC_POOL_BASE;
+                maapcmd.count = MAAP_DYNAMIC_POOL_SIZE;
+                if (send(socketfd, (char *) &maapcmd, sizeof(Maap_Cmd), 0) < 0) {
+                        AVB_LOGF_ERROR("MAAP:  Error %d writing to network socket (%s)", errno, strerror(errno));
+                        maapState = MAAP_STATE_ERROR;
+                        close(socketfd);
+                        if (!maapRunning)
+                                break;
+                        SLEEP_MSEC(1000);
+                        continue;
+                }
 
+                while (maapRunning || maapState <= MAAP_STATE_CONNECTED) {
+                        if (!maapRunning && maapState == MAAP_STATE_CONNECTED) {
+                                memset(&maapcmd, 0, sizeof(Maap_Cmd));
+                                maapcmd.kind = MAAP_CMD_RELEASE;
+                                maapcmd.id = maapReservationId;
+                                if (send(socketfd, (char *) &maapcmd, sizeof(Maap_Cmd), 0) > 0) {
+                                        maapState = MAAP_STATE_RELEASING;
+                                } else {
+                                        maapState = MAAP_STATE_NOT_AVAILABLE;
+                                        break;
+                                }
+                        }
 
-	/*
-	 * Main event loop
-	 */
+                        struct timeval tv_timeout = { 1, 0 };
+                        read_fds = master;
+                        ret = select(fdmax+1, &read_fds, NULL, NULL, &tv_timeout);
+                        if (ret < 0) {
+                                AVB_LOGF_ERROR("MAAP:  select() error %d (%s)", errno, strerror(errno));
+                                maapState = MAAP_STATE_ERROR;
+                                break;
+                        }
 
-	while (maapRunning || maapState <= MAAP_STATE_CONNECTED)
-	{
-		if (!maapRunning && maapState == MAAP_STATE_CONNECTED)
-		{
-			// Tell the MAAP daemon to release the addresses.
-			memset(&maapcmd, 0, sizeof(Maap_Cmd));
-			maapcmd.kind = MAAP_CMD_RELEASE;
-			maapcmd.id = maapReservationId;
-			if (send(socketfd, (char *) &maapcmd, sizeof(Maap_Cmd), 0) > 0)
-			{
-				maapState = MAAP_STATE_RELEASING;
-				// Use the wait below to give the daemon time to respond.
-			}
-			else
-			{
-				maapState = MAAP_STATE_NOT_AVAILABLE;
-				break;
-			}
-		}
+                        if (FD_ISSET(socketfd, &read_fds)) {
+                                while ((recvbytes = recv(socketfd, recvbuffer, sizeof(Maap_Notify), 0)) > 0) {
+                                        recvbuffer[recvbytes] = '\0';
+                                        if (recvbytes == sizeof(Maap_Notify)) {
+                                                process_maap_notify((Maap_Notify *) recvbuffer, socketfd);
+                                        } else {
+                                                AVB_LOGF_WARNING("MAAP:  Received unexpected response of size %d", recvbytes);
+                                        }
+                                }
+                                if (recvbytes == 0) {
+                                        AVB_LOG_ERROR("MAAP daemon exited.");
+                                        maapState = MAAP_STATE_ERROR;
+                                        break;
+                                }
+                                if (recvbytes < 0 && errno != EWOULDBLOCK) {
+                                        AVB_LOGF_ERROR("MAAP:  Error %d reading from network socket (%s)", errno, strerror(errno));
+                                        maapState = MAAP_STATE_ERROR;
+                                        break;
+                                }
+                        }
+                }
 
-		/* Wait for something to happen. */
-		struct timeval tv_timeout = { 1, 0 };
-		read_fds = master;
-		ret = select(fdmax+1, &read_fds, NULL, NULL, &tv_timeout);
-		if (ret < 0)
-		{
-			AVB_LOGF_ERROR("MAAP:  select() error %d (%s)", errno, strerror(errno));
-			maapState = MAAP_STATE_ERROR;
-			break;
-		}
+                if (maapState < MAAP_STATE_NOT_AVAILABLE)
+                        maapState = MAAP_STATE_NOT_AVAILABLE;
 
-		/* Handle any responses received. */
-		if (FD_ISSET(socketfd, &read_fds))
-		{
-			while ((recvbytes = recv(socketfd, recvbuffer, sizeof(Maap_Notify), 0)) > 0)
-			{
-				recvbuffer[recvbytes] = '\0';
+                close(socketfd);
 
-				/* Process the response data (will be binary). */
-				if (recvbytes == sizeof(Maap_Notify))
-				{
-					process_maap_notify((Maap_Notify *) recvbuffer, socketfd);
-				}
-				else
-				{
-					AVB_LOGF_WARNING("MAAP:  Received unexpected response of size %d", recvbytes);
-				}
-			}
-			if (recvbytes == 0)
-			{
-				/* The MAAP daemon closed the connection.  Assume it shut down, and we should too. */
-				// AVDECC_TODO:  Should we try to reconnect?
-				AVB_LOG_ERROR("MAAP daemon exited.");
-				maapState = MAAP_STATE_ERROR;
-				break;
-			}
-			if (recvbytes < 0 && errno != EWOULDBLOCK)
-			{
-				/* Something went wrong.  Abort! */
-				AVB_LOGF_ERROR("MAAP:  Error %d reading from network socket (%s)", errno, strerror(errno));
-				maapState = MAAP_STATE_ERROR;
-				break;
-			}
-		}
-	}
+                if (!maapRunning)
+                        break;
 
-	if (maapState < MAAP_STATE_NOT_AVAILABLE) {
-		maapState = MAAP_STATE_NOT_AVAILABLE;
-	}
+                AVB_LOG_INFO("MAAP daemon disconnected. Reconnecting...");
+                SLEEP_MSEC(1000);
+        }
 
-	close(socketfd);
-
-	AVB_LOG_DEBUG("MAAP Thread Done");
-	return NULL;
+        AVB_LOG_DEBUG("MAAP Thread Done");
+        return NULL;
 }
 
 bool openavbMaapInitialize(const char *ifname, unsigned int maapPort, struct ether_addr *maapPrefAddr, openavbMaapRestartCb_t* cbfn)
