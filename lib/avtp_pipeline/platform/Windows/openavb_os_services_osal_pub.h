@@ -63,6 +63,7 @@ https://github.com/benhoyt/inih/commit/74d2ca064fb293bc60a77b0bd068075b293cf175.
 typedef struct {
         unsigned char buffer[6];
         unsigned char *mac;
+} cfg_mac_t;
 
 #define MUTEX_ATTR_TYPE_DEFAULT                                    0
 #define MUTEX_ATTR_TYPE_RECURSIVE                                  0
