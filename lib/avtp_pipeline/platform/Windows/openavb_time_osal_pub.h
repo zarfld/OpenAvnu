@@ -40,7 +40,7 @@ https://github.com/benhoyt/inih/commit/74d2ca064fb293bc60a77b0bd068075b293cf175.
 #define AVB_TIME_CLOSE() osalAVBTimeClose()
 
 #define TIMERFD_CREATE(arg1, arg2) CreateWaitableTimer(NULL, TRUE, NULL)
-#define TIMERFD_SETTIME(arg1, arg2, arg3, arg4) \ 
+#define TIMERFD_SETTIME(arg1, arg2, arg3, arg4) \
         do { LARGE_INTEGER li; li.QuadPart = -((LONGLONG)((arg3)->it_value.tv_sec * 10000000LL + (arg3)->it_value.tv_nsec / 100)); \
              SetWaitableTimer(arg1, &li, 0, NULL, NULL, FALSE); } while (0)
 #define TIMER_CLOSE(arg1) CloseHandle(arg1)
