@@ -297,11 +297,11 @@ int netif_capture_frame(struct netif *net_if, uint8_t ** frame,
 int netif_send_frame(struct netif *net_if, uint8_t * frame, uint16_t length)
 {
 	//printf("TX frame: %d bytes\n", length);
-	if (pcap_sendpacket(net_if->pcap_interface, frame, length) != 0) {
-		fprintf(stderr, "\nError sending the packet: \n",
-			pcap_geterr(net_if->pcap_interface));
-		return -1;
-	}
+       if (pcap_sendpacket(net_if->pcap_interface, frame, length) != 0) {
+               fprintf(stderr, "\nError sending the packet: %s\n",
+                       pcap_geterr(net_if->pcap_interface));
+               return -1;
+       }
 	return (0);
 }
 
@@ -608,11 +608,11 @@ int mrpd_close_socket(SOCKET sock)
 
 size_t mrpd_send(SOCKET sockfd, const void *buf, size_t len, int flags)
 {
-	if (pcap_sendpacket(net_if->pcap_interface, buf, len) != 0) {
-		fprintf(stderr, "\nError sending the packet: \n",
-			pcap_geterr(net_if->pcap_interface));
-		return -1;
-	}
+       if (pcap_sendpacket(net_if->pcap_interface, buf, len) != 0) {
+               fprintf(stderr, "\nError sending the packet: %s\n",
+                       pcap_geterr(net_if->pcap_interface));
+               return -1;
+       }
 	return len;
 }
 
