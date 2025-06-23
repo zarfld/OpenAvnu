@@ -254,22 +254,28 @@ void maapLogFn(
 
 		vsprintf(msg, fmt, args);
 
-		if (MAAP_LOG_FILE_INFO && path) {
-			char* file = strrchr(path, '/');
-			if (!file)
-				file = strrchr(path, '\\');
-			if (file)
-				file += 1;
-			else
-				file = (char*)path;
-			sprintf(file_msg, " %s:%d", file, line);
-		}
-		if (MAAP_LOG_PROC_INFO) {
-			sprintf(proc_msg, " P:%5.5d", GET_PID());
-		}
-		if (MAAP_LOG_THREAD_INFO) {
-			sprintf(thread_msg, " T:%lu", THREAD_SELF());
-		}
+#if LOG_FILE_LEN > 1
+               if (MAAP_LOG_FILE_INFO && path) {
+                        char* file = strrchr(path, '/');
+                        if (!file)
+                                file = strrchr(path, '\\');
+                        if (file)
+                                file += 1;
+                        else
+                                file = (char*)path;
+                        sprintf(file_msg, " %s:%d", file, line);
+               }
+#endif
+#if LOG_PROC_LEN > 1
+               if (MAAP_LOG_PROC_INFO) {
+                        sprintf(proc_msg, " P:%5.5d", GET_PID());
+               }
+#endif
+#if LOG_THREAD_LEN > 1
+               if (MAAP_LOG_THREAD_INFO) {
+                        sprintf(thread_msg, " T:%lu", THREAD_SELF());
+               }
+#endif
 		if (MAAP_LOG_TIME_INFO) {
 			time_t tNow = time(NULL);
 			struct tm tmNow;
@@ -277,12 +283,12 @@ void maapLogFn(
 
 			sprintf(time_msg, "%2.2d:%2.2d:%2.2d", tmNow.tm_hour, tmNow.tm_min, tmNow.tm_sec);
 		}
-		if (MAAP_LOG_TIMESTAMP_INFO) {
-			struct timespec nowTS;
-			clock_gettime(CLOCK_REALTIME, &nowTS);
+               if (MAAP_LOG_TIMESTAMP_INFO) {
+                        struct timespec nowTS;
+                        clock_gettime(CLOCK_REALTIME, &nowTS);
 
-			sprintf(timestamp_msg, "%lu:%09lu", nowTS.tv_sec, nowTS.tv_nsec);
-		}
+                        snprintf(timestamp_msg, LOG_TIMESTAMP_LEN, "%lu:%09lu", nowTS.tv_sec, nowTS.tv_nsec);
+               }
 
 		// using sprintf and puts allows using static buffers rather than heap.
                int32_t full_msg_len;
