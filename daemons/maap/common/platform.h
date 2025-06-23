@@ -47,9 +47,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define OS_TIME_TYPE struct timeval
 
+
 #elif defined(_WIN32)
 
 #include <Winsock2.h>
+
+#ifndef ETH_ALEN
+#define ETH_ALEN 6
+#endif
 
 #define htobe16(x) htons(x)
 #define be16toh(x) ntohs(x)
