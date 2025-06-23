@@ -278,7 +278,7 @@ static int act_as_client(const char *listenport)
         int ret;
 
         fd_set master, read_fds;
-        int fdmax;
+        SOCKET fdmax;
 
         char recvbuffer[200];
         int recvbytes;
@@ -314,14 +314,14 @@ static int act_as_client(const char *listenport)
         FD_ZERO(&master);
         HANDLE stdin_handle = GetStdHandle(STD_INPUT_HANDLE);
         FD_SET(socketfd, &master);
-        fdmax = (int)socketfd;
+        fdmax = socketfd;
 
         puts("Client started");
         puts("Enter \"help\" for a list of valid commands.");
 
         while (!exit_received) {
                 read_fds = master;
-                ret = select(fdmax+1, &read_fds, NULL, NULL, NULL);
+                ret = select((int)fdmax + 1, &read_fds, NULL, NULL, NULL);
                 if (ret <= 0) {
                         MAAP_LOG_ERROR("select() error");
                         break;
@@ -392,7 +392,7 @@ static int act_as_server(const char *listenport, char *iface, int daemonize,
         int client_wants_text[MAX_CLIENT_CONNECTIONS];
         int i, nextclientindex;
         fd_set master, read_fds;
-        int fdmax;
+        SOCKET fdmax;
         void *packet_data;
         int64_t waittime;
         struct timeval tv;
@@ -451,7 +451,7 @@ static int act_as_server(const char *listenport, char *iface, int daemonize,
                 return -1;
         }
         FD_SET(listener, &master);
-        if ((int)listener > fdmax) fdmax = (int)listener;
+        if (listener > fdmax) fdmax = listener;
 
         for (i = 0; i < MAX_CLIENT_CONNECTIONS; ++i) {
                 clientfd[i] = INVALID_SOCKET;
@@ -507,7 +507,7 @@ static int act_as_server(const char *listenport, char *iface, int daemonize,
                 }
 
                 read_fds = master;
-                ret = select(fdmax+1, &read_fds, NULL, NULL, &tv);
+        ret = select((int)fdmax + 1, &read_fds, NULL, NULL, &tv);
                 if (ret < 0) {
                         MAAP_LOG_ERROR("select() error");
                         break;
@@ -556,7 +556,7 @@ static int act_as_server(const char *listenport, char *iface, int daemonize,
                                         clientfd[nextclientindex] = newfd;
                                         nextclientindex = (nextclientindex + 1) % MAX_CLIENT_CONNECTIONS;
                                         FD_SET(newfd, &master);
-                                        if ((int)newfd > fdmax) fdmax = (int)newfd;
+                                        if (newfd > fdmax) fdmax = newfd;
                                 }
                         }
                 }
