@@ -312,7 +312,7 @@ static int act_as_client(const char *listenport)
 
         FD_ZERO(&read_fds);
         FD_ZERO(&master);
-        FD_SET(GetStdHandle(STD_INPUT_HANDLE), &master);
+        HANDLE stdin_handle = GetStdHandle(STD_INPUT_HANDLE);
         FD_SET(socketfd, &master);
         fdmax = (int)socketfd;
 
@@ -339,8 +339,8 @@ static int act_as_client(const char *listenport)
                                 exit_received = 1;
                         }
                 }
-                if (FD_ISSET(GetStdHandle(STD_INPUT_HANDLE), &read_fds)) {
-                        recvbytes = (int)read(fileno(stdin), recvbuffer, sizeof(recvbuffer)-1);
+                if (WaitForSingleObject(stdin_handle, 0) == WAIT_OBJECT_0) {
+                        recvbytes = (int)_read(_fileno(stdin), recvbuffer, sizeof(recvbuffer)-1);
                         if (recvbytes > 0) {
                                 Maap_Cmd *bufcmd = (Maap_Cmd *)recvbuffer;
                                 int rv = 0;
@@ -439,8 +439,9 @@ static int act_as_server(const char *listenport, char *iface, int daemonize,
 
         FD_ZERO(&read_fds);
         FD_ZERO(&master);
+        HANDLE stdin_handle = NULL;
         if (!daemonize) {
-                FD_SET(GetStdHandle(STD_INPUT_HANDLE), &master);
+                stdin_handle = GetStdHandle(STD_INPUT_HANDLE);
         }
         fdmax = 0;
 
@@ -560,8 +561,8 @@ static int act_as_server(const char *listenport, char *iface, int daemonize,
                         }
                 }
 
-                if (!daemonize && FD_ISSET(GetStdHandle(STD_INPUT_HANDLE), &read_fds)) {
-                        recvbytes = (int)read(fileno(stdin), recvbuffer, sizeof(recvbuffer)-1);
+                if (!daemonize && WaitForSingleObject(stdin_handle, 0) == WAIT_OBJECT_0) {
+                        recvbytes = (int)_read(_fileno(stdin), recvbuffer, sizeof(recvbuffer)-1);
                         if (recvbytes > 0) {
                                 recvbuffer[recvbytes] = '\0';
                                 switch (((Maap_Cmd *)recvbuffer)->kind) {
@@ -583,7 +584,7 @@ static int act_as_server(const char *listenport, char *iface, int daemonize,
                                         }
                                         break;
                                 }
-                                if (parse_write(&mc, (void *)-1, (char *)&recvcmd, NULL) == 1) {
+                                if (parse_write(&mc, (const void *)(uintptr_t)-1, (char *)&recvcmd, NULL) == 1) {
                                         exit_received = 1;
                                 }
                         }
@@ -601,7 +602,7 @@ static int act_as_server(const char *listenport, char *iface, int daemonize,
                                         if (strncmp(recvbuffer, "text", 4) == 0) {
                                                 client_wants_text[i] = 1;
                                         } else {
-                                                if (parse_write(&mc, (void *)clientfd[i], recvbuffer, NULL) == 1) {
+                                                if (parse_write(&mc, (const void *)(uintptr_t)clientfd[i], recvbuffer, NULL) == 1) {
                                                         exit_received = 1;
                                                 }
                                         }
