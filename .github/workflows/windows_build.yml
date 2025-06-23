@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      WPCAP_DIR: ${{ github.workspace }}\WpdPack
+      WPCAP_DIR: "C:\\WpdPack"
 
     steps:
       - name: Checkout repository
@@ -31,10 +31,18 @@ jobs:
           git submodule update --init --recursive
         shell: bash
 
-      - name: Download WinPcap developer pack
+      - name: Download and install WinPcap Developer Pack (WpdPack)
         run: |
-          Invoke-WebRequest -Uri https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip -OutFile WpdPack.zip
-          7z x WpdPack.zip -oWpdPack
+          Invoke-WebRequest -Uri "https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip" -OutFile "WpdPack.zip"
+          Expand-Archive WpdPack.zip -DestinationPath "C:\"
+        shell: powershell
+
+      - name: Verify WpdPack structure and env
+        run: |
+          echo "WPCAP_DIR is: $env:WPCAP_DIR"
+          dir "C:\WpdPack"
+          dir "C:\WpdPack\Include"
+          dir "C:\WpdPack\Lib"
         shell: powershell
 
       - name: Configure project
