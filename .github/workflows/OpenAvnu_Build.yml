@@ -17,10 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-
-      - name: Verify CppUTest submodule
-        run: test -f thirdparty/cpputest/CMakeLists.txt
+          submodules: false  # will be set manually lateron !!
 
       - name: Set up dependencies
         run: |
@@ -33,6 +30,14 @@ jobs:
             libpci-dev libsndfile1-dev libjack-dev \
             libasound2-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
 
+      - name: Fix submodule URLs
+        run: |
+          git config --file .gitmodules submodule.avdecc-lib.url https://github.com/AVnu/avdecc-lib.git
+          git config --file .gitmodules submodule.lib/atl_avb.url https://github.com/zarfld/atl_avb.gitAdd commentMore actions
+          git config --file .gitmodules submodule.lib/igb_avb.url https://github.com/AVnu/igb_avb.git
+          git config --file .gitmodules submodule.thirdparty/cpputest.url https://github.com/cpputest/cpputest.git
+          git submodule sync
+          git submodule update --init --recursive
 
       - name: Build daemons/maap seperately
         run: |
