@@ -3,13 +3,43 @@
 #define false false
 #define true true
 extern "C" {
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #include <pthread.h>
 #include "avb_gptp.h"
+#endif
 #include "openavb_grandmaster_osal_pub.h"
 }
+#ifdef _WIN32
+typedef long double FrequencyRatio;
+typedef struct {
+    int64_t ml_phoffset;
+    int64_t ls_phoffset;
+    FrequencyRatio ml_freqoffset;
+    FrequencyRatio ls_freqoffset;
+    uint64_t local_time;
+
+    uint8_t gptp_grandmaster_id[8];
+    uint8_t gptp_domain_number;
+
+    uint8_t  clock_identity[8];
+    uint8_t  priority1;
+    uint8_t  clock_class;
+    int16_t  offset_scaled_log_variance;
+    uint8_t  clock_accuracy;
+    uint8_t  priority2;
+    uint8_t  domain_number;
+    int8_t   log_sync_interval;
+    int8_t   log_announce_interval;
+    int8_t   log_pdelay_interval;
+    uint16_t port_number;
+} gPtpTimeData;
+#define GPTP_SECTION_NAME TEXT("Global\\ptp")
+#endif
 #include <cstring>
 
 gPtpTimeData gPtpTD;
@@ -24,6 +54,36 @@ extern "C" void avbLogFn(unsigned level, const char *tag, const char *company,
 
 TEST_GROUP(GrandmasterOSAL)
 {
+#ifdef _WIN32
+    HANDLE hMap;
+    gPtpTimeData *map;
+    void setup()
+    {
+        hMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0,
+                                 sizeof(gPtpTimeData), GPTP_SECTION_NAME);
+        CHECK(hMap != NULL);
+        map = (gPtpTimeData*)MapViewOfFile(hMap, FILE_MAP_WRITE, 0, 0,
+                                           sizeof(gPtpTimeData));
+        CHECK(map != NULL);
+
+        memset(map, 0, sizeof(*map));
+        for (int i = 0; i < 8; ++i) map->gptp_grandmaster_id[i] = (uint8_t)(i + 1);
+        map->gptp_domain_number = 42;
+    }
+
+    void teardown()
+    {
+        osalAVBGrandmasterClose();
+        if (map) {
+            UnmapViewOfFile(map);
+            map = NULL;
+        }
+        if (hMap) {
+            CloseHandle(hMap);
+            hMap = NULL;
+        }
+    }
+#else
     int fd;
     char *map;
     void setup()
@@ -53,6 +113,7 @@ TEST_GROUP(GrandmasterOSAL)
         close(fd);
         shm_unlink(SHM_NAME);
     }
+#endif
 };
 
 TEST(GrandmasterOSAL, ReadGrandmaster)
