@@ -136,7 +136,7 @@ TEST(MvrpPDUTests, ParsePkt1)
 	memset(&client1, 0, sizeof(client1));
 
 	/* no error returned for first client */
-	mvrp_recv_cmd("V??", strlen("V??") + 1, &client1);
+        mvrp_recv_cmd("V??", (int)strlen("V??") + 1, &client1);
 	CHECK(mvrp_tests_cmd_ok(test_state.ctl_msg_data));
 	/* one client notification sent in response to V?? */
 	LONGS_EQUAL(1, test_state.sent_ctl_msg_count);

@@ -76,7 +76,7 @@ TEST(ParseTestGroup, TestParse_null)
 
 	// error case where strlen() is used instead of sizeof()
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz), specs, &err_index);
+	status = parse(strz, (int)strlen(strz), specs, &err_index);
 	CHECK(0 != status);
 
 	// parse null is an error
@@ -105,14 +105,14 @@ TEST(ParseTestGroup, TestParse_u8)
 
 	// error case where strlen() is used instead of sizeof()
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz), specs, &err_index);
+	status = parse(strz, (int)strlen(strz), specs, &err_index);
 	CHECK(0 != status);
 
 	// zero case
 	ref = 0;
 	sprintf(strz, "C=%u", ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specs, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 
@@ -122,7 +122,7 @@ TEST(ParseTestGroup, TestParse_u8)
 		ref = (uint8_t)(1 << i);
 		sprintf(strz, "C=%u", ref);
 		memset(&value, 0, sizeof(value));
-		status = parse(strz, strlen(strz) + 1, specs, &err_index);
+		status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 		CHECK(0 == status);
 		CHECK(value == ref);
 	}
@@ -131,7 +131,7 @@ TEST(ParseTestGroup, TestParse_u8)
 	ref = 0xff;
 	sprintf(strz, "C=%u", ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specs, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 
@@ -156,14 +156,14 @@ TEST(ParseTestGroup, TestParse_u16)
 
 	// error case where strlen() is used instead of sizeof()
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz), specs, &err_index);
+	status = parse(strz, (int)strlen(strz), specs, &err_index);
 	CHECK(0 != status);
 
 	// zero case
 	ref = 0;
 	sprintf(strz, "C=%u", ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specs, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 
@@ -173,7 +173,7 @@ TEST(ParseTestGroup, TestParse_u16)
 		ref = (uint16_t)(1 << i);
 		sprintf(strz, "C=%u", ref);
 		memset(&value, 0, sizeof(value));
-		status = parse(strz, strlen(strz) + 1, specs, &err_index);
+		status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 		CHECK(0 == status);
 		CHECK(value == ref);
 	}
@@ -182,7 +182,7 @@ TEST(ParseTestGroup, TestParse_u16)
 	ref = 0xffff;
 	sprintf(strz, "C=%u", ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specs, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 }
@@ -206,14 +206,14 @@ TEST(ParseTestGroup, TestParse_u16_04x)
 
 	// error case where strlen() is used instead of sizeof()
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz), specs, &err_index);
+	status = parse(strz, (int)strlen(strz), specs, &err_index);
 	CHECK(0 != status);
 
 	// zero
 	ref = 0;
 	sprintf(strz, "C=%04x", ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specs, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 
@@ -223,7 +223,7 @@ TEST(ParseTestGroup, TestParse_u16_04x)
 		ref = (uint16_t)(1 << i);
 		sprintf(strz, "C=%04x", ref);
 		memset(&value, 0, sizeof(value));
-		status = parse(strz, strlen(strz) + 1, specs, &err_index);
+		status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 		CHECK(0 == status);
 		CHECK(value == ref);
 	}
@@ -232,7 +232,7 @@ TEST(ParseTestGroup, TestParse_u16_04x)
 	ref = 0xffff;
 	sprintf(strz, "C=%04x", ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specs, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 }
@@ -256,14 +256,14 @@ TEST(ParseTestGroup, TestParse_u32)
 
 	// error case where strlen() is used instead of sizeof()
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz), specs, &err_index);
+	status = parse(strz, (int)strlen(strz), specs, &err_index);
 	CHECK(0 != status);
 
 	// 0 case
 	ref = 0;
 	sprintf(strz, "C=%u", ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specs, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 
@@ -273,7 +273,7 @@ TEST(ParseTestGroup, TestParse_u32)
 		ref = (uint32_t)1 << i;
 		sprintf(strz, "C=%u", ref);
 		memset(&value, 0, sizeof(value));
-		status = parse(strz, strlen(strz) + 1, specs, &err_index);
+		status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 		CHECK(0 == status);
 		CHECK(value == ref);
 	}
@@ -282,7 +282,7 @@ TEST(ParseTestGroup, TestParse_u32)
 	ref = 0xffffffff;
 	sprintf(strz, "C=%u", ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specs, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specs, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 }
@@ -313,24 +313,24 @@ TEST(ParseTestGroup, TestParse_u64)
 
 	// error case where strlen() is used instead of sizeof()
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz), specsu, &err_index);
+	status = parse(strz, (int)strlen(strz), specsu, &err_index);
 	CHECK(0 != status);
 
 	// 0 case
 	ref = 0;
 	sprintf(strz, "C=%" SCNu64, ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specsu, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specsu, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 	sprintf(strz, "C=%" SCNx64, ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specsx, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specsx, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 	sprintf(strz, "C=%" SCNx64, ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specsc, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specsc, &err_index);
 	CHECK(0 == status);
 	for (j = 0; j < 8; j++)
 	{
@@ -343,17 +343,17 @@ TEST(ParseTestGroup, TestParse_u64)
 		ref = (uint64_t)1 << i;
 		sprintf(strz, "C=%" SCNu64, ref);
 		memset(&value, 0, sizeof(value));
-		status = parse(strz, strlen(strz) + 1, specsu, &err_index);
+		status = parse(strz, (int)strlen(strz) + 1, specsu, &err_index);
 		CHECK(0 == status);
 		CHECK(value == ref);
 		sprintf(strz, "C=%" SCNx64, ref);
 		memset(&value, 0, sizeof(value));
-		status = parse(strz, strlen(strz) + 1, specsx, &err_index);
+		status = parse(strz, (int)strlen(strz) + 1, specsx, &err_index);
 		CHECK(0 == status);
 		CHECK(value == ref);
 		sprintf(strz, "C=%" SCNx64, ref);
 		memset(&value, 0, sizeof(value));
-		status = parse(strz, strlen(strz) + 1, specsc, &err_index);
+		status = parse(strz, (int)strlen(strz) + 1, specsc, &err_index);
 		CHECK(0 == status);
 		for (j = 0; j < 8; j++)
 		{
@@ -365,17 +365,17 @@ TEST(ParseTestGroup, TestParse_u64)
 	ref = (uint64_t)-1;
 	sprintf(strz, "C=%" SCNu64, ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specsu, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specsu, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 	sprintf(strz, "C=%" SCNx64, ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specsx, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specsx, &err_index);
 	CHECK(0 == status);
 	CHECK(value == ref);
 	sprintf(strz, "C=%" SCNx64, ref);
 	memset(&value, 0, sizeof(value));
-	status = parse(strz, strlen(strz) + 1, specsc, &err_index);
+	status = parse(strz, (int)strlen(strz) + 1, specsc, &err_index);
 	CHECK(0 == status);
 	for (j = 0; j < 8; j++)
 	{
