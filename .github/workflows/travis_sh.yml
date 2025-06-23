@@ -19,9 +19,6 @@ jobs:
         with:
           submodules: false  # will be set manually lateron !!
 
-      - name: Verify CppUTest submodule
-        run: test -f thirdparty/cpputest/CMakeLists.txt
-
       - name: Install dependencies
         run: |
           sudo apt-get update
