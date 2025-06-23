@@ -358,7 +358,7 @@ TEST(MsrpTestGroup, TxLVA_TalkerFailed_clear_tx_flag)
 		",B=" BRIDGE_ID ",C=" FAILURE_CODE;
 
 	/* declare single TalkerFailed */
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+        msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 
 	/*
@@ -475,7 +475,7 @@ TEST(MsrpTestGroup, TxLVA_TalkerAdv_count_64)
 			"S++:S=%" PRIx64 ",A=%" PRIx64 ",V=" VLAN_ID ",Z=" TSPEC_MAX_FRAME_SIZE
 			",I=" TSPEC_MAX_FRAME_INTERVAL ",P=" PRIORITY_AND_RANK ",L=" ACCUMULATED_LATENCY,
 			id, da);
-		msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+                msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 		CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 		/* add 2 to prevent vectorizing */
 		id += 2;
@@ -509,11 +509,11 @@ TEST(MsrpTestGroup, Multiple_Clients)
 	memset(&client2, 1, sizeof(client2));
 
 	/* no error returned for first client */
-	msrp_recv_cmd("S??", strlen("S??") + 1, &client1);
+        msrp_recv_cmd("S??", (int)strlen("S??") + 1, &client1);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 
 	/* no error returned for second client */
-	msrp_recv_cmd("S??", strlen("S??") + 1, &client2);
+        msrp_recv_cmd("S??", (int)strlen("S??") + 1, &client2);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 }
 
@@ -527,12 +527,12 @@ TEST(MsrpTestGroup, Pruning_Commands_Fail)
 	int tx_flag_count = 0;
 
 	snprintf(cmd_string, sizeof(cmd_string), "I+S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+        msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(!msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(0, msrp_interesting_id_count());
 
 	snprintf(cmd_string, sizeof(cmd_string), "I-S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+        msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(!msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(0, msrp_interesting_id_count());
 }
