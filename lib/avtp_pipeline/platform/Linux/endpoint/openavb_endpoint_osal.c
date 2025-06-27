@@ -39,6 +39,9 @@ https://github.com/benhoyt/inih/commit/74d2ca064fb293bc60a77b0bd068075b293cf175.
 #include "mrp_client.h"
 #include "openavb_ether_hal.h"
 #include "openavb_list.h"
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <errno.h>
 
 #define	AVB_LOG_COMPONENT	"Endpoint"
 //#define AVB_LOG_LEVEL AVB_LOG_LEVEL_DEBUG
@@ -514,7 +517,10 @@ openavbRC openavbSrpGetClassParams(SRClassIdx_t SRClassIdx, U8* priority, U16* v
  * MAAP proxies
  ******************************************************************************/
 
-// OPENAVB_TODO: Real implementation should be added once OpenAVB's MAAP daemon is finished
+// MAAP address allocation is handled by the maap_daemon.  The daemon
+// writes the base multicast address to a System V shared memory segment
+// with key 1234.  Each endpoint instance grabs addresses from that base
+// range for individual streams.
 
 typedef struct {
 	U8 destAddr[ETH_ALEN];
@@ -522,45 +528,77 @@ typedef struct {
 } maapAlloc_t;
 
 maapAlloc_t maapAllocList[MAX_AVB_STREAMS];
+static uint8_t *maapShm = NULL;
+static openavbMaapRestartCb_t *maapCb = NULL;
+
+#define MAAP_SHM_KEY 1234
 
 bool openavbMaapInitialize(const char *ifname, openavbMaapRestartCb_t* cbfn)
 {
-	AVB_TRACE_ENTRY(AVB_TRACE_MAAP);
-	int i = 0;
-	U8 destAddr[ETH_ALEN] = {0x91, 0xe0, 0xf0, 0x00, 0x0e, 0x80};
-	for (i = 0; i < MAX_AVB_STREAMS; i++) {
-		memcpy(maapAllocList[i].destAddr, destAddr, ETH_ALEN);
-		maapAllocList[i].taken = false;
-		destAddr[5] += 1;
-	}
-	AVB_TRACE_EXIT(AVB_TRACE_MAAP);
-	return true;
+        AVB_TRACE_ENTRY(AVB_TRACE_MAAP);
+
+        int shmid = shmget(MAAP_SHM_KEY, ETH_ALEN, 0666);
+        if (shmid < 0) {
+                AVB_LOGF_ERROR("MAAP shmget failed: %s", strerror(errno));
+                AVB_TRACE_EXIT(AVB_TRACE_MAAP);
+                return false;
+        }
+
+        maapShm = (uint8_t *)shmat(shmid, NULL, 0);
+        if (maapShm == (uint8_t *)-1) {
+                AVB_LOGF_ERROR("MAAP shmat failed: %s", strerror(errno));
+                maapShm = NULL;
+                AVB_TRACE_EXIT(AVB_TRACE_MAAP);
+                return false;
+        }
+
+        maapCb = cbfn;
+
+        U8 destAddr[ETH_ALEN];
+        memcpy(destAddr, maapShm, ETH_ALEN);
+
+        for (int i = 0; i < MAX_AVB_STREAMS; i++) {
+                memcpy(maapAllocList[i].destAddr, destAddr, ETH_ALEN);
+                maapAllocList[i].taken = false;
+                if (++destAddr[5] == 0)
+                        destAddr[4]++;
+        }
+
+        AVB_TRACE_EXIT(AVB_TRACE_MAAP);
+        return true;
 }
 
 void openavbMaapFinalize()
 {
-	AVB_TRACE_ENTRY(AVB_TRACE_MAAP);
-	AVB_TRACE_EXIT(AVB_TRACE_MAAP);
+        AVB_TRACE_ENTRY(AVB_TRACE_MAAP);
 
+        if (maapShm && maapShm != (uint8_t *)-1) {
+                shmdt(maapShm);
+                maapShm = NULL;
+        }
+
+        maapCb = NULL;
+
+        AVB_TRACE_EXIT(AVB_TRACE_MAAP);
 }
 
 void* openavbMaapAllocate(int count, /* out */ struct ether_addr *addr)
 {
-	AVB_TRACE_ENTRY(AVB_TRACE_MAAP);
-	assert(count == 1);
+        AVB_TRACE_ENTRY(AVB_TRACE_MAAP);
+        assert(count == 1);
 
-	int i = 0;
-	while (i < MAX_AVB_STREAMS && maapAllocList[i].taken) {
-		i++;
-	}
+        int i = 0;
+        while (i < MAX_AVB_STREAMS && maapAllocList[i].taken) {
+                i++;
+        }
 
-	if (i < MAX_AVB_STREAMS) {
-		maapAllocList[i].taken = true;
-		memcpy(addr, maapAllocList[i].destAddr, ETH_ALEN);
+        if (i < MAX_AVB_STREAMS) {
+                maapAllocList[i].taken = true;
+                memcpy(addr, maapAllocList[i].destAddr, ETH_ALEN);
 
-		AVB_TRACE_EXIT(AVB_TRACE_MAAP);
-		return &maapAllocList[i];
-	}
+                AVB_TRACE_EXIT(AVB_TRACE_MAAP);
+                return &maapAllocList[i];
+        }
 
 	AVB_TRACE_EXIT(AVB_TRACE_MAAP);
 	return NULL;
