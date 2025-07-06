@@ -1,9 +1,14 @@
 /**
  * OpenAvnu Profile Framework - Built-in Profile Implementations v2
  * 
- * This file demonstrates the new specification/version abstraction approach
- * without hardcoded boolean flags, supporting multiple profile versions
- * and runtime switching between specification variants.
+ * IMPORTANT: These are EXAMPLE profile implementations for framework demonstration.
+ * The MILAN and Automotive profiles are based on publicly available information
+ * and common patterns, NOT official specifications. For production use, these
+ * should be validated against official IEEE 1722.1-2021 and automotive standards.
+ * 
+ * This file demonstrates the capability-based abstraction approach without 
+ * hardcoded boolean flags, supporting multiple profile versions and runtime 
+ * switching between specification variants.
  */
 
 #include "openavb_profile_framework.h"

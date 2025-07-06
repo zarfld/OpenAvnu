@@ -1,0 +1,43 @@
+# Makefile for OpenAvnu Profile Framework Example
+
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99 -g -O2
+INCLUDES = -I../lib/avtp_pipeline/include \
+           -I../lib/avtp_pipeline/openavb_common \
+           -I../lib/avtp_pipeline/util
+LIBS = -L../lib/avtp_pipeline/profile -lopenavb_profile_framework
+
+# Source files
+SOURCES = profile_framework_example.c
+OBJECTS = $(SOURCES:.c=.o)
+TARGET = profile_framework_example
+
+# Default target
+all: $(TARGET)
+
+# Build the example
+$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(TARGET) $(LIBS)
+
+# Compile source files
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Run the example with default MILAN profile
+run: $(TARGET)
+	./$(TARGET)
+
+# Run the example with a configuration file
+run-config: $(TARGET)
+	./$(TARGET) profile_framework_examples.ini
+
+# Clean build files
+clean:
+	rm -f $(OBJECTS) $(TARGET)
+
+# Install (copy to bin directory)
+install: $(TARGET)
+	mkdir -p ../bin
+	cp $(TARGET) ../bin/
+
+.PHONY: all run run-config clean install

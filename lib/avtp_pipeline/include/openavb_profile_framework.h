@@ -291,6 +291,144 @@ int openavbProfileConfigCallback(void *user, const char *section,
                                  const char *name, const char *value);
 
 /**
+ * Core Profile Framework APIs
+ */
+
+// Framework initialization
+bool openavb_profile_framework_init(void);
+void openavb_profile_framework_cleanup(void);
+
+// Profile registration and management
+bool openavb_profile_register(openavb_profile_cfg_t *profile);
+openavb_profile_cfg_t* openavb_profile_get_by_name(const char *name, const char *version);
+openavb_profile_cfg_t* openavb_profile_get_by_version(openavb_spec_version_e version, 
+                                                      openavb_spec_variant_e variant);
+U32 openavb_profile_list_all(const openavb_profile_cfg_t** profiles, U32 max_count);
+
+// Profile compatibility and selection
+bool openavb_profile_is_compatible(const openavb_profile_cfg_t *profile1,
+                                   const openavb_profile_cfg_t *profile2);
+openavb_profile_cfg_t* openavb_profile_select_optimal(const void *requirements);
+
+// Stream operations
+bool openavb_stream_validate_config(const openavb_profile_cfg_t *profile, const void *config);
+const openavb_capability_matrix_t* openavb_profile_get_capabilities(const openavb_profile_cfg_t *profile);
+
+// Error handling
+U32 openavb_stream_handle_error_by_capability(const openavb_profile_cfg_t *profile,
+                                              U32 error_type, U32 error_count,
+                                              const openavb_stream_quality_metrics_t *metrics);
+
+/**
+ * Built-in Profile Behavior Functions
+ */
+
+// AVB Profile behaviors
+bool openavbAVBValidateStreamFormat(const openavb_profile_cfg_t *profile,
+                                    U8 subtype, const void *format_specific);
+U32 openavbAVBCalculatePresentationOffset(const openavb_profile_cfg_t *profile,
+                                          U8 sr_class, U32 max_transit_time);
+bool openavbAVBEnforceQuality(const openavb_profile_cfg_t *profile,
+                              const openavb_stream_quality_metrics_t *metrics);
+bool openavbAVBValidateConfig(const openavb_profile_cfg_t *profile,
+                              const char *section, const char *name, const char *value);
+
+// MILAN Profile behaviors
+bool openavbMILANValidateStreamFormat(const openavb_profile_cfg_t *profile,
+                                      U8 subtype, const void *format_specific);
+U32 openavbMILANCalculatePresentationOffset(const openavb_profile_cfg_t *profile,
+                                            U8 sr_class, U32 max_transit_time);
+bool openavbMILANValidateAVDECCDescriptor(const openavb_profile_cfg_t *profile,
+                                          U16 descriptor_type, const void *descriptor);
+bool openavbMILANEnforceQuality(const openavb_profile_cfg_t *profile,
+                                const openavb_stream_quality_metrics_t *metrics);
+bool openavbMILANValidateConfig(const openavb_profile_cfg_t *profile,
+                                const char *section, const char *name, const char *value);
+
+// Automotive Profile behaviors
+bool openavbAutomotiveValidateStreamFormat(const openavb_profile_cfg_t *profile,
+                                           U8 subtype, const void *format_specific);
+U32 openavbAutomotiveCalculatePresentationOffset(const openavb_profile_cfg_t *profile,
+                                                 U8 sr_class, U32 max_transit_time);
+bool openavbAutomotiveEnforceQuality(const openavb_profile_cfg_t *profile,
+                                     const openavb_stream_quality_metrics_t *metrics);
+bool openavbAutomotiveValidateConfig(const openavb_profile_cfg_t *profile,
+                                     const char *section, const char *name, const char *value);
+
+/**
+ * Forward declaration for stream handle
+ */
+typedef struct openavb_stream_handle openavb_stream_handle_t;
+
+/**
+ * Configuration Parser APIs
+ */
+
+// Parse configuration file and select profile
+bool openavb_profile_parse_config(const char *config_file, openavb_profile_cfg_t **selected_profile);
+
+// Validate configuration file against profile
+bool openavb_profile_validate_config_file(const char *config_file, const openavb_profile_cfg_t *profile);
+
+/**
+ * Stream Integration APIs
+ */
+
+// Stream lifecycle management
+openavb_stream_handle_t* openavb_stream_create(void *stream_data);
+void openavb_stream_destroy(openavb_stream_handle_t *stream);
+
+// Profile management for streams
+bool openavb_stream_set_profile(openavb_stream_handle_t *stream, const openavb_profile_cfg_t *profile);
+const openavb_profile_cfg_t* openavb_stream_get_profile(openavb_stream_handle_t *stream);
+
+// Stream configuration and validation
+bool openavb_stream_validate_with_profile(openavb_stream_handle_t *stream, const void *config);
+bool openavb_stream_configure_from_profile(openavb_stream_handle_t *stream);
+
+// Stream activation and monitoring
+bool openavb_stream_activate(openavb_stream_handle_t *stream);
+void openavb_stream_deactivate(openavb_stream_handle_t *stream);
+
+// Quality metrics and error handling
+void openavb_stream_update_metrics(openavb_stream_handle_t *stream, 
+                                  const openavb_stream_quality_metrics_t *metrics);
+const openavb_stream_quality_metrics_t* openavb_stream_get_metrics(openavb_stream_handle_t *stream);
+bool openavb_stream_handle_error(openavb_stream_handle_t *stream, U32 error_type, U32 error_count);
+
+// Stream registry
+openavb_stream_handle_t* openavb_stream_find_by_id(U32 stream_id);
+
+/**
+ * Core Profile Framework APIs
+ */
+
+// Framework initialization
+bool openavb_profile_framework_init(void);
+void openavb_profile_framework_cleanup(void);
+
+// Profile registration and management
+bool openavb_profile_register(openavb_profile_cfg_t *profile);
+openavb_profile_cfg_t* openavb_profile_get_by_name(const char *name, const char *version);
+openavb_profile_cfg_t* openavb_profile_get_by_version(openavb_spec_version_e version, 
+                                                      openavb_spec_variant_e variant);
+U32 openavb_profile_list_all(const openavb_profile_cfg_t** profiles, U32 max_count);
+
+// Profile compatibility and selection
+bool openavb_profile_is_compatible(const openavb_profile_cfg_t *profile1,
+                                   const openavb_profile_cfg_t *profile2);
+openavb_profile_cfg_t* openavb_profile_select_optimal(const void *requirements);
+
+// Stream operations
+bool openavb_stream_validate_config(const openavb_profile_cfg_t *profile, const void *config);
+const openavb_capability_matrix_t* openavb_profile_get_capabilities(const openavb_profile_cfg_t *profile);
+
+// Error handling
+U32 openavb_stream_handle_error_by_capability(const openavb_profile_cfg_t *profile,
+                                              U32 error_type, U32 error_count,
+                                              const openavb_stream_quality_metrics_t *metrics);
+
+/**
  * Built-in Profile Behavior Functions
  */
 

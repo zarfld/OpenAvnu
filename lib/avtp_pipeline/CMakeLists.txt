@@ -37,6 +37,9 @@ set ( AVB_INSTALL_DIR ${CMAKE_BINARY_DIR}/bin )
 # Used to hold lists of source files from common code subdirectories
 SET (SRC_FILES "")
 
+# Add profile framework subdirectory
+add_subdirectory(profile)
+
 # Suppress the policy warning when including a CMakeLists.txt file
 if(POLICY CMP0011)
   cmake_policy(SET CMP0011 OLD)
