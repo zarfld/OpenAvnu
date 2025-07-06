@@ -378,6 +378,20 @@
 			"group": "build",
 			"problemMatcher": [],
 			"isBackground": false
+		},
+		{
+			"label": "Initialize Git Submodules",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"submodule",
+				"update",
+				"--init",
+				"--recursive"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false
 		}
 	]
 }
