@@ -1,0 +1,69 @@
+# Makefile for L-Acoustics AVDECC Integration Test
+# 
+# This test verifies that the L-Acoustics AVDECC library can be compiled
+# and integrated with OpenAvnu when OPENAVNU_ENABLE_LA_AVDECC=ON
+
+.PHONY: test clean help
+
+# Default target
+help:
+	@echo "L-Acoustics AVDECC Integration Test"
+	@echo "=================================="
+	@echo ""
+	@echo "Targets:"
+	@echo "  test           - Build and run integration test"
+	@echo "  test-cmake     - Test using CMake build system"
+	@echo "  clean          - Clean build artifacts"
+	@echo "  help           - Show this help"
+	@echo ""
+	@echo "Usage:"
+	@echo "  make test-cmake    # Recommended: use CMake"
+	@echo ""
+	@echo "Requirements:"
+	@echo "  - CMake 3.29+ for L-Acoustics AVDECC"
+	@echo "  - C++17 compatible compiler"
+	@echo "  - L-Acoustics AVDECC submodule initialized"
+
+test-cmake:
+	@echo "Testing L-Acoustics AVDECC integration using CMake..."
+	@echo ""
+	@echo "Step 1: Create build directory"
+	@mkdir -p ../build/la_avdecc_test
+	@echo ""
+	@echo "Step 2: Configure with L-Acoustics AVDECC enabled"
+	cd ../build/la_avdecc_test && cmake ../../lib/avtp_pipeline -DOPENAVNU_ENABLE_LA_AVDECC=ON -DCMAKE_BUILD_TYPE=Debug
+	@echo ""
+	@echo "Step 3: Build the project"
+	cd ../build/la_avdecc_test && make -j4
+	@echo ""
+	@echo "✅ If build succeeded, L-Acoustics AVDECC integration is working!"
+
+test-basic:
+	@echo "Testing basic compilation without L-Acoustics AVDECC..."
+	@gcc -std=c99 -o la_avdecc_test_basic la_avdecc_integration_test.c
+	@echo "Running basic test (should show L-Acoustics AVDECC as unavailable):"
+	@./la_avdecc_test_basic
+	@rm -f la_avdecc_test_basic
+
+clean:
+	@echo "Cleaning build artifacts..."
+	@rm -rf ../build/la_avdecc_test
+	@rm -f la_avdecc_test_basic
+	@echo "Clean complete."
+
+# Info target to show current setup
+info:
+	@echo "L-Acoustics AVDECC Integration Information"
+	@echo "========================================"
+	@echo ""
+	@echo "Submodule status:"
+	@cd .. && git submodule status lib/la_avdecc || echo "Submodule not initialized"
+	@echo ""
+	@echo "CMake version:"
+	@cmake --version | head -1 || echo "CMake not found"
+	@echo ""
+	@echo "C++ compiler:"
+	@g++ --version | head -1 || echo "g++ not found"
+	@echo ""
+	@echo "L-Acoustics AVDECC directory:"
+	@ls -la ../lib/la_avdecc/CMakeLists.txt 2>/dev/null || echo "L-Acoustics AVDECC not found"
