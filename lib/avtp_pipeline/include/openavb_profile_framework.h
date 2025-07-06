@@ -22,7 +22,18 @@ extern "C" {
 #define OPENAVB_PROFILE_ID_AVB          0x0001
 #define OPENAVB_PROFILE_ID_MILAN        0x0002
 #define OPENAVB_PROFILE_ID_AUTOMOTIVE   0x0003
+#define OPENAVB_PROFILE_ID_LA_AVDECC_MILAN    0x0004
+#define OPENAVB_PROFILE_ID_LA_AVDECC_STANDARD 0x0005
 #define OPENAVB_PROFILE_ID_CUSTOM_BASE  0x8000
+
+// AVDECC Entity Type Constants
+#define AVDECC_ENTITY_TALKER      0x0001
+#define AVDECC_ENTITY_LISTENER    0x0002
+#define AVDECC_ENTITY_CONTROLLER  0x0004
+
+// IEEE 1722.1 Version Constants
+#define IEEE_1722_1_2013    2013
+#define IEEE_1722_1_2021    2021
 
 /**
  * Stream quality metrics for profile enforcement
@@ -101,6 +112,19 @@ typedef struct openavb_capability_matrix {
         U32 required_talker_capabilities;
         U32 required_listener_capabilities;
     } discovery;
+    
+    /// AVDECC-specific capabilities
+    struct {
+        bool milan_compliant;
+        bool fast_connect_supported;
+        bool network_redundancy;
+        U16 ieee_1722_1_version;            // IEEE 1722.1 version (e.g., 2013, 2021)
+        U32 max_entities;
+        U32 entity_discovery_timeout_ms;
+        U32 supported_entity_types;         // Bitmask: TALKER, LISTENER, CONTROLLER
+        bool entity_model_required;
+        bool connection_management_required;
+    } avdecc;
     
     /// Security capabilities (version-specific)
     struct {

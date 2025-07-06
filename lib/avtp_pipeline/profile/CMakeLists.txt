@@ -21,6 +21,7 @@ set(PROFILE_FRAMEWORK_SOURCES
     openavb_profile_framework_core.c     # Main implementation
     openavb_profile_config_parser.c      # Configuration parsing
     openavb_profile_stream_integration.c # Stream integration
+    openavb_profile_la_avdecc.c         # L-Acoustics AVDECC integration
 )
 
 # Create profile framework library

@@ -49,6 +49,13 @@ bool openavb_profile_framework_init(void)
         return false;
     }
     
+    // Register L-Acoustics AVDECC profiles (if available)
+    extern bool openavb_profile_register_la_avdecc_profiles(void);
+    if (!openavb_profile_register_la_avdecc_profiles()) {
+        AVB_LOG_WARNING("L-Acoustics AVDECC profiles registration failed or not available");
+        // Continue anyway - this is optional
+    }
+    
     g_framework_initialized = true;
     AVB_LOG_INFO("Profile framework initialized with %d profiles", g_profile_count);
     return true;

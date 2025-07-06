@@ -1,0 +1,118 @@
+# Makefile for Phase 2 Entity Discovery Test
+# This builds the test that demonstrates Phase 2 functionality
+
+CC = gcc
+CXX = g++
+CFLAGS = -Wall -Wextra -std=c99 -g -O2
+CXXFLAGS = -Wall -Wextra -std=c++17 -g -O2
+
+# Include paths
+INCLUDES = -I../lib/avtp_pipeline/include \
+           -I../lib/avtp_pipeline/profile \
+           -I../lib/common
+
+# Determine if L-Acoustics AVDECC is available
+LA_AVDECC_PATH = ../lib/la_avdecc
+ifeq ($(wildcard $(LA_AVDECC_PATH)/CMakeLists.txt),)
+    $(info L-Acoustics AVDECC not found - building without LA-AVDECC support)
+    LA_AVDECC_ENABLED = 0
+else
+    $(info L-Acoustics AVDECC found - enabling LA-AVDECC support)
+    LA_AVDECC_ENABLED = 1
+    INCLUDES += -I$(LA_AVDECC_PATH)/include
+    CFLAGS += -DOPENAVNU_HAS_LA_AVDECC=1
+    CXXFLAGS += -DOPENAVNU_HAS_LA_AVDECC=1
+endif
+
+# Source files
+PROFILE_SOURCES = ../lib/avtp_pipeline/profile/openavb_profile_framework_core.c \
+                  ../lib/avtp_pipeline/profile/openavb_profile_builtin_v2.c \
+                  ../lib/avtp_pipeline/profile/openavb_profile_capability_logic.c \
+                  ../lib/avtp_pipeline/profile/openavb_profile_config_parser.c
+
+ifeq ($(LA_AVDECC_ENABLED),1)
+    PROFILE_SOURCES += ../lib/avtp_pipeline/profile/openavb_profile_la_avdecc.c
+endif
+
+# Object files
+PROFILE_OBJECTS = $(PROFILE_SOURCES:.c=.o)
+
+# Test executable
+TEST_TARGET = phase2_entity_discovery_test
+TEST_SOURCE = phase2_entity_discovery_test.c
+
+# Default target
+all: $(TEST_TARGET)
+
+# Build test executable
+$(TEST_TARGET): $(TEST_SOURCE) $(PROFILE_OBJECTS)
+	@echo "Building Phase 2 Entity Discovery Test..."
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ -lpthread -lm
+	@echo "✅ Phase 2 test built successfully!"
+ifeq ($(LA_AVDECC_ENABLED),1)
+	@echo "   L-Acoustics AVDECC support: ENABLED"
+else
+	@echo "   L-Acoustics AVDECC support: DISABLED"
+	@echo "   To enable: git submodule update --init lib/la_avdecc"
+endif
+
+# Build profile framework objects
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Build C++ objects (for L-Acoustics integration)
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+# Clean build artifacts
+clean:
+	@echo "Cleaning Phase 2 test build artifacts..."
+	rm -f $(TEST_TARGET) $(PROFILE_OBJECTS)
+	@echo "✅ Clean complete"
+
+# Run the test
+run: $(TEST_TARGET)
+	@echo "🚀 Running Phase 2 Entity Discovery Test..."
+	@echo "============================================"
+	./$(TEST_TARGET)
+
+# Install dependencies (Ubuntu/Debian)
+install-deps-ubuntu:
+	@echo "Installing dependencies for Phase 2 test (Ubuntu/Debian)..."
+	sudo apt-get update
+	sudo apt-get install -y build-essential cmake libpcap-dev
+
+# Install dependencies (Windows - informational)
+install-deps-windows:
+	@echo "For Windows, you need:"
+	@echo "• Visual Studio 2019 or later with C++17 support"
+	@echo "• WinPcap Developer's Pack"
+	@echo "• CMake 3.29 or later"
+
+# Show test information
+info:
+	@echo "Phase 2 Entity Discovery Test Information"
+	@echo "========================================"
+	@echo "Test: $(TEST_TARGET)"
+	@echo "Features tested:"
+	@echo "• L-Acoustics AVDECC controller creation"
+	@echo "• Entity discovery process"
+	@echo "• Stream integration with AVDECC control"
+	@echo "• MILAN-specific features"
+	@echo "• Multi-stream concurrent operation"
+	@echo ""
+	@echo "Build status:"
+	@echo "• Profile framework: Available"
+ifeq ($(LA_AVDECC_ENABLED),1)
+	@echo "• L-Acoustics AVDECC: ✅ ENABLED"
+else
+	@echo "• L-Acoustics AVDECC: ❌ DISABLED"
+endif
+	@echo ""
+	@echo "Usage:"
+	@echo "  make          - Build test"
+	@echo "  make run      - Build and run test"
+	@echo "  make clean    - Clean build artifacts"
+	@echo "  make info     - Show this information"
+
+.PHONY: all clean run install-deps-ubuntu install-deps-windows info
