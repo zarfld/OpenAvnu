@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)
