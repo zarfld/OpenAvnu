@@ -42,13 +42,46 @@ struct maap_timer {
 #define MAAP_LOG_COMPONENT "Timer"
 #include "maap_log.h"
 
+/* Include platform.h for Windows APIs - this includes Winsock2.h properly */
+#include "platform.h"
 
-/* Return the current time, in nanoseconds. */
+/* Need Windows.h for high-resolution timer APIs */
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+
+/* Performance counter frequency - initialized once */
+static LARGE_INTEGER s_frequency = {0};
+static BOOL s_initialized = FALSE;
+
+/* Initialize high-resolution timing */
+static void initializeTiming(void)
+{
+	if (!s_initialized) {
+		if (!QueryPerformanceFrequency(&s_frequency)) {
+			/* Fallback to GetTickCount64 if QueryPerformanceCounter is not available */
+			s_frequency.QuadPart = 0;
+		}
+		s_initialized = TRUE;
+	}
+}
+
+/* Return the current time, in nanoseconds using high-resolution timer. */
 static uint64_t getCurrentTime(void)
 {
-	/* Using GetTickCount64() is not ideal, as it only provides a 10-16 millisecond resolution.
-	 * However, for our purposes, it is sufficient.
-	 * If higher precision is needed, QueryPerformanceCounter() is one possibility. */
+	initializeTiming();
+	
+	if (s_frequency.QuadPart > 0) {
+		/* Use high-resolution QueryPerformanceCounter */
+		LARGE_INTEGER counter;
+		if (QueryPerformanceCounter(&counter)) {
+			/* Convert to nanoseconds: (counter / frequency) * 1e9 */
+			return (uint64_t)((counter.QuadPart * 1000000000ULL) / s_frequency.QuadPart);
+		}
+	}
+	
+	/* Fallback to GetTickCount64 (lower resolution but more compatible) */
 	uint64_t nTime = GetTickCount64();
 	nTime *= 1000000; /* Convert from milliseconds to nanoseconds */
 	return nTime;

@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      WPCAP_DIR: "C:\\WpdPack"
+      NPCAP_SDK_DIR: "C:\\npcap-sdk"
 
     steps:
       - name: Checkout repository
@@ -31,18 +31,19 @@ jobs:
           git submodule update --init --recursive
         shell: bash
 
-      - name: Download and install WinPcap Developer Pack (WpdPack)
+      - name: Download and install Npcap SDK (modern WinPcap replacement)
         run: |
-          Invoke-WebRequest -Uri "https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip" -OutFile "WpdPack.zip"
-          Expand-Archive WpdPack.zip -DestinationPath "C:\"
+          # Download Npcap SDK (modern replacement for deprecated WinPcap)
+          Invoke-WebRequest -Uri "https://npcap.com/dist/npcap-sdk-1.13.zip" -OutFile "npcap-sdk.zip"
+          Expand-Archive npcap-sdk.zip -DestinationPath "C:\npcap-sdk"
         shell: powershell
 
-      - name: Verify WpdPack structure and env
+      - name: Verify Npcap SDK structure and env
         run: |
-          echo "WPCAP_DIR is: $env:WPCAP_DIR"
-          dir "C:\WpdPack"
-          dir "C:\WpdPack\Include"
-          dir "C:\WpdPack\Lib"
+          echo "NPCAP_SDK_DIR is: $env:NPCAP_SDK_DIR"
+          dir "C:\npcap-sdk"
+          dir "C:\npcap-sdk\Include"
+          dir "C:\npcap-sdk\Lib"
         shell: powershell
 
       - name: Configure project

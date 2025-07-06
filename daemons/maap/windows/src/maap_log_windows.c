@@ -27,19 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdarg.h>
 #include <string.h>
 
-#if defined(_WIN32) && (_MSC_VER < 1800)
-/* Visual Studio 2012 and earlier */
-typedef __int8 int8_t;
-typedef __int16 int16_t;
-typedef __int32 int32_t;
-typedef __int64 int64_t;
-typedef unsigned __int8 uint8_t;
-typedef unsigned __int16 uint16_t;
-typedef unsigned __int32 uint32_t;
-typedef unsigned __int64 uint64_t;
-#else
+/* Use standard C99 integer types - Visual Studio 2013+ supports these */
+#include <stdint.h>
 #include <inttypes.h>
-#endif
 
 #include "platform.h"
 #include "maap_log_queue.h"
@@ -278,9 +268,10 @@ void maapLogFn(
 			sprintf(time_msg, "%2.2d:%2.2d:%2.2d.%3.3d", nowST.wHour, nowST.wMinute, nowST.wSecond, nowST.wMilliseconds);
 		}
 		if (MAAP_LOG_TIMESTAMP_INFO) {
-			DWORD nowTicks = GetTickCount();
+			/* Use GetTickCount64() for better reliability (no 49-day wraparound) */
+			ULONGLONG nowTicks = GetTickCount64();
 
-			sprintf(timestamp_msg, "%7.7d.%3.3d", nowTicks / 1000, nowTicks % 1000);
+			sprintf(timestamp_msg, "%7.7llu.%3.3llu", nowTicks / 1000, nowTicks % 1000);
 		}
 
 		// using sprintf and puts allows using static buffers rather than heap.

@@ -27,13 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <string.h>
 
-#if defined(_WIN32) && (_MSC_VER < 1800)
-/* Visual Studio 2012 and earlier */
-typedef unsigned __int8 uint8_t;
-typedef unsigned __int32 uint32_t;
-#else
+/* Use standard C99 integer types - Visual Studio 2013+ supports these */
+#include <stdint.h>
 #include <inttypes.h>
-#endif
 
 #include "maap_log_queue.h"
 
