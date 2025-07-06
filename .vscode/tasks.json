@@ -392,6 +392,312 @@
 			"group": "build",
 			"problemMatcher": [],
 			"isBackground": false
+		},
+		{
+			"label": "Build All Debug (Windows - CMake)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build All RelWithDebInfo (Windows - CMake)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"RelWithDebInfo"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "CMake Build Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)"
+		},
+		{
+			"label": "CMake Build RelWithDebInfo (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"RelWithDebInfo"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)"
+		},
+		{
+			"label": "Clean Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"clean"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false
+		},
+		{
+			"label": "Clean RelWithDebInfo (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"RelWithDebInfo",
+				"--target",
+				"clean"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false
+		},
+		{
+			"label": "CMake Test Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"RUN_TESTS"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Build Debug (Windows)"
+		},
+		{
+			"label": "CMake Test RelWithDebInfo (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"RelWithDebInfo",
+				"--target",
+				"RUN_TESTS"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Build RelWithDebInfo (Windows)"
+		},
+		{
+			"label": "Build MAAP Daemon Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"maap_daemon"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)"
+		},
+		{
+			"label": "Build MRPD Daemon Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"mrpd"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)"
+		},
+		{
+			"label": "Build CppUTest Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"CppUTest"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)"
+		},
+		{
+			"label": "Run CppUTest Tests Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"CppUTestTests"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "Build CppUTest Debug (Windows)"
+		},
+		{
+			"label": "Build and Run MRPD Simple Test Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"mrpd_simple_test"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)"
+		},
+		{
+			"label": "Build MAAP Test Debug (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"maap_test"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)"
 		}
 	]
 }
