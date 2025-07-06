@@ -13,3 +13,6 @@
 [submodule "lib/la_avdecc"]
 	path = lib/la_avdecc
 	url = https://github.com/L-Acoustics/avdecc.git
+[submodule "thirdparty/open1722"]
+	path = thirdparty/open1722
+	url = https://github.com/COVESA/Open1722.git
