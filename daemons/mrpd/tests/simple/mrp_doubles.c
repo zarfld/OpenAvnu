@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #include "mrp_doubles.h"
 #include "mrp.h"
@@ -67,23 +68,23 @@ unsigned char STATION_ADDR[] = { 0x00, 0x88, 0x77, 0x66, 0x55, 0x44 };
 HTIMER mrpd_timer_create(void)
 {
 	int i;
-	HTIMER out = MRPD_TIMER_COUNT; /* set to invalid value */
+	HTIMER out = (HTIMER)(intptr_t)MRPD_TIMER_COUNT; /* set to invalid value */
 TRACE
 	for (i = 0; i < MRPD_TIMER_COUNT; i++) {
 		if (test_state.timers[i].state == TIMER_UNDEF) {
 			test_state.timers[i].state = TIMER_STOPPED;
-			out = (HTIMER)i;
+			out = (HTIMER)(intptr_t)i;
 			break;
 		}
 	}
 
-	assert(out != MRPD_TIMER_COUNT && "Out of mrpd test double timers");
+	assert(out != (HTIMER)(intptr_t)MRPD_TIMER_COUNT && "Out of mrpd test double timers");
 	return out;
 }
 
 void mrpd_timer_close(HTIMER t)
 {
-	int id = (int)t;
+	int id = (int)(intptr_t)t;
 TRACE
 	assert(id >= 0 && id < MRPD_TIMER_COUNT);
 	assert(test_state.timers[id].state != TIMER_UNDEF);
@@ -95,7 +96,7 @@ TRACE
 int mrpd_timer_start_interval(HTIMER timerfd,
 			      unsigned long value_ms, unsigned long interval_ms)
 {
-	int id = (int)timerfd;
+	int id = (int)(intptr_t)timerfd;
 TRACE
 	assert(id >= 0 && id < MRPD_TIMER_COUNT);
 	assert(test_state.timers[id].state == TIMER_STOPPED);
@@ -114,7 +115,7 @@ TRACE
 
 int mrpd_timer_stop(HTIMER timerfd)
 {
-	int id = (int)timerfd;
+	int id = (int)(intptr_t)timerfd;
 TRACE
 	assert(id >= 0 && id < MRPD_TIMER_COUNT);
 	test_state.timers[id].state = TIMER_STOPPED;

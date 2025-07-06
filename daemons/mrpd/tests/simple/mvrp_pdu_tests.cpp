@@ -45,7 +45,7 @@ static struct sockaddr_in client;
  */
 
 static void mvrp_dump_events() {
-	int i, evtid, evtcount;
+	int i, evtcount;
 	evtcount = (sizeof test_state.mvrp_event_counts /
 		    sizeof *test_state.mvrp_event_counts);
 	printf("\nMVRP Event Counts:\n");

@@ -582,7 +582,7 @@ TEST(MsrpTestGroup, Listener_State_Transition_With_Rx_rIn)
 	 * event, but the effect should be the same.
 	 */
 	memcpy(test_state.rx_PDU, test_state.tx_PDU, test_state.tx_PDU_len);
-	test_state.rx_PDU_len = test_state.tx_PDU_len;
+	test_state.rx_PDU_len = (unsigned int)test_state.tx_PDU_len;
 	rv = msrp_recv_msg();
 	LONGS_EQUAL(0, rv);
 
@@ -646,7 +646,7 @@ TEST(MsrpTestGroup, TalkerAdvertise_To_Failed_Transition_With_Rx_rIn)
 	* event, but the effect should be the same.
 	*/
 	memcpy(test_state.rx_PDU, test_state.tx_PDU, test_state.tx_PDU_len);
-	test_state.rx_PDU_len = test_state.tx_PDU_len;
+	test_state.rx_PDU_len = (unsigned int)test_state.tx_PDU_len;
 	rv = msrp_recv_msg();
 	LONGS_EQUAL(0, rv);
 
@@ -656,4 +656,5 @@ TEST(MsrpTestGroup, TalkerAdvertise_To_Failed_Transition_With_Rx_rIn)
 	CHECK(MSRP_TALKER_FAILED_TYPE == attrib->type);
 
 }
+
 

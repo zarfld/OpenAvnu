@@ -287,11 +287,11 @@ TEST(MsrpPruningTestGroup, Prune_Multiple_Clients)
 	memset(&client2, 1, sizeof(client2));
 
 	/* no error returned for first client */
-	msrp_recv_cmd("S??", strlen("S??") + 1, &client1);
+	msrp_recv_cmd("S??", (int)strlen("S??") + 1, &client1);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 
 	/* error returned for second client */
-	msrp_recv_cmd("S??", strlen("S??") + 1, &client2);
+	msrp_recv_cmd("S??", (int)strlen("S??") + 1, &client2);
 	CHECK(!msrp_tests_cmd_ok(test_state.ctl_msg_data));
 }
 
@@ -338,7 +338,7 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Except_One_TA)
 	int rv;
 
 	snprintf(cmd_string, sizeof(cmd_string), "I+S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(1, msrp_interesting_id_count());
 
@@ -403,7 +403,7 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Except_New_Listener)
 
 	/* declare a listener attribute */
 	snprintf(cmd_string, sizeof(cmd_string), "S+L:L=%016" PRIx64 ",D=2", id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 
 	memcpy(test_state.rx_PDU, pkt2, sizeof pkt2);
@@ -447,11 +447,11 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Disable_With_TA)
 
 	/* mark as interesting */
 	snprintf(cmd_string, sizeof(cmd_string), "I+S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(1, msrp_interesting_id_count());
 	snprintf(cmd_string, sizeof(cmd_string), "I+S:S=%" PRIx64, id + 1);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(2, msrp_interesting_id_count());
 
@@ -475,7 +475,7 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Disable_With_TA)
 	 */
 	ta_count_before = msrp_count_type(MSRP_TALKER_ADV_TYPE);
 	snprintf(cmd_string, sizeof(cmd_string), "I-S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(1, msrp_interesting_id_count());
 
@@ -504,13 +504,13 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Duplicate)
 
 	/* mark as interesting */
 	snprintf(cmd_string, sizeof(cmd_string), "I+S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(1, msrp_interesting_id_count());
 
 	/* mark as interesting again */
 	snprintf(cmd_string, sizeof(cmd_string), "I+S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(!msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(1, msrp_interesting_id_count());
 }
@@ -538,13 +538,13 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Disable_With_TA_and_Listener)
 
 	/* mark as interesting */
 	snprintf(cmd_string, sizeof(cmd_string), "I+S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 	LONGS_EQUAL(1, msrp_interesting_id_count());
 
 	/* declare a listener attribute */
 	snprintf(cmd_string, sizeof(cmd_string), "S+L:L=%016" PRIx64 ",D=2", id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 
 	memcpy(test_state.rx_PDU, pkt2, sizeof pkt2);
@@ -570,7 +570,7 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Disable_With_TA_and_Listener)
 	/* mark as uninteresting */
 	ta_count_before = msrp_count_type(MSRP_TALKER_ADV_TYPE);
 	snprintf(cmd_string, sizeof(cmd_string), "I-S:S=%" PRIx64, id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 
 	/* interesting database should be empty */
@@ -604,7 +604,7 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Listener_Remove)
 
 	/* declare a listener attribute */
 	snprintf(cmd_string, sizeof(cmd_string), "S+L:L=%016" PRIx64 ",D=2", id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 
 	memcpy(test_state.rx_PDU, pkt2, sizeof pkt2);
@@ -621,7 +621,7 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Listener_Remove)
 
 	/* setup complete, now remove the listener */
 	snprintf(cmd_string, sizeof(cmd_string), "S-L:L=%016" PRIx64 , id);
-	msrp_recv_cmd(cmd_string, strlen(cmd_string) + 1, &client);
+	msrp_recv_cmd(cmd_string, (int)strlen(cmd_string) + 1, &client);
 	CHECK(msrp_tests_cmd_ok(test_state.ctl_msg_data));
 
 	/* lookup the TA attrib (it should not be present) */
@@ -630,3 +630,4 @@ TEST(MsrpPruningTestGroup, Prune_Uninteresting_Listener_Remove)
 	attrib = msrp_lookup(&a_ref);
 	CHECK(attrib == NULL);
 }
+

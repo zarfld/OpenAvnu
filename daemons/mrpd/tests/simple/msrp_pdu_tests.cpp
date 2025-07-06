@@ -45,7 +45,7 @@ static struct sockaddr_in client;
  */
 
 void dump_events() {
-	int i, evtid, evtcount;
+	int i, evtcount;
 	evtcount = (sizeof test_state.msrp_event_counts /
 		    sizeof *test_state.msrp_event_counts);
 	printf("\nMSRP Event Counts:\n");

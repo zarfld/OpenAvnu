@@ -609,7 +609,7 @@ int mrpd_close_socket(SOCKET sock)
 
 size_t mrpd_send(SOCKET sockfd, const void *buf, size_t len, int flags)
 {
-       if (pcap_sendpacket(net_if->pcap_interface, buf, len) != 0) {
+       if (pcap_sendpacket(net_if->pcap_interface, buf, (int)len) != 0) {
                fprintf(stderr, "\nError sending the packet: %s\n",
                        pcap_geterr(net_if->pcap_interface));
                return -1;

@@ -2187,9 +2187,9 @@ msrp_emit_domainvectors(unsigned char *msgbuf, unsigned char *msgbuf_eof,
 	*mrpdu_msg_ptr = 0;
 	mrpdu_msg_ptr++;
 
-	*bytes_used = (mrpdu_msg_ptr - msgbuf);
+	*bytes_used = (int)(mrpdu_msg_ptr - msgbuf);
 
-	attriblistlen = mrpdu_msg_ptr - &(mrpdu_msg->Data[2]);
+	attriblistlen = (int)(mrpdu_msg_ptr - &(mrpdu_msg->Data[2]));
 	mrpdu_msg->Data[0] = (uint8_t) (attriblistlen >> 8);
 	mrpdu_msg->Data[1] = (uint8_t) attriblistlen;
 
@@ -2536,9 +2536,9 @@ msrp_emit_talkervectors(unsigned char *msgbuf, unsigned char *msgbuf_eof,
 	*mrpdu_msg_ptr = 0;
 	mrpdu_msg_ptr++;
 
-	*bytes_used = (mrpdu_msg_ptr - msgbuf);
+	*bytes_used = (int)(mrpdu_msg_ptr - msgbuf);
 
-	attriblistlen = mrpdu_msg_ptr - &(mrpdu_msg->Data[2]);
+	attriblistlen = (int)(mrpdu_msg_ptr - &(mrpdu_msg->Data[2]));
 	mrpdu_msg->Data[0] = (uint8_t) (attriblistlen >> 8);
 	mrpdu_msg->Data[1] = (uint8_t) attriblistlen;
 	return 0;
@@ -2899,9 +2899,9 @@ msrp_emit_listenvectors(unsigned char *msgbuf, unsigned char *msgbuf_eof,
 	*mrpdu_msg_ptr = 0;
 	mrpdu_msg_ptr++;
 
-	*bytes_used = (mrpdu_msg_ptr - msgbuf);
+	*bytes_used = (int)(mrpdu_msg_ptr - msgbuf);
 
-	attriblistlen = mrpdu_msg_ptr - &(mrpdu_msg->Data[2]);
+	attriblistlen = (int)(mrpdu_msg_ptr - &(mrpdu_msg->Data[2]));
 	mrpdu_msg->Data[0] = (uint8_t) (attriblistlen >> 8);
 	mrpdu_msg->Data[1] = (uint8_t) attriblistlen;
 
@@ -2995,9 +2995,9 @@ int msrp_txpdu(void)
 	} else
 		goto out;
 
-	msgbuf_len = mrpdu_msg_ptr - msgbuf;
+	msgbuf_len = (int)(mrpdu_msg_ptr - msgbuf);
 
-	bytes = mrpd_send(msrp_socket, msgbuf, msgbuf_len, 0);
+	bytes = (int)mrpd_send(msrp_socket, msgbuf, msgbuf_len, 0);
 #if LOG_MSRP
 	mrpd_log_printf("MSRP send PDU\n");
 #endif

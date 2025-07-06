@@ -1030,7 +1030,7 @@ mmrp_emit_svcvectors(unsigned char *msgbuf, unsigned char *msgbuf_eof,
 	*mrpdu_msg_ptr = 0;
 	mrpdu_msg_ptr++;
 
-	*bytes_used = (mrpdu_msg_ptr - msgbuf);
+	*bytes_used = (int)(mrpdu_msg_ptr - msgbuf);
 	return 0;
  oops:
 	/* an internal error - caller should assume TXLAF */
@@ -1260,7 +1260,7 @@ mmrp_emit_macvectors(unsigned char *msgbuf, unsigned char *msgbuf_eof,
 	*mrpdu_msg_ptr = 0;
 	mrpdu_msg_ptr++;
 
-	*bytes_used = (mrpdu_msg_ptr - msgbuf);
+	*bytes_used = (int)(mrpdu_msg_ptr - msgbuf);
 	return 0;
  oops:
 	/* an internal error - caller should assume TXLAF */
@@ -1381,9 +1381,9 @@ int mmrp_txpdu(void)
 	} else
 		goto out;
 
-	msgbuf_len = mrpdu_msg_ptr - msgbuf;
+	msgbuf_len = (int)(mrpdu_msg_ptr - msgbuf);
 
-	bytes = mrpd_send(mmrp_socket, msgbuf, msgbuf_len, 0);
+	bytes = (int)mrpd_send(mmrp_socket, msgbuf, msgbuf_len, 0);
 #if LOG_MMRP
 	mrpd_log_printf("MMRP send PDU\n");
 #endif
