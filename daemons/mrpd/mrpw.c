@@ -40,6 +40,7 @@
 
 #include <pcap.h>
 #include <winsock2.h>
+#include <ws2tcpip.h>
 #include <iphlpapi.h>
 
 #include "mrpd.h"
@@ -645,10 +646,11 @@ int init_local_ctl(void)
 	if (iResult != NO_ERROR)
 		goto out;
 
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(mrpd_port);
-	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        memset(&addr, 0, sizeof(addr));
+        addr.sin_family = AF_INET;
+        addr.sin_port = htons(mrpd_port);
+        if (inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr) != 1)
+                goto out;
 
 	rc = bind(sock_fd, (struct sockaddr *)&addr, sizeof(addr));
 
