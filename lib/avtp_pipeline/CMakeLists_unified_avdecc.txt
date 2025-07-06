@@ -1,0 +1,140 @@
+# CMakeLists.txt for Unified AVDECC API (Phase 3)
+
+cmake_minimum_required(VERSION 3.10)
+
+# Add unified AVDECC API sources
+set(UNIFIED_AVDECC_SOURCES
+    avdecc/openavb_unified_avdecc.c
+    avdecc/openavb_unified_avdecc_config.c
+)
+
+# Add unified AVDECC headers
+set(UNIFIED_AVDECC_HEADERS
+    ../include/openavb_unified_avdecc.h
+)
+
+# Create unified AVDECC library
+add_library(unified_avdecc STATIC ${UNIFIED_AVDECC_SOURCES})
+
+# Set include directories
+target_include_directories(unified_avdecc 
+    PUBLIC 
+        ../include
+        avdecc
+    PRIVATE
+        profile
+        ../common
+)
+
+# Link with profile framework
+target_link_libraries(unified_avdecc 
+    PRIVATE 
+        profile_framework
+)
+
+# Add L-Acoustics AVDECC support if available
+if(OPENAVNU_ENABLE_LA_AVDECC AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../la_avdecc/CMakeLists.txt")
+    target_compile_definitions(unified_avdecc 
+        PRIVATE 
+        OPENAVNU_HAS_LA_AVDECC=1
+    )
+    
+    target_include_directories(unified_avdecc 
+        PRIVATE 
+        ../la_avdecc/include
+    )
+    
+    # Link with L-Acoustics AVDECC library
+    target_link_libraries(unified_avdecc 
+        PRIVATE 
+        la_avdecc_controller_cxx_static
+        la_avdecc_cxx_static
+    )
+    
+    message(STATUS "Unified AVDECC: L-Acoustics support ENABLED")
+else()
+    message(STATUS "Unified AVDECC: L-Acoustics support DISABLED")
+endif()
+
+# Add legacy avdecc-lib support if available
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../avdecc-lib/controller/src")
+    target_compile_definitions(unified_avdecc 
+        PRIVATE 
+        OPENAVNU_HAS_LEGACY_AVDECC=1
+    )
+    
+    target_include_directories(unified_avdecc 
+        PRIVATE 
+        ../../avdecc-lib/controller/src
+    )
+    
+    message(STATUS "Unified AVDECC: Legacy avdecc-lib support ENABLED")
+else()
+    message(STATUS "Unified AVDECC: Legacy avdecc-lib support DISABLED")
+endif()
+
+# Always enable simulation mode
+target_compile_definitions(unified_avdecc 
+    PRIVATE 
+    OPENAVNU_HAS_SIMULATION=1
+)
+
+# Set C++ standard if needed for L-Acoustics
+if(OPENAVNU_ENABLE_LA_AVDECC)
+    set_property(TARGET unified_avdecc PROPERTY CXX_STANDARD 17)
+    set_property(TARGET unified_avdecc PROPERTY CXX_STANDARD_REQUIRED ON)
+endif()
+
+# Add to main avtp_pipeline library
+if(TARGET avtp_pipeline)
+    target_link_libraries(avtp_pipeline 
+        PUBLIC 
+        unified_avdecc
+    )
+    
+    target_include_directories(avtp_pipeline 
+        PUBLIC 
+        avdecc
+    )
+endif()
+
+# Install headers
+install(FILES ${UNIFIED_AVDECC_HEADERS} 
+        DESTINATION include/openavnu)
+
+# Phase 3 test executable (optional)
+option(BUILD_PHASE3_TEST "Build Phase 3 unified AVDECC test" OFF)
+
+if(BUILD_PHASE3_TEST)
+    add_executable(phase3_unified_avdecc_test 
+        ../../examples/phase3_unified_avdecc_test.c
+    )
+    
+    target_link_libraries(phase3_unified_avdecc_test 
+        PRIVATE 
+        unified_avdecc
+        profile_framework
+    )
+    
+    target_include_directories(phase3_unified_avdecc_test 
+        PRIVATE
+        ../include
+        avdecc
+        profile
+        ../common
+    )
+    
+    # Copy to examples directory
+    set_target_properties(phase3_unified_avdecc_test 
+        PROPERTIES 
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/examples"
+    )
+    
+    message(STATUS "Phase 3 test executable will be built")
+endif()
+
+message(STATUS "Unified AVDECC API configured:")
+message(STATUS "  - Simulation mode: ALWAYS AVAILABLE")
+message(STATUS "  - Configuration file support: ENABLED")
+message(STATUS "  - Automatic implementation selection: ENABLED")
+message(STATUS "  - Cross-implementation compatibility: ENABLED")

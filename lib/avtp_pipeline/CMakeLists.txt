@@ -40,6 +40,9 @@ SET (SRC_FILES "")
 # Add profile framework subdirectory
 add_subdirectory(profile)
 
+# Add unified AVDECC API subdirectory (Phase 3)
+include(CMakeLists_unified_avdecc.txt)
+
 # Optional L-Acoustics AVDECC integration for modern AVDECC/MILAN support
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../la_avdecc/CMakeLists.txt")
     option(OPENAVNU_ENABLE_LA_AVDECC "Enable L-Acoustics AVDECC integration" OFF)

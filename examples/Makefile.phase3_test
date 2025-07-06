@@ -1,0 +1,224 @@
+# Makefile for Phase 3 Unified AVDECC Test
+# This builds the test that demonstrates Phase 3 functionality
+
+CC = gcc
+CXX = g++
+CFLAGS = -Wall -Wextra -std=c99 -g -O2
+CXXFLAGS = -Wall -Wextra -std=c++17 -g -O2
+
+# Include paths
+INCLUDES = -I../lib/avtp_pipeline/include \
+           -I../lib/avtp_pipeline/profile \
+           -I../lib/avtp_pipeline/avdecc \
+           -I../lib/common
+
+# Determine if L-Acoustics AVDECC is available
+LA_AVDECC_PATH = ../lib/la_avdecc
+ifeq ($(wildcard $(LA_AVDECC_PATH)/CMakeLists.txt),)
+    $(info L-Acoustics AVDECC not found - building without LA-AVDECC support)
+    LA_AVDECC_ENABLED = 0
+else
+    $(info L-Acoustics AVDECC found - enabling LA-AVDECC support)
+    LA_AVDECC_ENABLED = 1
+    INCLUDES += -I$(LA_AVDECC_PATH)/include
+    CFLAGS += -DOPENAVNU_HAS_LA_AVDECC=1
+    CXXFLAGS += -DOPENAVNU_HAS_LA_AVDECC=1
+endif
+
+# Check for legacy avdecc-lib
+LEGACY_AVDECC_PATH = ../avdecc-lib
+ifeq ($(wildcard $(LEGACY_AVDECC_PATH)/controller/src),)
+    $(info Legacy avdecc-lib not found - building without legacy support)
+    LEGACY_ENABLED = 0
+else
+    $(info Legacy avdecc-lib found - enabling legacy support)
+    LEGACY_ENABLED = 1
+    INCLUDES += -I$(LEGACY_AVDECC_PATH)/controller/src
+    CFLAGS += -DOPENAVNU_HAS_LEGACY_AVDECC=1
+    CXXFLAGS += -DOPENAVNU_HAS_LEGACY_AVDECC=1
+endif
+
+# Source files
+PROFILE_SOURCES = ../lib/avtp_pipeline/profile/openavb_profile_framework_core.c \
+                  ../lib/avtp_pipeline/profile/openavb_profile_builtin_v2.c \
+                  ../lib/avtp_pipeline/profile/openavb_profile_capability_logic.c \
+                  ../lib/avtp_pipeline/profile/openavb_profile_config_parser.c
+
+UNIFIED_AVDECC_SOURCES = ../lib/avtp_pipeline/avdecc/openavb_unified_avdecc.c \
+                         ../lib/avtp_pipeline/avdecc/openavb_unified_avdecc_config.c
+
+ifeq ($(LA_AVDECC_ENABLED),1)
+    PROFILE_SOURCES += ../lib/avtp_pipeline/profile/openavb_profile_la_avdecc.c
+endif
+
+# All sources
+ALL_SOURCES = $(PROFILE_SOURCES) $(UNIFIED_AVDECC_SOURCES)
+
+# Object files
+ALL_OBJECTS = $(ALL_SOURCES:.c=.o)
+
+# Test executable
+TEST_TARGET = phase3_unified_avdecc_test
+TEST_SOURCE = phase3_unified_avdecc_test.c
+
+# Default target
+all: $(TEST_TARGET)
+
+# Build test executable
+$(TEST_TARGET): $(TEST_SOURCE) $(ALL_OBJECTS)
+	@echo "Building Phase 3 Unified AVDECC Test..."
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $^ -lpthread -lm
+	@echo "✅ Phase 3 test built successfully!"
+	@echo ""
+	@echo "🎯 Phase 3 Features Enabled:"
+ifeq ($(LA_AVDECC_ENABLED),1)
+	@echo "   L-Acoustics AVDECC: ✅ ENABLED"
+else
+	@echo "   L-Acoustics AVDECC: ❌ DISABLED"
+endif
+ifeq ($(LEGACY_ENABLED),1)
+	@echo "   Legacy avdecc-lib: ✅ ENABLED"
+else
+	@echo "   Legacy avdecc-lib: ❌ DISABLED"
+endif
+	@echo "   Simulation Mode: ✅ ALWAYS AVAILABLE"
+	@echo "   Unified API: ✅ ENABLED"
+	@echo "   Config Files: ✅ ENABLED"
+	@echo ""
+
+# Build C objects
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Build C++ objects (for L-Acoustics integration)
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+# Clean build artifacts
+clean:
+	@echo "Cleaning Phase 3 test build artifacts..."
+	rm -f $(TEST_TARGET) $(ALL_OBJECTS)
+	@echo "✅ Clean complete"
+
+# Run the test
+run: $(TEST_TARGET)
+	@echo "🚀 Running Phase 3 Unified AVDECC Test..."
+	@echo "=========================================="
+	./$(TEST_TARGET)
+
+# Create example configuration file
+config-example:
+	@echo "Creating example configuration file..."
+	@cat > phase3_example_config.ini << 'EOF'
+# OpenAvnu Unified AVDECC Configuration Example
+# This demonstrates Phase 3 configuration-driven implementation selection
+
+[unified_avdecc]
+
+# AVDECC Implementation Selection
+# Options: auto, la-avdecc, legacy, simulation
+implementation = auto
+
+# Feature Requirements
+milan_required = false
+fast_connect_required = false
+network_redundancy_required = false
+
+# Network Settings
+discovery_timeout_ms = 5000
+entity_name = "OpenAvnu-Phase3-Controller"
+interface_name = "auto"
+max_entities = 256
+
+# Logging
+enable_logging = true
+
+# Example Configurations:
+#
+# For MILAN devices:
+#   implementation = la-avdecc
+#   milan_required = true
+#   fast_connect_required = true
+#
+# For legacy compatibility:
+#   implementation = legacy
+#   milan_required = false
+#
+# For testing without hardware:
+#   implementation = simulation
+EOF
+	@echo "✅ Example configuration created: phase3_example_config.ini"
+
+# Install dependencies (Ubuntu/Debian)
+install-deps-ubuntu:
+	@echo "Installing dependencies for Phase 3 test (Ubuntu/Debian)..."
+	sudo apt-get update
+	sudo apt-get install -y build-essential cmake libpcap-dev
+
+# Install dependencies (Windows - informational)
+install-deps-windows:
+	@echo "For Windows, you need:"
+	@echo "• Visual Studio 2019 or later with C++17 support"
+	@echo "• WinPcap Developer's Pack (for L-Acoustics AVDECC)"
+	@echo "• CMake 3.29 or later"
+
+# Show test information
+info:
+	@echo "Phase 3 Unified AVDECC Test Information"
+	@echo "======================================="
+	@echo "Test: $(TEST_TARGET)"
+	@echo ""
+	@echo "Phase 3 Features Tested:"
+	@echo "• Unified AVDECC API layer"
+	@echo "• Configuration-driven implementation selection"
+	@echo "• Cross-implementation compatibility"
+	@echo "• Automatic fallback mechanisms"
+	@echo "• Configuration file support"
+	@echo "• MILAN compliance detection"
+	@echo ""
+	@echo "Available Implementations:"
+ifeq ($(LA_AVDECC_ENABLED),1)
+	@echo "• L-Acoustics AVDECC: ✅ Available"
+else
+	@echo "• L-Acoustics AVDECC: ❌ Not Available"
+	@echo "  To enable: git submodule update --init lib/la_avdecc"
+endif
+ifeq ($(LEGACY_ENABLED),1)
+	@echo "• Legacy avdecc-lib: ✅ Available"
+else
+	@echo "• Legacy avdecc-lib: ❌ Not Available"
+	@echo "  To enable: Ensure avdecc-lib is present in ../avdecc-lib"
+endif
+	@echo "• Simulation Mode: ✅ Always Available"
+	@echo ""
+	@echo "Usage:"
+	@echo "  make              - Build test"
+	@echo "  make run          - Build and run test"
+	@echo "  make config-example - Create example config file"
+	@echo "  make clean        - Clean build artifacts"
+	@echo "  make info         - Show this information"
+
+# Test with different configurations
+test-configurations: $(TEST_TARGET)
+	@echo "🧪 Testing Different Configuration Scenarios"
+	@echo "============================================"
+	@echo ""
+	@echo "1. Testing Auto-Select Configuration:"
+	@echo "implementation = auto" > test_auto.ini
+	@echo "milan_required = false" >> test_auto.ini
+	./$(TEST_TARGET)
+	@echo ""
+	@echo "2. Testing MILAN Configuration:"
+	@echo "implementation = auto" > test_milan.ini
+	@echo "milan_required = true" >> test_milan.ini
+	@echo "fast_connect_required = true" >> test_milan.ini
+	./$(TEST_TARGET)
+	@echo ""
+	@echo "3. Testing Simulation Configuration:"
+	@echo "implementation = simulation" > test_sim.ini
+	@echo "milan_required = false" >> test_sim.ini
+	./$(TEST_TARGET)
+	@rm -f test_*.ini
+	@echo "✅ Configuration testing complete"
+
+.PHONY: all clean run config-example install-deps-ubuntu install-deps-windows info test-configurations
