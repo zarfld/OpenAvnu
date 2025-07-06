@@ -9,6 +9,10 @@ if(POLICY CMP0048)
     cmake_policy(SET CMP0048 NEW)
 endif()
 
+# Set minimum policy version to handle submodules with older CMake requirements
+set(CMAKE_POLICY_DEFAULT_CMP0000 NEW)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+
 enable_testing()
 
 include(CheckCXXCompilerFlag)
