@@ -72,3 +72,23 @@ The CI pipeline output shows successful resolution:
 - ❌ cpputest: Fixed commit reference issue (was failing, now resolved)
 
 The pipeline now proceeds much further and only fails at the final cpputest submodule, which has been resolved.
+
+## Update: Additional CI Pipeline Fix (July 6, 2025)
+
+### Issue 3: avdecc-lib Local Commit ✅ FIXED
+**Error:** `fatal: remote error: upload-pack: not our ref d27e58f5fb5a386a4f2c736681717914c143bd45`
+**Cause:** Local commit in avdecc-lib submodule (CMake version update) not available in remote repository
+**Solution:** Reset avdecc-lib submodule to remote commit `a04fef4` 
+**Result:** ✅ CI pipeline can now fetch and initialize avdecc-lib successfully
+
+### Root Cause Analysis (Issue 3)
+- The avdecc-lib submodule had a local commit `d27e58f` that updated CMake minimum version to 3.10
+- This commit was built on top of the remote commit `a04fef4` but never pushed to the remote repository
+- CI pipelines performing fresh clones couldn't fetch this local commit
+- The main CMakeLists.txt already requires CMake 3.10, making the submodule's local change redundant
+
+### Solution Details
+1. **Reset submodule**: Used `git reset --hard a04fef4` to revert to the remote commit
+2. **Preserved functionality**: Main CMakeLists.txt already handles CMake 3.10 requirement
+3. **Avoided conflicts**: avdecc-lib submodule is not directly included in main build system
+4. **Maintained compatibility**: All existing functionality preserved
