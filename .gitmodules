@@ -10,3 +10,6 @@
 [submodule "lib/atl_avb"]
 	path = lib/atl_avb
 	url = https://github.com/Aquantia/atl_avb
+[submodule "lib/la_avdecc"]
+	path = lib/la_avdecc
+	url = https://github.com/L-Acoustics/avdecc.git
