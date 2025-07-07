@@ -19,10 +19,10 @@ if (-not $NetworkInterface) {
 
 # Check if gPTP daemon exists
 $gptpPaths = @(
+    "build\thirdparty\gptp\Release\gptp.exe",
+    "build\thirdparty\gptp\Debug\gptp.exe", 
     "thirdparty\gptp\windows\daemon_cl\x64\Release\daemon_cl.exe",
-    "thirdparty\gptp\windows\daemon_cl\Release\daemon_cl.exe", 
-    "build\thirdparty\gptp\windows\daemon_cl\Release\daemon_cl.exe",
-    "build\thirdparty\gptp\windows\daemon_cl\x64\Release\daemon_cl.exe"
+    "thirdparty\gptp\windows\daemon_cl\Release\daemon_cl.exe"
 )
 
 $gptpExe = $null
