@@ -4,6 +4,7 @@
 *build_avdecc/
 *CMakeFiles/
 CMakeCache.txt
+spec/
 
 daemons/maap/linux/maap_daemon
 examples/jackd-listener/jack_listener
