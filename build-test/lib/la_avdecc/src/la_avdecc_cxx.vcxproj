@@ -1,0 +1,781 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0F809D89-1088-3C25-A1CB-EE518D2C6E79}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>la_avdecc_cxx</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">la_avdecc_cxx.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">la_avdecc_cxx-d</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">la_avdecc_cxx.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">la_avdecc_cxx</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">la_avdecc_cxx.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">la_avdecc_cxx</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">la_avdecc_cxx.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">la_avdecc_cxx</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /w14265</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/la_avdecc_cxx.dir/Debug/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;HAVE_PROTOCOL_INTERFACE_PCAP;HAVE_PROTOCOL_INTERFACE_VIRTUAL;IGNORE_INVALID_CONTROL_DATA_LENGTH;IGNORE_INVALID_NON_SUCCESS_AEM_RESPONSES;ALLOW_GET_AUDIO_MAP_UNSOL;NOMINMAX;ENABLE_AVDECC_FEATURE_REDUNDANCY;ENABLE_AVDECC_FEATURE_JSON;ALLOW_RECV_BIG_AECP_PAYLOADS;DEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;HAVE_FMT;la_networkInterfaceHelper_static_STATICS;_WIN32_WINNT=0x0600;TARGET_SYSTEM_WINDOWS;USING_NPCAP;HAVE_REMOTE;FMT_HEADER_ONLY=1;CMAKE_INTDIR="Debug";la_avdecc_cxx_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;HAVE_PROTOCOL_INTERFACE_PCAP;HAVE_PROTOCOL_INTERFACE_VIRTUAL;IGNORE_INVALID_CONTROL_DATA_LENGTH;IGNORE_INVALID_NON_SUCCESS_AEM_RESPONSES;ALLOW_GET_AUDIO_MAP_UNSOL;NOMINMAX;ENABLE_AVDECC_FEATURE_REDUNDANCY;ENABLE_AVDECC_FEATURE_JSON;ALLOW_RECV_BIG_AECP_PAYLOADS;DEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;HAVE_FMT;la_networkInterfaceHelper_static_STATICS;_WIN32_WINNT=0x0600;TARGET_SYSTEM_WINDOWS;USING_NPCAP;HAVE_REMOTE;FMT_HEADER_ONLY=1;CMAKE_INTDIR=\"Debug\";la_avdecc_cxx_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>	Copying la_avdecc_cxx symbols</Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E touch_nocreate D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Debug/la_avdecc_cxx-d.lib
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo "Touching D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Debug/la_avdecc_cxx-d.lib import library"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/Repos/OpenAvnu/build-test/Symbols/Debug/
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Debug/la_avdecc_cxx-d.pdb D:/Repos/OpenAvnu/build-test/Symbols/Debug/
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\externals\nih\src\Debug\la_networkInterfaceHelper_static-d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Debug/la_avdecc_cxx-d.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Debug/la_avdecc_cxx-d.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /w14265</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/la_avdecc_cxx.dir/Release/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_PROTOCOL_INTERFACE_PCAP;HAVE_PROTOCOL_INTERFACE_VIRTUAL;IGNORE_INVALID_CONTROL_DATA_LENGTH;IGNORE_INVALID_NON_SUCCESS_AEM_RESPONSES;ALLOW_GET_AUDIO_MAP_UNSOL;NOMINMAX;ENABLE_AVDECC_FEATURE_REDUNDANCY;ENABLE_AVDECC_FEATURE_JSON;ALLOW_RECV_BIG_AECP_PAYLOADS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;HAVE_FMT;la_networkInterfaceHelper_static_STATICS;_WIN32_WINNT=0x0600;TARGET_SYSTEM_WINDOWS;USING_NPCAP;HAVE_REMOTE;FMT_HEADER_ONLY=1;CMAKE_INTDIR="Release";la_avdecc_cxx_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_PROTOCOL_INTERFACE_PCAP;HAVE_PROTOCOL_INTERFACE_VIRTUAL;IGNORE_INVALID_CONTROL_DATA_LENGTH;IGNORE_INVALID_NON_SUCCESS_AEM_RESPONSES;ALLOW_GET_AUDIO_MAP_UNSOL;NOMINMAX;ENABLE_AVDECC_FEATURE_REDUNDANCY;ENABLE_AVDECC_FEATURE_JSON;ALLOW_RECV_BIG_AECP_PAYLOADS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;HAVE_FMT;la_networkInterfaceHelper_static_STATICS;_WIN32_WINNT=0x0600;TARGET_SYSTEM_WINDOWS;USING_NPCAP;HAVE_REMOTE;FMT_HEADER_ONLY=1;CMAKE_INTDIR=\"Release\";la_avdecc_cxx_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>	Copying la_avdecc_cxx symbols</Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E touch_nocreate D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Release/la_avdecc_cxx.lib
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo "Touching D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Release/la_avdecc_cxx.lib import library"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/Repos/OpenAvnu/build-test/Symbols/Release/
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Release/la_avdecc_cxx.pdb D:/Repos/OpenAvnu/build-test/Symbols/Release/
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\externals\nih\src\Release\la_networkInterfaceHelper_static.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Release/la_avdecc_cxx.lib</ImportLibrary>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/Release/la_avdecc_cxx.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /w14265</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_PROTOCOL_INTERFACE_PCAP;HAVE_PROTOCOL_INTERFACE_VIRTUAL;IGNORE_INVALID_CONTROL_DATA_LENGTH;IGNORE_INVALID_NON_SUCCESS_AEM_RESPONSES;ALLOW_GET_AUDIO_MAP_UNSOL;NOMINMAX;ENABLE_AVDECC_FEATURE_REDUNDANCY;ENABLE_AVDECC_FEATURE_JSON;ALLOW_RECV_BIG_AECP_PAYLOADS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;HAVE_FMT;la_networkInterfaceHelper_static_STATICS;_WIN32_WINNT=0x0600;TARGET_SYSTEM_WINDOWS;USING_NPCAP;HAVE_REMOTE;FMT_HEADER_ONLY=1;CMAKE_INTDIR="MinSizeRel";la_avdecc_cxx_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_PROTOCOL_INTERFACE_PCAP;HAVE_PROTOCOL_INTERFACE_VIRTUAL;IGNORE_INVALID_CONTROL_DATA_LENGTH;IGNORE_INVALID_NON_SUCCESS_AEM_RESPONSES;ALLOW_GET_AUDIO_MAP_UNSOL;NOMINMAX;ENABLE_AVDECC_FEATURE_REDUNDANCY;ENABLE_AVDECC_FEATURE_JSON;ALLOW_RECV_BIG_AECP_PAYLOADS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;HAVE_FMT;la_networkInterfaceHelper_static_STATICS;_WIN32_WINNT=0x0600;TARGET_SYSTEM_WINDOWS;USING_NPCAP;HAVE_REMOTE;FMT_HEADER_ONLY=1;CMAKE_INTDIR=\"MinSizeRel\";la_avdecc_cxx_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>	Copying la_avdecc_cxx symbols</Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E touch_nocreate D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/MinSizeRel/la_avdecc_cxx.lib
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo "Touching D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/MinSizeRel/la_avdecc_cxx.lib import library"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/Repos/OpenAvnu/build-test/Symbols/MinSizeRel/
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/MinSizeRel/la_avdecc_cxx.pdb D:/Repos/OpenAvnu/build-test/Symbols/MinSizeRel/
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\externals\nih\src\MinSizeRel\la_networkInterfaceHelper_static.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/MinSizeRel/la_avdecc_cxx.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/MinSizeRel/la_avdecc_cxx.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /w14265</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_PROTOCOL_INTERFACE_PCAP;HAVE_PROTOCOL_INTERFACE_VIRTUAL;IGNORE_INVALID_CONTROL_DATA_LENGTH;IGNORE_INVALID_NON_SUCCESS_AEM_RESPONSES;ALLOW_GET_AUDIO_MAP_UNSOL;NOMINMAX;ENABLE_AVDECC_FEATURE_REDUNDANCY;ENABLE_AVDECC_FEATURE_JSON;ALLOW_RECV_BIG_AECP_PAYLOADS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;HAVE_FMT;la_networkInterfaceHelper_static_STATICS;_WIN32_WINNT=0x0600;TARGET_SYSTEM_WINDOWS;USING_NPCAP;HAVE_REMOTE;FMT_HEADER_ONLY=1;CMAKE_INTDIR="RelWithDebInfo";la_avdecc_cxx_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_PROTOCOL_INTERFACE_PCAP;HAVE_PROTOCOL_INTERFACE_VIRTUAL;IGNORE_INVALID_CONTROL_DATA_LENGTH;IGNORE_INVALID_NON_SUCCESS_AEM_RESPONSES;ALLOW_GET_AUDIO_MAP_UNSOL;NOMINMAX;ENABLE_AVDECC_FEATURE_REDUNDANCY;ENABLE_AVDECC_FEATURE_JSON;ALLOW_RECV_BIG_AECP_PAYLOADS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;HAVE_FMT;la_networkInterfaceHelper_static_STATICS;_WIN32_WINNT=0x0600;TARGET_SYSTEM_WINDOWS;USING_NPCAP;HAVE_REMOTE;FMT_HEADER_ONLY=1;CMAKE_INTDIR=\"RelWithDebInfo\";la_avdecc_cxx_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\winpcap\Include;D:\Repos\OpenAvnu\lib\la_avdecc\include;D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\src;D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\fmtlib\include;D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>	Copying la_avdecc_cxx symbols</Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E touch_nocreate D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/RelWithDebInfo/la_avdecc_cxx.lib
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo "Touching D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/RelWithDebInfo/la_avdecc_cxx.lib import library"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/Repos/OpenAvnu/build-test/Symbols/RelWithDebInfo/
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/RelWithDebInfo/la_avdecc_cxx.pdb D:/Repos/OpenAvnu/build-test/Symbols/RelWithDebInfo/
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\externals\nih\src\RelWithDebInfo\la_networkInterfaceHelper_static.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/RelWithDebInfo/la_avdecc_cxx.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/RelWithDebInfo/la_avdecc_cxx.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Repos/OpenAvnu/lib/la_avdecc/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build-test --check-stamp-file D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Repos\OpenAvnu\lib\la_avdecc\resources\win32\resources.rc.in;D:\Repos\OpenAvnu\lib\la_avdecc\src\config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Repos/OpenAvnu/lib/la_avdecc/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build-test --check-stamp-file D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Repos\OpenAvnu\lib\la_avdecc\resources\win32\resources.rc.in;D:\Repos\OpenAvnu\lib\la_avdecc\src\config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Repos/OpenAvnu/lib/la_avdecc/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build-test --check-stamp-file D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Repos\OpenAvnu\lib\la_avdecc\resources\win32\resources.rc.in;D:\Repos\OpenAvnu\lib\la_avdecc\src\config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Repos/OpenAvnu/lib/la_avdecc/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build-test --check-stamp-file D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Repos\OpenAvnu\lib\la_avdecc\resources\win32\resources.rc.in;D:\Repos\OpenAvnu\lib\la_avdecc\src\config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\la_avdecc_cxx.dir\cmake_pch.cxx">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/la_avdecc_cxx.dir/Debug/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/la_avdecc_cxx.dir/Release/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\config.h" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\endStationImpl.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\logHelper.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\utils.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAemControlValuesPayloads.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAemPayloads.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolMvuPayloads.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\ethernetPacketDispatch.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface_pcap.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\pcapInterface.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface_virtual.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\advertiseStateMachine.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\commandStateMachine.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\discoveryStateMachine.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\protocolInterfaceDelegate.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\stateMachineManager.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\entityImpl.hpp" />
+    <None Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\localEntityImpl.ipp">
+    </None>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\aemHandler.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\aggregateEntityImpl.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\controllerCapabilityDelegate.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\controllerEntityImpl.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\avdecc.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\executor.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\logger.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\memoryBuffer.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\utils.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\watchDog.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\aggregateEntity.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\controllerEntity.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\endian.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\endStation.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entity.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityAddressAccessTypes.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityEnums.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModel.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelControlValues.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelControlValuesTraits.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTree.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTreeCommon.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTreeDynamic.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTreeStatic.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTypes.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\exception.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\exports.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\instrumentationNotifier.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\jsonSerialization.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\logItems.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAaAecpdu.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAcmpdu.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAdpdu.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAecpdu.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAemAecpdu.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAemPayloadSizes.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAvtpdu.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolDefines.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolMvuAecpdu.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolMvuPayloadSizes.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolVuAecpdu.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolInterface.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\serialization.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\streamFormatInfo.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\uniqueIdentifier.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\jsonTypes.hpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\avdecc.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\endStationImpl.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\executor.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\logger.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\streamFormatInfo.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\utils.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\watchDog.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAcmpdu.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAdpdu.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAecpdu.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAemAecpdu.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAemPayloads.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAaAecpdu.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAvtpdu.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolDefines.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolVuAecpdu.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolMvuAecpdu.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolMvuPayloads.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface_pcap.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\pcapDynamicLinking.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface_virtual.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\advertiseStateMachine.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\commandStateMachine.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\discoveryStateMachine.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\stateMachineManager.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\entityModelTypes.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\localEntityImpl.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\aemHandler.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\aggregateEntityImpl.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\controllerCapabilityDelegate.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\controllerEntityImpl.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\entityModelControlValues.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\entityModelJsonSerializer.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/Repos/OpenAvnu/build-test/lib/la_avdecc/src/CMakeFiles/la_avdecc_cxx.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\resources.rc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
+    </ResourceCompile>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\pch.hpp" />
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\la_avdecc_cxx.dir\Debug\cmake_pch.hxx" />
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\la_avdecc_cxx.dir\Release\cmake_pch.hxx" />
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\la_avdecc_cxx.dir\MinSizeRel\cmake_pch.hxx" />
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\CMakeFiles\la_avdecc_cxx.dir\RelWithDebInfo\cmake_pch.hxx" />
+    <Natvis Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\nlohmann_json.natvis">
+    </Natvis>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build-test\ZERO_CHECK.vcxproj">
+      <Project>{5F5D1DEA-971C-341A-A2D5-E855B6457E5A}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\externals\nih\src\la_networkInterfaceHelper_static.vcxproj">
+      <Project>{8BDDE3C8-B770-3C82-BD92-39CBB594FC82}</Project>
+      <Name>la_networkInterfaceHelper_static</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

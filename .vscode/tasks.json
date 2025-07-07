@@ -1182,12 +1182,30 @@
 			}
 		},
 		{
-			"label": "Install WinPCAP Developer Pack (Windows)",
+			"label": "Install Npcap SDK (Windows - Recommended)",
 			"type": "shell",
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"Write-Host '📦 WinPCAP Developer Pack Installation Required' -ForegroundColor Yellow; Write-Host ''; Write-Host '1. Download WinPCAP Developer Pack 4.1.2:' -ForegroundColor White; Write-Host '   https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip' -ForegroundColor Cyan; Write-Host ''; Write-Host '2. Extract and copy Include/ and Lib/ folders to:' -ForegroundColor White; Write-Host '   lib\\la_avdecc\\externals\\3rdparty\\winpcap\\' -ForegroundColor Cyan; Write-Host ''; Write-Host '3. Re-run CMake configuration with L-Acoustics AVDECC enabled' -ForegroundColor White; Write-Host ''; Write-Host 'Alternative: Use Npcap SDK (already detected)' -ForegroundColor Green"
+				"Write-Host '📦 Modern Npcap SDK Installation (Recommended for Windows 10/11)' -ForegroundColor Green; Write-Host ''; Write-Host '1. Download Npcap SDK 1.13:' -ForegroundColor White; Write-Host '   https://npcap.com/dist/npcap-sdk-1.13.zip' -ForegroundColor Cyan; Write-Host ''; Write-Host '2. Extract to a folder (e.g., C:\\\\npcap-sdk)' -ForegroundColor White; Write-Host ''; Write-Host '3. Set environment variable:' -ForegroundColor White; Write-Host '   $env:NPCAP_DIR=\\\"C:\\\\npcap-sdk\\\"' -ForegroundColor Cyan; Write-Host '   OR $env:NPCAP_SDK_DIR=\\\"C:\\\\npcap-sdk\\\"' -ForegroundColor Cyan; Write-Host ''; Write-Host '4. Restart VS Code and run CMake configuration' -ForegroundColor White; Write-Host ''; Write-Host 'Benefits: Modern, actively maintained, Windows 10/11 optimized' -ForegroundColor Green; Write-Host 'OpenAvnu will automatically detect and configure PCAP for all components' -ForegroundColor Green"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Install WinPCAP Developer Pack (Windows - Legacy Fallback)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Write-Host '⚠️  Legacy WinPCAP Developer Pack Installation (Fallback Only)' -ForegroundColor Yellow; Write-Host ''; Write-Host 'NOTE: WinPcap is deprecated. Use Npcap instead for modern Windows.' -ForegroundColor Red; Write-Host ''; Write-Host '1. Download WinPCAP Developer Pack 4.1.2:' -ForegroundColor White; Write-Host '   https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip' -ForegroundColor Cyan; Write-Host ''; Write-Host '2. Extract to a folder (e.g., C:\\\\WpdPack)' -ForegroundColor White; Write-Host ''; Write-Host '3. Set environment variable:' -ForegroundColor White; Write-Host '   $env:WPCAP_DIR=\\\"C:\\\\WpdPack\\\"' -ForegroundColor Cyan; Write-Host ''; Write-Host '4. Restart VS Code and run CMake configuration' -ForegroundColor White; Write-Host ''; Write-Host 'OpenAvnu will automatically create compatibility layer' -ForegroundColor Yellow"
 			],
 			"group": "build",
 			"problemMatcher": [],

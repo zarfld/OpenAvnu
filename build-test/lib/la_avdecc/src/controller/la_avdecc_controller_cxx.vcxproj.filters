@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\controller\CMakeFiles\la_avdecc_controller_cxx.dir\cmake_pch.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerImplDelegateOverrides.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerImplHandlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerImplOverrides.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerProxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControlledEntityImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\entityModelChecksum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\virtualEntityModelVisitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControlledEntityJsonSerializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\controller\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerImpl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControlledEntityImpl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerLogHelper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerProxy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccEntityModelCache.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\entityModelChecksum.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\treeModelAccessStrategy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\treeModelAccessTraverseStrategy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\treeModelAccessCacheStrategy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\virtualEntityModelVisitor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControlledEntityJsonSerializer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\avdeccControllerJsonTypes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\controller\avdeccController.hpp">
+      <Filter>Header Files\Public\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\controller\internals\avdeccControlledEntity.hpp">
+      <Filter>Header Files\Public\controller\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\controller\internals\avdeccControlledEntityModel.hpp">
+      <Filter>Header Files\Public\controller\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\controller\internals\virtualEntityBuilder.hpp">
+      <Filter>Header Files\Public\controller\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\controller\internals\exports.hpp">
+      <Filter>Header Files\Public\controller\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\controller\internals\logItems.hpp">
+      <Filter>Header Files\Public\controller\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\pch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\controller\CMakeFiles\la_avdecc_controller_cxx.dir\Debug\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\controller\CMakeFiles\la_avdecc_controller_cxx.dir\Release\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\controller\CMakeFiles\la_avdecc_controller_cxx.dir\MinSizeRel\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\controller\CMakeFiles\la_avdecc_controller_cxx.dir\RelWithDebInfo\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\controller\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\nlohmann_json.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\src\controller\resources.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{373F89B3-ADDA-3FE4-8D14-460676C03A9A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Public">
+      <UniqueIdentifier>{84A15CB5-AA40-35C5-9F58-6C47DC1F7F65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Public\controller">
+      <UniqueIdentifier>{B47D9D41-8174-301F-B79F-21C2F79DA8E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Public\controller\internals">
+      <UniqueIdentifier>{F04B9208-4273-3BE1-A5D6-B2FB56F4AA6E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Precompile Header File">
+      <UniqueIdentifier>{4F0EA536-B667-31FB-8A4B-D19CF3719284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{443D7461-6F26-3BA9-AF42-C6034EACC9E7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

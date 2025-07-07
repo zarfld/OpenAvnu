@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 3.10)
 project (open-avb)
 
+# Add OpenAvnu CMake modules to path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 # Set policy to handle older CMake versions in submodules
 if(POLICY CMP0022)
     cmake_policy(SET CMP0022 NEW)
@@ -34,6 +37,40 @@ else()
     endif()
 endif()
 
+# ==========================================
+# Centralized PCAP Detection for OpenAvnu
+# ==========================================
+# This provides unified PCAP detection that can be used by OpenAvnu components
+# without requiring modifications to external submodules (L-Acoustics AVDECC, etc.)
+
+message(STATUS "🔍 Detecting PCAP libraries for OpenAvnu components...")
+include(FindPCAP)
+
+# Export PCAP variables for subprojects that need them
+set(OPENAVNU_PCAP_AVAILABLE ${PCAP_FOUND})
+if(PCAP_FOUND)
+    message(STATUS "✅ PCAP detection complete - Available for OpenAvnu components")
+    
+    # Set global variables for subprojects
+    set(OPENAVNU_PCAP_FOUND ${PCAP_FOUND})
+    set(OPENAVNU_PCAP_TYPE ${PCAP_TYPE})
+    set(OPENAVNU_PCAP_INCLUDE_DIRS ${PCAP_INCLUDE_DIRS})
+    set(OPENAVNU_PCAP_LIBRARIES ${PCAP_LIBRARIES})
+    if(WIN32)
+        set(OPENAVNU_PCAP_LIBRARY_DIRS ${PCAP_LIBRARY_DIRS})
+    endif()
+    
+    # Set environment variables for submodules that expect them
+    if(WIN32 AND PCAP_TYPE STREQUAL "Npcap")
+        set(ENV{NPCAP_DIR} "${PCAP_INCLUDE_DIRS}/..")
+    elseif(WIN32 AND PCAP_TYPE STREQUAL "WinPcap")
+        set(ENV{WPCAP_DIR} "${PCAP_INCLUDE_DIRS}/..")
+    endif()
+else()
+    message(WARNING "⚠️  PCAP not available - Some components may not build")
+    set(OPENAVNU_PCAP_FOUND FALSE)
+endif()
+
 # Third-party libraries
 add_subdirectory("thirdparty/cpputest")
 
@@ -51,24 +88,8 @@ option(OPENAVNU_BUILD_LA_AVDECC "Build with L-Acoustics AVDECC library for IEEE 
 if(OPENAVNU_BUILD_LA_AVDECC)
     message(STATUS "Building with L-Acoustics AVDECC library for modern AVDECC support")
     
-    # Set C++17 requirement for L-Acoustics AVDECC
-    if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.8")
-        set(CMAKE_CXX_STANDARD 17)
-        set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    endif()
-    
-    # Configure L-Acoustics AVDECC build options
-    set(AVDECC_BUILD_CONTROLLER ON CACHE BOOL "Build AVDECC Controller")
-    set(AVDECC_BUILD_VIRTUAL ON CACHE BOOL "Build AVDECC Virtual Entity")
-    set(AVDECC_BUILD_EXAMPLES OFF CACHE BOOL "Disable AVDECC examples")
-    set(AVDECC_BUILD_TESTS OFF CACHE BOOL "Disable AVDECC tests for now")
-    set(AVDECC_BUILD_DOCUMENTATION OFF CACHE BOOL "Disable AVDECC documentation")
-    
-    # Add L-Acoustics AVDECC subdirectory
-    add_subdirectory("lib/la_avdecc")
-    
-    # Define flag for conditional compilation
-    add_definitions(-DOPENAVNU_HAS_LA_AVDECC)
+    # Use wrapper to configure L-Acoustics AVDECC with modern PCAP support
+    include(ConfigureLAAVDECC)
 endif()
 
 # Optional Open1722 AVTP library for modernized AVTP implementation
@@ -114,6 +135,18 @@ if(OPENAVNU_USE_OPEN1722)
     endif()
     
     add_definitions(-DOPENAVNU_USE_OPEN1722)
+endif()
+
+# ==========================================
+# OpenAvnu Examples with Modern PCAP Support
+# ==========================================
+option(OPENAVNU_BUILD_EXAMPLES "Build OpenAvnu examples with modern PCAP support" ON)
+
+if(OPENAVNU_BUILD_EXAMPLES)
+    message(STATUS "Building OpenAvnu examples")
+    add_subdirectory("examples")
+else()
+    message(STATUS "Skipping OpenAvnu examples")
 endif()
 
 # OpenAvnu components

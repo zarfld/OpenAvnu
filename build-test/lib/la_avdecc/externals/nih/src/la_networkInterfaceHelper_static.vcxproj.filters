@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\src\libraryInfo.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\src\networkInterfaceHelper_common.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\src\ipAddress.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\src\ipAddressInfo.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\src\networkInterfaceHelper_win32.cpp">
+      <Filter>Source Files\OsDependent</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\src\helper_win32.cpp">
+      <Filter>Source Files\OsDependent</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\src\networkInterfaceHelper_common.hpp">
+      <Filter>Header Files\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build-test\lib\la_avdecc\externals\nih\src\config.hpp">
+      <Filter>Header Files\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include\la\networkInterfaceHelper\networkInterfaceHelper.hpp">
+      <Filter>Header Files\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\include\la\networkInterfaceHelper\windowsHelper.hpp">
+      <Filter>Header Files\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\nih\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{373F89B3-ADDA-3FE4-8D14-460676C03A9A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Internal">
+      <UniqueIdentifier>{AF6DC27E-67FE-3F31-92A5-C86CFD6CA1A3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Public">
+      <UniqueIdentifier>{84A15CB5-AA40-35C5-9F58-6C47DC1F7F65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{443D7461-6F26-3BA9-AF42-C6034EACC9E7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{97914A04-4A07-3E67-8621-358E2DE4B72E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OsDependent">
+      <UniqueIdentifier>{E66F1631-1149-3DCD-8E38-A3CD734AD253}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
