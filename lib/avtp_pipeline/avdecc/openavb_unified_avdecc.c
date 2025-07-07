@@ -167,9 +167,9 @@ openavb_avdecc_impl_type_t openavb_unified_avdecc_auto_select_implementation(
     }
     
     AVB_LOG_INFO("Auto-selecting AVDECC implementation based on requirements:");
-    AVB_LOG_INFO("  MILAN required: %s", config->milan_mode_required ? "Yes" : "No");
-    AVB_LOG_INFO("  Fast Connect required: %s", config->fast_connect_required ? "Yes" : "No");
-    AVB_LOG_INFO("  Network Redundancy required: %s", config->network_redundancy_required ? "Yes" : "No");
+    AVB_LOGF_INFO("  MILAN required: %s", config->milan_mode_required ? "Yes" : "No");
+    AVB_LOGF_INFO("  Fast Connect required: %s", config->fast_connect_required ? "Yes" : "No");
+    AVB_LOGF_INFO("  Network Redundancy required: %s", config->network_redundancy_required ? "Yes" : "No");
     
     // If MILAN features are required, prefer L-Acoustics AVDECC
     if (config->milan_mode_required || config->fast_connect_required || config->network_redundancy_required) {
@@ -233,10 +233,10 @@ openavb_unified_avdecc_controller_t* openavb_unified_avdecc_controller_create(
     }
     
     AVB_LOG_INFO("Creating unified AVDECC controller:");
-    AVB_LOG_INFO("  Implementation: %s", 
+    AVB_LOGF_INFO("  Implementation: %s",
                  openavb_unified_avdecc_impl_type_to_string(controller->implementation_type));
-    AVB_LOG_INFO("  Entity Name: %s", config->entity_name);
-    AVB_LOG_INFO("  MILAN Mode: %s", config->milan_mode_required ? "Required" : "Optional");
+    AVB_LOGF_INFO("  Entity Name: %s", config->entity_name);
+    AVB_LOGF_INFO("  MILAN Mode: %s", config->milan_mode_required ? "Required" : "Optional");
     
     // Initialize implementation-specific controller
     switch (controller->implementation_type) {
@@ -259,7 +259,7 @@ openavb_unified_avdecc_controller_t* openavb_unified_avdecc_controller_create(
                     return NULL;
                 }
             } catch (const std::exception& e) {
-                AVB_LOG_ERROR("Exception creating L-Acoustics controller: %s", e.what());
+                AVB_LOGF_ERROR("Exception creating L-Acoustics controller: %s", e.what());
                 free(controller);
                 return NULL;
             }
@@ -305,12 +305,12 @@ openavb_unified_avdecc_controller_t* openavb_unified_avdecc_controller_create(
             }
             
             controller->is_initialized = true;
-            AVB_LOG_INFO("✅ Simulation AVDECC controller created with %d simulated entities", 
+            AVB_LOGF_INFO("✅ Simulation AVDECC controller created with %d simulated entities",
                         controller->impl_data.simulation.simulated_entity_count);
             break;
             
         default:
-            AVB_LOG_ERROR("Unsupported AVDECC implementation type: %d", controller->implementation_type);
+            AVB_LOGF_ERROR("Unsupported AVDECC implementation type: %d", controller->implementation_type);
             free(controller);
             return NULL;
     }
@@ -323,7 +323,7 @@ void openavb_unified_avdecc_controller_destroy(openavb_unified_avdecc_controller
         return;
     }
     
-    AVB_LOG_INFO("Destroying unified AVDECC controller (%s)", 
+    AVB_LOGF_INFO("Destroying unified AVDECC controller (%s)",
                  openavb_unified_avdecc_impl_type_to_string(controller->implementation_type));
     
     // Stop discovery if active
@@ -341,7 +341,7 @@ void openavb_unified_avdecc_controller_destroy(openavb_unified_avdecc_controller
                 // Explicitly call destructor
                 controller->impl_data.la_avdecc.~decltype(controller->impl_data.la_avdecc)();
             } catch (const std::exception& e) {
-                AVB_LOG_ERROR("Exception during L-Acoustics controller cleanup: %s", e.what());
+                AVB_LOGF_ERROR("Exception during L-Acoustics controller cleanup: %s", e.what());
             }
 #endif
             break;
@@ -415,7 +415,7 @@ bool openavb_unified_avdecc_start_discovery(
         return true;
     }
     
-    AVB_LOG_INFO("Starting entity discovery (%s implementation)", 
+    AVB_LOGF_INFO("Starting entity discovery (%s implementation)",
                  openavb_unified_avdecc_impl_type_to_string(controller->implementation_type));
     
     controller->discovery_callback = callback;
@@ -446,7 +446,7 @@ bool openavb_unified_avdecc_start_discovery(
                     callback(controller, entity, true, user_data);
                 }
             }
-            AVB_LOG_INFO("Simulation entity discovery completed - reported %d entities", 
+            AVB_LOGF_INFO("Simulation entity discovery completed - reported %d entities",
                         controller->impl_data.simulation.simulated_entity_count);
             break;
             
@@ -593,14 +593,14 @@ bool openavb_unified_avdecc_validate_config(const openavb_unified_avdecc_config_
     // Check implementation availability
     if (config->preferred_implementation != OPENAVB_AVDECC_IMPL_AUTO && 
         !openavb_unified_avdecc_is_implementation_available(config->preferred_implementation)) {
-        AVB_LOG_ERROR("Preferred implementation not available: %s", 
+        AVB_LOGF_ERROR("Preferred implementation not available: %s",
                      openavb_unified_avdecc_impl_type_to_string(config->preferred_implementation));
         return false;
     }
     
     // Validate discovery timeout
     if (config->discovery_timeout_ms < 1000 || config->discovery_timeout_ms > 60000) {
-        AVB_LOG_ERROR("Invalid discovery timeout: %u ms (must be 1000-60000)", 
+        AVB_LOGF_ERROR("Invalid discovery timeout: %u ms (must be 1000-60000)",
                      config->discovery_timeout_ms);
         return false;
     }
