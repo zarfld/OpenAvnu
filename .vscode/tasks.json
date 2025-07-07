@@ -1,7 +1,7 @@
 {
 	"version": "2.0.0",
 	// gPTP Integration Tasks:
-	// - Apply gPTP Windows Build Fix: Fixes config file path issues in gPTP CMakeLists.txt
+	// - Apply gPTP Windows Build Fix: [LEGACY] Fixes config file path issues in gPTP CMakeLists.txt (now fixed in submodule)
 	// - Run gPTP Daemon (Windows/Linux): Starts gPTP daemon in background
 	// - Verify gPTP Integration: Runs verification script to check integration
 	// - Build gPTP Only: Builds just the gPTP target
@@ -734,12 +734,12 @@
 			}
 		},
 		{
-			"label": "Apply gPTP Windows Build Fix",
+			"label": "Apply gPTP Windows Build Fix [LEGACY]",
 			"type": "shell",
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"(Get-Content 'thirdparty/gptp/CMakeLists.txt') -replace '\\$\\{CMAKE_SOURCE_DIR\\}', '${CMAKE_CURRENT_SOURCE_DIR}' | Set-Content 'thirdparty/gptp/CMakeLists.txt'"
+				"Write-Host '✅ gPTP Windows build fix is no longer needed!' -ForegroundColor Green; Write-Host 'The fix has been applied to the gPTP submodule and committed.' -ForegroundColor Yellow; Write-Host 'This task is kept for reference only.' -ForegroundColor Gray"
 			],
 			"group": "build",
 			"problemMatcher": [],
