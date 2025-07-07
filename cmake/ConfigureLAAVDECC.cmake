@@ -33,6 +33,12 @@ else()
                     get_filename_component(HEADER_NAME ${HEADER} NAME)
                     file(COPY ${HEADER} DESTINATION "${LA_AVDECC_WINPCAP_DIR}/Include")
                 endforeach()
+                
+                # Copy pcap subdirectory with real headers (some headers expect pcap/pcap.h)
+                if(EXISTS "${OPENAVNU_PCAP_INCLUDE_DIRS}/pcap")
+                    file(COPY "${OPENAVNU_PCAP_INCLUDE_DIRS}/pcap" DESTINATION "${LA_AVDECC_WINPCAP_DIR}/Include")
+                endif()
+                
                 message(STATUS "✅ Copied PCAP headers to L-Acoustics AVDECC compatibility layer")
             endif()
             
