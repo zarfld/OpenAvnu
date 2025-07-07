@@ -46,8 +46,8 @@ install(TARGETS openavb_profile_framework
 )
 
 # Add to main OpenAvnu build
-if(NOT TARGET openavb_avtp_pipeline)
+if(TARGET openavb_avtp_pipeline)
+    target_link_libraries(openavb_avtp_pipeline openavb_profile_framework)
+else()
     message(WARNING "Profile framework requires openavb_avtp_pipeline target")
 endif()
-
-target_link_libraries(openavb_avtp_pipeline openavb_profile_framework)
