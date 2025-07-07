@@ -45,6 +45,32 @@ if(OPENAVNU_BUILD_GPTP)
     add_subdirectory("thirdparty/gptp")
 endif()
 
+# Optional L-Acoustics AVDECC library for modern AVDECC support
+option(OPENAVNU_BUILD_LA_AVDECC "Build with L-Acoustics AVDECC library for IEEE 1722.1-2021 compliance" ON)
+
+if(OPENAVNU_BUILD_LA_AVDECC)
+    message(STATUS "Building with L-Acoustics AVDECC library for modern AVDECC support")
+    
+    # Set C++17 requirement for L-Acoustics AVDECC
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.8")
+        set(CMAKE_CXX_STANDARD 17)
+        set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    endif()
+    
+    # Configure L-Acoustics AVDECC build options
+    set(AVDECC_BUILD_CONTROLLER ON CACHE BOOL "Build AVDECC Controller")
+    set(AVDECC_BUILD_VIRTUAL ON CACHE BOOL "Build AVDECC Virtual Entity")
+    set(AVDECC_BUILD_EXAMPLES OFF CACHE BOOL "Disable AVDECC examples")
+    set(AVDECC_BUILD_TESTS OFF CACHE BOOL "Disable AVDECC tests for now")
+    set(AVDECC_BUILD_DOCUMENTATION OFF CACHE BOOL "Disable AVDECC documentation")
+    
+    # Add L-Acoustics AVDECC subdirectory
+    add_subdirectory("lib/la_avdecc")
+    
+    # Define flag for conditional compilation
+    add_definitions(-DOPENAVNU_HAS_LA_AVDECC)
+endif()
+
 # Optional Open1722 AVTP library for modernized AVTP implementation
 option(OPENAVNU_USE_OPEN1722 "Use Open1722 for AVTP implementation" ON)
 

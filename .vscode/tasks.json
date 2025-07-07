@@ -1,11 +1,20 @@
 {
 	"version": "2.0.0",
+	// OpenAvnu Integration Tasks:
+	// 
 	// gPTP Integration Tasks:
 	// - Apply gPTP Windows Build Fix: [LEGACY] Fixes config file path issues in gPTP CMakeLists.txt (now fixed in submodule)
 	// - Run gPTP Daemon (Windows/Linux): Starts gPTP daemon in background
 	// - Verify gPTP Integration: Runs verification script to check integration
 	// - Build gPTP Only: Builds just the gPTP target
 	// - CMake Configure with gPTP: Configures build with gPTP explicitly enabled
+	//
+	// L-Acoustics AVDECC Integration Tasks:
+	// - CMake Configure with L-Acoustics AVDECC: Configures build with both gPTP and L-Acoustics AVDECC
+	// - Build L-Acoustics AVDECC Only: Builds just the L-Acoustics AVDECC target
+	// - Run L-Acoustics AVDECC Integration Example: Executes the integration example application
+	// - Open L-Acoustics AVDECC Documentation: Opens relevant documentation files
+	// - Install WinPCAP Developer Pack: Shows installation instructions for Windows dependencies
 	"tasks": [
 		{
 			"label": "Build All (Windows - CMake)",
@@ -948,6 +957,245 @@
 				"echo": true,
 				"reveal": "never",
 				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Test Modernized Windows Code",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"maap_daemon"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "CMake Configure with L-Acoustics AVDECC (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"..",
+				"-G",
+				"Visual Studio 17 2022",
+				"-DOPENAVNU_BUILD_LA_AVDECC=ON",
+				"-DOPENAVNU_BUILD_GPTP=ON"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"dependsOn": "Create Build Directory",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "CMake Configure with L-Acoustics AVDECC (Linux/WSL)",
+			"type": "shell",
+			"command": "wsl",
+			"args": [
+				"cmake",
+				"..",
+				"-G",
+				"Unix Makefiles",
+				"-DOPENAVNU_BUILD_LA_AVDECC=ON",
+				"-DOPENAVNU_BUILD_GPTP=ON"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"isBackground": false,
+			"dependsOn": "Create Build Directory",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build L-Acoustics AVDECC Only (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release",
+				"--target",
+				"la_avdecc_cxx"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure with L-Acoustics AVDECC (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build L-Acoustics AVDECC Only (Linux/WSL)",
+			"type": "shell",
+			"command": "wsl",
+			"args": [
+				"cmake",
+				"--build",
+				".",
+				"--target",
+				"la_avdecc_cxx"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure with L-Acoustics AVDECC (Linux/WSL)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run L-Acoustics AVDECC Integration Example (Windows)",
+			"type": "shell",
+			"command": ".\\build\\examples\\Release\\la_avdecc_integration_example.exe",
+			"args": [],
+			"group": "test",
+			"problemMatcher": [],
+			"isBackground": false,
+			"dependsOn": "Build All (Windows - CMake)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run L-Acoustics AVDECC Integration Example (Linux/WSL)",
+			"type": "shell",
+			"command": "wsl",
+			"args": [
+				"./build/examples/la_avdecc_integration_example"
+			],
+			"group": "test",
+			"problemMatcher": [],
+			"isBackground": false,
+			"dependsOn": "Build All (Linux/WSL)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open L-Acoustics AVDECC Integration Status",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"LA_AVDECC_INTEGRATION_STATUS.md"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "never",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open L-Acoustics AVDECC Integration Plan",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"LA_AVDECC_SUBMODULE_INTEGRATION_PLAN.md"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "never",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open AVDECC Compatibility Assessment",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"AVDECC_COMPATIBILITY_ASSESSMENT.md"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "never",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Install WinPCAP Developer Pack (Windows)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Write-Host '📦 WinPCAP Developer Pack Installation Required' -ForegroundColor Yellow; Write-Host ''; Write-Host '1. Download WinPCAP Developer Pack 4.1.2:' -ForegroundColor White; Write-Host '   https://www.winpcap.org/install/bin/WpdPack_4_1_2.zip' -ForegroundColor Cyan; Write-Host ''; Write-Host '2. Extract and copy Include/ and Lib/ folders to:' -ForegroundColor White; Write-Host '   lib\\la_avdecc\\externals\\3rdparty\\winpcap\\' -ForegroundColor Cyan; Write-Host ''; Write-Host '3. Re-run CMake configuration with L-Acoustics AVDECC enabled' -ForegroundColor White; Write-Host ''; Write-Host 'Alternative: Use Npcap SDK (already detected)' -ForegroundColor Green"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
 				"panel": "shared"
 			}
 		},
