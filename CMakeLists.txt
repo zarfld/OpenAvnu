@@ -34,11 +34,64 @@ else()
     endif()
 endif()
 
+# Third-party libraries
 add_subdirectory("thirdparty/cpputest")
+
+# Optional Open1722 AVTP library for modernized AVTP implementation
+option(OPENAVNU_USE_OPEN1722 "Use Open1722 for AVTP implementation" ON)
+
+if(OPENAVNU_USE_OPEN1722)
+    message(STATUS "Building with Open1722 AVTP library support")
+    
+    # Set Open1722 include directory
+    set(OPEN1722_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/open1722/include")
+    
+    # Create Open1722 library manually for Windows compatibility
+    if(WIN32)
+        # For Windows, create the Open1722 target manually
+        file(GLOB_RECURSE OPEN1722_SOURCES 
+            "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/open1722/src/*.c"
+        )
+        
+        add_library(open1722 STATIC ${OPEN1722_SOURCES})
+        target_include_directories(open1722 PUBLIC ${OPEN1722_INCLUDE_DIRS})
+        
+        # MSVC compatibility definitions
+        if(MSVC)
+            # Use forced include to inject our compatibility header
+            target_compile_options(open1722 PRIVATE
+                /FI"${CMAKE_CURRENT_SOURCE_DIR}/lib/avtp_pipeline/avtp_open1722/open1722_msvc_compat.h"
+                /wd4200  # nonstandard extension used: zero-sized array in struct/union
+                /wd4244  # conversion warnings
+                /wd4996  # deprecated function warnings
+                /Zp1     # force structure packing to 1 byte for compatibility
+            )
+            target_compile_definitions(open1722 PRIVATE _CRT_SECURE_NO_WARNINGS)
+        else()
+            target_compile_definitions(open1722 PRIVATE _CRT_SECURE_NO_WARNINGS)
+        endif()
+        
+        set(OPEN1722_LIBRARIES open1722)
+        message(STATUS "Created Open1722 static library for Windows with MSVC compatibility")
+    else()
+        # For Linux/other platforms, use the standard Open1722 build
+        add_subdirectory("thirdparty/open1722")
+        set(OPEN1722_LIBRARIES open1722)
+    endif()
+    
+    add_definitions(-DOPENAVNU_USE_OPEN1722)
+endif()
+
+# OpenAvnu components
 add_subdirectory("daemons/common/tests")
 add_subdirectory("daemons/mrpd")
 add_subdirectory("daemons/maap")
 add_subdirectory("lib/avtp_pipeline/tests")
+
+# Add Open1722 wrapper if enabled
+if(OPENAVNU_USE_OPEN1722)
+    add_subdirectory("lib/avtp_pipeline/avtp_open1722")
+endif()
 
 message("
 -------------------------------------------------------
