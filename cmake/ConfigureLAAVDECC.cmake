@@ -74,7 +74,12 @@ without requiring modifications to the external submodule.
         
         # Enable PCAP interface with compatibility layer
         set(BUILD_AVDECC_INTERFACE_PCAP ON CACHE BOOL "Enable PCAP interface with compatibility layer" FORCE)
+        
+        # Set the WinPcap base directory that L-Acoustics AVDECC expects
+        set(LA_WINPCAP_BASE_DIR "${LA_AVDECC_WINPCAP_DIR}" CACHE PATH "WinPcap base directory for L-Acoustics AVDECC" FORCE)
+        
         message(STATUS "✅ L-Acoustics AVDECC PCAP compatibility layer ready")
+        message(STATUS "   WinPcap compatibility path: ${LA_WINPCAP_BASE_DIR}")
     else()
         # Linux: PCAP should work directly
         set(BUILD_AVDECC_INTERFACE_PCAP ON CACHE BOOL "Enable PCAP interface" FORCE)
