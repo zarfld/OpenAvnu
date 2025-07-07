@@ -289,7 +289,8 @@ void maapLogFn(
 				if (elem) {
 					log_queue_item_t *pLogItem = (log_queue_item_t *)maapLogQueueData(elem);
 					pLogItem->bRT = FALSE;
-					strncpy((char *)pLogItem->msg, full_msg, LOG_QUEUE_MSG_LEN);
+                                       strncpy((char *)pLogItem->msg, full_msg, LOG_QUEUE_MSG_LEN - 1);
+                                       pLogItem->msg[LOG_QUEUE_MSG_LEN - 1] = '\0';
 					maapLogQueueHeadPush(logQueue);
 				}
 			}
