@@ -1,5 +1,11 @@
 {
 	"version": "2.0.0",
+	// gPTP Integration Tasks:
+	// - Apply gPTP Windows Build Fix: Fixes config file path issues in gPTP CMakeLists.txt
+	// - Run gPTP Daemon (Windows/Linux): Starts gPTP daemon in background
+	// - Verify gPTP Integration: Runs verification script to check integration
+	// - Build gPTP Only: Builds just the gPTP target
+	// - CMake Configure with gPTP: Configures build with gPTP explicitly enabled
 	"tasks": [
 		{
 			"label": "Build All (Windows - CMake)",
@@ -698,6 +704,252 @@
 			],
 			"isBackground": false,
 			"dependsOn": "CMake Configure (Windows)"
+		},
+		{
+			"label": "Test Modernized Windows Code",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"maap_daemon"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Apply gPTP Windows Build Fix",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"(Get-Content 'thirdparty/gptp/CMakeLists.txt') -replace '\\$\\{CMAKE_SOURCE_DIR\\}', '${CMAKE_CURRENT_SOURCE_DIR}' | Set-Content 'thirdparty/gptp/CMakeLists.txt'"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run gPTP Daemon (Windows)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"run_gptp.ps1"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": true,
+			"dependsOn": "Build All (Windows - CMake)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Run gPTP Daemon (Linux/WSL)",
+			"type": "shell",
+			"command": "wsl",
+			"args": [
+				"bash",
+				"run_gptp.sh"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": true,
+			"dependsOn": "Build All (Linux/WSL)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Verify gPTP Integration",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"verify_gptp_integration.ps1"
+			],
+			"group": "test",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build gPTP Only (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release",
+				"--target",
+				"gptp2"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build gPTP Only (Linux/WSL)",
+			"type": "shell",
+			"command": "wsl",
+			"args": [
+				"cmake",
+				"--build",
+				".",
+				"--target",
+				"gptp2"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Linux/WSL)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "CMake Configure with gPTP (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"..",
+				"-G",
+				"Visual Studio 17 2022",
+				"-DOPENAVNU_BUILD_GPTP=ON"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"dependsOn": "Create Build Directory",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "CMake Configure with gPTP (Linux/WSL)",
+			"type": "shell",
+			"command": "wsl",
+			"args": [
+				"cmake",
+				"..",
+				"-G",
+				"Unix Makefiles",
+				"-DOPENAVNU_BUILD_GPTP=ON"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"isBackground": false,
+			"dependsOn": "Create Build Directory",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open gPTP Documentation",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"docs/gPTP_Integration.md"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "never",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open gPTP Windows Build Fix Guide",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"gptp_windows_build_fix.md"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "never",
+				"focus": false,
+				"panel": "shared"
+			}
 		},
 		{
 			"label": "Test Modernized Windows Code",

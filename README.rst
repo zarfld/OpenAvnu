@@ -121,6 +121,14 @@ building, you can start the gPTP daemon using the provided scripts:
 For detailed information about gPTP configuration and troubleshooting, see
 ``docs/gPTP_Integration.md``.
 
+**VS Code Users:** Several gPTP-related tasks are available in VS Code:
+
+- Apply gPTP Windows Build Fix (fixes config file path issues)
+- Run gPTP Daemon (Windows/Linux)
+- Build gPTP Only
+- Verify gPTP Integration
+- Open gPTP Documentation
+
 **Important:** gPTP must be running before starting any AVTP applications, as
 proper time synchronization is required for standards-compliant operation.
 
