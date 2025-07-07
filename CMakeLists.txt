@@ -93,9 +93,9 @@ if(OPENAVNU_BUILD_LA_AVDECC)
         message(STATUS "🔧 Configuring L-Acoustics AVDECC with modern PCAP support")
         message(STATUS "✅ Using ${OPENAVNU_PCAP_TYPE} for L-Acoustics AVDECC")
         
-        # Set up WinPcap compatibility layer for L-Acoustics AVDECC
-        # Place compatibility layer outside the submodule to avoid git conflicts
-        set(LA_AVDECC_WINPCAP_DIR "${CMAKE_CURRENT_BINARY_DIR}/la_avdecc_pcap_compat")
+        # L-Acoustics AVDECC expects winpcap in ${CU_ROOT_DIR}/externals/3rdparty/winpcap
+        # We need to create the compatibility layer in the submodule directory
+        set(LA_AVDECC_WINPCAP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/la_avdecc/externals/3rdparty/winpcap")
         
         # Create compatibility symlinks/copies if they don't exist
         if(NOT EXISTS "${LA_AVDECC_WINPCAP_DIR}/Include")
@@ -150,18 +150,17 @@ to the L-Acoustics AVDECC submodule using OpenAvnu's centralized PCAP detection.
 
 This allows L-Acoustics AVDECC to build with modern Npcap libraries
 without requiring modifications to the external submodule.
+
+Note: This directory is auto-generated during CMake configuration and should
+be ignored by git. See .gitignore for the appropriate entry.
 ")
         endif()
-        
-        # Pre-set the WinPcap base directory that L-Acoustics AVDECC expects
-        # This must be set BEFORE including the submodule so its CMakeLists.txt sees it
-        set(LA_WINPCAP_BASE_DIR "${LA_AVDECC_WINPCAP_DIR}" CACHE PATH "WinPcap base directory for L-Acoustics AVDECC" FORCE)
         
         # Enable PCAP interface with compatibility layer
         set(BUILD_AVDECC_INTERFACE_PCAP ON CACHE BOOL "Enable PCAP interface with compatibility layer" FORCE)
         
         message(STATUS "✅ L-Acoustics AVDECC PCAP compatibility layer ready")
-        message(STATUS "   WinPcap compatibility path: ${LA_WINPCAP_BASE_DIR}")
+        message(STATUS "   WinPcap compatibility path: ${LA_AVDECC_WINPCAP_DIR}")
     else()
         # Linux: PCAP should work directly, or disable if not available
         if(OPENAVNU_PCAP_FOUND)

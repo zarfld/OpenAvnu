@@ -24,3 +24,6 @@ kmod/igb/*.mod.*
 kmod/igb/modules.order
 lib/igb/*.a
 
+# PCAP compatibility layer for L-Acoustics AVDECC (auto-generated)
+lib/la_avdecc/externals/3rdparty/winpcap/
+
