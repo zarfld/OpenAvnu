@@ -173,7 +173,13 @@ INFO: Grandmaster clock detected
    - Ensure project is built: `make` or `cmake --build .`
    - Check build directory for daemon executable
 
-4. **Time Sync Not Working**
+4. **Windows Build Errors (Configuration Files)**
+   - **Error**: `Error copying file (if different) from "D:/Repos/OpenAvnu/gptp_cfg.ini"`
+   - **Cause**: gPTP submodule CMakeLists.txt uses wrong path for configuration files
+   - **Solution**: See `gptp_windows_build_fix.md` for detailed fix instructions
+   - **Quick Fix**: Apply patch or edit `thirdparty/gptp/CMakeLists.txt` to change `${CMAKE_SOURCE_DIR}` to `${CMAKE_CURRENT_SOURCE_DIR}`
+
+5. **Time Sync Not Working**
    - Verify network connectivity between devices
    - Check firewall settings (allow multicast traffic)
    - Ensure devices are on same network segment
