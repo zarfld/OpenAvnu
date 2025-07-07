@@ -88,8 +88,114 @@ option(OPENAVNU_BUILD_LA_AVDECC "Build with L-Acoustics AVDECC library for IEEE 
 if(OPENAVNU_BUILD_LA_AVDECC)
     message(STATUS "Building with L-Acoustics AVDECC library for modern AVDECC support")
     
-    # Use wrapper to configure L-Acoustics AVDECC with modern PCAP support
-    include(ConfigureLAAVDECC)
+    # Pre-configure PCAP compatibility for L-Acoustics AVDECC before including the submodule
+    if(WIN32 AND OPENAVNU_PCAP_FOUND)
+        message(STATUS "🔧 Configuring L-Acoustics AVDECC with modern PCAP support")
+        message(STATUS "✅ Using ${OPENAVNU_PCAP_TYPE} for L-Acoustics AVDECC")
+        
+        # Set up WinPcap compatibility layer for L-Acoustics AVDECC
+        # Place compatibility layer outside the submodule to avoid git conflicts
+        set(LA_AVDECC_WINPCAP_DIR "${CMAKE_CURRENT_BINARY_DIR}/la_avdecc_pcap_compat")
+        
+        # Create compatibility symlinks/copies if they don't exist
+        if(NOT EXISTS "${LA_AVDECC_WINPCAP_DIR}/Include")
+            message(STATUS "Creating PCAP compatibility layer for L-Acoustics AVDECC...")
+            
+            # Create directories
+            file(MAKE_DIRECTORY "${LA_AVDECC_WINPCAP_DIR}")
+            file(MAKE_DIRECTORY "${LA_AVDECC_WINPCAP_DIR}/Include")
+            file(MAKE_DIRECTORY "${LA_AVDECC_WINPCAP_DIR}/Lib")
+            file(MAKE_DIRECTORY "${LA_AVDECC_WINPCAP_DIR}/Lib/x64")
+            
+            # Copy/link include files
+            if(EXISTS "${OPENAVNU_PCAP_INCLUDE_DIRS}")
+                file(GLOB PCAP_HEADERS "${OPENAVNU_PCAP_INCLUDE_DIRS}/*.h")
+                foreach(HEADER ${PCAP_HEADERS})
+                    get_filename_component(HEADER_NAME ${HEADER} NAME)
+                    file(COPY ${HEADER} DESTINATION "${LA_AVDECC_WINPCAP_DIR}/Include")
+                endforeach()
+                
+                # Copy pcap subdirectory with real headers (some headers expect pcap/pcap.h)
+                if(EXISTS "${OPENAVNU_PCAP_INCLUDE_DIRS}/pcap")
+                    file(COPY "${OPENAVNU_PCAP_INCLUDE_DIRS}/pcap" DESTINATION "${LA_AVDECC_WINPCAP_DIR}/Include")
+                endif()
+                
+                message(STATUS "✅ Copied PCAP headers to L-Acoustics AVDECC compatibility layer")
+            endif()
+            
+            # Copy/link library files
+            if(EXISTS "${OPENAVNU_PCAP_LIBRARY_DIRS}")
+                file(GLOB PCAP_LIBS "${OPENAVNU_PCAP_LIBRARY_DIRS}/*.lib" "${OPENAVNU_PCAP_LIBRARY_DIRS}/*.a")
+                foreach(LIB ${PCAP_LIBS})
+                    get_filename_component(LIB_NAME ${LIB} NAME)
+                    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+                        file(COPY ${LIB} DESTINATION "${LA_AVDECC_WINPCAP_DIR}/Lib/x64")
+                    else()
+                        file(COPY ${LIB} DESTINATION "${LA_AVDECC_WINPCAP_DIR}/Lib")
+                    endif()
+                endforeach()
+                message(STATUS "✅ Copied PCAP libraries to L-Acoustics AVDECC compatibility layer")
+            endif()
+            
+            # Create README explaining the compatibility layer
+            file(WRITE "${LA_AVDECC_WINPCAP_DIR}/README.md"
+"# PCAP Compatibility Layer for L-Acoustics AVDECC
+
+This directory contains a compatibility layer that provides PCAP libraries
+to the L-Acoustics AVDECC submodule using OpenAvnu's centralized PCAP detection.
+
+**Source:** ${OPENAVNU_PCAP_TYPE} (${OPENAVNU_PCAP_INCLUDE_DIRS})
+**Generated:** ${CMAKE_CURRENT_LIST_FILE}
+**Architecture:** ${CMAKE_SIZEOF_VOID_P}-bit
+
+This allows L-Acoustics AVDECC to build with modern Npcap libraries
+without requiring modifications to the external submodule.
+")
+        endif()
+        
+        # Pre-set the WinPcap base directory that L-Acoustics AVDECC expects
+        # This must be set BEFORE including the submodule so its CMakeLists.txt sees it
+        set(LA_WINPCAP_BASE_DIR "${LA_AVDECC_WINPCAP_DIR}" CACHE PATH "WinPcap base directory for L-Acoustics AVDECC" FORCE)
+        
+        # Enable PCAP interface with compatibility layer
+        set(BUILD_AVDECC_INTERFACE_PCAP ON CACHE BOOL "Enable PCAP interface with compatibility layer" FORCE)
+        
+        message(STATUS "✅ L-Acoustics AVDECC PCAP compatibility layer ready")
+        message(STATUS "   WinPcap compatibility path: ${LA_WINPCAP_BASE_DIR}")
+    else()
+        # Linux: PCAP should work directly, or disable if not available
+        if(OPENAVNU_PCAP_FOUND)
+            set(BUILD_AVDECC_INTERFACE_PCAP ON CACHE BOOL "Enable PCAP interface" FORCE)
+        else()
+            message(WARNING "⚠️  PCAP not available - L-Acoustics AVDECC may not build correctly")
+            message(STATUS "Attempting to build L-Acoustics AVDECC without PCAP interface")
+            set(BUILD_AVDECC_INTERFACE_PCAP OFF CACHE BOOL "Disable PCAP interface - PCAP not available" FORCE)
+        endif()
+    endif()
+    
+    # Set other L-Acoustics AVDECC build options
+    set(AVDECC_BUILD_CONTROLLER ON CACHE BOOL "Build AVDECC Controller")
+    set(AVDECC_BUILD_VIRTUAL ON CACHE BOOL "Build AVDECC Virtual Entity") 
+    set(AVDECC_BUILD_EXAMPLES OFF CACHE BOOL "Disable AVDECC examples")
+    set(AVDECC_BUILD_TESTS OFF CACHE BOOL "Disable AVDECC tests for now")
+    set(AVDECC_BUILD_DOCUMENTATION OFF CACHE BOOL "Disable AVDECC documentation")
+    
+    # Set C++17 requirement for L-Acoustics AVDECC
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.8")
+        set(CMAKE_CXX_STANDARD 17)
+        set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    endif()
+    
+    message(STATUS "📦 L-Acoustics AVDECC configuration:")
+    message(STATUS "   PCAP Interface: ${BUILD_AVDECC_INTERFACE_PCAP}")
+    message(STATUS "   Controller: ${AVDECC_BUILD_CONTROLLER}")
+    message(STATUS "   Virtual Entity: ${AVDECC_BUILD_VIRTUAL}")
+    
+    # Include the actual submodule
+    add_subdirectory("lib/la_avdecc")
+    
+    # Define flag for conditional compilation in OpenAvnu code
+    add_definitions(-DOPENAVNU_HAS_LA_AVDECC)
 endif()
 
 # Optional Open1722 AVTP library for modernized AVTP implementation
