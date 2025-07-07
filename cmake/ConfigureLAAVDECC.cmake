@@ -13,8 +13,8 @@ else()
     
     if(WIN32)
         # Set up WinPcap compatibility layer for L-Acoustics AVDECC
-        # The submodule expects winpcap in externals/3rdparty/winpcap/
-        set(LA_AVDECC_WINPCAP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/la_avdecc/externals/3rdparty/winpcap")
+        # Place compatibility layer outside the submodule to avoid git conflicts
+        set(LA_AVDECC_WINPCAP_DIR "${CMAKE_CURRENT_BINARY_DIR}/la_avdecc_pcap_compat")
         
         # Create compatibility symlinks/copies if they don't exist
         if(NOT EXISTS "${LA_AVDECC_WINPCAP_DIR}/Include")
