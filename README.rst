@@ -100,6 +100,30 @@ Starting from the OpenAvnu dir, one would go::
 
 to build in OpenAvnu/tmp
 
+gPTP TIME SYNCHRONIZATION
+==========================
+
+OpenAvnu requires a gPTP (IEEE 802.1AS) daemon for proper time synchronization
+in AVB/TSN networks. This repository includes the zarfld/gptp implementation as
+a submodule, which provides cross-platform gPTP support.
+
+The gPTP daemon is automatically built when building OpenAvnu with cmake. After
+building, you can start the gPTP daemon using the provided scripts:
+
+**Linux:**::
+
+    sudo ./run_gptp.sh eth0
+
+**Windows:**::
+
+    .\run_gptp.ps1 -NetworkInterface "Ethernet"
+
+For detailed information about gPTP configuration and troubleshooting, see
+``docs/gPTP_Integration.md``.
+
+**Important:** gPTP must be running before starting any AVTP applications, as
+proper time synchronization is required for standards-compliant operation.
+
 Apple Vendor PTP Profile
 ========================
 

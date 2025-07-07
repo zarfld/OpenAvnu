@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\build_test\CMakeFiles\5e5803b022ef777cee23a707a23a9168\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{587EB557-70DC-36D4-83AD-7AC3938198FC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

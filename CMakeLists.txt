@@ -37,6 +37,14 @@ endif()
 # Third-party libraries
 add_subdirectory("thirdparty/cpputest")
 
+# Optional gPTP daemon for time synchronization
+option(OPENAVNU_BUILD_GPTP "Build gPTP daemon for time synchronization" ON)
+
+if(OPENAVNU_BUILD_GPTP)
+    message(STATUS "Building with gPTP daemon support")
+    add_subdirectory("thirdparty/gptp")
+endif()
+
 # Optional Open1722 AVTP library for modernized AVTP implementation
 option(OPENAVNU_USE_OPEN1722 "Use Open1722 for AVTP implementation" ON)
 

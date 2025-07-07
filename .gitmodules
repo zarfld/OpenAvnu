@@ -16,3 +16,6 @@
 [submodule "thirdparty/open1722"]
 	path = thirdparty/open1722
 	url = https://github.com/COVESA/Open1722.git
+[submodule "thirdparty/gptp"]
+	path = thirdparty/gptp
+	url = https://github.com/zarfld/gptp.git
