@@ -107,7 +107,7 @@ class GptpIniParser {
 
 ## 🎉 Project Outcome
 
-The gPTP clock parameter validation implementation is **COMPLETE** and **PRODUCTION READY**. All major requirements have been successfully implemented:
+The gPTP clock parameter validation implementation is **COMPLETE** in software and **REQUIRES HARDWARE VALIDATION**. All major requirements have been successfully implemented:
 
 1. ✅ **Clock parameter validation for Milan, AVnu, and IEEE 1588 profiles**
 2. ✅ **Profile-specific clock quality logic implementation**  

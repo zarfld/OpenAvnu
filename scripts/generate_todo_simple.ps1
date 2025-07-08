@@ -8,7 +8,7 @@ param(
 
 $repoPath = Resolve-Path $RepoPath
 $docsPath = Join-Path $repoPath "docs"
-$complianceFile = Join-Path $docsPath "compliance_report.md"
+$complianceFile = Join-Path $docsPath "compliance_report_updated.md"
 
 # Initialize TODO list
 $todos = @()

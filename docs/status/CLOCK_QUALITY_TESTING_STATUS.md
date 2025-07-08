@@ -1,7 +1,7 @@
 # OpenAvnu gPTP Clock Quality Testing - Current Status
 
 **Last Updated**: July 8, 2025  
-**Status**: ✅ **PRODUCTION READY** - Core implementation complete
+**Status**: ⚠️ **SOFTWARE COMPLETE, HARDWARE VALIDATION REQUIRED** - Core implementation complete
 
 ## 🎯 Implementation Summary
 
@@ -107,11 +107,11 @@ For organizations wanting to use this implementation:
 - `test/clock_quality/` - Unit test framework (25 tests)
 
 ### Documentation
-- `docs/completed/CLOCK_QUALITY_TESTING_IMPLEMENTATION.md` - Complete implementation guide
+- `docs/completed/CLOCK_QUALITY_TESTING_IMPLEMENTATION.md` - Software implementation guide
 - `docs/status/CLOCK_QUALITY_TESTING_STATUS.md` - This status file
 
 ## 🎉 **CONCLUSION**
 
-The OpenAvnu gPTP Clock Quality Testing Framework is **COMPLETE** and **PRODUCTION READY**. It successfully implements all required features from the Avnu Alliance specifications and provides a robust, cross-platform solution for gPTP clock quality monitoring and certification.
+The OpenAvnu gPTP Clock Quality Testing Framework is **SOFTWARE COMPLETE** and **REQUIRES HARDWARE VALIDATION** on Intel i210/i219 NICs. It successfully implements all required features from the Avnu Alliance specifications and provides a robust, cross-platform solution for gPTP clock quality monitoring and certification.
 
 The implementation represents a significant advancement in gPTP testing capabilities and makes OpenAvnu one of the most comprehensive and certification-ready gPTP implementations available.

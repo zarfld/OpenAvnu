@@ -47,16 +47,19 @@ Documentation for features currently under development or planned for future imp
 ## 🎯 **Project Management & Task Tracking**
 
 ### **Task Management System**
+- **[PROJECT_STATUS_SUMMARY.md](PROJECT_STATUS_SUMMARY.md)** - Executive summary of current project state
 - **[ROADMAP.md](ROADMAP.md)** - Long-term strategic planning, milestones, and feature roadmap
 - **[TODO.md](TODO.md)** - Immediate actions, weekly tasks, and short-term priorities
 - **[TASK_TRACKING.md](TASK_TRACKING.md)** - Detailed task status, assignments, and progress tracking
+- **[HARDWARE_PROCUREMENT_PLAN.md](HARDWARE_PROCUREMENT_PLAN.md)** - Hardware procurement strategy and timeline
+- **[HARDWARE_VALIDATION_TEST_PLAN.md](HARDWARE_VALIDATION_TEST_PLAN.md)** - Template for hardware validation testing
 - **[compliance_report.md](compliance_report.md)** - Automated compliance issues and violations
 
 ### **Current Priority Tasks**
-- **P0 Critical**: Fix 8 documentation compliance errors (false production claims)
-- **P0 Critical**: Hardware validation on Intel i210/i219 NICs
-- **P1 High**: Fix 39 file naming convention violations
+- **P0 Critical**: Hardware validation on Intel i210/i219 NICs - **IN PROGRESS**
+- **P1 High**: Hardware procurement and test environment setup
 - **P2 Medium**: Core development tasks (after hardware validation)
+- **P3 Low**: Future enhancements and nice-to-have improvements
 
 ### **Task Categories**
 - **P0 (Critical)** - Hardware validation, compliance errors, blockers
