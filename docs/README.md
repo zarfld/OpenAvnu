@@ -53,6 +53,8 @@ Documentation for features currently under development or planned for future imp
 - **[TASK_TRACKING.md](TASK_TRACKING.md)** - Detailed task status, assignments, and progress tracking
 - **[HARDWARE_PROCUREMENT_PLAN.md](HARDWARE_PROCUREMENT_PLAN.md)** - Hardware procurement strategy and timeline
 - **[HARDWARE_VALIDATION_TEST_PLAN.md](HARDWARE_VALIDATION_TEST_PLAN.md)** - Template for hardware validation testing
+- **[HARDWARE_TEST_PLAN_SUPERMICRO_X8DA6.md](HARDWARE_TEST_PLAN_SUPERMICRO_X8DA6.md)** - Specific test plan for SuperMicro X8DA6 configuration
+- **[QUICK_START_SUPERMICRO_X8DA6.md](QUICK_START_SUPERMICRO_X8DA6.md)** - Quick start guide for available hardware
 - **[compliance_report.md](compliance_report.md)** - Automated compliance issues and violations
 
 ### **Current Priority Tasks**
