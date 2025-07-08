@@ -30,6 +30,7 @@
 |------|-------|----------|--------|--------------|-------|
 | Hardware procurement planning | Documentation Team | July 12, 2025 | ✅ Complete | None | COMPLETED July 8, 2025 |
 | Create hardware test procedures | Documentation Team | July 15, 2025 | ✅ Complete | None | COMPLETED July 8, 2025 |
+| Intel i210/i225 documentation crosscheck | Documentation Team | January 13, 2025 | ✅ Complete | None | COMPLETED January 13, 2025 |
 | Update cross-references after renames | TBD | July 20, 2025 | 🔴 Not Started | File renaming | Link validation |
 | Hardware validation testing | TBD | August 5, 2025 | 🔴 Not Started | Hardware procurement | Documentation |
 

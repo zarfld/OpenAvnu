@@ -52,6 +52,30 @@
 
 ## 🔧 **DEVELOPMENT TASKS** (After Hardware Validation)
 
+### **Hardware Abstraction Layer (HAL)** ✅ **ANALYSIS COMPLETE**
+- **Status**: ✅ **ANALYZED** (January 13, 2025)
+- **Priority**: HIGH
+- **Analysis**: `docs/INTEL_NIC_CROSSCHECK_ANALYSIS.md`
+- **Actions**:
+  - ✅ Assess current HAL architecture and i225 support
+  - ✅ Crosscheck i210/i225 documentation vs implementation
+  - ✅ Identify critical gaps in i225 hardware timestamping
+  - 🔧 **NEXT**: Implement i225 hardware timestamping support
+  - 🔧 **NEXT**: Add i225 version detection for IPG handling
+  - 🔧 **NEXT**: Test i225 OID support on actual hardware
+
+### **Intel i225 Support Enhancement** - **CRITICAL PRIORITY**
+- **Status**: 🔧 **PENDING IMPLEMENTATION**
+- **Priority**: CRITICAL
+- **Analysis**: `docs/INTEL_NIC_CROSSCHECK_ANALYSIS.md`
+- **Actions**:
+  - 🔧 Implement i225 hardware timestamping OIDs
+  - 🔧 Add i225 version detection (v1/v2/v3)
+  - 🔧 Add i225 registry parameter support
+  - 🔧 Implement IPG workaround for i225 v1
+  - 🔧 Add 2.5Gbps speed optimization
+  - 🔧 Add dual-port support
+
 ### **Code Quality**
 - [ ] Run comprehensive unit tests
 - [ ] Fix any failing tests
