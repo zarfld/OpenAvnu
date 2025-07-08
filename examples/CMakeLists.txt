@@ -159,6 +159,16 @@ else()
 endif()
 
 # ==========================================
+# Clock Quality Demo (Cross-platform)
+# ==========================================
+# The clock quality demo is designed to work on both Windows and Linux
+
+message(STATUS "🔧 Building Clock Quality Demo (cross-platform)")
+
+# Add the clock quality demo subdirectory
+add_subdirectory(clock_quality_demo)
+
+# ==========================================
 # Installation and Packaging
 # ==========================================
 
