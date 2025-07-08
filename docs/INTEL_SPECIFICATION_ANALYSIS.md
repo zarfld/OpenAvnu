@@ -478,3 +478,52 @@ private:
     }
 };
 ```
+
+## CRITICAL UPDATE: HAL Implementation Complete (2025-01-19)
+
+### ✅ I225 Support Added to OpenAvnu HAL
+
+The Intel HAL (`windows_hal_vendor_intel.cpp`) has been **fully updated** with comprehensive I225 support:
+
+**Code Changes Applied:**
+1. **I225 Device Recognition**: Added all I225 variants (I225-LM, I225-V, I225-IT, I225-K, I226-*)
+2. **Clock Rate Configuration**: Proper 200MHz clock rate for I225 family
+3. **Stepping Detection**: Automatic A0/A1/A2/A3 stepping detection from PCI revision
+4. **IPG Mitigation**: Automatic speed limiting for problematic steppings
+5. **Registry Parameters**: I225-specific registry parameters for enhanced control
+
+**Your Hardware Status:**
+- **Device**: I225-V (PCI ID: 0x15F3)
+- **Stepping**: A3 (Revision 0x03) - **THEORETICAL** production stepping
+- **IPG Issue**: **ASSUMED** resolved based on Intel docs - **NEEDS VALIDATION**
+- **2.5GbE Support**: **THEORETICAL** - **REQUIRES HARDWARE TESTING**
+- **Hardware Timestamping**: **ASSUMED** supported (200MHz) - **NEEDS VALIDATION**
+
+**Test Script Created:**
+- `intel_i225_detection.ps1` - PowerShell script for hardware detection **ONLY**
+- **WARNING**: Script only detects hardware, does NOT validate functionality
+
+**HAL Changes Summary:**
+```cpp
+// Added I225 family support - UNTESTED CODE
+{ "I225-V", 200000000ULL, true, "Foxville V, 2.5GbE (device ID 0x15F3)" },
+
+// Added I225-specific registry parameters - UNTESTED CODE  
+{ "*I225SpeedLimit", "Force speed limit to 1Gbps for v1 stepping IPG mitigation", false },
+{ "*I225SteppingDetection", "Enable automatic stepping detection and mitigation", false },
+
+// Added stepping detection functions - UNTESTED CODE
+const I225SteppingInfo* detectI225Stepping(const char* device_desc, uint16_t pci_device_id, uint8_t pci_revision);
+bool applyI225Mitigation(const char* device_desc, const I225SteppingInfo* stepping_info);
+```
+
+**CRITICAL WARNING**: All code changes are **UNTESTED** and **UNVALIDATED**. Compilation, functionality, and hardware compatibility must be verified through actual testing before any use.
+
+### Next Steps for Your Hardware
+
+1. **✅ HAL Updated**: I225 support code has been added to HAL
+2. **❌ TESTING REQUIRED**: No validation has been performed yet
+3. **❌ UNPROVEN**: gPTP functionality needs testing on your I225-V
+4. **❌ UNPROVEN**: AVB streaming performance needs validation
+
+**CRITICAL**: Your I225-V controller support is **UNTESTED** and **UNVALIDATED**. All claims about functionality must be proven through actual hardware testing before any production use.
