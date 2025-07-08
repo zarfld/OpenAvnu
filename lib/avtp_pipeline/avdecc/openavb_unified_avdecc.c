@@ -5,6 +5,8 @@
  * providing transparent access to either implementation based on configuration.
  */
 
+#define AVB_LOG_COMPONENT "Unified-AVDECC"
+
 #include "openavb_unified_avdecc.h"
 #include "openavb_profile_framework.h"
 #include "openavb_log.h"
@@ -23,8 +25,6 @@
 #ifdef OPENAVNU_HAS_LEGACY_AVDECC
 #include "controller.h"  // Legacy avdecc-lib
 #endif
-
-#define AVB_LOG_COMPONENT "Unified-AVDECC"
 
 // =============================================================================
 // Internal Data Structures

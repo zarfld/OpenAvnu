@@ -196,7 +196,6 @@ typedef struct openavb_profile_cfg {
         void (*profile_cleanup)(const struct openavb_profile_cfg *profile,
                                void *context);
     } callbacks;
-                                             U8 sr_class, U32 max_transit_time);
         
         /// Validate AVDECC descriptor compliance
         bool (*validate_avdecc_descriptor)(const struct openavb_profile_cfg *profile,
@@ -487,6 +486,59 @@ bool openavbAutomotiveEnforceQuality(const openavb_profile_cfg_t *profile,
                                      const openavb_stream_quality_metrics_t *metrics);
 bool openavbAutomotiveValidateConfig(const openavb_profile_cfg_t *profile,
                                      const char *section, const char *name, const char *value);
+
+// =============================================================================
+// Core Framework Functions  
+// =============================================================================
+
+/**
+ * Initialize the profile framework
+ * @return True if successful, false otherwise
+ */
+bool openavb_profile_framework_initialize(void);
+
+/**
+ * Cleanup the profile framework
+ */
+void openavb_profile_framework_cleanup(void);
+
+/**
+ * Register a custom profile
+ * @param profile Profile configuration to register
+ * @return True if successful, false otherwise
+ */
+bool openavbProfileRegister(openavb_profile_cfg_t *profile);
+
+/**
+ * Get profile by name
+ * @param profile_name Name of the profile to find
+ * @return Profile configuration or NULL if not found
+ */
+openavb_profile_cfg_t* openavbProfileGetByName(const char *profile_name);
+
+/**
+ * Set active profile
+ * @param profile_name Name of the profile to activate
+ * @return True if successful, false otherwise
+ */
+bool openavbProfileSetActive(const char *profile_name);
+
+/**
+ * Validate configuration against active profile
+ * @param section Configuration section
+ * @param name Configuration parameter name
+ * @param value Configuration parameter value
+ * @return True if valid, false otherwise
+ */
+bool openavbProfileValidateConfig(const char *section, const char *name, const char *value);
+
+/**
+ * Validate stream format against active profile
+ * @param subtype AVTP subtype
+ * @param format_specific Format-specific data
+ * @return True if valid, false otherwise
+ */
+bool openavbProfileValidateStreamFormat(U8 subtype, const void *format_specific);
 
 /**
  * Helper Macros for Profile Integration

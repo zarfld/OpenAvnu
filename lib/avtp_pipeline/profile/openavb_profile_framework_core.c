@@ -228,3 +228,20 @@ void openavb_profile_framework_cleanup(void)
     
     AVB_LOG_INFO("Profile framework cleanup complete");
 }
+
+/**
+ * Alias for backward compatibility
+ * Some code expects openavb_profile_framework_initialize() instead of openavb_profile_framework_init()
+ */
+bool openavb_profile_framework_initialize(void)
+{
+    return openavb_profile_framework_init();
+}
+
+/**
+ * Cleanup alias for backward compatibility  
+ */
+void openavb_profile_framework_cleanup(void)
+{
+    openavb_profile_framework_deinit();
+}
