@@ -2,7 +2,32 @@
 
 **Analysis Date**: July 8, 2025  
 **Focus**: HAL Architecture and Intel i225 Support  
-**Hardware Context**: SuperMicro X8DA6 with Intel i210 and i225 NICs
+**Hardware Context**: SuperMicro### **Critical Issues for Your Hardware**
+
+### **Intel i225 v1 IPG Issue - CRITICAL DISCOVERY**
+
+From the Intel specification update (621661-v1.2), **your i225 may have the v1 IPG issue**:
+
+**Problem**: Minimum IPG is 8 bytes instead of 5 bytes at 2.5Gbps  
+**Impact**: Packet drops, reduced throughput (1-10Mbps in worst case)  
+**Mitigation**: Automatic downgrade to 1Gbps when IPG drops detected  
+
+**Version Detection**: Can determine i225 version using branding strings:
+- V1: "Intel(R) Ethernet Controller I225-LM/V" (HAS IPG ISSUE)
+- V2: "Intel(R) Ethernet Controller (2) I225-LM/V" (IPG FIXED)
+- V3: "Intel(R) Ethernet Controller (3) I225-LM/V/IT" (LATEST)
+
+**Driver Requirements**: Need driver version 1.0.0.30+ with NVM 1.38+ for automatic IPG mitigation
+
+### **Intel i210 PTP Enhancement Opportunities**
+
+From the Intel datasheets, i210 has confirmed IEEE 1588 support:
+
+**Hardware Features**:
+- **TimeSync Auxiliary Control Register**: TSAUXC (0xB640)
+- **System Time Registers**: SYSTIML/H (0xB600/B604)
+- **TX/RX Timestamp Registers**: Available for hardware timestamping
+- **SDP Pins**: Four Software Definable Pins for PTP clock outputth Intel i210 and i225 NICs
 
 ## 🎯 **HAL Architecture Assessment**
 
@@ -188,23 +213,32 @@ From the Intel specification update, **your i225 may have the v1 IPG issue**:
 ### **Required Testing Steps**
 
 1. **Determine i225 Version**
-   ```bash
-   # Check device version
-   lspci -vv | grep -A 10 "I225"
+   ```powershell
+   # Check device description for version
+   Get-WmiObject Win32_NetworkAdapter | Where-Object {$_.Name -like "*I225*"} | Select-Object Name
    ```
 
-2. **Test 2.5Gbps Operation**
-   ```bash
-   # Monitor for packet drops
-   ethtool -S <interface> | grep drop
+2. **Test IPG Issue Detection**
+   ```powershell
+   # Monitor for packet drops at 2.5Gbps
+   Get-Counter "\Network Interface(*I225*)\Packets Received Discarded"
    ```
 
-3. **Implement Workarounds**
+3. **Implement Enhanced Detection**
    ```cpp
-   // Force 1Gbps if needed
-   if (is_i225_v1 && current_speed > 1000000000) {
-       force_speed_1gbps();
+   // Add to HAL: Enhanced i225 version detection
+   I225Version detectI225Version(const std::string& device_description) {
+       if (device_description.find("(2)") != std::string::npos) return I225_V2;
+       if (device_description.find("(3)") != std::string::npos) return I225_V3;
+       return I225_V1; // Assume v1 if no version indicator
    }
+   ```
+
+4. **Test i210 PTP Registers**
+   ```cpp
+   // Test TimeSync register access
+   uint32_t systime_low = readRegister(0xB600);  // SYSTIML
+   uint32_t systime_high = readRegister(0xB604); // SYSTIMH
    ```
 
 ## 📋 **Implementation Recommendations**

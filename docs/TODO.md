@@ -64,17 +64,31 @@
   - 🔧 **NEXT**: Add i225 version detection for IPG handling
   - 🔧 **NEXT**: Test i225 OID support on actual hardware
 
-### **Intel i225 Support Enhancement** - **CRITICAL PRIORITY**
-- **Status**: 🔧 **PENDING IMPLEMENTATION**
+### **Intel i225 Support Enhancement** - **CRITICAL PRIORITY** ⚠️
+
+- **Status**: � **URGENT - IPG ISSUE IDENTIFIED**
 - **Priority**: CRITICAL
-- **Analysis**: `docs/INTEL_NIC_CROSSCHECK_ANALYSIS.md`
+- **Discovery**: Official Intel specs reveal i225 v1 IPG issue
+- **Analysis**: `docs/INTEL_SPECIFICATION_ANALYSIS.md`
 - **Actions**:
-  - 🔧 Implement i225 hardware timestamping OIDs
-  - 🔧 Add i225 version detection (v1/v2/v3)
+  - � **IMMEDIATE**: Implement i225 version detection (v1/v2/v3)
+  - 🚨 **IMMEDIATE**: Add IPG issue detection and automatic 1Gbps fallback
+  - 🔧 Add i225 hardware timestamping OIDs
   - 🔧 Add i225 registry parameter support
-  - 🔧 Implement IPG workaround for i225 v1
-  - 🔧 Add 2.5Gbps speed optimization
+  - 🔧 Add 2.5Gbps speed optimization (v2/v3 only)
   - 🔧 Add dual-port support
+
+### **Intel i210 PTP Enhancement** - **HIGH PRIORITY**
+
+- **Status**: ✅ **SPECIFICATIONS CONFIRMED**
+- **Priority**: HIGH  
+- **Discovery**: Official datasheets confirm full IEEE 1588 support
+- **Analysis**: `docs/INTEL_SPECIFICATION_ANALYSIS.md`
+- **Actions**:
+  - 🔧 Implement TimeSync register support (0xB640, 0xB600, etc.)
+  - 🔧 Add SDP pin configuration for PTP clock output
+  - 🔧 Enhance hardware timestamping using official registers
+  - 🔧 Add IEEE 1588 compliance features
 
 ### **Code Quality**
 - [ ] Run comprehensive unit tests
