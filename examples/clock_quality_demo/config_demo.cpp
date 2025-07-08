@@ -46,20 +46,20 @@ int main() {
     
     auto milan_config = config_manager.get_profile_config("Milan");
     std::cout << "Milan Profile:" << std::endl;
-    std::cout << "  Accuracy: ±" << milan_config.accuracy_requirement_ns << "ns" << std::endl;
-    std::cout << "  Lock time: ≤" << milan_config.max_lock_time_seconds << "s" << std::endl;
+    std::cout << "  Accuracy: +/-" << milan_config.accuracy_requirement_ns << "ns" << std::endl;
+    std::cout << "  Lock time: <=" << milan_config.max_lock_time_seconds << "s" << std::endl;
     std::cout << "  Late response: " << milan_config.late_response_threshold_ms << "ms" << std::endl;
     
     auto automotive_config = config_manager.get_profile_config("Automotive");
     std::cout << "\nAutomotive Profile:" << std::endl;
-    std::cout << "  Accuracy: ±" << automotive_config.accuracy_requirement_ns << "ns" << std::endl;
-    std::cout << "  Lock time: ≤" << automotive_config.max_lock_time_seconds << "s" << std::endl;
+    std::cout << "  Accuracy: +/-" << automotive_config.accuracy_requirement_ns << "ns" << std::endl;
+    std::cout << "  Lock time: <=" << automotive_config.max_lock_time_seconds << "s" << std::endl;
     std::cout << "  Immediate asCapable: " << (automotive_config.immediate_ascapable_required ? "Yes" : "No") << std::endl;
     
     auto base_config = config_manager.get_profile_config("AVnu_Base");
     std::cout << "\nAVnu Base Profile:" << std::endl;
-    std::cout << "  Accuracy: ±" << base_config.accuracy_requirement_ns << "ns" << std::endl;
-    std::cout << "  Lock time: ≤" << base_config.max_lock_time_seconds << "s" << std::endl;
+    std::cout << "  Accuracy: +/-" << base_config.accuracy_requirement_ns << "ns" << std::endl;
+    std::cout << "  Lock time: <=" << base_config.max_lock_time_seconds << "s" << std::endl;
     std::cout << "  PDelay successes: " << base_config.min_pdelay_successes 
               << " to " << base_config.max_pdelay_successes << std::endl;
     

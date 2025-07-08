@@ -1,0 +1,162 @@
+# OpenAvnu Documentation Governance Configuration
+# This file defines the rules and parameters for documentation compliance checking
+
+# Version and metadata
+version: "1.0"
+last_updated: "2025-07-08"
+maintainer: "OpenAvnu Documentation Team"
+
+# Status classification rules
+status_levels:
+  completed:
+    criteria:
+      - "Software implementation complete and tested"
+      - "Hardware validation successful on target hardware"
+      - "Real-world testing demonstrates compliance"
+      - "Documentation comprehensive and accurate"
+      - "Peer review completed"
+    folder: "docs/completed/"
+    naming_pattern: ".*_IMPLEMENTATION\\.md$"
+    
+  development:
+    criteria:
+      - "Software implementation complete OR in progress"
+      - "Hardware validation pending OR partial"
+      - "Testing ongoing or incomplete"
+    folder: "docs/work-in-progress/"
+    naming_pattern: ".*_DEVELOPMENT\\.md$"
+    
+  status:
+    criteria:
+      - "Current status reporting"
+      - "Progress tracking"
+      - "Regular updates required"
+    folder: "docs/status/"
+    naming_pattern: ".*_STATUS\\.md$"
+    
+  archived:
+    criteria:
+      - "Obsolete or superseded"
+      - "Redundant with other documentation"
+      - "Historical reference only"
+    folder: "docs/archive/"
+    naming_pattern: ".*_ARCHIVED_\\d{4}-\\d{2}-\\d{2}\\.md$"
+
+# Hardware validation requirements
+hardware_validation:
+  intel_nics:
+    - "Intel i210"
+    - "Intel i219"
+  platforms:
+    - "Windows 10"
+    - "Windows 11" 
+    - "Linux"
+  required_tests:
+    - "Successful clock synchronization"
+    - "Hardware timestamping verification"
+    - "Precision measurement"
+    - "Interoperability testing"
+
+# Prohibited terms without hardware validation
+prohibited_terms:
+  - "PRODUCTION READY"
+  - "CERTIFIED"
+  - "MEETS ALL REQUIREMENTS"
+  - "FULLY VALIDATED"
+  - "COMPLETE IMPLEMENTATION"
+  - "READY FOR DEPLOYMENT"
+  - "PRODUCTION-READY"
+  - "CERTIFICATION READY"
+
+# Required hardware evidence terms
+hardware_evidence:
+  - "Intel i210"
+  - "Intel i219"
+  - "hardware timestamping"
+  - "clock synchronization"
+  - "successful sync"
+  - "precision measurement"
+  - "test results"
+
+# Required sections by document type
+required_sections:
+  completed:
+    - "Hardware configuration tested"
+    - "Test results"
+    - "Validation date"
+    - "Known limitations"
+  
+  status:
+    - "Current status"
+    - "Recent progress"
+    - "Next steps"
+    - "Blockers"
+  
+  work-in-progress:
+    - "Current development status"
+    - "Remaining tasks"
+    - "Target completion"
+    - "Dependencies"
+  
+  archive:
+    - "Archive date"
+    - "Reason for archiving"
+    - "Replacement documentation"
+
+# Update frequency requirements
+update_frequency:
+  status: 30  # days
+  work-in-progress: 45  # days
+  completed: 180  # days (for major updates)
+  
+# File naming conventions
+naming_conventions:
+  completed: "FEATURE_NAME_IMPLEMENTATION.md"
+  status: "FEATURE_NAME_STATUS.md"
+  work-in-progress: "FEATURE_NAME_DEVELOPMENT.md"
+  archive: "FEATURE_NAME_ARCHIVED_YYYY-MM-DD.md"
+
+# Review and approval requirements
+approval_levels:
+  status_update:
+    required_reviewers: 1
+    roles: ["technical_lead"]
+  
+  implementation_guide:
+    required_reviewers: 2
+    roles: ["peer_reviewer", "technical_lead"]
+  
+  production_claim:
+    required_reviewers: 3
+    roles: ["hardware_validator", "peer_reviewer", "technical_lead"]
+  
+  certification_claim:
+    required_reviewers: 4
+    roles: ["certification_body", "hardware_validator", "peer_reviewer", "technical_lead"]
+
+# Cross-reference requirements
+cross_references:
+  status_to_implementation: true
+  implementation_to_tests: true
+  archive_to_replacement: true
+  
+# Quality metrics
+quality_metrics:
+  accuracy: "Claims match actual test results"
+  completeness: "All required sections present"
+  timeliness: "Regular updates maintained"
+  consistency: "Follows established conventions"
+  
+# Automation settings
+automation:
+  check_frequency: "weekly"
+  fail_on_warnings: false
+  generate_reports: true
+  report_format: "markdown"
+  
+# Notification settings
+notifications:
+  outdated_documents: true
+  prohibited_terms: true
+  broken_links: true
+  missing_sections: true

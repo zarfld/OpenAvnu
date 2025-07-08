@@ -104,7 +104,7 @@ void demo_milan_clock_quality() {
     
     std::cout << "Profile: " << milan_profile.profile_description << "\n";
     std::cout << "Monitoring enabled with 125ms measurement interval\n";
-    std::cout << "Target accuracy: ±" << milan_profile.clock_quality_target_accuracy_ns << "ns\n\n";
+    std::cout << "Target accuracy: +/-" << milan_profile.clock_quality_target_accuracy_ns << "ns\n\n";
     
     // Simulate lock acquisition and stable operation
     SyncMessageSimulator simulator(100.0, 50.0); // Start with 100ns mean error
@@ -182,7 +182,7 @@ void demo_automotive_clock_quality() {
     auto_profile.enable_clock_quality_monitoring();
     
     std::cout << "Profile: " << auto_profile.profile_description << "\n";
-    std::cout << "Enhanced requirements: ±50ns accuracy, immediate asCapable\n\n";
+    std::cout << "Enhanced requirements: +/-50ns accuracy, immediate asCapable\n\n";
     
     // Simulate immediate lock (automotive requirement)
     SyncMessageSimulator simulator(5.0, 15.0); // Very good accuracy from start

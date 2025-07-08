@@ -1,4 +1,3 @@
-
 .. image:: avnu_logo.png
 
 |
@@ -11,6 +10,20 @@ OpenAvnu
 ========
 
 The OpenAvnu project is sponsored by the Avnu Alliance.
+
+📋 **Project Status**: ⚠️ **DEVELOPMENT/TESTING** - Core gPTP Clock Quality Testing Framework implemented, hardware validation required
+
+⚠️ **Hardware Testing Required**: Intel i210/i219 NIC validation needed on Windows 10/11 and Linux
+
+📚 **Documentation**: **FULLY ORGANIZED** - All documentation cleaned up and properly categorized
+
+🎯 **Quick Start**: See `PROJECT_OVERVIEW.md <PROJECT_OVERVIEW.md>`_ for current status and `docs/README.md <docs/README.md>`_ for organized documentation
+
+📁 **Documentation Structure**:
+- **docs/completed/** - Production-ready documentation (25 files)
+- **docs/work-in-progress/** - Active development (2 files)  
+- **docs/status/** - Current project status (1 file)
+- **docs/archive/** - Obsolete/redundant documentation (3 files)
 
 The intent is to provide components for building AVB/TSN systems. The repository
 contains primarily network building block components - drivers, libraries,

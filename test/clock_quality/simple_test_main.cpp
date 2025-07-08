@@ -60,7 +60,7 @@ void test_metrics_math() {
             break;
         }
     }
-    SimpleTest::assert_true(all_within_80ns, "All test values should be within ±80ns");
+    SimpleTest::assert_true(all_within_80ns, "All test values should be within +/-80ns");
 }
 
 // Test TLV data structure basics
@@ -94,13 +94,13 @@ void test_profile_concepts() {
     
     SimpleTest::assert_equal(-3, milan_sync_interval_log, "Milan should use 125ms sync interval");
     SimpleTest::assert_equal(15, milan_late_response_ms, "Milan should have 15ms late response threshold");
-    SimpleTest::assert_equal(80, milan_accuracy_ns, "Milan should require ±80ns accuracy");
+    SimpleTest::assert_equal(80, milan_accuracy_ns, "Milan should require +/-80ns accuracy");
     
     // Automotive profile concepts
     int automotive_accuracy_ns = 50; // Stricter than Milan
     bool automotive_immediate_ascapable = true;
     
-    SimpleTest::assert_equal(50, automotive_accuracy_ns, "Automotive should require ±50ns accuracy");
+    SimpleTest::assert_equal(50, automotive_accuracy_ns, "Automotive should require +/-50ns accuracy");
     SimpleTest::assert_true(automotive_immediate_ascapable, "Automotive should require immediate asCapable");
     
     // AVnu Base profile concepts
@@ -115,16 +115,16 @@ void test_profile_concepts() {
 void test_compliance_logic() {
     // Test certification requirements logic
     
-    // Test lock time requirement (≤6 seconds)
+    // Test lock time requirement (<=6 seconds)
     int lock_time_seconds = 4;
     bool meets_lock_time = lock_time_seconds <= 6;
-    SimpleTest::assert_true(meets_lock_time, "4 seconds should meet ≤6 second lock time requirement");
+    SimpleTest::assert_true(meets_lock_time, "4 seconds should meet <=6 second lock time requirement");
     
     lock_time_seconds = 8;
     meets_lock_time = lock_time_seconds <= 6;
-    SimpleTest::assert_false(meets_lock_time, "8 seconds should fail ≤6 second lock time requirement");
+    SimpleTest::assert_false(meets_lock_time, "8 seconds should fail <=6 second lock time requirement");
     
-    // Test accuracy requirement (±80ns)
+    // Test accuracy requirement (+/-80ns)
     std::vector<int64_t> good_errors = {-75, -40, 0, 35, 78};
     bool meets_accuracy = true;
     for (auto error : good_errors) {
@@ -133,7 +133,7 @@ void test_compliance_logic() {
             break;
         }
     }
-    SimpleTest::assert_true(meets_accuracy, "All errors within ±80ns should pass accuracy requirement");
+    SimpleTest::assert_true(meets_accuracy, "All errors within +/-80ns should pass accuracy requirement");
     
     std::vector<int64_t> bad_errors = {-75, -40, 85, 35, 78}; // 85ns exceeds limit
     meets_accuracy = true;
@@ -143,7 +143,7 @@ void test_compliance_logic() {
             break;
         }
     }
-    SimpleTest::assert_false(meets_accuracy, "Any error exceeding ±80ns should fail accuracy requirement");
+    SimpleTest::assert_false(meets_accuracy, "Any error exceeding +/-80ns should fail accuracy requirement");
     
     // Test stability requirement (5-minute observation)
     int observation_window_seconds = 300; // 5 minutes
