@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\build-intel-hal\CMakeFiles\6f13af9acc345bd253984be3ce5990b4\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E37B1C33-69F8-3253-817F-D3A1C61768D4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
