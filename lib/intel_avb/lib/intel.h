@@ -182,6 +182,10 @@ uint32_t intel_get_capabilities(device_t *dev);
 const char *intel_get_device_name(device_t *dev);
 int intel_has_capability(device_t *dev, uint32_t capability);
 
+/* Common Device Management */
+int intel_common_init(device_t *dev);
+void intel_common_cleanup(device_t *dev);
+
 #ifdef __cplusplus
 }
 #endif

@@ -13,10 +13,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <shellapi.h>  /* For IsUserAnAdmin */
 
 #include "intel.h"
 #include "intel_private.h"
 #include "intel_windows.h"
+
+/* Link with Shell32.lib for IsUserAnAdmin */
+#pragma comment(lib, "Shell32.lib")
 
 /* Windows-specific error mappings */
 #define WIN_SUCCESS         0

@@ -58,6 +58,10 @@ struct intel_private {
     int (*setup_fp)(struct intel_private *priv, struct tsn_fp_config *config);
     int (*setup_ptm)(struct intel_private *priv, struct ptm_config *config);
     
+    /* Platform-specific operations */
+    const struct platform_ops *platform_ops;
+    void *platform_data;  /* Platform-specific context (e.g., Windows HW context) */
+    
     /* MDIO handlers (I219) */
     int (*mdio_read)(struct intel_private *priv, uint32_t page, uint32_t reg, uint16_t *value);
     int (*mdio_write)(struct intel_private *priv, uint32_t page, uint32_t reg, uint16_t value);
