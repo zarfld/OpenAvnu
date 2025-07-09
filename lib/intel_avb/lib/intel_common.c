@@ -36,6 +36,28 @@
 #include <string.h>
 #include <errno.h>
 
+/* Windows compatibility for error codes */
+#ifdef _WIN32
+#ifndef EINVAL
+#define EINVAL          22
+#endif
+#ifndef ENODEV
+#define ENODEV          19
+#endif
+#ifndef ENOTSUP
+#define ENOTSUP         129
+#endif
+#ifndef ENOMEM
+#define ENOMEM          12
+#endif
+#ifndef ENOSPC
+#define ENOSPC          28
+#endif
+#ifndef EMSGSIZE
+#define EMSGSIZE        90
+#endif
+#endif
+
 #include "intel.h"
 #include "intel_private.h"
 
@@ -76,6 +98,9 @@ static const struct intel_device_info intel_devices[] = {
     { 0x15d8, INTEL_DEVICE_I219, 
       INTEL_CAP_BASIC_1588 | INTEL_CAP_MDIO,
       "I219-V", "Intel I219-V Gigabit Network Connection" },
+    { 0x0dc7, INTEL_DEVICE_I219, 
+      INTEL_CAP_BASIC_1588 | INTEL_CAP_MDIO,
+      "I219-LM", "Intel I219-LM Gigabit Network Connection (22)" },
     
     /* I225 Series */
     { 0x15f2, INTEL_DEVICE_I225, 

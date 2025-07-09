@@ -34,6 +34,10 @@
 #ifndef _INTEL_H_DEFINED_
 #define _INTEL_H_DEFINED_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <sys/types.h>
 #include <stdint.h>
 #include <time.h>
@@ -176,5 +180,10 @@ int intel_mdio_write(device_t *dev, uint32_t page, uint32_t reg, uint16_t value)
 int intel_get_device_info(device_t *dev, char *info_buffer, size_t buffer_size);
 uint32_t intel_get_capabilities(device_t *dev);
 const char *intel_get_device_name(device_t *dev);
+int intel_has_capability(device_t *dev, uint32_t capability);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _INTEL_H_DEFINED_ */
