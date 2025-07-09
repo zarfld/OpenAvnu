@@ -46,9 +46,9 @@
 - [x] Created specific test plan for SuperMicro X8DA6 configuration ✅
 - [x] **HARDWARE AVAILABLE**: 2x SuperMicro X8DA6 with Intel i210 + Windows 10 ✅
 - [x] **HARDWARE AVAILABLE**: 1x SuperMicro X8DA6 with Intel i225 dual port + Windows 10 ✅
-- [ ] **IMMEDIATE**: Set up network topology for testing (see `docs/HARDWARE_TEST_PLAN_SUPERMICRO_X8DA6.md`)
-- [ ] **IMMEDIATE**: Install Intel NIC drivers on all systems
-- [ ] **IMMEDIATE**: Install OpenAvnu on all systems
+- [X] **IMMEDIATE**: Set up network topology for testing (see `docs/HARDWARE_TEST_PLAN_SUPERMICRO_X8DA6.md`)
+- [X] **IMMEDIATE**: Install Intel NIC drivers on all systems
+- [X] **IMMEDIATE**: Install OpenAvnu on all systems
 - [ ] **IMMEDIATE**: Begin basic functionality testing
 
 ## 📋 **NEXT WEEK (July 15-22, 2025)**

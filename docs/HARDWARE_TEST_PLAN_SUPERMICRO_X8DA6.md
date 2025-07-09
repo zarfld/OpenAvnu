@@ -15,22 +15,17 @@
 
 ### **Test System 2: SuperMicro X8DA6 + i210**
 - **Motherboard**: SuperMicro X8DA6  
-- **NIC**: Intel i210 (additional installed)
+- **NIC**: Intel i210 (additional installed) / Intel i225 (dual port)
 - **OS**: Windows 10
 - **Role**: Secondary test node
 
-### **Test System 3: SuperMicro X8DA6 + i225**
-- **Motherboard**: SuperMicro X8DA6
-- **NIC**: Intel i225 (dual port)
-- **OS**: Windows 10
-- **Role**: Advanced testing node
 
 ## 🎯 **Test Objectives**
 
 ### **Phase 1: Basic Hardware Validation**
 - ✅ **Hardware Available**: All test systems ready
-- [ ] **Driver Installation**: Install Intel NIC drivers
-- [ ] **Device Recognition**: Verify Windows recognizes NICs
+- [x] **Driver Installation**: Install Intel NIC drivers
+- [x] **Device Recognition**: Verify Windows recognizes NICs
 - [ ] **Basic Connectivity**: Test network communication
 - [ ] **OpenAvnu Installation**: Install OpenAvnu on all systems
 
