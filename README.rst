@@ -145,6 +145,39 @@ For detailed information about gPTP configuration and troubleshooting, see
 **Important:** gPTP must be running before starting any AVTP applications, as
 proper time synchronization is required for standards-compliant operation.
 
+Intel Ethernet Hardware Abstraction Layer (HAL)
+===============================================
+
+OpenAvnu includes a comprehensive Intel Ethernet HAL that provides native hardware
+support for Intel I210, I219, I225, and I226 network adapters across Windows and Linux.
+
+**Supported Hardware:**
+
+- **Intel I210** (0x1533, 0x1536, 0x1537) - Basic IEEE 1588, MMIO, DMA
+- **Intel I219** (0x15B7, 0x15D7, 0x0DC7, etc.) - Basic IEEE 1588, MDIO PHY access  
+- **Intel I225** (0x15F2, 0x15F3) - Enhanced timestamping, TSN TAS/FP, PCIe PTM, 2.5G
+- **Intel I226** (0x125B, 0x125C) - Next-gen 2.5G with all I225 features + improvements
+
+**Platform Integration:**
+
+- **Windows**: Native NDIS integration with ``NDIS_TIMESTAMP_CAPABILITIES``
+- **Linux**: PTP Hardware Clock (``/dev/ptp*``) and ethtool integration
+
+**Key Features:**
+
+- Precise IEEE 1588 hardware timestamping
+- TSN Time Aware Shaping and Frame Preemption (I225/I226)
+- Cross-platform capability detection
+- Native OS API integration for optimal performance
+
+**Usage:**
+
+The Intel HAL is automatically built with OpenAvnu::
+
+    cmake .. -DOPENAVNU_BUILD_INTEL_HAL=ON
+
+For detailed integration examples, see ``thirdparty/intel-ethernet-hal/OPENAVNU_INTEGRATION.md``.
+
 Apple Vendor PTP Profile
 ========================
 

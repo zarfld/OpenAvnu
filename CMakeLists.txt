@@ -74,6 +74,17 @@ endif()
 # Third-party libraries
 add_subdirectory("thirdparty/cpputest")
 
+# Intel Ethernet Hardware Abstraction Layer
+option(OPENAVNU_BUILD_INTEL_HAL "Build Intel Ethernet HAL for I210/I219/I225/I226 support" ON)
+
+if(OPENAVNU_BUILD_INTEL_HAL)
+    message(STATUS "Building with Intel Ethernet HAL for hardware timestamping")
+    add_subdirectory("thirdparty/intel-ethernet-hal")
+    set(OPENAVNU_INTEL_HAL_AVAILABLE TRUE)
+else()
+    set(OPENAVNU_INTEL_HAL_AVAILABLE FALSE)
+endif()
+
 # Optional gPTP daemon for time synchronization
 option(OPENAVNU_BUILD_GPTP "Build gPTP daemon for time synchronization" ON)
 
