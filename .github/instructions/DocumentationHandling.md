@@ -3,7 +3,7 @@ applyTo: '**'
 ---
 Coding standards, domain knowledge, and preferences that AI should follow.
 
-Never promote a success until it has been confirmed by a test.instructions
+Never promote a success or readyness until it has been confirmed by a test.instructions
 
 after you complete a task ensure Todo.md is uptodated
 
