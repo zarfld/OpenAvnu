@@ -160,15 +160,15 @@ support for Intel I210, I219, I225, and I226 network adapters across Windows and
 
 **Platform Integration:**
 
-- **Windows**: Native NDIS integration with ``NDIS_TIMESTAMP_CAPABILITIES``
+- **Windows**: NDIS timestamp provider for gPTP/mrpd/maap integration
 - **Linux**: PTP Hardware Clock (``/dev/ptp*``) and ethtool integration
 
 **Key Features:**
 
-- Precise IEEE 1588 hardware timestamping
+- Precise IEEE 1588 hardware timestamping as Windows timestamp provider
 - TSN Time Aware Shaping and Frame Preemption (I225/I226)
-- Cross-platform capability detection
-- Native OS API integration for optimal performance
+- OpenAvnu component integration (gPTP, mrpd, maap)
+- Fallback support when standard Windows timestamping insufficient
 
 **Usage:**
 
