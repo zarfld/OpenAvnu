@@ -7,8 +7,37 @@ param(
     [string]$LogPath = "i210_register_test_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
 )
 
-Write-Host "=== Intel I210 Register Access Test ==="
-Write-Host "Testing register accessibility for I210 TimeSync features"
+# Function to write output to both console and log
+function Write-LogOutput {
+    param(
+        [string]$Message,
+        [string]$ForegroundColor = "White"
+    )
+    
+    Write-Host $Message -ForegroundColor $ForegroundColor
+    
+    if ($SaveLog) {
+        $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        "[$timestamp] $Message" | Out-File -FilePath $LogPath -Append -Encoding UTF8
+    }
+}
+
+# Initialize log file
+if ($SaveLog) {
+    $logHeader = @"
+=================================================================
+Intel I210 Register Access Test Log
+Started: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+Script Version: 1.0
+=================================================================
+
+"@
+    $logHeader | Out-File -FilePath $LogPath -Encoding UTF8
+    Write-Host "Log file will be saved to: $LogPath" -ForegroundColor Cyan
+}
+
+Write-LogOutput "=== Intel I210 Register Access Test ==="
+Write-LogOutput "Testing register accessibility for I210 TimeSync features"
 
 # I210 TimeSync Register Addresses (from OpenAvnu source)
 $I210_REGISTERS = @{
@@ -41,7 +70,7 @@ $I210_REGISTERS = @{
     "SYSTIMR"    = 0x0B6F8  # System time register Residue
 }
 
-Write-Host "Phase 1: Intel I210 Device Detection"
+Write-LogOutput "Phase 1: Intel I210 Device Detection"
 
 # Check for Intel I210 device
 $networkAdapters = Get-WmiObject -Class Win32_NetworkAdapter | Where-Object { 
@@ -50,53 +79,53 @@ $networkAdapters = Get-WmiObject -Class Win32_NetworkAdapter | Where-Object {
 
 if ($networkAdapters) {
     foreach ($adapter in $networkAdapters) {
-        Write-Host "Found I210 adapter: $($adapter.Description)" -ForegroundColor Green
-        Write-Host "  Device ID: $($adapter.DeviceID)"
-        Write-Host "  PNP Device ID: $($adapter.PNPDeviceID)"
-        Write-Host "  MAC Address: $($adapter.MACAddress)"
+        Write-LogOutput "Found I210 adapter: $($adapter.Description)" "Green"
+        Write-LogOutput "  Device ID: $($adapter.DeviceID)"
+        Write-LogOutput "  PNP Device ID: $($adapter.PNPDeviceID)"
+        Write-LogOutput "  MAC Address: $($adapter.MACAddress)"
         
         # Get PCI information
         if ($adapter.PNPDeviceID -match "PCI\\VEN_(\w+)&DEV_(\w+)") {
             $vendorID = $matches[1]
             $deviceID = $matches[2]
-            Write-Host "  PCI Vendor ID: $vendorID"
-            Write-Host "  PCI Device ID: $deviceID"
+            Write-LogOutput "  PCI Vendor ID: $vendorID"
+            Write-LogOutput "  PCI Device ID: $deviceID"
             
             # Validate Intel I210 device IDs
             $i210DeviceIDs = @("1533", "1536", "1537", "1538", "1539", "157B", "157C")
             if ($i210DeviceIDs -contains $deviceID.ToUpper()) {
-                Write-Host "  Confirmed I210 series device" -ForegroundColor Green
+                Write-LogOutput "  Confirmed I210 series device" "Green"
             } else {
-                Write-Host "  Warning: Device ID $deviceID not in known I210 range" -ForegroundColor Yellow
+                Write-LogOutput "  Warning: Device ID $deviceID not in known I210 range" "Yellow"
             }
         }
     }
 } else {
-    Write-Host "No Intel I210 adapters detected" -ForegroundColor Red
+    Write-LogOutput "No Intel I210 adapters detected" "Red"
 }
 
-Write-Host "
+Write-LogOutput "
 Phase 2: System Requirements Check"
 
 # Check if running as administrator
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")
-Write-Host "Administrator privileges: $isAdmin"
+Write-LogOutput "Administrator privileges: $isAdmin"
 
 # Check for hypervisor
 $virtualizationEnabled = (Get-WmiObject -Class Win32_ComputerSystem).HypervisorPresent
-Write-Host "Hypervisor present: $virtualizationEnabled"
+Write-LogOutput "Hypervisor present: $virtualizationEnabled"
 
-Write-Host "
+Write-LogOutput "
 Phase 3: Register Analysis"
-Write-Host "Analyzing $($I210_REGISTERS.Count) I210 TimeSync registers..."
+Write-LogOutput "Analyzing $($I210_REGISTERS.Count) I210 TimeSync registers..."
 
 foreach ($regName in $I210_REGISTERS.Keys) {
     $regAddr = $I210_REGISTERS[$regName]
     $regAddrHex = "0x{0:X6}" -f $regAddr
-    Write-Host "  $regName ($regAddrHex)"
+    Write-LogOutput "  $regName ($regAddrHex)"
 }
 
-Write-Host "
+Write-LogOutput "
 Phase 4: Feasibility Assessment"
 
 # Calculate feasibility score
@@ -110,7 +139,7 @@ if (-not $virtualizationEnabled) { $feasibilityScore += 2 }
 # Additional checks would add more points
 $feasibilityScore += 2  # Base implementation possibility
 
-Write-Host "Feasibility Score: $feasibilityScore/$maxScore"
+Write-LogOutput "Feasibility Score: $feasibilityScore/$maxScore"
 
 $feasibilityLevel = switch ($feasibilityScore) {
     {$_ -ge 8} { "HIGH - Direct register access highly feasible" }
@@ -119,28 +148,47 @@ $feasibilityLevel = switch ($feasibilityScore) {
     default { "VERY LOW - Direct register access not recommended" }
 }
 
-Write-Host "Feasibility Level: $feasibilityLevel" -ForegroundColor Cyan
+Write-LogOutput "Feasibility Level: $feasibilityLevel" "Cyan"
 
-Write-Host "
+Write-LogOutput "
 Recommendations:"
 if ($feasibilityScore -ge 5) {
-    Write-Host "   Consider developing custom kernel driver for register access"
-    Write-Host "   Implement memory-mapped I/O for register operations"
-    Write-Host "   Start with read-only register access for SYSTIM registers"
+    Write-LogOutput "   Consider developing custom kernel driver for register access"
+    Write-LogOutput "   Implement memory-mapped I/O for register operations"
+    Write-LogOutput "   Start with read-only register access for SYSTIM registers"
 } else {
-    Write-Host "   Direct register access not recommended on this system"
-    Write-Host "   Consider using enhanced software timestamping instead"
-    Write-Host "   Evaluate alternative hardware with better Windows support"
+    Write-LogOutput "   Direct register access not recommended on this system"
+    Write-LogOutput "   Consider using enhanced software timestamping instead"
+    Write-LogOutput "   Evaluate alternative hardware with better Windows support"
 }
 
-Write-Host "
+Write-LogOutput "
 === TEST COMPLETED ==="
-Write-Host "Recommended implementation path: "
+Write-LogOutput "Recommended implementation path: "
+
+# Save final results to log
+if ($SaveLog) {
+    $results = @{
+        Feasible = ($feasibilityScore -ge 5)
+        Score = $feasibilityScore
+        MaxScore = $maxScore
+        DeviceDetected = ($null -ne $networkAdapters)
+        FeasibilityLevel = $feasibilityLevel
+    }
+    
+    $resultsJson = $results | ConvertTo-Json -Depth 2
+    Write-LogOutput "
+Final Results (JSON):"
+    Write-LogOutput $resultsJson
+    
+    Write-LogOutput "
+Log saved to: $LogPath" "Green"
+}
 
 return @{
     Feasible = ($feasibilityScore -ge 5)
     Score = $feasibilityScore
     MaxScore = $maxScore
-    DeviceDetected = ($networkAdapters -ne $null)
+    DeviceDetected = ($null -ne $networkAdapters)
     FeasibilityLevel = $feasibilityLevel
 }
