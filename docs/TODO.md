@@ -46,9 +46,10 @@
 - [x] Created specific test plan for SuperMicro X8DA6 configuration ✅
 - [x] **HARDWARE AVAILABLE**: 2x SuperMicro X8DA6 with Intel i210 + Windows 10 ✅
 - [x] **HARDWARE AVAILABLE**: 1x SuperMicro X8DA6 with Intel i225 dual port + Windows 10 ✅
-- [X] **IMMEDIATE**: Set up network topology for testing (see `docs/HARDWARE_TEST_PLAN_SUPERMICRO_X8DA6.md`)
-- [X] **IMMEDIATE**: Install Intel NIC drivers on all systems
-- [X] **IMMEDIATE**: Install OpenAvnu on all systems
+- [x] **TEST SCRIPTS READY**: Created comprehensive I210 and I225/I226 register access test scripts ✅
+- [ ] **IMMEDIATE**: Set up network topology for testing (see `docs/HARDWARE_TEST_PLAN_SUPERMICRO_X8DA6.md`)
+- [ ] **IMMEDIATE**: Install Intel NIC drivers on all systems
+- [ ] **IMMEDIATE**: Install OpenAvnu on all systems
 - [ ] **IMMEDIATE**: Begin basic functionality testing
 
 ## 📋 **NEXT WEEK (July 15-22, 2025)**
@@ -90,6 +91,24 @@
   - 🔧 **NEXT**: Implement i225 hardware timestamping support
   - 🔧 **NEXT**: Add i225 version detection for IPG handling
   - 🔧 **NEXT**: Test i225 OID support on actual hardware
+
+### **PowerShell Test Scripts** ✅ **COMPLETED**
+- **Status**: ✅ **COMPLETED** (July 9, 2025)
+- **Priority**: HIGH
+- **Created**: 
+  - ✅ `test_i210_register_access.ps1` - Comprehensive I210 register access testing
+  - ✅ `test_i225_register_access.ps1` - Comprehensive I225/I226 register access testing
+- **Features**:
+  - ✅ Device detection for I210 and I225/I226 devices
+  - ✅ Driver status and version checking
+  - ✅ System prerequisites analysis (Windows version, Admin rights)
+  - ✅ Register accessibility assessment
+  - ✅ TSN feature detection (I225/I226 specific)
+  - ✅ Feasibility scoring and recommendations
+- **Next Steps**:
+  - 🔧 Run scripts on target hardware systems to validate setup
+  - 🔧 Use script results to guide implementation priorities
+  - 🔧 Document actual hardware capabilities vs. theoretical
 
 ### **Intel i225 Support Enhancement** - **CRITICAL PRIORITY** ⚠️
 
