@@ -1,0 +1,31 @@
+﻿{
+    "system_info":  {
+                        "cpu":  "13th Gen Intel(R) Core(TM) i5-13600HX",
+                        "os_version":  "Microsoft Windows 11 Enterprise",
+                        "memory_gb":  31.69,
+                        "os_build":  "22631"
+                    },
+    "network_adapter":  {
+                            "name":  "Ethernet",
+                            "gptp_executable":  "D:\\Repos\\OpenAvnu\\build-intel-hal\\thirdparty\\gptp\\RelWithDebInfo\\gptp.exe"
+                        },
+    "summary":  {
+                    "total_tests":  6,
+                    "failed":  1,
+                    "passed":  5
+                },
+    "test_results":  {
+                         "Adapter Details":  true,
+                         "Driver Capabilities":  true,
+                         "Python Tools":  false,
+                         "Interface Detection":  true,
+                         "gPTP Build":  true,
+                         "gPTP Basic Test":  true
+                     },
+    "metadata":  {
+                     "username":  "ZARFLD",
+                     "generation_time":  "2025-07-10T10:30:00Z",
+                     "computer_name":  "ATGRZWN313892",
+                     "script_version":  "1.0"
+                 }
+}

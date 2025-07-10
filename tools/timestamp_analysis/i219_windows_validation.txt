@@ -1,0 +1,24 @@
+﻿Intel I219-LM Windows Validation Report
+======================================
+
+Generated: 2025-07-10T10:30:00Z
+Computer: ATGRZWN313892
+User: ZARFLD
+
+System Information:
+  OS: Microsoft Windows 11 Enterprise (Build 22631)
+  CPU: 13th Gen Intel(R) Core(TM) i5-13600HX
+  Memory: 31.69 GB
+
+Network Adapter:
+  Name: Ethernet
+  gPTP Executable: D:\Repos\OpenAvnu\build-intel-hal\thirdparty\gptp\RelWithDebInfo\gptp.exe
+
+Test Results:
+  [PASS] Adapter Details   [PASS] Driver Capabilities   [FAIL] Python Tools   [PASS] Interface Detection   [PASS] gPTP Build   [PASS] gPTP Basic Test
+
+Summary:
+  Total Tests: 6
+  Passed: 5
+  Failed: 1
+  Success Rate: 83.3%

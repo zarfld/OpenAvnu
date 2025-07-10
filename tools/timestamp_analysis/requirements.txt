@@ -1,0 +1,21 @@
+# Intel I219-LM Analysis Tool Requirements
+# Install with: pip install -r requirements.txt
+
+# Core scientific computing
+numpy>=1.20.0
+matplotlib>=3.3.0
+
+# System monitoring and process utilities
+psutil>=5.8.0
+
+# Data analysis and statistics
+scipy>=1.6.0
+
+# Optional: Enhanced data handling
+pandas>=1.3.0
+
+# Optional: Advanced plotting
+seaborn>=0.11.0
+
+# Optional: Progress bars for long-running analysis
+tqdm>=4.60.0
