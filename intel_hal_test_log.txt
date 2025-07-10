@@ -18,11 +18,11 @@ Device 1:
   Capabilities: 0x00000341
     [OK] IEEE 1588 Timestamping unterstützt
     [OK] Timestamping aktiviert
-    [OK] Timestamp[0]: 1204.923808306
-    [OK] Timestamp[1]: 1205.123934606
-    [OK] Timestamp[2]: 1205.324139106
-    [OK] Timestamp[3]: 1205.524286606
-    [OK] Timestamp[4]: 1205.724507506
+    [OK] Timestamp[0]: 633.128400835
+    [OK] Timestamp[1]: 633.328439435
+    [OK] Timestamp[2]: 633.528751735
+    [OK] Timestamp[3]: 633.728829135
+    [OK] Timestamp[4]: 633.929012735
     [OK] Timestamps ändern sich wie erwartet.
 
 Device 2:
@@ -39,11 +39,11 @@ Device 2:
   Capabilities: 0x0000037F
     [OK] IEEE 1588 Timestamping unterstützt
     [OK] Timestamping aktiviert
-    [OK] Timestamp[0]: 1205.730599206
-    [OK] Timestamp[1]: 1205.930626906
-    [OK] Timestamp[2]: 1206.130781306
-    [OK] Timestamp[3]: 1206.331008006
-    [OK] Timestamp[4]: 1206.531261706
+    [OK] Timestamp[0]: 633.934360535
+    [OK] Timestamp[1]: 634.134678535
+    [OK] Timestamp[2]: 634.334822035
+    [OK] Timestamp[3]: 634.535048735
+    [OK] Timestamp[4]: 634.735229435
     [OK] Timestamps ändern sich wie erwartet.
 
 [DONE] Test abgeschlossen.
