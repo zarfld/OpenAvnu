@@ -178,6 +178,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{52083A44-C2DF-3EB1-B01D-AF809B300A20}</Project>
       <Name>hal_device_info</Name>
     </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build-intel-hal\thirdparty\intel-ethernet-hal\examples\hal_enable_timestamping.vcxproj">
+      <Project>{C76003FC-D8CC-3562-ADAA-E229B533187F}</Project>
+      <Name>hal_enable_timestamping</Name>
+    </ProjectReference>
     <ProjectReference Include="D:\Repos\OpenAvnu\build-intel-hal\thirdparty\intel-ethernet-hal\intel-ethernet-hal.vcxproj">
       <Project>{60480B95-8F6C-3501-8FB7-6DD2931E0629}</Project>
       <Name>intel-ethernet-hal</Name>

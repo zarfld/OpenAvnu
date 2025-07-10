@@ -1,4 +1,4 @@
-prefix=C:/Program Files/open-avb
+prefix=./Install
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

@@ -3,7 +3,7 @@
 ####### Any changes to this file will be overwritten by the next CMake run ####
 ####### The input file was CppUTestConfig.cmake.build.in                            ########
 
-get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/C:/Program Files/open-avb" ABSOLUTE)
+get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../thirdparty/cpputest/Install" ABSOLUTE)
 
 macro(set_and_check _var _file)
   set(${_var} "${_file}")
