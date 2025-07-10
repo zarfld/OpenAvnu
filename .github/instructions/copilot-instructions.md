@@ -143,3 +143,34 @@ Abstraction layers must:
 - **Discuss Before You Build**  
 - Submit a concept as a pull request or internal review before beginning implementation.  
 - Encourage feedback and iteration early in the process.
+- Do not rely on assumptions. Always verify behavior, inputs, and results through tests, logs, documentation, or direct inspection. If something is unclear, investigate until you are certain.
+
+⚠️ Avoid Assumptions – Verify Everything
+Do not rely on assumptions. Always verify behavior, inputs, outputs, and side effects through testing, logs, or direct inspection. If something is unclear — investigate until it’s confirmed.
+
+Document Lessons Learned
+------------------------
+
+To avoid repeating mistakes and to enable optimized workflows, all important discoveries and debugging insights must be documented.
+
+Use the 'docs/insights/' Folder:
+- Store each lesson learned or technical insight as a separate file in docs/insights/.
+
+Purpose:
+- Prevent recurring mistakes and inefficient trial-and-error
+- Capture non-obvious behavior or system quirks
+- Enable better decision-making and onboarding
+- Serve as a long-term reference for debugging or optimizing
+
+File Naming Convention:
+- docs/insights/YYYY-MM-DD_short-title.md
+
+Each Insight File Should Contain:
+- Context        – What problem was being worked on
+- Observation    – What was discovered or unexpected
+- Root Cause     – (if identified)
+- Resolution     – What fixed or improved the situation
+- Takeaways      – Key points to remember or apply in the future
+
+Guideline:
+- If something took more than 15 minutes to figure out and might happen again — write it down.
