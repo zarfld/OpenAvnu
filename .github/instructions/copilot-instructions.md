@@ -80,58 +80,66 @@ These rules define coding standards, collaboration protocols, and repository hyg
   * Mark areas needing cleanup in code using `TODO (refactor)`
   * Schedule regular refactoring sessions to resolve tech debt items from `Todo.md`
 
+* **Completed Taskss**
+  Use `docs/completed/` to log completed tasks, features, or fixes. Include:
+
+  * Date of completion
+  * Description of work done
+  * Any relevant links or references
+* **Archive Outdated Content**
+  Move outdated or irrelevant documentation to `docs/archive/` to keep the main docs clean and focused.
+
+* **Work In Progress (WIP) Documentation**
+  Use `docs/work-in-progress/` for ongoing work that is not yet ready for review or merging. Include:
+
+  * Clear status updates
+  * Next steps or blockers
+  * Links to related issues or discussions
+
+* **Implementation Plans**
+if we come up with implementation Plans we should init a new file in `docs/work-in-progress/` folder
+  Use `docs/work-in-progress/` for detailed implementation plans. Include:
+
+  * Background and context
+  * Problem statement
+  * Proposed solution
+  * Risks and open questions
+  * Next steps or milestones
+
+  which should keep maintained while work is in progress.
+
 ---
-🧠 Concept and Design Proposal Rules
-When proposing a new concept, feature, or architecture:
+## 🧠 Concept and Design Proposal Rules
 
-Respect Existing Design Decisions
+When proposing a new **concept**, **feature**, or **architecture**:
 
-Review docs/decisions/ and docs/completed/ before starting any concept.
+- **Respect Existing Design Decisions**  
+- Review `docs/decisions/` and `docs/completed/` before starting any concept.  
+- Avoid contradicting past decisions unless you explicitly justify and document the changes.
 
-Avoid contradicting past decisions unless you explicitly justify and review them.
+- **Create Structured Concept Documents**  
+- Use the `docs/concepts/` folder.  
+- Naming convention:  
+  ```
+  docs/concepts/YYYY-MM-DD_short-title.md
+  ```
+- Each file should include the following sections:
+  - **Background** – context and motivation  
+  - **Problem Statement** – what needs solving  
+  - **Prior Decisions** – list of related ADRs or completed items  
+  - **Proposed Solution** – clear, focused proposal  
+  - **Alternatives Considered**  
+  - **Risks and Open Questions**  
+  - **Next Steps** – implementation or review plan
 
-Create Structured Concept Documents
-
-Use the docs/concepts/ folder.
-
-Naming convention:
-
-bash
-Kopieren
-Bearbeiten
-docs/concepts/YYYY-MM-DD_short-title.md
-Each file should include:
-
-Background – context and motivation
-
-Problem Statement – what needs solving
-
-Prior Decisions – list of related ADRs or completed items
-
-Proposed Solution – clear, focused proposal
-
-Alternatives Considered
-
-Risks and Open Questions
-
-Next Steps – implementation or review plan
-
-Ensure Real Abstractions
-
+- **Ensure Real Abstractions**  
 Abstraction layers must:
+- Be **generic and reusable**  
+- **Hide implementation details** cleanly  
+- Be **extensible** without breaking existing interfaces  
+- **Avoid tight coupling** between layers or modules  
+- Document **extension mechanisms** (e.g., callbacks, interfaces, hooks)
 
-Be generic and reusable
-
-Hide implementation details cleanly
-
-Be extensible without breaking existing interfaces
-
-Avoid tight coupling between layers or modules
-
-Document extension mechanisms (e.g. callbacks, interfaces, hooks)
-
-Discuss Before You Build
-
-Submit a concept as a pull request or for review before starting implementation.
-
-Encourage feedback and iteration before committing to a path..
+- **Discuss Before You Build**  
+- Submit a concept as a pull request or internal review before beginning implementation.  
+- Encourage feedback and iteration early in the process.
