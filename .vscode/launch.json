@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug gPTP",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build-intel-hal/thirdparty/gptp/RelWithDebInfo/gptp.exe",
+            "args": ["C4-62-37-05-B4-65"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build-intel-hal/thirdparty/gptp/RelWithDebInfo",
+            "environment": [],
+            "console": "externalTerminal",
+            "preLaunchTask": "",
+            "symbolSearchPath": "${workspaceFolder}/build-intel-hal/thirdparty/gptp/RelWithDebInfo"
+        },
+        {
+            "name": "Attach to gPTP Process",
+            "type": "cppvsdbg",
+            "request": "attach",
+            "processId": "${command:pickProcess}",
+            "symbolSearchPath": "${workspaceFolder}/build-intel-hal/thirdparty/gptp/RelWithDebInfo"
+        }
+    ]
+}

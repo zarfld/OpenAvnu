@@ -1,7 +1,9 @@
 {
     "files.associations": {
+        ".fantomasignore": "ignore",
         "memory": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "complex": "cpp"
     },
     "editor.defaultFormatter": "ms-vscode.cmake-tools"
 }
