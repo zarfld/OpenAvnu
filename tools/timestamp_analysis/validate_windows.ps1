@@ -1,15 +1,15 @@
-# Intel I219-LM Windows Validation and Testing Script
-# PowerShell script for Windows-specific hardware validation
+# Intel Multi-Adapter Windows Validation and Testing Script
+# PowerShell script for Windows-specific hardware validation (I219, I225, I210)
 
 param(
     [string]$Interface = "",
     [switch]$Verbose = $false,
     [switch]$TestOnly = $false,
-    [string]$OutputPath = "i219_windows_validation"
+    [string]$OutputPath = "adapter_windows_validation"
 )
 
-Write-Host "Intel I219-LM Windows Validation Script" -ForegroundColor Yellow
-Write-Host "========================================" -ForegroundColor Yellow
+Write-Host "Intel Adapter Windows Validation Script (I219/I225/I210)" -ForegroundColor Yellow
+Write-Host "=========================================================" -ForegroundColor Yellow
 
 # Function to write verbose output
 function Write-Verbose-Custom {
@@ -19,29 +19,30 @@ function Write-Verbose-Custom {
     }
 }
 
-# Function to detect I219 interfaces
-function Get-I219Interfaces {
-    Write-Host "`n1. Detecting I219 Network Interfaces..." -ForegroundColor Cyan
-    
+# Function to detect supported Intel interfaces (I219, I225, I210)
+function Get-IntelInterfaces {
+    Write-Host "`n1. Detecting Intel Network Interfaces (I219/I225/I210)..." -ForegroundColor Cyan
     try {
         $adapters = Get-NetAdapter | Where-Object {
-            $_.InterfaceDescription -like "*I219*" -or 
+            $_.InterfaceDescription -match "I219" -or 
+            $_.InterfaceDescription -match "I225" -or 
+            $_.InterfaceDescription -match "I210" -or
             $_.InterfaceDescription -like "*Intel*Ethernet*"
         }
-        
         if ($adapters) {
             Write-Host "Found Intel Ethernet adapters:" -ForegroundColor Green
             foreach ($adapter in $adapters) {
                 Write-Host "  - $($adapter.Name): $($adapter.InterfaceDescription)" -ForegroundColor Green
                 Write-Host "    Status: $($adapter.Status), Speed: $($adapter.LinkSpeed)" -ForegroundColor Gray
-                
-                # Check for I219 specifically
-                if ($adapter.InterfaceDescription -like "*I219*") {
-                    Write-Host "    *** I219-LM DETECTED ***" -ForegroundColor Yellow
-                    return $adapter.Name
+                if ($adapter.InterfaceDescription -match "I219") {
+                    Write-Host "    *** I219 DETECTED ***" -ForegroundColor Yellow
+                } elseif ($adapter.InterfaceDescription -match "I225") {
+                    Write-Host "    *** I225 DETECTED ***" -ForegroundColor Cyan
+                } elseif ($adapter.InterfaceDescription -match "I210") {
+                    Write-Host "    *** I210 DETECTED ***" -ForegroundColor Magenta
                 }
             }
-            return $adapters[0].Name  # Return first Intel adapter if no I219 specifically found
+            return $adapters
         } else {
             Write-Host "No Intel Ethernet adapters found" -ForegroundColor Red
             return $null
@@ -330,8 +331,8 @@ function Generate-Report {
     # Generate text report
     $textPath = "$OutputPath.txt"
     $textReport = @"
-Intel I219-LM Windows Validation Report
-======================================
+Intel Adapter Windows Validation Report (I219/I225/I210)
+=======================================================
 
 Generated: $($report.metadata.generation_time)
 Computer: $($report.metadata.computer_name)
@@ -370,60 +371,66 @@ Summary:
 try {
     $testResults = @{}
     
-    # Detect I219 interface
+    # Detect Intel interfaces
     if ($Interface) {
-        $selectedInterface = $Interface
-        Write-Host "Using specified interface: $selectedInterface" -ForegroundColor Cyan
+        $selectedInterfaces = @($Interface)
+        Write-Host "Using specified interface: $Interface" -ForegroundColor Cyan
     } else {
-        $selectedInterface = Get-I219Interfaces
+        $selectedInterfaces = Get-IntelInterfaces
     }
     
-    if (-not $selectedInterface) {
+    if (-not $selectedInterfaces -or $selectedInterfaces.Count -eq 0) {
         Write-Host "`nValidation FAILED: No suitable network interface found" -ForegroundColor Red
         exit 1
     }
     
-    $testResults["Interface Detection"] = $true
-    
-    # Get adapter details
-    $adapterDetailsResult = Get-AdapterDetails $selectedInterface
-    $testResults["Adapter Details"] = $adapterDetailsResult
-    
-    # Test driver capabilities
-    $driverCapResult = Test-DriverCapabilities $selectedInterface
-    $testResults["Driver Capabilities"] = $driverCapResult
-    
-    # Check gPTP build
-    $gptpPath = Test-GptpBuild
-    $testResults["gPTP Build"] = ($gptpPath -ne $null)
-    
-    # Run gPTP test (if not test-only mode)
-    if (-not $TestOnly) {
-        $gptpTestResult = Test-GptpBasic $gptpPath $selectedInterface
-        $testResults["gPTP Basic Test"] = $gptpTestResult
-    } else {
-        Write-Host "`n5. Skipping gPTP test (TestOnly mode)" -ForegroundColor Yellow
-        $testResults["gPTP Basic Test"] = $null
-    }
-    
-    # Test Python tools
-    $pythonTestResult = Test-PythonTools
-    $testResults["Python Tools"] = $pythonTestResult
-    
-    # Generate report
-    Generate-Report $selectedInterface $gptpPath $testResults $OutputPath
-    
-    # Summary
-    Write-Host "`n========================================" -ForegroundColor Yellow
-    $passedTests = ($testResults.Values | Where-Object { $_ -eq $true }).Count
-    $totalTests = ($testResults.Values | Where-Object { $_ -ne $null }).Count
-    
-    if ($passedTests -eq $totalTests) {
-        Write-Host "Validation PASSED: All tests successful" -ForegroundColor Green
-        exit 0
-    } else {
-        Write-Host "Validation PARTIAL: $passedTests/$totalTests tests passed" -ForegroundColor Yellow
-        exit 2
+    # Loop over all detected interfaces and run tests
+    foreach ($selectedInterface in $selectedInterfaces) {
+        $adapterName = $selectedInterface.Name
+        $outputPath = "${adapterName}_windows_validation"
+        
+        Write-Host "`n========================================" -ForegroundColor Yellow
+        Write-Host "Running tests for adapter: $adapterName" -ForegroundColor Cyan
+        
+        $testResults["Interface Detection"] = $true
+        
+        # Get adapter details
+        $adapterDetailsResult = Get-AdapterDetails $adapterName
+        $testResults["Adapter Details"] = $adapterDetailsResult
+        
+        # Test driver capabilities
+        $driverCapResult = Test-DriverCapabilities $adapterName
+        $testResults["Driver Capabilities"] = $driverCapResult
+        
+        # Check gPTP build
+        $gptpPath = Test-GptpBuild
+        $testResults["gPTP Build"] = ($gptpPath -ne $null)
+        
+        # Run gPTP test (if not test-only mode)
+        if (-not $TestOnly) {
+            $gptpTestResult = Test-GptpBasic $gptpPath $adapterName
+            $testResults["gPTP Basic Test"] = $gptpTestResult
+        } else {
+            Write-Host "`n5. Skipping gPTP test (TestOnly mode)" -ForegroundColor Yellow
+            $testResults["gPTP Basic Test"] = $null
+        }
+        
+        # Test Python tools
+        $pythonTestResult = Test-PythonTools
+        $testResults["Python Tools"] = $pythonTestResult
+        
+        # Generate report
+        Generate-Report $adapterName $gptpPath $testResults $outputPath
+        
+        # Summary
+        $passedTests = ($testResults.Values | Where-Object { $_ -eq $true }).Count
+        $totalTests = ($testResults.Values | Where-Object { $_ -ne $null }).Count
+        
+        if ($passedTests -eq $totalTests) {
+            Write-Host "Validation PASSED for $adapterName: All tests successful" -ForegroundColor Green
+        } else {
+            Write-Host "Validation PARTIAL for $adapterName: $passedTests/$totalTests tests passed" -ForegroundColor Yellow
+        }
     }
     
 } catch {

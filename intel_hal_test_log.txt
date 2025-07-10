@@ -1,0 +1,49 @@
+Intel Ethernet HAL - Vollständiger Systemtest
+============================================
+HAL Version: 1.0.0
+
+Gefundene Geräte: 2
+
+Device 1:
+  Name: I210
+  Description: Intel(R) Ethernet I210-T1 GbE NIC
+  Vendor ID: 0x8086
+  Device ID: 0x1533
+  Family: 1
+  Capabilities: 0x00000341
+  Interface: {CC694DEF-D145-4383-8109-48E46B2E5554}
+  MAC: 00:00:00:00:00:00
+  Speed: 1000 Mbps
+  Link: UP
+  Capabilities: 0x00000341
+    [OK] IEEE 1588 Timestamping unterstützt
+    [OK] Timestamping aktiviert
+    [OK] Timestamp[0]: 1204.923808306
+    [OK] Timestamp[1]: 1205.123934606
+    [OK] Timestamp[2]: 1205.324139106
+    [OK] Timestamp[3]: 1205.524286606
+    [OK] Timestamp[4]: 1205.724507506
+    [OK] Timestamps ändern sich wie erwartet.
+
+Device 2:
+  Name: I225-V
+  Description: Intel(R) Ethernet Controller (3) I225-V
+  Vendor ID: 0x8086
+  Device ID: 0x15F3
+  Family: 3
+  Capabilities: 0x0000037F
+  Interface: {AD466910-F72F-4673-94D4-1E509CA77366}
+  MAC: 00:00:00:00:00:00
+  Speed: 1000 Mbps
+  Link: UP
+  Capabilities: 0x0000037F
+    [OK] IEEE 1588 Timestamping unterstützt
+    [OK] Timestamping aktiviert
+    [OK] Timestamp[0]: 1205.730599206
+    [OK] Timestamp[1]: 1205.930626906
+    [OK] Timestamp[2]: 1206.130781306
+    [OK] Timestamp[3]: 1206.331008006
+    [OK] Timestamp[4]: 1206.531261706
+    [OK] Timestamps ändern sich wie erwartet.
+
+[DONE] Test abgeschlossen.
