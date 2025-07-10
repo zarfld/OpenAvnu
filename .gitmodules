@@ -19,3 +19,6 @@
 [submodule "thirdparty/gptp"]
 	path = thirdparty/gptp
 	url = https://github.com/zarfld/gptp.git
+[submodule "thirdparty/intel-ethernet-hal"]
+	path = thirdparty/intel-ethernet-hal
+	url = https://github.com/zarfld/intel-ethernet-hal.git
