@@ -90,7 +90,7 @@
 - **Status**: EXPANDING TO TIME-CRITICAL APPLICATIONS
 - **Goal**: Prove I219 compatibility with demanding real-time applications
 - **Success Criteria**: Sub-millisecond latency in professional applications
-
+gPTP
 #### ✅ **COMPLETED**: gPTP Direct Timestamping Integration (MAJOR MILESTONE!)
 - [x] Modify gPTP daemon to use Intel HAL as primary timestamp source ✅
 - [x] Implement Intel HAL integration in TX/RX timestamping methods ✅
