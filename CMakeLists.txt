@@ -276,6 +276,17 @@ if(OPENAVNU_USE_OPEN1722)
     add_subdirectory("lib/avtp_pipeline/avtp_open1722")
 endif()
 
+# ==========================================
+# Intel HAL Integration Tests
+# ==========================================
+# Add Intel HAL validation tests if Intel HAL is enabled
+if(OPENAVNU_BUILD_INTEL_HAL)
+    message(STATUS "✅ Adding Intel HAL validation tests")
+    add_subdirectory("tests/intel_hal")
+else()
+    message(STATUS "⏭️  Skipping Intel HAL tests (OPENAVNU_BUILD_INTEL_HAL=OFF)")
+endif()
+
 message("
 -------------------------------------------------------
 OpenAvnu Build information

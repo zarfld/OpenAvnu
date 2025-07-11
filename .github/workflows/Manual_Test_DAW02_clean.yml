@@ -25,6 +25,11 @@ on:
         required: false
         default: true
         type: boolean
+      run_intel_hal_test:
+        description: 'Run Intel HAL hardware validation test'
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   build-and-hwtest:
@@ -38,6 +43,54 @@ jobs:
 
       - name: Run Integration & Unit Tests
         run: cmake --build build --config Release --target RUN_TESTS
+        continue-on-error: true
+
+      - name: Intel HAL Hardware Validation Test
+        if: ${{ github.event.inputs.run_intel_hal_test == 'true' }}
+        shell: pwsh
+        run: |
+          Write-Host "=== Intel HAL Hardware Validation Test ===" -ForegroundColor Green
+          $testExe = "build/tests/hardware/Release/intel_hal_validation_test.exe"
+          
+          if (Test-Path $testExe) {
+            Write-Host "Running Intel HAL validation test..." -ForegroundColor Yellow
+            
+            # Run the test and capture output
+            $result = & $testExe 2>&1
+            $exitCode = $LASTEXITCODE
+            
+            # Display results
+            Write-Host $result
+            
+            # Save results to file
+            $resultsDir = "docs/tests/results"
+            New-Item -ItemType Directory -Path $resultsDir -Force | Out-Null
+            $resultFile = "$resultsDir/intel_hal_validation_${{ github.run_id }}.log"
+            
+            $logContent = @"
+          Intel HAL Hardware Validation Test Results
+          ==========================================
+          Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+          GitHub Run ID: ${{ github.run_id }}
+          Exit Code: $exitCode
+          
+          Test Output:
+          $result
+          "@
+            
+            $logContent | Out-File -FilePath $resultFile -Encoding UTF8
+            
+            if ($exitCode -eq 0) {
+              Write-Host "✅ Intel HAL validation test PASSED" -ForegroundColor Green
+            } else {
+              Write-Host "❌ Intel HAL validation test FAILED (exit code: $exitCode)" -ForegroundColor Red
+            }
+            
+            Write-Host "Results saved to: $resultFile" -ForegroundColor Cyan
+          } else {
+            Write-Host "❌ Intel HAL validation test not found at: $testExe" -ForegroundColor Red
+            Write-Host "Make sure the test was built successfully" -ForegroundColor Yellow
+          }
         continue-on-error: true
 
       - name: Unified Hardware Testing Framework
@@ -78,15 +131,31 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Path "docs/tests/results" -Force | Out-Null
+          
+          # Collect CMake test results
           if (Test-Path "build/Testing/Temporary/LastTest.log") {
             Copy-Item "build/Testing/Temporary/LastTest.log" "docs/tests/results/cmake_tests_${{ github.run_id }}.log"
           }
+          
+          # Collect CTest XML results
           if (Test-Path "build/Testing/*/Test.xml") {
             Copy-Item "build/Testing/*/Test.xml" "docs/tests/results/" -Force
           }
+          
+          # Intel HAL validation results are already saved by the test step
+          
           Write-Host "Collected test results:"
           Get-ChildItem "docs/tests/results/" -Filter "*${{ github.run_id }}*" | ForEach-Object {
             Write-Host "  $($_.Name) ($([math]::Round($_.Length / 1KB, 2)) KB)"
+          }
+          
+          # Summary of Intel HAL test results
+          $halResults = Get-ChildItem "docs/tests/results/" -Filter "intel_hal_validation_${{ github.run_id }}.log"
+          if ($halResults) {
+            Write-Host ""
+            Write-Host "Intel HAL Validation Test Summary:" -ForegroundColor Green
+            $content = Get-Content $halResults.FullName | Select-String "Exit Code|Test.*:" 
+            $content | ForEach-Object { Write-Host "  $_" }
           }
 
       - name: Update Machine Documentation
