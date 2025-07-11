@@ -69,8 +69,46 @@ These rules define coding standards, collaboration protocols, and repository hyg
   * Code comments, where applicable
 
 ---
+## Testing
+* **Test Coverage**
+  All new features and bug fixes must include unit tests with at least 80% coverage.
+* **Integration Tests**
+  Ensure integration tests cover all critical workflows and interactions between components.
+* **Test Documentation**
+  Document test cases and expected outcomes in `docs/tests/`:
+  * Include test setup instructions
+  * Describe test scenarios and expected results
+* **Test Results**
+  Store test results in `docs/tests/results/`:
+  * Include date and time of test runs
+  * Summary of results
+  * Any issues or failures encountered
 
+  * **Test Environment**
+  before running tests, ensure the environment is set up correctly:
+  * Use `docs/machine/` to get Machine-specific information. (create if not exists)
+  * respect machine capabilities and limitations
+  * Document any specific configurations or dependencies required for testing in `docs/tests/setup.md`
+* **Test Automation**
+  Automate tests using CI/CD pipelines where possible. Ensure:
+  * All tests run automatically on pull requests
+  * Test results are reported back to the pull request  
+* **Test Documentation**
+  Document test cases and expected outcomes in `docs/tests/`: 
+  * Include test setup instructions
+  * Describe test scenarios and expected results
+* **Test Results**
+  Store test results in `docs/tests/results/`:
+  * Include date and time of test runs
+  * Summary of results
+  * Any issues or failures encountered
+  
+
+---
 ## 📚 Documentation
+
+ * documentation should be written in english
+ * Use `docs/` for all project documentation. 
 
 * **Design Decision Logs**
   Use `docs/decisions/` to document key architecture or design decisions. Use the [ADR pattern](https://adr.github.io/) for consistency.
@@ -107,6 +145,22 @@ if we come up with implementation Plans we should init a new file in `docs/work-
   * Next steps or milestones
 
   which should keep maintained while work is in progress.
+
+* **Reports and Insights**
+  Use `docs/reports/` for any testresults, reports, metrics, or performance analyses. Include:
+
+  * Date of report
+  * Summary of findings
+  * Any relevant charts or data visualizations
+
+* **Machine Documentation**
+  Use `docs/machine/` for Machine-specific documentation. Include:
+  * Machine configuration details
+  * Hardware specifications
+  * Software versions and dependencies
+  * Known issues or limitations
+
+
 
 ---
 ## 🧠 Concept and Design Proposal Rules
