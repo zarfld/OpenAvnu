@@ -36,6 +36,24 @@
         "when": "!terminalFocus"
     },
     {
+        "key": "ctrl+shift+t ctrl+q",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Build and Run Clock Quality Tests (Windows)",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+t ctrl+shift+q",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Run Clock Quality Tests (Windows)",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+t ctrl+shift+a",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Run All OpenAvnu Tests (Windows)",
+        "when": "!terminalFocus"
+    },
+    {
         "key": "ctrl+shift+d ctrl+h",
         "command": "workbench.action.debug.selectandstart",
         "args": {

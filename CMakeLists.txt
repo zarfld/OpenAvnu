@@ -287,6 +287,18 @@ else()
     message(STATUS "⏭️  Skipping Intel HAL tests (OPENAVNU_BUILD_INTEL_HAL=OFF)")
 endif()
 
+# Clock Quality and gPTP Conformance Tests
+# ==========================================
+# Add comprehensive clock quality and Avnu Alliance conformance tests
+option(OPENAVNU_BUILD_CLOCK_QUALITY_TESTS "Build clock quality and gPTP conformance tests" ON)
+
+if(OPENAVNU_BUILD_CLOCK_QUALITY_TESTS)
+    message(STATUS "✅ Adding Clock Quality and gPTP Conformance tests")
+    add_subdirectory("test/clock_quality")
+else()
+    message(STATUS "⏭️  Skipping Clock Quality tests (OPENAVNU_BUILD_CLOCK_QUALITY_TESTS=OFF)")
+endif()
+
 message("
 -------------------------------------------------------
 OpenAvnu Build information

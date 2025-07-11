@@ -1299,6 +1299,93 @@
 				"focus": true,
 				"panel": "shared"
 			}
+		},
+		{
+			"label": "Build Clock Quality Tests (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release",
+				"--target",
+				"clock_quality_tests"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Clock Quality Tests (Windows)",
+			"type": "shell",
+			"command": ".\\test\\clock_quality\\Release\\clock_quality_tests.exe",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build Clock Quality Tests (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build and Run Clock Quality Tests (Windows)",
+			"type": "shell",
+			"command": ".\\test\\clock_quality\\Release\\clock_quality_tests.exe",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build Clock Quality Tests (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run All OpenAvnu Tests (Windows)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Write-Host '🧪 Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\tests\\intel_hal\\Release\\intel_hal_validation_test.exe'; Write-Host ''; & '.\\test\\clock_quality\\Release\\clock_quality_tests.exe'; Write-Host ''; Write-Host '✅ All OpenAvnu tests completed!' -ForegroundColor Green"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": [
+				"Build All (Windows - CMake)"
+			],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
 		}
 	]
 }

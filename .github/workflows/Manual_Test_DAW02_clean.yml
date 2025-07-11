@@ -174,3 +174,56 @@ jobs:
             docs/tests/results/
             docs/machine/windows_test_system_DAW02.md
           retention-days: 30
+
+      - name: Clock Quality and gPTP Conformance Tests
+        shell: pwsh
+        run: |
+          Write-Host "=== Clock Quality and gPTP Conformance Tests ===" -ForegroundColor Green
+          $testExe = "build/test/clock_quality/Release/clock_quality_tests.exe"
+          
+          if (Test-Path $testExe) {
+            Write-Host "Running clock quality and gPTP conformance tests..." -ForegroundColor Yellow
+            
+            # Run the test and capture output
+            $result = & $testExe 2>&1
+            $exitCode = $LASTEXITCODE
+            
+            # Display results
+            Write-Host $result
+            
+            # Save results to file
+            $resultsDir = "docs/tests/results"
+            New-Item -ItemType Directory -Path $resultsDir -Force | Out-Null
+            $resultFile = "$resultsDir/clock_quality_tests_${{ github.run_id }}.log"
+            
+            $logContent = @"
+          Clock Quality and gPTP Conformance Test Results
+          ===============================================
+          Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+          GitHub Run ID: ${{ github.run_id }}
+          Exit Code: $exitCode
+          
+          Test Output:
+          $result
+          "@
+            
+            $logContent | Out-File -FilePath $resultFile -Encoding UTF8
+            
+            if ($exitCode -eq 0) {
+              Write-Host "✅ Clock Quality and gPTP conformance tests PASSED" -ForegroundColor Green
+              # Extract test summary from output
+              $passedTests = ($result | Select-String "Passed: (\d+)" | ForEach-Object { $_.Matches[0].Groups[1].Value })
+              $totalTests = ($result | Select-String "Total tests: (\d+)" | ForEach-Object { $_.Matches[0].Groups[1].Value })
+              if ($passedTests -and $totalTests) {
+                Write-Host "📊 Test Summary: $passedTests/$totalTests tests passed" -ForegroundColor Cyan
+              }
+            } else {
+              Write-Host "❌ Clock Quality and gPTP conformance tests FAILED (exit code: $exitCode)" -ForegroundColor Red
+            }
+            
+            Write-Host "Results saved to: $resultFile" -ForegroundColor Cyan
+          } else {
+            Write-Host "❌ Clock Quality tests not found at: $testExe" -ForegroundColor Red
+            Write-Host "Make sure the tests were built successfully with -DOPENAVNU_BUILD_CLOCK_QUALITY_TESTS=ON" -ForegroundColor Yellow
+          }
+        continue-on-error: true
