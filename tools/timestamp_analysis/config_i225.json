@@ -1,0 +1,18 @@
+{
+  "analysis_window": 300,
+  "jitter_threshold": 1000,
+  "drift_threshold": 100,
+  "stability_threshold": 0.95,
+  "gptp_build_path": "D:\\Repos\\OpenAvnu\\build-intel-hal\\thirdparty\\gptp\\RelWithDebInfo\\gptp.exe",
+  "target_interface": "Ethernet 2",
+  "device_id": "PCI\\VEN_8086&DEV_15F3",
+  "registers": [
+    "SYSTIML (0xB600)", "SYSTIMH (0xB604)", "TIMINCA (0xB608)", "TIMADJL (0xB60C)", "TIMADJH (0xB610)", "TSYNCTXCTL (0xB614)", "TXSTMPL (0xB618)", "TXSTMPH (0xB61C)", "TSYNCRXCTL (0xB620)", "RXSTMPL (0xB624)", "RXSTMPH (0xB628)", "RXSATRL (0xB62C)", "RXSATRH (0xB630)", "TSAUXC (0xB640)", "TSICR (0xB66C)", "TSIM (0xB674)",
+    "QBVBTIME_S (0x3324)", "QBVBTIME_NS (0x3328)", "QBVCYCLET_S (0x331C)", "QBVCYCLET_NS (0x3320)", "FPRXCTL (0x3400)", "FPTXCTL (0x3404)", "PTM_CTRL (0x12000)", "PTM_STAT (0x12004)", "SDP0_CTRL (0xE000)", "SDP1_CTRL (0xE004)", "SDP2_CTRL (0xE008)"
+  ],
+  "performance_thresholds": {
+    "excellent": { "jitter": 500, "drift": 50 },
+    "good": { "jitter": 1000, "drift": 100 },
+    "fair": { "jitter": 2000, "drift": 200 }
+  }
+}
