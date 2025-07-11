@@ -4,7 +4,7 @@ REM
 REM This script sets up the Visual Studio environment and builds the Intel HAL library
 
 echo Building Intel AVB HAL Library for Windows...
-cd /d %~dp0
+
 REM Setup Visual Studio 2022 environment
 call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
 
