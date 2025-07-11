@@ -140,6 +140,92 @@ gPTP
 
 ---
 
+## 🔧 **DISCOVERED CODE TODO ITEMS** (From Repository Analysis)
+
+### **PRIORITY 1: gPTP Implementation Completions**
+
+#### 🔄 **ACTIVE**: Windows gPTP HAL Integration
+- [ ] **Intel PTP configuration support** (`thirdparty/gptp/windows/daemon_cl/windows_hal.cpp:408`)
+  - Current: TODO comment - "Add Intel PTP configuration support if needed"
+  - Action: Implement Intel-specific PTP OID configuration
+  - Priority: HIGH - Required for I219/I210/I225 optimal performance
+
+- [ ] **Hardware-assisted cross-timestamping** (`thirdparty/gptp/windows/daemon_cl/windows_crosststamp.cpp:353`)
+  - Current: TODO comment - "Implement hardware-assisted cross-timestamping"
+  - Action: Replace placeholder with Intel HAL integration
+  - Priority: HIGH - Critical for timestamp accuracy
+
+- [ ] **Hardware-specific timestamping initialization** (`thirdparty/gptp/windows/daemon_cl/windows_crosststamp.cpp:105`)
+  - Current: TODO comment - "Initialize hardware-specific timestamping"
+  - Action: Integrate Intel HAL initialization
+  - Priority: HIGH - Required for proper hardware setup
+
+- [ ] **Link monitoring implementation** (`thirdparty/gptp/windows/daemon_cl/windows_hal.cpp:845`)
+  - Current: TODO comment - "Implement proper link monitoring in future"
+  - Action: Add robust network link state detection
+  - Priority: MEDIUM - Improves reliability
+
+#### 🔄 **ACTIVE**: Profile Framework Enhancements
+- [ ] **Announce interval signaling** (`thirdparty/gptp/PTP_MESSAGE_PAL_MIGRATION_COMPLETE.md:146`)
+  - Current: "TODO: Needs implementation" for announce interval control
+  - Action: Implement signal-based announce interval adjustment
+  - Priority: MEDIUM - IEEE 802.1AS compliance
+
+- [ ] **Profile-specific config file parsing** (`thirdparty/gptp/common/milan_profile.cpp:280`)
+  - Current: TODO comment - "Implement Milan-specific config file parsing"
+  - Action: Add profile-aware configuration system
+  - Priority: MEDIUM - Enhances profile compliance
+
+- [ ] **Generic profile config parsing** (`thirdparty/gptp/common/gptp_profile.cpp:418`)
+  - Current: TODO comment - "Implement config file parsing"
+  - Action: Create unified profile configuration framework
+  - Priority: MEDIUM - Foundation for multiple profiles
+
+#### 🔄 **ACTIVE**: Watchdog Enhancement
+- [ ] **Enhanced config file reading** (`thirdparty/gptp/windows/daemon_cl/watchdog.cpp:107`)
+  - Current: TODO comment - "Add proper config file reading when config system is enhanced"
+  - Action: Integrate with profile configuration system
+  - Priority: LOW - Operational improvement
+
+### **PRIORITY 2: Code Quality & Cleanup**
+
+#### 🔄 **ACTIVE**: Technical Debt Resolution
+- [ ] **Daemon_cl temporal variables refactor** (`thirdparty/gptp/linux/src/daemon_cl.cpp:420`)
+  - Current: TODO comment - "The setting of values into temporary variables should be changed"
+  - Action: Refactor temporary variable usage pattern
+  - Priority: LOW - Code quality improvement
+
+- [ ] **GStreamer plugin naming** (`examples/gstreamer-avb-plugins/gst-plugin/src/Makefile.am:4`)
+  - Current: TODO comment - "change libgstplugin.la to something else"
+  - Action: Use descriptive library naming
+  - Priority: LOW - Build system clarity
+
+- [ ] **Scale to nanoseconds** (`thirdparty/gptp/linux/shm_test/shm_test.cpp:92`)
+  - Current: TODO comment - "Scale to ns"
+  - Action: Implement proper nanosecond scaling
+  - Priority: LOW - Test accuracy
+
+#### 🔄 **ACTIVE**: L-Acoustics AVDECC Integration
+- [ ] **Virtual entity configuration access** (`lib/la_avdecc/src/controller/avdeccControllerImpl.cpp:388`)
+  - Current: FIXME comment - "Move 'canChangeVirtualEntityConfiguration' to a real public method"
+  - Action: Refactor to public API method
+  - Priority: MEDIUM - API design improvement
+
+### **PRIORITY 3: Open1722 Protocol Enhancements**
+
+#### 🔄 **ACTIVE**: CAN Protocol Implementation
+- [ ] **CAN SKB memory management** (`thirdparty/open1722/examples/acf-can/linux-kernel-mod/1722ethernet.c:355`)
+  - Current: TODO comment - "Do we need to free can_skb?"
+  - Action: Review and implement proper memory cleanup
+  - Priority: MEDIUM - Memory leak prevention
+
+- [ ] **ACF-CAN configuration flags** (`thirdparty/open1722/examples/acf-can/linux-kernel-mod/acfcanmain.c:241`)
+  - Current: TODO comment - "Make configurable"
+  - Action: Add runtime configuration for TX_ENABLE/RX_ENABLE flags
+  - Priority: LOW - Configuration flexibility
+
+---
+
 ## 🚨 **BLOCKERS**
 
 1. **Hardware Access Simulation**: Current register access is simulated, not real
@@ -487,3 +573,121 @@ gPTP
 
 **Next Review**: July 15, 2025 (Weekly TODO update)  
 **Critical Milestone**: August 15, 2025 (Hardware validation complete)
+
+---
+
+## 🛠️ **TECHNICAL DEBT TRACKING** (Following Repository Instructions)
+
+### **TODO (refactor) Items Identified**
+
+#### **Code Structure Improvements**
+- [ ] **PTP Message PAL Pattern Cleanup** 
+  - Files: `thirdparty/gptp/common/ptp_message.cpp` multiple TODO comments
+  - Issues: Code cleanup questions (lines 273, 628, 1398, 1838)
+  - Action: Review and clean up legacy code patterns
+  - Priority: LOW - Code maintainability
+
+#### **Cross-Platform Consistency**
+- [ ] **Windows/Linux HAL Alignment**
+  - Issue: Windows implementation has placeholders for cross-timestamp functionality
+  - Action: Align Windows HAL with Linux capabilities
+  - Priority: MEDIUM - Platform parity
+
+#### **Memory Management Review**
+- [ ] **Buffer and Memory Leak Prevention**
+  - Files: Various CAN protocol implementations
+  - Action: Systematic review of malloc/free patterns
+  - Priority: MEDIUM - Stability
+
+### **Refactoring Sessions Scheduled**
+- **Next Session**: July 18, 2025 - Focus on gPTP Windows HAL TODOs
+- **Target**: Address Priority 1 items (Intel PTP configuration, cross-timestamping)
+- **Success Criteria**: Complete Intel HAL integration TODOs
+
+### **Documentation Debt**
+- [ ] **Standardize TODO comment format**
+  - Current: Mixed styles (TODO, TODO:, //TODO, /*TODO*/)
+  - Target: Consistent `// TODO (category): description` format
+  - Action: Repository-wide comment standardization
+
+---
+
+## 📋 **CODE TODO SUMMARY**
+
+**High Priority TODOs**: 4 items
+- Intel PTP configuration support
+- Hardware-assisted cross-timestamping  
+- Hardware-specific timestamping initialization
+- Link monitoring implementation
+
+**Medium Priority TODOs**: 4 items
+- Announce interval signaling
+- Profile configuration parsing
+- Virtual entity configuration access
+- CAN SKB memory management
+
+**Low Priority TODOs**: 5 items
+- Enhanced config file reading
+- Code structure refactoring
+- Library naming improvements
+- Test scaling accuracy
+- Configuration flexibility
+
+**Total Tracked TODO Items**: 13 (from repository code analysis)
+
+**Next Review**: July 15, 2025 (Weekly TODO update following repository instructions)
+
+---
+
+## HIGH PRIORITY - Intel HAL Integration (Immediate Action Required)
+
+### **CRITICAL: Replace Failing Intel OID Approach with Intel HAL**
+
+**Root Cause**: Current Windows drivers do not support Intel OIDs (OID_INTEL_GET_SYSTIM, OID_INTEL_GET_RXSTAMP, OID_INTEL_GET_TXSTAMP) causing hardware timestamping failures.
+
+**Solution**: Use existing Intel HAL infrastructure in `lib/intel_avb` and `thirdparty/intel-ethernet-hal` to replace OID-based timestamping.
+
+#### **Implementation Tasks:**
+
+1. **gPTP Windows HAL Integration** (CRITICAL)
+   - **📋 See Detailed Plan**: `docs/INTEL_HAL_GPTP_INTEGRATION_PLAN.md`
+   - Replace OID-based timestamping in `thirdparty/gptp/windows/daemon_cl/windows_hal.cpp`
+   - Modify `HWTimestamper_gettime()` to use `intel_hal_read_timestamp()` instead of `OID_INTEL_GET_SYSTIM`
+   - Update `HWTimestamper_rxtimestamp()` and `HWTimestamper_txtimestamp()` to use Intel HAL
+   - ✅ Initial HAL detection added in `windows_hal.cpp:408`
+
+2. **Cross-Timestamping HAL Integration** (HIGH PRIORITY)
+   - ✅ Complete hardware-assisted timestamping in `windows_crosststamp.cpp:353`
+   - ✅ Initialize Intel HAL for hardware timestamping in `windows_crosststamp.cpp:105`
+   - Test HAL-based cross-timestamping on I219, I210, I225 adapters
+
+3. **Device Discovery and Capability Detection** (MEDIUM)
+   - Use `intel_probe()` and `intel_get_capabilities()` from `lib/intel_avb/lib/intel_common.c`
+   - Replace manual device string parsing with HAL device detection
+   - Leverage capability matrix from Intel HAL for feature detection
+
+4. **CMake Build Integration** (LOW)
+   - Ensure `OPENAVNU_BUILD_INTEL_HAL=ON` properly links Intel HAL libraries
+   - Add conditional compilation guards around HAL code
+   - Test both HAL-enabled and HAL-disabled builds
+
+#### **Files Modified:**
+- ✅ `thirdparty/gptp/windows/daemon_cl/windows_hal.cpp` (Intel PTP config TODO addressed)
+- ✅ `thirdparty/gptp/windows/daemon_cl/windows_crosststamp.cpp` (Hardware timestamping TODOs addressed)
+
+#### **Progress Documentation:**
+- 📋 **Implementation Plan**: `docs/INTEL_HAL_GPTP_INTEGRATION_PLAN.md` (Complete technical implementation guide)
+- 📊 **Progress Report**: `docs/INTEL_HAL_OID_MIGRATION_PROGRESS.md` (Current status and validation)
+
+#### **Next Steps:**
+1. **Implement direct Intel HAL calls in gPTP timestamping methods** ⚡ **HIGH PRIORITY**
+2. **Replace `readOID()` calls with `intel_hal_read_timestamp()`** ⚡ **CRITICAL**  
+3. **Test on supported Intel adapters (I219, I210, I225, I226)** 🧪 **VALIDATION**
+4. **Validate hardware timestamping precision compared to OID approach** 📊 **METRICS**
+
+#### **Impact:**
+- **Immediate**: Fix failing hardware timestamping on Windows
+- **Long-term**: Future-proof timestamping against driver changes
+- **Cross-platform**: Unified timestamping interface for Windows and Linux
+
+---

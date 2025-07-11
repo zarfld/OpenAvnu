@@ -180,7 +180,7 @@ typedef struct mrp_periodictimer_state {
 
 typedef struct mrpdu_vectorattrib {
 	uint16_t VectorHeader;	/* LVA << 13 | NumberOfValues */
-	uint8_t FirstValue_VectorEvents[];
+	uint8_t FirstValue_VectorEvents[1]; /* Flexible array - size 1 for Windows compatibility */
 } mrpdu_vectorattrib_t;
 
 #define MRPDU_VECT_NUMVALUES(x)	((x) & ((1 << 13) - 1))
