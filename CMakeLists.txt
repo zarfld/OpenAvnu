@@ -277,26 +277,79 @@ if(OPENAVNU_USE_OPEN1722)
 endif()
 
 # ==========================================
-# Intel HAL Integration Tests
+# Testing Framework Configuration
 # ==========================================
-# Add Intel HAL validation tests if Intel HAL is enabled
-if(OPENAVNU_BUILD_INTEL_HAL)
-    message(STATUS "✅ Adding Intel HAL validation tests")
-    add_subdirectory("tests/intel_hal")
-else()
-    message(STATUS "⏭️  Skipping Intel HAL tests (OPENAVNU_BUILD_INTEL_HAL=OFF)")
-endif()
 
-# Clock Quality and gPTP Conformance Tests
-# ==========================================
-# Add comprehensive clock quality and Avnu Alliance conformance tests
-option(OPENAVNU_BUILD_CLOCK_QUALITY_TESTS "Build clock quality and gPTP conformance tests" ON)
+# Unified Testing Framework (Recommended)
+option(OPENAVNU_BUILD_UNIFIED_TESTING "Build unified testing framework with organized directory structure" ON)
 
-if(OPENAVNU_BUILD_CLOCK_QUALITY_TESTS)
-    message(STATUS "✅ Adding Clock Quality and gPTP Conformance tests")
-    add_subdirectory("test/clock_quality")
+# Legacy Testing Support (Deprecated - will be removed in future versions)
+option(OPENAVNU_BUILD_LEGACY_TESTS "Build legacy individual test directories (deprecated)" OFF)
+
+if(OPENAVNU_BUILD_UNIFIED_TESTING)
+    message(STATUS "🧪 Building with unified testing framework")
+    add_subdirectory("testing")
+    
+    # Disable legacy tests to avoid conflicts
+    set(OPENAVNU_BUILD_LEGACY_TESTS OFF CACHE BOOL "Forced OFF when unified testing is enabled" FORCE)
+    
+elseif(OPENAVNU_BUILD_LEGACY_TESTS)
+    message(STATUS "⚠️  Building with legacy testing structure (deprecated)")
+    message(STATUS "🔄 Consider migrating to unified testing framework (OPENAVNU_BUILD_UNIFIED_TESTING=ON)")
+    
+    # Legacy individual test options
+    option(OPENAVNU_BUILD_TEST_MRPD "Build MRPD test" ON)
+    option(OPENAVNU_BUILD_TEST_MAAP "Build MAAP test" ON)
+    option(OPENAVNU_BUILD_TEST_AVDECC "Build AVDECC test" ON)
+    option(OPENAVNU_BUILD_TEST_PCAP "Build PCAP test" ON)
+    option(OPENAVNU_BUILD_TEST_GPTP "Build gPTP test" ON)
+    option(OPENAVNU_BUILD_TEST_INTEL_HAL "Build Intel HAL test" ON)
+    option(OPENAVNU_BUILD_TEST_CLOCK_QUALITY "Build Clock Quality test" ON)
+
+    # MRPD Test
+    if(OPENAVNU_BUILD_TEST_MRPD)
+        message(STATUS "✅ Adding legacy MRPD test")
+        add_subdirectory("daemons/mrpd/tests")
+    endif()
+
+    # MAAP Test
+    if(OPENAVNU_BUILD_TEST_MAAP)
+        message(STATUS "✅ Adding legacy MAAP test")
+        add_subdirectory("daemons/maap/tests")
+    endif()
+
+    # AVDECC Test
+    if(OPENAVNU_BUILD_TEST_AVDECC)
+        message(STATUS "✅ Adding legacy AVDECC test")
+        add_subdirectory("lib/la_avdecc/tests")
+    endif()
+
+    # PCAP Test
+    if(OPENAVNU_BUILD_TEST_PCAP)
+        message(STATUS "✅ Adding legacy PCAP test")
+        add_subdirectory("lib/pcap/tests")
+    endif()
+
+    # gPTP Test
+    if(OPENAVNU_BUILD_TEST_GPTP)
+        message(STATUS "✅ Adding legacy gPTP test")
+        add_subdirectory("thirdparty/gptp/tests")
+    endif()
+
+    # Intel HAL Test
+    if(OPENAVNU_BUILD_TEST_INTEL_HAL)
+        message(STATUS "✅ Adding legacy Intel HAL test")
+        add_subdirectory("tests/intel_hal")
+    endif()
+
+    # Clock Quality Test
+    if(OPENAVNU_BUILD_TEST_CLOCK_QUALITY)
+        message(STATUS "✅ Adding legacy Clock Quality test")
+        add_subdirectory("test/clock_quality")
+    endif()
+    
 else()
-    message(STATUS "⏭️  Skipping Clock Quality tests (OPENAVNU_BUILD_CLOCK_QUALITY_TESTS=OFF)")
+    message(STATUS "⏭️  All testing disabled (OPENAVNU_BUILD_UNIFIED_TESTING=OFF, OPENAVNU_BUILD_LEGACY_TESTS=OFF)")
 endif()
 
 message("

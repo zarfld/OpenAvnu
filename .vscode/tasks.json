@@ -1386,6 +1386,135 @@
 				"focus": true,
 				"panel": "shared"
 			}
+		},
+		{
+			"label": "Build Unified Testing Framework (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Clock Quality Tests (Consolidated)",
+			"type": "shell",
+			"command": "./testing/conformance/avnu_alliance/gptp/clock_quality/Release/clock_quality_tests_consolidated.exe",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build Unified Testing Framework (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Intel HAL Tests (Consolidated)",
+			"type": "shell",
+			"command": "./tests/intel_hal_validation_test_consolidated.exe",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build Unified Testing Framework (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run CTest Conformance Tests",
+			"type": "shell",
+			"command": "ctest",
+			"args": [
+				"-L",
+				"conformance",
+				"--output-on-failure"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build Unified Testing Framework (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run CTest Hardware Tests",
+			"type": "shell",
+			"command": "ctest",
+			"args": [
+				"-L",
+				"hardware",
+				"--output-on-failure"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build Unified Testing Framework (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "CMake Configure with Unified Testing (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"..",
+				"-G",
+				"Visual Studio 17 2022",
+				"-DOPENAVNU_BUILD_UNIFIED_TESTING=ON"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"isBackground": false,
+			"dependsOn": "Create Build Directory",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
 		}
 	]
 }
