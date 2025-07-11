@@ -33,6 +33,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Fix and Initialize Submodules
+        shell: pwsh
+        run: |
+          # Fix submodule URLs and initialize
+          ./scripts/fix_submodules.ps1 -FixUrls
+          
+          # Validate that all submodules are accessible
+          if (-not (./scripts/fix_submodules.ps1 -Validate)) {
+            Write-Error "Submodule validation failed"
+            exit 1
+          }
+          
+          Write-Host "All submodules initialized and validated successfully"
+
       - name: Build (Release)
         run: cmake --build build --config Release
 
@@ -114,20 +128,17 @@ jobs:
           $machineFile = "docs/machine/windows_test_system_DAW02.md"
           
           # Create update content
-          $updateContent = @"
-          
-## Last Test Run Information
-- Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
-- GitHub Run ID: ${{ github.run_id }}
-- Test Phase: ${{ github.event.inputs.test_phase }}
-- Adapter Filter: ${{ github.event.inputs.adapter_filter }}
-
-### Current Network Adapters
-"@
+          $date = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+          $updateContent = "`n## Last Test Run Information`n"
+          $updateContent += "- Date: $date`n"
+          $updateContent += "- GitHub Run ID: ${{ github.run_id }}`n"
+          $updateContent += "- Test Phase: ${{ github.event.inputs.test_phase }}`n"
+          $updateContent += "- Adapter Filter: ${{ github.event.inputs.adapter_filter }}`n"
+          $updateContent += "`n### Current Network Adapters`n"
           
           # Get adapter information
           Get-NetAdapter | Where-Object { $_.InterfaceDescription -like "*Intel*" } | ForEach-Object {
-            $updateContent += "`n- $($_.Name): $($_.InterfaceDescription) (Status: $($_.Status))"
+            $updateContent += "- $($_.Name): $($_.InterfaceDescription) (Status: $($_.Status))`n"
           }
           
           # Append to machine documentation
