@@ -60,6 +60,19 @@ windows: TARGET = intel_avb.dll
 windows: LDFLAGS = -shared -Wl,--out-implib,libintel_avb.dll.a
 windows: $(TARGET)
 
+# Windows Testprogramme
+windows_tests: test_hardware.exe test_simple.exe test_intel.exe
+
+# Kompilieren der Testprogramme unter Windows (mit MSVC cl)
+test_hardware.exe: test_hardware.c intel_windows.c intel_real_hw.c intel.h intel_private.h
+	cl /Fe:test_hardware.exe test_hardware.c intel_windows.c intel_real_hw.c /I. /link ws2_32.lib
+
+test_simple.exe: test_simple.c intel_windows.c intel_real_hw.c intel.h intel_private.h
+	cl /Fe:test_simple.exe test_simple.c intel_windows.c intel_real_hw.c /I. /link ws2_32.lib
+
+test_intel.exe: test_intel.c intel_windows.c intel_real_hw.c intel.h intel_private.h
+	cl /Fe:test_intel.exe test_intel.c intel_windows.c intel_real_hw.c /I. /link ws2_32.lib
+
 # Dependencies
 intel.o: intel.c intel.h intel_private.h
 intel_common.o: intel_common.c intel.h intel_private.h
