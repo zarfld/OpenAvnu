@@ -690,4 +690,32 @@ gPTP
 - **Long-term**: Future-proof timestamping against driver changes
 - **Cross-platform**: Unified timestamping interface for Windows and Linux
 
+## MONITORING - Npcap/WinPcap Issues (Medium Priority)
+
+### **GitHub Issues Monitoring**
+
+**Reference**: `docs/NPCAP_GITHUB_ISSUES_ANALYSIS.md`
+
+1. **Duplicate Frame Capture ([Npcap #285](https://github.com/nmap/npcap/issues/285))**
+   - **Risk**: Npcap may capture sent frames twice when looped back by other software
+   - **Impact**: Could affect gPTP timestamp precision and AVDECC protocol reliability
+   - **Monitoring**: Watch for duplicate packets in gPTP/AVDECC logs
+   - **Mitigation**: Validate sequence number handling is robust
+
+2. **L-Acoustics AVDECC Npcap Support ([Hive #65](https://github.com/christophe-calmejane/Hive/issues/65))**
+   - ✅ **ALREADY IMPLEMENTED**: Our PCAP compatibility layer provides automatic Npcap detection
+   - ✅ **SOLUTION COMPLETE**: L-Acoustics AVDECC uses modern Npcap without modification
+   - **Validation**: Test AVDECC functionality with Npcap installations
+
+3. **PCAP Driver Conflicts**
+   - **Risk**: Multiple packet capture drivers on same system
+   - **Monitoring**: Test on systems with Wireshark, Intel PROSet, other network tools
+   - **Mitigation**: Our unified PCAP detection should handle conflicts gracefully
+
+### **Validation Tasks**:
+- [ ] Test gPTP with Npcap for duplicate packet detection
+- [ ] Validate AVDECC entity discovery with modern Npcap drivers
+- [ ] Verify PCAP compatibility layer on clean Windows 11 systems
+- [ ] Monitor performance impact of any duplicate packet processing
+
 ---
