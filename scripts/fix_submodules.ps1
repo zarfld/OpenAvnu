@@ -10,17 +10,19 @@
 .PARAMETER FixUrls
     Update submodule URLs to use the correct repositories
     
-.PARAMETER Validate
-    Only validate submodules without making changes
+.PARAMETER UpdateToLatest
+    Update all submodules to their latest remote commits
     
 .EXAMPLE
     .\fix_submodules.ps1 -FixUrls
     .\fix_submodules.ps1 -Validate
+    .\fix_submodules.ps1 -UpdateToLatest
 #>
 
 param(
     [switch]$FixUrls,
-    [switch]$Validate
+    [switch]$Validate,
+    [switch]$UpdateToLatest
 )
 
 $ErrorActionPreference = "Continue"
@@ -108,17 +110,64 @@ function Show-SubmoduleStatus {
     git submodule status
 }
 
+function Update-SubmodulesToLatest {
+    Write-Host "`nUpdating submodules to latest remote commits..." -ForegroundColor Yellow
+    
+    try {
+        # Sync submodules to ensure URLs are current
+        git submodule sync
+        
+        # Update each submodule to latest remote commit
+        git submodule foreach --recursive 'git fetch origin && git checkout origin/$(git symbolic-ref --short HEAD) && git branch -D $(git symbolic-ref --short HEAD) 2>/dev/null; git checkout -b $(git symbolic-ref --short HEAD) origin/$(git symbolic-ref --short HEAD)'
+        
+        Write-Host "  ✅ Submodules updated to latest commits" -ForegroundColor Green
+        return $true
+    } catch {
+        Write-Host "  ❌ Failed to update submodules: $($_.Exception.Message)" -ForegroundColor Red
+        return $false
+    }
+}
+
+function Check-SubmoduleSync {
+    Write-Host "`nChecking if submodules are in sync with remotes..." -ForegroundColor Yellow
+    
+    $outOfSync = @()
+    
+    # Check each submodule
+    git submodule foreach --quiet 'echo "Checking $name..."; git fetch origin 2>/dev/null; LOCAL=$(git rev-parse HEAD); REMOTE=$(git rev-parse origin/$(git symbolic-ref --short HEAD) 2>/dev/null || echo "unknown"); if [ "$LOCAL" != "$REMOTE" ]; then echo "OUT_OF_SYNC: $name ($LOCAL != $REMOTE)"; fi' | Where-Object { $_ -match "OUT_OF_SYNC" }
+    
+    return $outOfSync.Count -eq 0
+}
+
 # Main execution
 if ($FixUrls) {
     Fix-SubmoduleUrls
 }
 
+if ($UpdateToLatest) {
+    Write-Host "`nUpdating submodules to latest commits..." -ForegroundColor Green
+    if (Update-SubmodulesToLatest) {
+        Show-SubmoduleStatus
+        Write-Host "`n🎉 Submodules updated to latest commits!" -ForegroundColor Green
+    } else {
+        Write-Host "`n❌ Failed to update submodules to latest commits" -ForegroundColor Red
+        exit 1
+    }
+    return
+}
+
 $isValid = Validate-Submodules
 
 if ($Validate) {
+    $inSync = Check-SubmoduleSync
     Show-SubmoduleStatus
-    if ($isValid) {
-        Write-Host "`n✅ All submodules are accessible" -ForegroundColor Green
+    
+    if ($isValid -and $inSync) {
+        Write-Host "`n✅ All submodules are accessible and in sync" -ForegroundColor Green
+        exit 0
+    } elseif ($isValid) {
+        Write-Host "`n⚠️ Submodules are accessible but some may be out of sync with remotes" -ForegroundColor Yellow
+        Write-Host "Use -UpdateToLatest to sync with latest remote commits" -ForegroundColor Cyan
         exit 0
     } else {
         Write-Host "`n❌ Some submodules are not accessible" -ForegroundColor Red
@@ -144,3 +193,4 @@ if ($FixUrls -and $isValid) {
 
 Write-Host "`nUse -FixUrls to fix submodule URLs and initialize" -ForegroundColor Cyan
 Write-Host "Use -Validate to only check accessibility" -ForegroundColor Cyan
+Write-Host "Use -UpdateToLatest to update all submodules to latest remote commits" -ForegroundColor Cyan
