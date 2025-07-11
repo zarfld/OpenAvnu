@@ -1,0 +1,70 @@
+[
+    {
+        "key": "ctrl+shift+t ctrl+h",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Run Intel HAL Validation Test (Windows)",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+t ctrl+b",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Build All (Windows - CMake)",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+t ctrl+c",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Clean All (Windows)",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+t ctrl+g",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Build gPTP Only (Windows)",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+t ctrl+m",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Build MRPD Daemon Debug (Windows)",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+t ctrl+a",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Build MAAP Daemon Debug (Windows)",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+d ctrl+h",
+        "command": "workbench.action.debug.selectandstart",
+        "args": {
+            "name": "Debug Intel HAL Validation Test"
+        },
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+d ctrl+g",
+        "command": "workbench.action.debug.selectandstart",
+        "args": {
+            "name": "Debug gPTP"
+        },
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+d ctrl+m",
+        "command": "workbench.action.debug.selectandstart",
+        "args": {
+            "name": "Debug MRPD Daemon"
+        },
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+d ctrl+a",
+        "command": "workbench.action.debug.selectandstart",
+        "args": {
+            "name": "Debug MAAP Daemon"
+        },
+        "when": "!terminalFocus"
+    }
+]

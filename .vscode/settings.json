@@ -1,9 +1,91 @@
 {
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.configureArgs": [
+        "-G", "Visual Studio 17 2022",
+        "-DOPENAVNU_BUILD_INTEL_HAL=ON",
+        "-DOPENAVNU_BUILD_GPTP=ON",
+        "-DOPENAVNU_BUILD_LA_AVDECC=ON"
+    ],
+    "cmake.buildArgs": [
+        "--config", "Debug"
+    ],
+    "cmake.testExplorer": {
+        "enabled": true
+    },
+    "cmake.ctest.args": [
+        "--output-on-failure"
+    ],
     "files.associations": {
         ".fantomasignore": "ignore",
         "memory": "cpp",
         "xstring": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "*.ini": "ini",
+        "*.cfg": "ini",
+        "*.conf": "ini"
     },
-    "editor.defaultFormatter": "ms-vscode.cmake-tools"
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.intelliSenseMode": "windows-msvc-x64",
+    "C_Cpp.default.cStandard": "c11",
+    "C_Cpp.default.cppStandard": "c++14",
+    "C_Cpp.errorSquiggles": "enabled",
+    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.enhancedColorization": "enabled",
+    "files.exclude": {
+        "**/build/**": true,
+        "**/Debug/**": true,
+        "**/Release/**": true,
+        "**/RelWithDebInfo/**": true,
+        "**/.vs/**": true,
+        "**/*.vcxproj*": true,
+        "**/*.sln": true
+    },
+    "search.exclude": {
+        "**/build/**": true,
+        "**/Debug/**": true,
+        "**/Release/**": true,
+        "**/RelWithDebInfo/**": true,
+        "**/.vs/**": true
+    },
+    "task.allowAutomaticTasks": "on",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        },
+        "Command Prompt": {
+            "path": [
+                "${env:windir}\\Sysnative\\cmd.exe",
+                "${env:windir}\\System32\\cmd.exe"
+            ],
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "WSL": {
+            "path": "wsl.exe",
+            "args": [],
+            "icon": "terminal-ubuntu"
+        }
+    },
+    "extensions.recommendations": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode.powershell",
+        "ms-vscode-remote.remote-wsl",
+        "streetsidesoftware.code-spell-checker"
+    ],
+    "git.ignoreLimitWarning": true,
+    "git.autofetch": true,
+    "editor.formatOnSave": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": true,
+    "editor.defaultFormatter": "ms-vscode.cmake-tools",
+    "problems.showCurrentInStatus": true,
+    "breadcrumbs.enabled": true,
+    "workbench.editor.enablePreview": false,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false
 }

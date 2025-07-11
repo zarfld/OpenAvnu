@@ -20,6 +20,60 @@
             "request": "attach",
             "processId": "${command:pickProcess}",
             "symbolSearchPath": "${workspaceFolder}/build-intel-hal/thirdparty/gptp/RelWithDebInfo"
+        },
+        {
+            "name": "Debug Intel HAL Validation Test",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/tests/intel_hal_validation_test.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "Run Intel HAL Validation Test (Windows)",
+            "logging": {
+                "engineLogging": false,
+                "moduleLoad": false
+            }
+        },
+        {
+            "name": "Debug MRPD Daemon",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/daemons/mrpd/Debug/mrpd.exe",
+            "args": [
+                "-i",
+                "Ethernet"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "Build MRPD Daemon Debug (Windows)",
+            "logging": {
+                "engineLogging": false,
+                "moduleLoad": false
+            }
+        },
+        {
+            "name": "Debug MAAP Daemon",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/daemons/maap/Debug/maap_daemon.exe",
+            "args": [
+                "-i",
+                "Ethernet"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "Build MAAP Daemon Debug (Windows)",
+            "logging": {
+                "engineLogging": false,
+                "moduleLoad": false
+            }
         }
     ]
 }

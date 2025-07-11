@@ -715,6 +715,61 @@
 			"dependsOn": "CMake Configure (Windows)"
 		},
 		{
+			"label": "Run Intel HAL Validation Test (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Debug",
+				"--target",
+				"intel_hal_validation_test"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Intel HAL Validation Test (Linux/WSL)",
+			"type": "shell",
+			"command": "wsl",
+			"args": [
+				"cmake",
+				"--build",
+				".",
+				"--target",
+				"intel_hal_validation_test"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Linux/WSL)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
 			"label": "Test Modernized Windows Code",
 			"type": "shell",
 			"command": "cmake",

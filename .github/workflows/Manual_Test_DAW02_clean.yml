@@ -50,7 +50,7 @@ jobs:
         shell: pwsh
         run: |
           Write-Host "=== Intel HAL Hardware Validation Test ===" -ForegroundColor Green
-          $testExe = "build/tests/hardware/Release/intel_hal_validation_test.exe"
+          $testExe = "build/tests/intel_hal_validation_test.exe"
           
           if (Test-Path $testExe) {
             Write-Host "Running Intel HAL validation test..." -ForegroundColor Yellow
