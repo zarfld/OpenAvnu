@@ -5,11 +5,23 @@
 param(
     [switch]$Verbose = $false,
     [switch]$SaveLog = $true,
-    [string]$LogPath = "i225_register_test_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+    [string]$LogPath = "docs/tests/results/i225_register_test_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
 )
 
-Write-Host "=== Intel I225/I226 Register Access Test ==="
-Write-Host "Testing register accessibility for I225/I226 TimeSync and TSN features"
+# Logging-Array für vollständige Terminalausgabe
+$script:fullLog = @()
+
+function Write-LogBoth {
+    param(
+        [string]$Message,
+        [string]$Color = "White"
+    )
+    Write-Host $Message -ForegroundColor $Color
+    $script:fullLog += $Message
+}
+
+Write-LogBoth "=== Intel I225/I226 Register Access Test ==="
+Write-LogBoth "Testing register accessibility for I225/I226 TimeSync and TSN features"
 
 # I225/I226 Device IDs
 $I225_DEVICE_IDS = @{
@@ -70,7 +82,7 @@ $testResults = @{
     Score = 0
 }
 
-Write-Host "`nPhase 1: Intel I225/I226 Device Detection"
+Write-LogBoth "`nPhase 1: Intel I225/I226 Device Detection"
 
 # Check for Intel I225/I226 device using multiple methods
 $networkAdapters = Get-WmiObject -Class Win32_NetworkAdapter | Where-Object { 
@@ -78,20 +90,20 @@ $networkAdapters = Get-WmiObject -Class Win32_NetworkAdapter | Where-Object {
 }
 
 if ($networkAdapters) {
-    Write-Host "Found Intel I225/I226 network adapter(s):" -ForegroundColor Green
+    Write-LogBoth "Found Intel I225/I226 network adapter(s):" -ForegroundColor Green
     foreach ($adapter in $networkAdapters) {
-        Write-Host "  - $($adapter.Description)" -ForegroundColor Green
-        Write-Host "    Status: $($adapter.NetConnectionStatus)"
-        Write-Host "    MAC: $($adapter.MACAddress)"
+        Write-LogBoth "  - $($adapter.Description)" -ForegroundColor Green
+        Write-LogBoth "    Status: $($adapter.NetConnectionStatus)"
+        Write-LogBoth "    MAC: $($adapter.MACAddress)"
     }
     $testResults.DeviceFound = $true
     $testResults.Score += 25
 } else {
-    Write-Host "No Intel I225/I226 network adapters found" -ForegroundColor Red
+    Write-LogBoth "No Intel I225/I226 network adapters found" -ForegroundColor Red
 }
 
 # Check PCI devices for specific device IDs
-Write-Host "`nChecking PCI Device IDs..."
+Write-LogBoth "`nChecking PCI Device IDs..."
 $pciDevices = Get-WmiObject -Class Win32_PnPEntity | Where-Object { 
     $_.HardwareID -like "*VEN_8086*" 
 }
@@ -101,9 +113,9 @@ foreach ($device in $pciDevices) {
     foreach ($hwid in $device.HardwareID) {
         foreach ($deviceId in $I225_DEVICE_IDS.Keys) {
             if ($hwid -like "*DEV_$deviceId*") {
-                Write-Host "Found I225/I226 Device: $($I225_DEVICE_IDS[$deviceId])" -ForegroundColor Green
-                Write-Host "  Hardware ID: $hwid"
-                Write-Host "  Status: $($device.Status)"
+                Write-LogBoth "Found I225/I226 Device: $($I225_DEVICE_IDS[$deviceId])" -ForegroundColor Green
+                Write-LogBoth "  Hardware ID: $hwid"
+                Write-LogBoth "  Status: $($device.Status)"
                 $foundI225 = $true
                 $testResults.DeviceFound = $true
                 $testResults.Score += 25
@@ -113,10 +125,10 @@ foreach ($device in $pciDevices) {
 }
 
 if (-not $foundI225 -and -not $testResults.DeviceFound) {
-    Write-Host "No I225/I226 devices detected in system" -ForegroundColor Red
+    Write-LogBoth "No I225/I226 devices detected in system" -ForegroundColor Red
 }
 
-Write-Host "`nPhase 2: Driver Analysis"
+Write-LogBoth "`nPhase 2: Driver Analysis"
 
 # Check driver information
 $drivers = Get-WmiObject -Class Win32_PnPSignedDriver | Where-Object { 
@@ -125,68 +137,68 @@ $drivers = Get-WmiObject -Class Win32_PnPSignedDriver | Where-Object {
 
 if ($drivers) {
     foreach ($driver in $drivers) {
-        Write-Host "Driver Found: $($driver.DeviceName)" -ForegroundColor Green
-        Write-Host "  Version: $($driver.DriverVersion)"
-        Write-Host "  Date: $($driver.DriverDate)"
-        Write-Host "  Provider: $($driver.DriverProviderName)"
+        Write-LogBoth "Driver Found: $($driver.DeviceName)" -ForegroundColor Green
+        Write-LogBoth "  Version: $($driver.DriverVersion)"
+        Write-LogBoth "  Date: $($driver.DriverDate)"
+        Write-LogBoth "  Provider: $($driver.DriverProviderName)"
         
         if ($driver.DriverProviderName -like "*Intel*") {
             $testResults.DriverOK = $true
             $testResults.Score += 20
-            Write-Host "  Intel driver confirmed" -ForegroundColor Green
+            Write-LogBoth "  Intel driver confirmed" -ForegroundColor Green
         }
     }
 } else {
-    Write-Host "No I225/I226 drivers found" -ForegroundColor Red
+    Write-LogBoth "No I225/I226 drivers found" -ForegroundColor Red
 }
 
-Write-Host "`nPhase 3: System Prerequisites"
+Write-LogBoth "`nPhase 3: System Prerequisites"
 
 # Check Windows version
 $osVersion = [System.Environment]::OSVersion.Version
-Write-Host "Operating System: Windows $($osVersion.Major).$($osVersion.Minor) Build $($osVersion.Build)"
+Write-LogBoth "Operating System: Windows $($osVersion.Major).$($osVersion.Minor) Build $($osVersion.Build)"
 
 if ($osVersion.Major -ge 10) {
-    Write-Host "Windows 10/11 detected - Good for register access" -ForegroundColor Green
+    Write-LogBoth "Windows 10/11 detected - Good for register access" -ForegroundColor Green
     $testResults.Score += 10
 } else {
-    Write-Host "Older Windows version - Limited register access" -ForegroundColor Yellow
+    Write-LogBoth "Older Windows version - Limited register access" -ForegroundColor Yellow
 }
 
 # Check Administrator privileges
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Host "Running as Administrator - Good for register access" -ForegroundColor Green
+    Write-LogBoth "Running as Administrator - Good for register access" -ForegroundColor Green
     $testResults.Score += 15
 } else {
-    Write-Host "Not running as Administrator - Limited register access" -ForegroundColor Yellow
+    Write-LogBoth "Not running as Administrator - Limited register access" -ForegroundColor Yellow
 }
 
-Write-Host "`nPhase 4: I225/I226 Register Analysis"
+Write-LogBoth "`nPhase 4: I225/I226 Register Analysis"
 
-Write-Host "I225/I226 TimeSync Register Categories:"
-Write-Host "  Legacy IEEE 1588 Registers (I210 compatible):"
-Write-Host "    SYSTIML/H, TIMINCA, TSYNCTXCTL, TSYNCRXCTL, TSAUXC"
-Write-Host "  Enhanced TSN Registers (I225/I226 specific):"
-Write-Host "    QBVCYCLET_S/NS - Time Aware Shaper"
-Write-Host "    QBVBTIME_S/NS  - Base Time Control"
-Write-Host "    FPRXCTL/FPTXCTL - Frame Preemption"
-Write-Host "    SDP0/1/2_CTRL  - Software Defined Pins"
-Write-Host "    PTM_CTRL/STAT  - PCIe Precision Time Measurement"
+Write-LogBoth "I225/I226 TimeSync Register Categories:"
+Write-LogBoth "  Legacy IEEE 1588 Registers (I210 compatible):"
+Write-LogBoth "    SYSTIML/H, TIMINCA, TSYNCTXCTL, TSYNCRXCTL, TSAUXC"
+Write-LogBoth "  Enhanced TSN Registers (I225/I226 specific):"
+Write-LogBoth "    QBVCYCLET_S/NS - Time Aware Shaper"
+Write-LogBoth "    QBVBTIME_S/NS  - Base Time Control"
+Write-LogBoth "    FPRXCTL/FPTXCTL - Frame Preemption"
+Write-LogBoth "    SDP0/1/2_CTRL  - Software Defined Pins"
+Write-LogBoth "    PTM_CTRL/STAT  - PCIe Precision Time Measurement"
 
 if ($testResults.DeviceFound) {
-    Write-Host "`nI225/I226 TSN Features Available:" -ForegroundColor Green
-    Write-Host "  - IEEE 802.1AS-Rev (Enhanced gPTP)"
-    Write-Host "  - IEEE 802.1Qbv (Time Aware Shaper)"
-    Write-Host "  - IEEE 802.1Qbu (Frame Preemption)"
-    Write-Host "  - IEEE 802.3br (Interspersing Express Traffic)"
-    Write-Host "  - PCIe PTM (Host-NIC synchronization)"
-    Write-Host "  - 2.5 Gbps support (I225/I226 vs 1 Gbps I210)"
+    Write-LogBoth "`nI225/I226 TSN Features Available:" -ForegroundColor Green
+    Write-LogBoth "  - IEEE 802.1AS-Rev (Enhanced gPTP)"
+    Write-LogBoth "  - IEEE 802.1Qbv (Time Aware Shaper)"
+    Write-LogBoth "  - IEEE 802.1Qbu (Frame Preemption)"
+    Write-LogBoth "  - IEEE 802.3br (Interspersing Express Traffic)"
+    Write-LogBoth "  - PCIe PTM (Host-NIC synchronization)"
+    Write-LogBoth "  - 2.5 Gbps support (I225/I226 vs 1 Gbps I210)"
     $testResults.TSNFeatures = $true
     $testResults.Score += 20
 }
 
-Write-Host "`nPhase 5: Register Access Assessment"
+Write-LogBoth "`nPhase 5: Register Access Assessment"
 
 # Test basic hardware access methods
 $accessMethods = @()
@@ -196,69 +208,74 @@ try {
     $pciRoot = Get-WmiObject -Class Win32_PnPEntity | Where-Object { $_.Name -like "*I225*" -or $_.Name -like "*I226*" }
     if ($pciRoot) {
         $accessMethods += "WMI"
-        Write-Host "WMI hardware access: Available" -ForegroundColor Green
+        Write-LogBoth "WMI hardware access: Available" -ForegroundColor Green
     }
 } catch {
-    Write-Host "WMI hardware access: Limited" -ForegroundColor Yellow
+    Write-LogBoth "WMI hardware access: Limited" -ForegroundColor Yellow
 }
 
 # Method 2: PowerShell PnP
 try {
     if (Get-Command "Get-PnpDevice" -ErrorAction SilentlyContinue) {
         $accessMethods += "PowerShell-PnP"
-        Write-Host "PowerShell PnP access: Available" -ForegroundColor Green
+        Write-LogBoth "PowerShell PnP access: Available" -ForegroundColor Green
     }
 } catch {
-    Write-Host "PowerShell PnP access: Not available" -ForegroundColor Yellow
+    Write-LogBoth "PowerShell PnP access: Not available" -ForegroundColor Yellow
 }
 
 if ($accessMethods.Count -gt 0) {
     $testResults.RegisterAccess = $true
     $testResults.Score += 10
-    Write-Host "Register access methods available: $($accessMethods -join ', ')" -ForegroundColor Green
+    Write-LogBoth "Register access methods available: $($accessMethods -join ', ')" -ForegroundColor Green
 } else {
-    Write-Host "Limited register access capabilities detected" -ForegroundColor Red
+    Write-LogBoth "Limited register access capabilities detected" -ForegroundColor Red
 }
 
-Write-Host "`n=== Test Results Summary ==="
-Write-Host "Final Score: $($testResults.Score)/100"
+# Phase 6: Register Value Dump
+$registerDump = @()
+Write-LogBoth "`nPhase 6: Register Value Dump"
+foreach ($reg in $I225_REGISTERS.GetEnumerator()) {
+    $regName = $reg.Key
+    $regAddr = $reg.Value
+    # Simulierter Registerwert (hier müsste ggf. ein echtes Tool/Driver verwendet werden)
+    $regValue = "[not implemented: requires kernel driver or tool]"
+    $line = "Register $regName (0x{0:X}): $regValue" -f $regAddr
+    Write-LogBoth $line
+    $registerDump += $line
+}
+
+Write-LogBoth "`n=== Test Results Summary ==="
+Write-LogBoth "Final Score: $($testResults.Score)/100"
 
 if ($testResults.Score -ge 80) {
-    Write-Host "Assessment: HIGH feasibility for I225/I226 register access" -ForegroundColor Green
-    Write-Host "Recommendation: Proceed with implementation"
+    Write-LogBoth "Assessment: HIGH feasibility for I225/I226 register access" -ForegroundColor Green
+    Write-LogBoth "Recommendation: Proceed with implementation"
 } elseif ($testResults.Score -ge 60) {
-    Write-Host "Assessment: MEDIUM feasibility for I225/I226 register access" -ForegroundColor Yellow
-    Write-Host "Recommendation: Address issues then implement"
+    Write-LogBoth "Assessment: MEDIUM feasibility for I225/I226 register access" -ForegroundColor Yellow
+    Write-LogBoth "Recommendation: Address issues then implement"
 } else {
-    Write-Host "Assessment: LOW feasibility for I225/I226 register access" -ForegroundColor Red
-    Write-Host "Recommendation: Resolve system issues first"
+    Write-LogBoth "Assessment: LOW feasibility for I225/I226 register access" -ForegroundColor Red
+    Write-LogBoth "Recommendation: Resolve system issues first"
 }
 
-Write-Host "`nDetailed Results:"
-Write-Host "  Device Detection: $(if($testResults.DeviceFound){'PASS'}else{'FAIL'})"
-Write-Host "  Driver Status: $(if($testResults.DriverOK){'PASS'}else{'FAIL'})"
-Write-Host "  Register Access: $(if($testResults.RegisterAccess){'PASS'}else{'FAIL'})"
-Write-Host "  TSN Features: $(if($testResults.TSNFeatures){'PASS'}else{'FAIL'})"
+Write-LogBoth "`nDetailed Results:"
+Write-LogBoth "  Device Detection: $(if($testResults.DeviceFound){'PASS'}else{'FAIL'})"
+Write-LogBoth "  Driver Status: $(if($testResults.DriverOK){'PASS'}else{'FAIL'})"
+Write-LogBoth "  Register Access: $(if($testResults.RegisterAccess){'PASS'}else{'FAIL'})"
+Write-LogBoth "  TSN Features: $(if($testResults.TSNFeatures){'PASS'}else{'FAIL'})"
 
-Write-Host "`n=== I225/I226 Advantages over I210 ==="
-Write-Host "  - 2.5 Gbps bandwidth (vs 1 Gbps I210)"
-Write-Host "  - Enhanced TSN features (802.1Qbv, 802.1Qbu)"
-Write-Host "  - PCIe PTM for improved synchronization"
-Write-Host "  - Frame preemption for low latency"
-Write-Host "  - Industrial temperature variants available"
+Write-LogBoth "`n=== I225/I226 Advantages over I210 ==="
+Write-LogBoth "  - 2.5 Gbps bandwidth (vs 1 Gbps I210)"
+Write-LogBoth "  - Enhanced TSN features (802.1Qbv, 802.1Qbu)"
+Write-LogBoth "  - PCIe PTM for improved synchronization"
+Write-LogBoth "  - Frame preemption for low latency"
+Write-LogBoth "  - Industrial temperature variants available"
 
+# Am Ende: Logfile schreiben
 if ($SaveLog) {
-    $logContent = @"
-I225/I226 Register Access Test Results
-Generated: $(Get-Date)
-Score: $($testResults.Score)/100
-Device Found: $($testResults.DeviceFound)
-Driver OK: $($testResults.DriverOK)
-Register Access: $($testResults.RegisterAccess)
-TSN Features: $($testResults.TSNFeatures)
-"@
-    $logContent | Out-File -FilePath $LogPath -Encoding UTF8
+    $script:fullLog | Out-File -FilePath $LogPath -Encoding UTF8
     Write-Host "`nLog saved to: $LogPath"
 }
 
-Write-Host "`nTest completed. Use -Verbose for detailed output."
+Write-LogBoth "`nTest completed. Use -Verbose for detailed output."
