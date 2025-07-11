@@ -1,0 +1,35 @@
+{
+  "analysis_window": 300,
+  "jitter_threshold": 1000,
+  "drift_threshold": 100,
+  "stability_threshold": 0.95,
+  "gptp_build_path": "D:\\Repos\\OpenAvnu\\build-intel-hal\\thirdparty\\gptp\\RelWithDebInfo\\gptp.exe",
+  "target_interface": "EC-4C-8C-F8-1A-C4",
+  "performance_thresholds": {
+    "excellent": {
+      "jitter": 500,
+      "drift": 50
+    },
+    "good": {
+      "jitter": 1000,
+      "drift": 100
+    },
+    "fair": {
+      "jitter": 2000,
+      "drift": 200
+    }
+  },
+  "monitoring": {
+    "update_interval": 30,
+    "max_readings": 10000,
+    "alert_thresholds": {
+      "jitter_spike": 5000,
+      "drift_change": 500
+    }
+  },
+  "output": {
+    "real_time_display": true,
+    "save_raw_data": true,
+    "generate_plots": true
+  }
+}

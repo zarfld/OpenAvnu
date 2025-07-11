@@ -1,0 +1,18 @@
+OpenAvnu Repository Cleanup Report
+Generated: 07/11/2025 21:40:49
+Mode: Move
+
+Summary:
+- Files moved: 30
+- Files copied: 3  
+- Files skipped: 0
+
+Target directories created:
+- docs/tests/results
+- docs/tests/config
+- docs/tests/temp
+- docs/tests/legacy/scripts
+- docs/tests/legacy/outputs
+
+This cleanup organized scattered test files, logs, configs, and legacy scripts
+into the standardized directory structure under docs/tests/.

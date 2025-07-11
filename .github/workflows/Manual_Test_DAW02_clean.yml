@@ -1,0 +1,107 @@
+name: Manual Test on DAW02
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_phase:
+        description: 'Test phase to run (1, 2, 3, 4, 5, or all)'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+        - '1'
+        - '2' 
+        - '3'
+        - '4'
+        - '5'
+        - 'all'
+      adapter_filter:
+        description: 'Filter to specific adapter (I210, I219, I225, I226, or leave empty for all)'
+        required: false
+        default: ''
+        type: string
+      verbose_output:
+        description: 'Enable verbose output'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  build-and-hwtest:
+    runs-on: [self-hosted, DAW02]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build (Release)
+        run: cmake --build build --config Release
+
+      - name: Run Integration & Unit Tests
+        run: cmake --build build --config Release --target RUN_TESTS
+        continue-on-error: true
+
+      - name: Unified Hardware Testing Framework
+        shell: pwsh
+        run: |
+          $params = @("-Phase", "${{ github.event.inputs.test_phase }}", "-SaveResults")
+          if ("${{ github.event.inputs.adapter_filter }}" -ne "") {
+            $params += "-AdapterFilter", "${{ github.event.inputs.adapter_filter }}"
+          }
+          if ("${{ github.event.inputs.verbose_output }}" -eq "true") {
+            $params += "-Verbose"
+          }
+          ./tests/hardware/unified_test_framework.ps1 @params
+
+      - name: Legacy I225 Register Test (if available)
+        shell: pwsh
+        run: |
+          $i225Present = ./tests/hardware/unified_test_framework.ps1 -ListAdapters | Select-String "I225"
+          if ($i225Present -and (Test-Path "./test_i225_register_access.ps1")) {
+            Write-Host "Running legacy I225 register test..."
+            ./test_i225_register_access.ps1 -Verbose -SaveLog -LogPath "docs/tests/results/i225_register_test_${{ github.run_id }}.log"
+          } else {
+            Write-Host "I225 test not available, skipping..."
+          }
+        continue-on-error: true
+
+      - name: Python Timestamp Analysis (if available)
+        shell: pwsh
+        run: |
+          if (Test-Path "tools/timestamp_analysis/timestamp_analyzer.py") {
+            python tools/timestamp_analysis/timestamp_analyzer.py --duration 60 --output docs/tests/results/timestamp_analysis_${{ github.run_id }}.json
+          } else {
+            Write-Host "Python timestamp analyzer not found, skipping..."
+          }
+        continue-on-error: true
+
+      - name: Collect Test Results
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path "docs/tests/results" -Force | Out-Null
+          if (Test-Path "build/Testing/Temporary/LastTest.log") {
+            Copy-Item "build/Testing/Temporary/LastTest.log" "docs/tests/results/cmake_tests_${{ github.run_id }}.log"
+          }
+          if (Test-Path "build/Testing/*/Test.xml") {
+            Copy-Item "build/Testing/*/Test.xml" "docs/tests/results/" -Force
+          }
+          Write-Host "Collected test results:"
+          Get-ChildItem "docs/tests/results/" -Filter "*${{ github.run_id }}*" | ForEach-Object {
+            Write-Host "  $($_.Name) ($([math]::Round($_.Length / 1KB, 2)) KB)"
+          }
+
+      - name: Update Machine Documentation
+        shell: pwsh
+        run: |
+          $machineFile = "docs/machine/windows_test_system_DAW02.md"
+          $updateInfo = "`n`n## Last Test Run`n- Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`n- Run ID: ${{ github.run_id }}`n"
+          Add-Content -Path $machineFile -Value $updateInfo
+          Write-Host "Updated machine documentation"
+
+      - name: Archive Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-daw02-${{ github.run_id }}
+          path: |
+            docs/tests/results/
+            docs/machine/windows_test_system_DAW02.md
+          retention-days: 30
