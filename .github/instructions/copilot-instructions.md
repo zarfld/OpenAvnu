@@ -102,7 +102,12 @@ These rules define coding standards, collaboration protocols, and repository hyg
   * Include date and time of test runs
   * Summary of results
   * Any issues or failures encountered
-  
+* **mock and simulated data**
+ For testing with real data, the use of mock or simulated data is not allowed!
+  Use mock or simulated data for testing when real data is not available, only. Document:
+  * Source of mock data
+  * How it was generated
+  * Any limitations or assumptions made
 
 ---
 ## 📚 Documentation
