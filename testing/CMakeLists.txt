@@ -64,7 +64,7 @@ if(OPENAVNU_BUILD_INTEGRATION_TESTS)
     
     # Register integration tests with CTest
     add_test(NAME Phase2Integration 
-             COMMAND test_phase2_integration_consolidated
+             COMMAND test_phase2_backend_integration_consolidated
              WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/integration/phase2)
     set_tests_properties(Phase2Integration PROPERTIES 
                         LABELS "integration;phase2"
@@ -129,7 +129,7 @@ add_custom_target(test_hardware
 
 add_custom_target(test_integration
     COMMAND ${CMAKE_CTEST_COMMAND} -L integration --output-on-failure
-    DEPENDS test_phase2_integration_consolidated phase3_production_test_consolidated
+    DEPENDS test_phase2_backend_integration_consolidated phase3_production_test_consolidated
     COMMENT "Running integration tests"
 )
 
@@ -168,3 +168,11 @@ message(STATUS "   make test_integration  # Run integration tests")
 message(STATUS "   make test_performance  # Run performance tests")
 message(STATUS "   make test_all          # Run all tests")
 message(STATUS "")
+
+# =============================================================================
+# Performance Testing
+# =============================================================================
+if(OPENAVNU_BUILD_PERFORMANCE_TESTS)
+    message(STATUS "📊 Building performance tests")
+    add_subdirectory(performance)
+endif()
