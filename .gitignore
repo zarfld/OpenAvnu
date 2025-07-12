@@ -29,10 +29,6 @@ lib/la_avdecc/externals/3rdparty/winpcap/
 
 
 .fake
-# Test results should go in docs/tests/results/
-*.log
-*test*.json
-*test*.txt
-intel_hal_test_log.txt
-register_access_*.log
+
+
 

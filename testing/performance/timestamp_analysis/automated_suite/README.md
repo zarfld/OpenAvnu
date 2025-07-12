@@ -58,7 +58,13 @@ python performance_benchmark.py --load-levels 100 500 1000 5000
 
 # Skip load testing
 python performance_benchmark.py --no-load --output baseline_comparison
+
+# Automatisch alle unterstützten Adapter (i210, i219, i225, i226) testen
+python performance_benchmark.py --all-supported-adapters --duration 300
 ```
+
+**Hinweis:**
+Mit der Option `--all-supported-adapters` erkennt das Skript automatisch alle Netzwerkschnittstellen mit den Bezeichnungen i210, i219, i225 und i226 und führt den Benchmark für jede dieser Schnittstellen durch. Die Ergebnisse werden für jede getestete Schnittstelle separat ausgegeben und dokumentiert.
 
 **Output:**
 - JSON report with benchmark results

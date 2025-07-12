@@ -577,27 +577,94 @@ def main():
                        help='Load levels to test (packets per second)')
     parser.add_argument('--output', default='i219_benchmark',
                        help='Output file prefix')
-    
+    parser.add_argument('--all-supported-adapters', action='store_true',
+                       help='Automatically detect and benchmark all supported adapters (i210, i219, i225, i226)')
+
     args = parser.parse_args()
-    
-    # Create benchmark configuration
-    config = BenchmarkConfig(
-        test_duration=args.duration,
-        hw_timestamp_tests=not args.no_hardware,
-        sw_timestamp_tests=not args.no_software,
-        load_test_enabled=not args.no_load,
-        load_levels=args.load_levels
-    )
-    
-    # Run benchmark
-    benchmark = PerformanceBenchmark(config)
-    results = benchmark.run_full_benchmark_suite()
-    
-    if results:
-        benchmark.generate_comparison_report(args.output)
-        print(f"\nBenchmark complete! {len(results)} tests performed.")
+
+    def detect_supported_adapters():
+        import platform
+        adapters = []
+        if platform.system() == 'Windows':
+            try:
+                import subprocess
+                result = subprocess.run(['powershell', '-Command', 'Get-NetAdapter | Select-Object -ExpandProperty Name, InterfaceDescription'], capture_output=True, text=True)
+                lines = result.stdout.splitlines()
+                for line in lines:
+                    if any(x in line for x in ['i210', 'i219', 'i225', 'i226', 'I210', 'I219', 'I225', 'I226']):
+                        name = line.strip().split()[0]
+                        adapters.append(name)
+            except Exception as e:
+                print(f"Adapter detection failed: {e}")
+        else:
+            # Linux: use 'ip link' or 'lspci' for more details
+            try:
+                import subprocess
+                result = subprocess.run(['ip', '-o', 'link', 'show'], capture_output=True, text=True)
+                for line in result.stdout.splitlines():
+                    if any(x in line for x in ['i210', 'i219', 'i225', 'i226', 'I210', 'I219', 'I225', 'I226']):
+                        name = line.split(':')[1].strip()
+                        adapters.append(name)
+            except Exception as e:
+                print(f"Adapter detection failed: {e}")
+        return adapters
+
+    # Zielordner für Testergebnisse gemäß Repository-Richtlinien
+    results_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'docs', 'tests', 'results')
+    os.makedirs(results_dir, exist_ok=True)
+
+    def get_output_prefix(base, adapter=None):
+        if adapter:
+            return os.path.join(results_dir, f"{base}_{adapter.replace(' ', '_')}")
+        else:
+            return os.path.join(results_dir, base)
+
+    if args.all_supported_adapters:
+        adapters = detect_supported_adapters()
+        if not adapters:
+            print("No supported adapters (i210, i219, i225, i226) detected!")
+            sys.exit(1)
+        print(f"Detected supported adapters: {adapters}")
+        all_results = []
+        for adapter in adapters:
+            print(f"\n=== Benchmarking adapter: {adapter} ===")
+            # Adapter name as target_interface
+            config = BenchmarkConfig(
+                test_duration=args.duration,
+                hw_timestamp_tests=not args.no_hardware,
+                sw_timestamp_tests=not args.no_software,
+                load_test_enabled=not args.no_load,
+                load_levels=args.load_levels
+            )
+            benchmark = PerformanceBenchmark(config)
+            benchmark.target_interface = adapter
+            results = benchmark.run_full_benchmark_suite()
+            if results:
+                out_prefix = get_output_prefix(args.output, adapter)
+                benchmark.generate_comparison_report(out_prefix)
+                all_results.extend(results)
+        if all_results:
+            print(f"\nBenchmark complete! {len(all_results)} tests performed across {len(adapters)} adapters.")
+        else:
+            print("No benchmark results generated.")
     else:
-        print("No benchmark results generated.")
+        # Create benchmark configuration
+        config = BenchmarkConfig(
+            test_duration=args.duration,
+            hw_timestamp_tests=not args.no_hardware,
+            sw_timestamp_tests=not args.no_software,
+            load_test_enabled=not args.no_load,
+            load_levels=args.load_levels
+        )
+        # Run benchmark
+        benchmark = PerformanceBenchmark(config)
+        results = benchmark.run_full_benchmark_suite()
+        if results:
+            out_prefix = get_output_prefix(args.output)
+            benchmark.generate_comparison_report(out_prefix)
+            print(f"\nBenchmark complete! {len(results)} tests performed.")
+        else:
+            print("No benchmark results generated.")
 
 if __name__ == '__main__':
     main()

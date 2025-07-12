@@ -263,8 +263,11 @@
 		{
 			"label": "Run Performance Baseline Test (Windows)",
 			"type": "shell",
-			"command": ".\\build\\testing\\performance\\Release\\phase2_baseline_measurement.exe",
-			"args": [],
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"if (!(Test-Path .\\docs\\tests\\results)) { New-Item -ItemType Directory -Path .\\docs\\tests\\results | Out-Null }; & .\\build\\testing\\performance\\Release\\phase2_baseline_measurement.exe -all-supported-adapters 2>&1 | Tee-Object -FilePath .\\docs\\tests\\results\\phase2_baseline_measurement.log"
+			],
 			"options": {
 				"cwd": "${workspaceFolder}"
 			},
