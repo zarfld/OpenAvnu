@@ -11,7 +11,7 @@
 ### ✅ COMPLETED - Unified Framework Created
 - **Location**: `tests/hardware/unified_test_framework.ps1`
 - **Features**: Multi-phase testing, adapter detection, PTP/TSN validation
-- **Status**: Functional on ATGRZWN313892 (I219-LM)
+- **Status**: Functional on DEV01 (I219-LM)
 
 ### 🗂️ LEGACY COMPONENTS TO CONSOLIDATE
 
@@ -100,7 +100,7 @@
 3. 🔄 Gradually phase out individual test scripts
 4. 📋 Validate all I225/I210 specific functionality
 
-### For ATGRZWN313892 (I219 System)  
+### For DEV01 (I219 System)  
 1. ✅ Unified framework proven functional
 2. ✅ Phase 1 and 2 testing complete
 3. 🔄 Continue with Phase 3-5 development
@@ -133,7 +133,7 @@
 
 ### Week 1 (Current)
 - ✅ Create unified framework
-- ✅ Test on current hardware (ATGRZWN313892)
+- ✅ Test on current hardware (DEV01)
 - 🔄 Update GitHub workflow
 - 🔄 Create consolidation plan
 

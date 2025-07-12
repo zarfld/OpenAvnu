@@ -1,7 +1,7 @@
 # OpenAvnu Hardware Testing - Phase 1: Driver Interface Test
 # Test Case 3: Driver Interface Test
 # Date: 2025-01-11
-# System: ATGRZWN313892
+# System: DEV01
 
 Write-Host "=== OpenAvnu Phase 1 Hardware Testing ===" -ForegroundColor Green
 Write-Host "Test Case: Driver Interface Test" -ForegroundColor Yellow

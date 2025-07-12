@@ -118,7 +118,7 @@ The OpenAvnu project has consolidated multiple testing approaches into a single,
 - **Single Command**: One script replaces multiple legacy scripts
 - **Better Detection**: Enhanced adapter detection and capability validation
 - **Consistent Results**: Standardized JSON output format
-- **Cross-System**: Same commands work on different machines (ATGRZWN313892, DAW02)
+- **Cross-System**: Same commands work on different machines (DEV01, DAW02)
 
 ### 📈 Long-term Benefits  
 - **Easier Maintenance**: One codebase instead of multiple scripts
@@ -263,7 +263,7 @@ docs/tests/legacy/scripts/
 ## Timeline
 
 ### Current Status
-- ✅ **Unified Framework**: Functional on I219-LM (ATGRZWN313892)
+- ✅ **Unified Framework**: Functional on I219-LM (DEV01)
 - 🔄 **Legacy Archive**: Scripts moved to `tests/hardware/legacy/`
 - 🔄 **GitHub Workflow**: Updated for unified approach
 - 📋 **DAW02 Testing**: Validation needed on I225/I210 hardware

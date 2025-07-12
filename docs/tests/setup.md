@@ -243,7 +243,7 @@ Automate tests using CI/CD pipelines where possible:
 ### Features
 - **Multi-Adapter Support**: I210, I219, I225, I226
 - **Phased Testing**: Progressive validation (Phase 1: Detection, Phase 2: Register Access)
-- **Cross-System**: Works on ATGRZWN313892, DAW02, and future systems
+- **Cross-System**: Works on DEV01, DAW02, and future systems
 - **CI/CD Ready**: Integrated with GitHub Actions workflow
 - **Comprehensive Logging**: JSON results and detailed console output
 

@@ -1,7 +1,7 @@
 # OpenAvnu Hardware Testing - Phase 1: Basic Network Communication Test
 # Test Case 2: Basic Network Communication Test  
 # Date: 2025-01-11
-# System: ATGRZWN313892
+# System: DEV01
 
 param(
     [string]$TestTargetIP = "",

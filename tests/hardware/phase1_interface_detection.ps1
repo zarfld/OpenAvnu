@@ -1,7 +1,7 @@
 # OpenAvnu Hardware Testing - Phase 1: Network Interface Detection
 # Test Case 1: Detect Intel I210/I219/I225/I226 adapters
 # Date: 2025-01-11
-# System: ATGRZWN313892
+# System: DEV01
 
 Write-Host "=== OpenAvnu Phase 1 Hardware Testing ===" -ForegroundColor Green
 Write-Host "Test Case: Network Interface Detection" -ForegroundColor Yellow

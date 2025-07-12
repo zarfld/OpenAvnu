@@ -11,7 +11,7 @@ BuildDirectory: D:/Repos/OpenAvnu/build-intel-hal/thirdparty/cpputest
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: ATGRZWN313892
+Site: DEV01
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Win32-MSBuild

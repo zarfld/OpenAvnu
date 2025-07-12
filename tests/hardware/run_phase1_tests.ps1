@@ -1,7 +1,7 @@
 # OpenAvnu Hardware Testing - Phase 1 Complete Test Suite
 # Runs all Phase 1 tests in sequence
 # Date: 2025-01-11
-# System: ATGRZWN313892
+# System: DEV01
 
 param(
     [switch]$SkipConnectivity = $false,
