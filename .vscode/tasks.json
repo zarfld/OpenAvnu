@@ -1365,12 +1365,76 @@
 			}
 		},
 		{
+			"label": "Build Phase 2 Baseline Measurement (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release",
+				"--target",
+				"phase2_baseline_measurement"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Phase 2 Baseline Measurement (Windows)",
+			"type": "shell",
+			"command": ".\\testing\\performance\\Release\\phase2_baseline_measurement.exe",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build Phase 2 Baseline Measurement (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build and Run Phase 2 Baseline Measurement (Windows)",
+			"type": "shell",
+			"command": ".\\testing\\performance\\Release\\phase2_baseline_measurement.exe",
+			"args": [],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build Phase 2 Baseline Measurement (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
 			"label": "Run All OpenAvnu Tests (Windows)",
 			"type": "shell",
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"Write-Host '🧪 Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\tests\\intel_hal\\Release\\intel_hal_validation_test.exe'; Write-Host ''; & '.\\test\\clock_quality\\Release\\clock_quality_tests.exe'; Write-Host ''; Write-Host '✅ All OpenAvnu tests completed!' -ForegroundColor Green"
+				"Write-Host '🧪 Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\tests\\intel_hal\\Release\\intel_hal_validation_test.exe'; Write-Host ''; & '.\\test\\clock_quality\\Release\\clock_quality_tests.exe'; Write-Host ''; Write-Host '📊 Running Phase 2 baseline measurement...' -ForegroundColor Yellow; & '.\\testing\\performance\\Release\\phase2_baseline_measurement.exe'; Write-Host ''; Write-Host '✅ All OpenAvnu tests completed!' -ForegroundColor Green"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build"

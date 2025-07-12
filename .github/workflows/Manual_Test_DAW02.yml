@@ -99,6 +99,54 @@ jobs:
           }
         continue-on-error: true
 
+      - name: Phase 2 Baseline Performance Measurement
+        shell: pwsh
+        run: |
+          Write-Host "=== Phase 2 Baseline Performance Measurement ===" -ForegroundColor Green
+          $testExe = "build/testing/performance/Release/phase2_baseline_measurement.exe"
+          
+          if (Test-Path $testExe) {
+            Write-Host "Running Phase 2 baseline measurement..." -ForegroundColor Yellow
+            
+            # Run the measurement and capture output
+            $result = & $testExe 2>&1
+            $exitCode = $LASTEXITCODE
+            
+            # Display results
+            Write-Host $result
+            
+            # Save results to file
+            $resultsDir = "docs/tests/results"
+            New-Item -ItemType Directory -Path $resultsDir -Force | Out-Null
+            $resultFile = "$resultsDir/phase2_baseline_measurement_${{ github.run_id }}.log"
+            
+            $logContent = @"
+          Phase 2 Baseline Performance Measurement Results
+          ===============================================
+          Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+          GitHub Run ID: ${{ github.run_id }}
+          Exit Code: $exitCode
+          Machine: DAW02 (Windows Test System)
+          
+          Measurement Output:
+          $result
+          "@
+            
+            $logContent | Out-File -FilePath $resultFile -Encoding UTF8
+            
+            if ($exitCode -eq 0) {
+              Write-Host "✅ Phase 2 baseline measurement COMPLETED" -ForegroundColor Green
+            } else {
+              Write-Host "⚠️ Phase 2 baseline measurement completed with warnings (Exit Code: $exitCode)" -ForegroundColor Yellow
+            }
+            
+            Write-Host "Results saved to: $resultFile" -ForegroundColor Cyan
+          } else {
+            Write-Host "❌ Phase 2 baseline measurement tool not found at: $testExe" -ForegroundColor Red
+            Write-Host "Make sure the performance testing tools were built successfully" -ForegroundColor Yellow
+          }
+        continue-on-error: true
+
       - name: Collect Test Results
         shell: pwsh
         run: |
