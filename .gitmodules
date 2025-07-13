@@ -1,15 +1,15 @@
 [submodule "thirdparty/cpputest"]
 	path = thirdparty/cpputest
-	url = ../../AVnu/cpputest.git
+	url = https://github.com/cpputest/cpputest.git
 [submodule "avdecc-lib"]
 	path = avdecc-lib
-	url = ../../AVnu/avdecc-lib
+	url = https://github.com/AVnu/avdecc-lib.git
 [submodule "lib/igb_avb"]
 	path = lib/igb_avb
 	url = https://github.com/AVnu/igb_avb.git
 [submodule "lib/atl_avb"]
 	path = lib/atl_avb
-	url = https://github.com/Aquantia/atl_avb
+	url = https://github.com/zarfld/atl_avb.git
 [submodule "lib/la_avdecc"]
 	path = lib/la_avdecc
 	url = https://github.com/L-Acoustics/avdecc.git
