@@ -1,0 +1,205 @@
+{
+    "SystemInfo":  {
+                       "Version":  "10.0.22631",
+                       "Caption":  "Microsoft Windows 11 Enterprise",
+                       "IsWindows10":  false,
+                       "SupportsAdvancedFeatures":  true,
+                       "Architecture":  "64-Bit",
+                       "IsWindows11":  true,
+                       "BuildNumber":  "22631"
+                   },
+    "TestsRun":  11,
+    "SuccessRate":  100,
+    "WindowsVersion":  "Microsoft Windows 11 Enterprise",
+    "Phases":  [
+                   {
+                       "TestsRun":  4,
+                       "TestsPassed":  4,
+                       "Name":  "Detection",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752442653033)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752442653049)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  155107,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  15,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  1.7952199074074074E-07,
+                                        "TotalHours":  4.3085277777777776E-06,
+                                        "TotalMilliseconds":  15.5107,
+                                        "TotalMinutes":  0.00025851166666666665,
+                                        "TotalSeconds":  0.015510699999999999
+                                    }
+                   },
+                   {
+                       "TestsRun":  1,
+                       "TestsPassed":  1,
+                       "Name":  "RegisterAccess",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752442653088)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752442653131)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  428137,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  42,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  4.9552893518518522E-07,
+                                        "TotalHours":  1.1892694444444444E-05,
+                                        "TotalMilliseconds":  42.813700000000004,
+                                        "TotalMinutes":  0.00071356166666666668,
+                                        "TotalSeconds":  0.042813699999999996
+                                    }
+                   },
+                   {
+                       "TestsRun":  2,
+                       "TestsPassed":  2,
+                       "Name":  "Timestamping",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752442653135)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752442653142)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  72293,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  7,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  8.36724537037037E-08,
+                                        "TotalHours":  2.008138888888889E-06,
+                                        "TotalMilliseconds":  7.2293,
+                                        "TotalMinutes":  0.00012048833333333334,
+                                        "TotalSeconds":  0.0072292999999999993
+                                    }
+                   },
+                   {
+                       "TestsRun":  2,
+                       "TestsPassed":  2,
+                       "Name":  "gPTP",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752442653146)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752442653151)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  47462,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  4,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  5.4932870370370369E-08,
+                                        "TotalHours":  1.3183888888888887E-06,
+                                        "TotalMilliseconds":  4.7462,
+                                        "TotalMinutes":  7.9103333333333339E-05,
+                                        "TotalSeconds":  0.0047462
+                                    }
+                   },
+                   {
+                       "TestsRun":  2,
+                       "TestsPassed":  2,
+                       "Name":  "Performance",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752442653154)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Sonntag, 13. Juli 2025 23:37:33"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752442969430)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Sonntag, 13. Juli 2025 23:42:49"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  3162755187,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  275,
+                                        "Minutes":  5,
+                                        "Seconds":  16,
+                                        "TotalDays":  0.0036605962812499998,
+                                        "TotalHours":  0.08785431075,
+                                        "TotalMilliseconds":  316275.5187,
+                                        "TotalMinutes":  5.2712586450000005,
+                                        "TotalSeconds":  316.27551869999996
+                                    }
+                   }
+               ],
+    "Adapters":  [
+                     {
+                         "Status":  "Disconnected",
+                         "InstanceId":  "PCI\\VEN_8086\u0026DEV_0DC7\u0026SUBSYS_0C421028\u0026REV_11\\3\u002611583659\u00260\u0026FE",
+                         "Name":  "Ethernet",
+                         "Description":  "Intel(R) Ethernet Connection (22) I219-LM",
+                         "Family":  "I219",
+                         "LinkSpeed":  "0 bps",
+                         "MacAddress":  "C0-47-0E-16-7B-89",
+                         "SupportsAdvancedFeatures":  true,
+                         "DeviceId":  "0x0DC7",
+                         "Capabilities":  [
+                                              "BASIC_1588",
+                                              "MDIO",
+                                              "NATIVE_OS"
+                                          ],
+                         "TestProfile":  "MDIO_Access",
+                         "SupportsHardwareTimestamp":  true,
+                         "DriverVersion":  "12.19.2.60"
+                     }
+                 ],
+    "Errors":  [
+
+               ],
+    "TestsPassed":  11,
+    "StartTime":  {
+                      "value":  "\/Date(1752442648380)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Sonntag, 13. Juli 2025 23:37:28"
+                  },
+    "EndTime":  {
+                    "value":  "\/Date(1752442969483)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Sonntag, 13. Juli 2025 23:42:49"
+                },
+    "Duration":  {
+                     "Ticks":  3211030040,
+                     "Days":  0,
+                     "Hours":  0,
+                     "Milliseconds":  103,
+                     "Minutes":  5,
+                     "Seconds":  21,
+                     "TotalDays":  0.0037164699537037037,
+                     "TotalHours":  0.089195278888888882,
+                     "TotalMilliseconds":  321103.004,
+                     "TotalMinutes":  5.3517167333333333,
+                     "TotalSeconds":  321.103004
+                 },
+    "TestsFailed":  0
+}

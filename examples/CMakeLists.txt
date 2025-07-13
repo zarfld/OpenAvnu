@@ -198,3 +198,48 @@ if(OPENAVNU_INSTALL_EXAMPLES)
 endif()
 
 message(STATUS "📦 OpenAvnu examples configuration complete")
+
+# ==========================================
+# Intel Ethernet HAL Examples
+# ==========================================
+
+if(OPENAVNU_BUILD_INTEL_HAL)
+    message(STATUS "🔧 Building Intel Ethernet HAL examples")
+    
+    # I219 VLAN/QoS Configuration Example
+    add_executable(i219_vlan_qos_example
+        i219_vlan_qos_example_corrected.c
+    )
+    
+    target_include_directories(i219_vlan_qos_example PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/intel-ethernet-hal/include
+    )
+    
+    target_link_libraries(i219_vlan_qos_example 
+        PRIVATE 
+        intel-ethernet-hal-static
+    )
+    
+    if(WIN32)
+        target_link_libraries(i219_vlan_qos_example 
+            PRIVATE 
+            iphlpapi 
+            ws2_32
+        )
+    endif()
+    
+    # Set output directory
+    set_target_properties(i219_vlan_qos_example PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples
+    )
+    
+    # Installation
+    install(TARGETS i219_vlan_qos_example
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/examples
+    )
+    
+    # Install source as documentation
+    install(FILES i219_vlan_qos_example.c
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples
+    )
+endif()
