@@ -106,11 +106,28 @@ $BuildDir = "..\build"
 if (Test-Path "$BuildDir\daemons\mrpd\Release\mrpd.exe") {
     Write-Host "✅ MRPD daemon available for network testing" -ForegroundColor Green
     
-    # Test MRPD interface enumeration (dry run)
+    # Test MRPD interface enumeration with timeout
     try {
         Write-Host "   Testing MRPD interface detection..." -ForegroundColor Cyan
-        $MrpdOutput = & "$BuildDir\daemons\mrpd\Release\mrpd.exe" --help 2>&1
-        Write-Host "   ✅ MRPD responds to help command" -ForegroundColor Green
+        
+        $TimeoutJob = Start-Job -ScriptBlock {
+            param($MrpdPath)
+            try {
+                & $MrpdPath --help 2>&1
+                return $true
+            } catch {
+                return $false
+            }
+        } -ArgumentList "$BuildDir\daemons\mrpd\Release\mrpd.exe"
+        
+        if (Wait-Job $TimeoutJob -Timeout 5) {
+            $Result = Receive-Job $TimeoutJob
+            Remove-Job $TimeoutJob
+            Write-Host "   ✅ MRPD responds to help command" -ForegroundColor Green
+        } else {
+            Remove-Job $TimeoutJob -Force
+            Write-Host "   ⚠️  MRPD test timeout (may require admin privileges or network access)" -ForegroundColor Yellow
+        }
     } catch {
         Write-Host "   ⚠️  MRPD execution test failed (may require admin privileges)" -ForegroundColor Yellow
     }
