@@ -1,0 +1,66 @@
+{
+    "StartTime":  {
+                      "value":  "\/Date(1752440831663)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Sonntag, 13. Juli 2025 23:07:11"
+                  },
+    "Daemons":  [
+                    {
+                        "CapabilityPassed":  [
+                                                 false,
+                                                 false
+                                             ],
+                        "Name":  "maap",
+                        "BuildPassed":  false,
+                        "ConfigPassed":  [
+                                             false,
+                                             true,
+                                             false
+                                         ]
+                    },
+                    {
+                        "CapabilityPassed":  [
+                                                 false,
+                                                 false
+                                             ],
+                        "Name":  "mrpd",
+                        "BuildPassed":  false,
+                        "ConfigPassed":  [
+                                             false,
+                                             true,
+                                             false
+                                         ]
+                    }
+                ],
+    "Errors":  [
+                   "maap Build: Executable not found: C:\\Users\\dzarf\\Source\\OpenAvnu\\testing\\daemons\\..\\..build\\daemons\\maap\\Release\\maap_daemon.exe",
+                   "maap Capabilities: Executable not found",
+                   "maap Config Directory: Directory: daemons\\maap\\config",
+                   "mrpd Build: Executable not found: C:\\Users\\dzarf\\Source\\OpenAvnu\\testing\\daemons\\..\\..build\\daemons\\mrpd\\Release\\mrpd.exe",
+                   "mrpd Capabilities: Executable not found",
+                   "mrpd Config Directory: Directory: daemons\\mrpd\\config"
+               ],
+    "TestsRun":  8,
+    "IntelHalVersion":  "",
+    "Duration":  {
+                     "Ticks":  4642629,
+                     "Days":  0,
+                     "Hours":  0,
+                     "Milliseconds":  464,
+                     "Minutes":  0,
+                     "Seconds":  0,
+                     "TotalDays":  5.3734131944444444E-06,
+                     "TotalHours":  0.00012896191666666667,
+                     "TotalMilliseconds":  464.2629,
+                     "TotalMinutes":  0.007737715,
+                     "TotalSeconds":  0.4642629
+                 },
+    "EndTime":  {
+                    "value":  "\/Date(1752440832128)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Sonntag, 13. Juli 2025 23:07:12"
+                },
+    "WindowsVersion":  "Microsoft Windows 10 Pro",
+    "TestsPassed":  2,
+    "TestsFailed":  6
+}
