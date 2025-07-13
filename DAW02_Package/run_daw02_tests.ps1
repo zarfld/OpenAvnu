@@ -176,7 +176,7 @@ $(Get-Content $SystemInfoFile | Out-String)
 
 # Run test suite
 Run-Test "01_BuildVerification" "test_01_build_verification.ps1" "Verify all daemons compile successfully on Windows DAW02"
-Run-Test "02_IntelHALDetection" "test_02_intel_hal_detection.ps1" "Test Intel HAL integration and graceful fallback on Windows"
+Run-Test "02_IntelHALDetection" "test_02_intel_hal_detection_quick.ps1" "Test Intel HAL integration and graceful fallback on Windows"
 Run-Test "03_RuntimeBasic" "test_03_runtime_basic.ps1" "Verify basic daemon startup and help functionality"
 Run-Test "04_NetworkDetection" "test_04_network_detection.ps1" "Test network interface detection capabilities on Windows"
 
