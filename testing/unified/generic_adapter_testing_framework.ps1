@@ -93,11 +93,11 @@ function Write-TestResult {
     
     if ($Passed) {
         $Global:TestResults.TestsPassed++
-        $status = "✅ PASSED"
+        $status = "[PASSED]"
         $color = "Green"
     } else {
         $Global:TestResults.TestsFailed++
-        $status = "❌ FAILED"
+        $status = "[FAILED]"
         $color = "Red"
         if ($Details) {
             $Global:TestResults.Errors += "$TestName`: $Details"
@@ -277,8 +277,8 @@ function Show-AdapterList {
             Status = $adapter.Status
             Speed = if ($adapter.LinkSpeed) { [math]::Round($adapter.LinkSpeed / 1MB, 1).ToString() + " Mbps" } else { "Unknown" }
             Driver = $adapter.DriverVersion
-            "HW Timestamp" = if ($adapter.SupportsHardwareTimestamp) { "✅" } else { "❌" }
-            "Advanced TSN" = if ($adapter.SupportsAdvancedFeatures) { "✅" } else { "❌" }
+            "HW Timestamp" = if ($adapter.SupportsHardwareTimestamp) { "[YES]" } else { "[NO]" }
+            "Advanced TSN" = if ($adapter.SupportsAdvancedFeatures) { "[YES]" } else { "[NO]" }
         }
     }
     
@@ -578,7 +578,7 @@ function Test-TimestampPrecision {
     
     # Expected precision based on adapter family
     $expectedPrecision = switch ($Adapter.Family) {
-        "I210" { 1000 }  # 1µs
+        "I210" { 1000 }  # 1us
         "I219" { 500 }   # 500ns
         "I225" { 100 }   # 100ns
         "I226" { 100 }   # 100ns
@@ -751,7 +751,7 @@ function Test-PerformanceBaseline {
 function Test-ProfileCompliance {
     param([hashtable]$Adapter)
     
-    Write-VerboseOutput "Testing profile compliance for $($Adapter.Name)")
+    Write-VerboseOutput "Testing profile compliance for $($Adapter.Name)"
     
     # Profile requirements based on adapter capabilities
     $profiles = switch ($Adapter.Family) {
@@ -878,12 +878,12 @@ function Show-Recommendations {
     $results = $Global:TestResults
     
     if ($results.TestsFailed -eq 0) {
-        Write-Host "  ✅ All tests passed! Hardware is ready for production use." -ForegroundColor Green
+        Write-Host "  [SUCCESS] All tests passed! Hardware is ready for production use." -ForegroundColor Green
     } else {
-        Write-Host "  ⚠️  Some tests failed. Review errors before proceeding." -ForegroundColor Yellow
+        Write-Host "  [WARNING] Some tests failed. Review errors before proceeding." -ForegroundColor Yellow
         
         if ($results.SuccessRate -lt 70) {
-            Write-Host "  🚨 Low success rate. Check hardware and driver installation." -ForegroundColor Red
+            Write-Host "  [CRITICAL] Low success rate. Check hardware and driver installation." -ForegroundColor Red
         }
     }
     
@@ -892,17 +892,17 @@ function Show-Recommendations {
         switch ($adapter.Family) {
             "I210" {
                 if (!$adapter.SupportsAdvancedFeatures) {
-                    Write-Host "  📝 $($adapter.Name): Consider I225/I226 for advanced TSN features" -ForegroundColor Gray
+                    Write-Host "  [NOTE] $($adapter.Name): Consider I225/I226 for advanced TSN features" -ForegroundColor Gray
                 }
             }
             "I219" {
-                Write-Host "  📝 $($adapter.Name): Ensure latest Intel drivers for optimal MDIO access" -ForegroundColor Gray
+                Write-Host "  [NOTE] $($adapter.Name): Ensure latest Intel drivers for optimal MDIO access" -ForegroundColor Gray
             }
             "I225" {
-                Write-Host "  💡 $($adapter.Name): Full TSN capabilities available" -ForegroundColor Green
+                Write-Host "  [OPTIMAL] $($adapter.Name): Full TSN capabilities available" -ForegroundColor Green
             }
             "I226" {
-                Write-Host "  💡 $($adapter.Name): Latest generation with full TSN support" -ForegroundColor Green
+                Write-Host "  [OPTIMAL] $($adapter.Name): Latest generation with full TSN support" -ForegroundColor Green
             }
         }
     }
@@ -940,7 +940,7 @@ function Main {
     }
     
     if ($adapters.Count -eq 0) {
-        Write-Host "❌ No supported Intel adapters found. Exiting." -ForegroundColor Red
+        Write-Host "[ERROR] No supported Intel adapters found. Exiting." -ForegroundColor Red
         return
     }
     
@@ -996,7 +996,7 @@ function Main {
         }
         
     } catch {
-        Write-Host "❌ Test execution stopped: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "[ERROR] Test execution stopped: $($_.Exception.Message)" -ForegroundColor Red
     }
     
     # Show summary
@@ -1009,10 +1009,10 @@ function Main {
     
     # Set exit code
     if ($allPhasesPassed) {
-        Write-Host "🎉 All test phases completed successfully!" -ForegroundColor Green
+        Write-Host "[SUCCESS] All test phases completed successfully!" -ForegroundColor Green
         exit 0
     } else {
-        Write-Host "⚠️  Some test phases failed. Review results above." -ForegroundColor Yellow
+        Write-Host "[WARNING] Some test phases failed. Review results above." -ForegroundColor Yellow
         exit 1
     }
 }
