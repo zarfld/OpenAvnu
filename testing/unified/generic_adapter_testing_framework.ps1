@@ -921,8 +921,18 @@ function Main {
     Write-Host ""
     
     # Initialize system information
-    $Global:TestResults.SystemInfo = Get-WindowsVersionInfo()
-    $Global:TestResults.WindowsVersion = $Global:TestResults.SystemInfo.Caption
+    try {
+        $Global:TestResults.SystemInfo = Get-WindowsVersionInfo
+        $Global:TestResults.WindowsVersion = $Global:TestResults.SystemInfo.Caption
+    } catch {
+        Write-Warning "Using fallback system detection"
+        $Global:TestResults.SystemInfo = @{
+            Caption = "Windows (detected)"
+            Version = [System.Environment]::OSVersion.Version.ToString()
+            BuildNumber = [System.Environment]::OSVersion.Version.Build.ToString()
+        }
+        $Global:TestResults.WindowsVersion = $Global:TestResults.SystemInfo.Caption
+    }
     
     Write-Host "System Information:" -ForegroundColor White
     Write-Host "  OS: $($Global:TestResults.SystemInfo.Caption)" -ForegroundColor Gray
