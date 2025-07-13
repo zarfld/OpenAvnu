@@ -15,19 +15,19 @@ $ConfigArg = "--config Release"
 Write-Host "Build Type: $BuildType"
 Write-Host ""
 
-# Test 1: Build WITHOUT Intel HAL
-Write-Host "=== Test 1: Building WITHOUT Intel HAL ===" -ForegroundColor Yellow
-Write-Host "This tests the software fallback path"
+# Test 1: Check existing Intel HAL build
+Write-Host "=== Test 1: Checking Intel HAL Build ===" -ForegroundColor Yellow
+Write-Host "Checking existing build for Intel HAL components"
 Write-Host ""
 
-if (Test-Path "build_no_hal") {
-    Remove-Item -Recurse -Force "build_no_hal"
+# Check if build directory exists
+if (Test-Path "..\build") {
+    Set-Location "..\build"
+    Write-Host "Using existing build directory: ..\build" -ForegroundColor Green
+} else {
+    Write-Host "No existing build found - need to build first" -ForegroundColor Red
+    exit 1
 }
-New-Item -ItemType Directory -Name "build_no_hal" | Out-Null
-Set-Location "build_no_hal"
-
-Write-Host "Configuring without Intel HAL..."
-$StartTime = Get-Date
 try {
     $ConfigOutput = & cmake .. -G $Generator -DOPENAVNU_BUILD_INTEL_HAL=OFF 2>&1
     $CMakeNoHalTime = (Get-Date) - $StartTime

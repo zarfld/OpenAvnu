@@ -13,7 +13,7 @@ $MasterReport = "$ReportDir\OpenAvnu_DAW02_Master_Report.md"
 # Create results directory
 New-Item -ItemType Directory -Path $ReportDir -Force | Out-Null
 
-Write-Host "🧪 OpenAvnu DAW02 Testing Suite Starting..." -ForegroundColor Green
+Write-Host "[TEST] OpenAvnu DAW02 Testing Suite Starting..." -ForegroundColor Green
 Write-Host "Test Session: $TestSession"
 Write-Host "Results Directory: $ReportDir"
 Write-Host ""
@@ -42,7 +42,7 @@ function Run-Test {
         [string]$TestDescription
     )
     
-    Write-Host "📋 Running: $TestName" -ForegroundColor Blue
+    Write-Host "[RUN] Running: $TestName" -ForegroundColor Blue
     Write-Host "   $TestDescription"
     
     $LogFile = "$ReportDir\${TestName}_$(Get-Date -Format 'HHmmss').log"
@@ -63,12 +63,12 @@ Started: $(Get-Date)
             }
             
             if ($LASTEXITCODE -eq 0) {
-                Write-Host "   ✅ PASSED" -ForegroundColor Green
+                Write-Host "   [PASS] PASSED" -ForegroundColor Green
                 "Completed: $(Get-Date)" | Out-File -FilePath $LogFile -Append -Encoding UTF8
                 
                 # Add to master report
                 @"
-### ✅ $TestName - PASSED
+### [PASS] $TestName - PASSED
 
 $TestDescription
 
@@ -78,12 +78,12 @@ $(Get-Content $LogFile -Tail 20 | Out-String)
 
 "@ | Out-File -FilePath $MasterReport -Append -Encoding UTF8
             } else {
-                Write-Host "   ❌ FAILED" -ForegroundColor Red
+                Write-Host "   [FAIL] FAILED" -ForegroundColor Red
                 "Failed: $(Get-Date)" | Out-File -FilePath $LogFile -Append -Encoding UTF8
                 
                 # Add to master report
                 @"
-### ❌ $TestName - FAILED
+### [FAIL] $TestName - FAILED
 
 $TestDescription
 
@@ -94,13 +94,13 @@ $(Get-Content $LogFile -Tail 30 | Out-String)
 "@ | Out-File -FilePath $MasterReport -Append -Encoding UTF8
             }
         } catch {
-            Write-Host "   ❌ FAILED (Exception)" -ForegroundColor Red
+            Write-Host "   [FAIL] FAILED (Exception)" -ForegroundColor Red
             "Exception: $($_.Exception.Message)" | Out-File -FilePath $LogFile -Append -Encoding UTF8
         }
     } else {
-        Write-Host "   ⚠️  SKIPPED (script not found)" -ForegroundColor Yellow
+        Write-Host "   [SKIP] SKIPPED (script not found)" -ForegroundColor Yellow
         @"
-### ⚠️ $TestName - SKIPPED
+### [SKIP] $TestName - SKIPPED
 
 Test script '$TestScript' not found.
 
@@ -111,7 +111,7 @@ Test script '$TestScript' not found.
 }
 
 # System Information Collection
-Write-Host "📊 Collecting System Information..." -ForegroundColor Yellow
+Write-Host "[INFO] Collecting System Information..." -ForegroundColor Yellow
 $SystemInfoFile = "$ReportDir\system_info.txt"
 
 @"
@@ -149,8 +149,18 @@ if ($IntelAdapters) {
 
 # Development Tools
 "Development Tools:" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
-try { "CMake: $(cmake --version 2>$null | Select-Object -First 1)" } catch { "CMake: Not found" } | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
-try { "Visual Studio: $(Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*' | Get-ItemProperty | Where-Object { $_.DisplayName -like '*Visual Studio*' } | Select-Object -First 1 -ExpandProperty DisplayName)" } catch { "Visual Studio: Not detected" } | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+try { 
+    $cmakeVersion = cmake --version 2>$null | Select-Object -First 1
+    "CMake: $cmakeVersion" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+} catch { 
+    "CMake: Not found" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+}
+try { 
+    $vsVersion = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*' | Get-ItemProperty | Where-Object { $_.DisplayName -like '*Visual Studio*' } | Select-Object -First 1 -ExpandProperty DisplayName
+    "Visual Studio: $vsVersion" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+} catch { 
+    "Visual Studio: Not detected" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+}
 
 # Add system info to master report
 @"
@@ -171,18 +181,23 @@ Run-Test "03_RuntimeBasic" "test_03_runtime_basic.ps1" "Verify basic daemon star
 Run-Test "04_NetworkDetection" "test_04_network_detection.ps1" "Test network interface detection capabilities on Windows"
 
 # Generate final summary
-$TotalTests = (Get-ChildItem "$ReportDir\*_*.log").Count
-$PassedTests = (Select-String "✅ PASSED" $MasterReport).Count
-$FailedTests = (Select-String "❌ FAILED" $MasterReport).Count
-$SkippedTests = (Select-String "⚠️ SKIPPED" $MasterReport).Count
+$TotalTests = 4  # We know we have 4 defined tests
+$PassedTests = (Select-String "\[PASS\] PASSED" $MasterReport -ErrorAction SilentlyContinue).Count
+$FailedTests = (Select-String "\[FAIL\] FAILED" $MasterReport -ErrorAction SilentlyContinue).Count  
+$SkippedTests = (Select-String "\[SKIP\] SKIPPED" $MasterReport -ErrorAction SilentlyContinue).Count
+
+# Ensure counts are not null
+if ($PassedTests -eq $null) { $PassedTests = 0 }
+if ($FailedTests -eq $null) { $FailedTests = 0 }
+if ($SkippedTests -eq $null) { $SkippedTests = 0 }
 
 @"
 ## Test Summary
 
 - **Total Tests:** $TotalTests
-- **Passed:** $PassedTests ✅
-- **Failed:** $FailedTests ❌  
-- **Skipped:** $SkippedTests ⚠️
+- **Passed:** $PassedTests [PASS]
+- **Failed:** $FailedTests [FAIL]  
+- **Skipped:** $SkippedTests [SKIP]
 
 ### Recommendations
 
@@ -190,15 +205,15 @@ $SkippedTests = (Select-String "⚠️ SKIPPED" $MasterReport).Count
 
 if ($FailedTests -eq 0) {
     @"
-🎉 **All tests passed!** The OpenAvnu daemon modernization is fully compatible with DAW02.
+[SUCCESS] **All tests passed!** The OpenAvnu daemon modernization is fully compatible with DAW02.
 
-✅ **Ready for production deployment**
+[PASS] **Ready for production deployment**
 "@ | Out-File -FilePath $MasterReport -Append -Encoding UTF8
 } else {
     @"
-⚠️ **Some tests failed.** Review failed test details above for resolution steps.
+[WARNING] **Some tests failed.** Review failed test details above for resolution steps.
 
-🔧 **Requires investigation before production deployment**
+[ACTION] **Requires investigation before production deployment**
 "@ | Out-File -FilePath $MasterReport -Append -Encoding UTF8
 }
 
@@ -210,16 +225,18 @@ if ($FailedTests -eq 0) {
 "@ | Out-File -FilePath $MasterReport -Append -Encoding UTF8
 
 # Final output
-Write-Host "🎯 Testing Complete!" -ForegroundColor Green
+Write-Host "[COMPLETE] Testing Complete!" -ForegroundColor Green
 Write-Host ""
-Write-Host "📋 Master Report: $MasterReport"
-Write-Host "📁 All Results: $ReportDir\"
+Write-Host "[REPORT] Master Report: $MasterReport"
+Write-Host "[FILES] All Results: $ReportDir\"
 Write-Host ""
 
-if ($FailedTests -eq 0) {
-    Write-Host "🎉 All tests passed! OpenAvnu is ready for production on DAW02." -ForegroundColor Green
+if ($FailedTests -eq 0 -and $SkippedTests -eq 0) {
+    Write-Host "[SUCCESS] All tests passed! OpenAvnu is ready for production on DAW02." -ForegroundColor Green
+} elseif ($FailedTests -gt 0) {
+    Write-Host "[WARNING] $FailedTests test(s) failed. Review the master report for details." -ForegroundColor Yellow
 } else {
-    Write-Host "⚠️ $FailedTests test(s) failed. Review the master report for details." -ForegroundColor Yellow
+    Write-Host "[INFO] $SkippedTests test(s) skipped. Some tests need implementation." -ForegroundColor Cyan
 }
 
 Write-Host ""

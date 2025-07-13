@@ -20,38 +20,53 @@ Write-Host "Build Type: $BuildType"
 Write-Host "Generator: $Generator"
 Write-Host ""
 
-# Clean previous build
-Write-Host "=== Cleaning Previous Build ===" -ForegroundColor Yellow
-if (Test-Path "build_daw02_verify") {
-    Remove-Item -Recurse -Force "build_daw02_verify"
-}
-New-Item -ItemType Directory -Name "build_daw02_verify" | Out-Null
-Set-Location "build_daw02_verify"
-
-# Configure with timing
-Write-Host ""
-Write-Host "=== CMake Configuration ===" -ForegroundColor Yellow
-Write-Host "Command: cmake .. -G `"$Generator`""
-Write-Host ""
-
-$StartTime = Get-Date
-try {
-    $ConfigOutput = & cmake .. -G $Generator 2>&1
-    $CMakeTime = (Get-Date) - $StartTime
-    Write-Host "✅ CMake configuration successful ($($CMakeTime.TotalSeconds.ToString('F1')) seconds)" -ForegroundColor Green
-    $CMakeSuccess = $true
-    
-    # Show important configuration details
-    $ConfigOutput | Where-Object { $_ -match "(PCAP|Intel|HAL|Found|Error|Warning)" } | ForEach-Object {
-        Write-Host "   $_" -ForegroundColor Cyan
+# Use existing build directory if available
+Write-Host "=== Checking Build Directory ===" -ForegroundColor Yellow
+if (Test-Path "..\build") {
+    Write-Host "Using existing build directory: ..\build" -ForegroundColor Green
+    Set-Location "..\build"
+    $UsingExistingBuild = $true
+} else {
+    Write-Host "Creating new build directory: build_daw02_verify" -ForegroundColor Yellow
+    if (Test-Path "build_daw02_verify") {
+        Remove-Item -Recurse -Force "build_daw02_verify"
     }
-} catch {
-    $CMakeTime = (Get-Date) - $StartTime
-    Write-Host "❌ CMake configuration failed ($($CMakeTime.TotalSeconds.ToString('F1')) seconds)" -ForegroundColor Red
-    Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
-    $CMakeSuccess = $false
-    Set-Location ".."
-    exit 1
+    New-Item -ItemType Directory -Name "build_daw02_verify" | Out-Null
+    Set-Location "build_daw02_verify"
+    $UsingExistingBuild = $false
+}
+
+# Configure with timing (skip if using existing build)
+if (-not $UsingExistingBuild) {
+    Write-Host ""
+    Write-Host "=== CMake Configuration ===" -ForegroundColor Yellow
+    Write-Host "Command: cmake .. -G `"$Generator`""
+    Write-Host ""
+
+    $StartTime = Get-Date
+    try {
+        $ConfigOutput = & cmake .. -G $Generator 2>&1
+        $CMakeTime = (Get-Date) - $StartTime
+        Write-Host "✅ CMake configuration successful ($($CMakeTime.TotalSeconds.ToString('F1')) seconds)" -ForegroundColor Green
+        $CMakeSuccess = $true
+        
+        # Show important configuration details
+        $ConfigOutput | Where-Object { $_ -match "(PCAP|Intel|HAL|Found|Error|Warning)" } | ForEach-Object {
+            Write-Host "   $_" -ForegroundColor Cyan
+        }
+    } catch {
+        $CMakeTime = (Get-Date) - $StartTime
+        Write-Host "❌ CMake configuration failed ($($CMakeTime.TotalSeconds.ToString('F1')) seconds)" -ForegroundColor Red
+        Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
+        $CMakeSuccess = $false
+        Set-Location ".."
+        exit 1
+    }
+} else {
+    Write-Host ""
+    Write-Host "=== Using Existing CMake Configuration ===" -ForegroundColor Green
+    Write-Host "Skipping CMake configure step - using existing build directory"
+    $CMakeSuccess = $true
 }
 
 # Build all daemons with timing

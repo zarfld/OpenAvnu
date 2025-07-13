@@ -1,0 +1,98 @@
+﻿=== 01_BuildVerification ===
+Description: Verify all daemons compile successfully on Windows DAW02
+Started: 07/13/2025 22:39:08
+
+=== OpenAvnu Build Verification Test ===
+System: ATGRZWN313892
+Date: 07/13/2025 22:39:08
+Objective: Verify all daemons compile on Windows DAW02
+
+Build Type: Windows
+Generator: Visual Studio 17 2022
+
+=== Checking Build Directory ===
+Using existing build directory: ..\build
+
+=== Using Existing CMake Configuration ===
+Skipping CMake configure step - using existing build directory
+
+=== Building All Daemons ===
+Command: cmake --build . --config Release
+
+âo. Build successful (4,8 seconds)
+     CppUTest.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\cpputest\src\CppUTest\Release\CppUTest.lib
+     CppUTestExt.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\cpputest\src\CppUTestExt\Release\CppUTestExt.lib
+     CppUTestExtTests.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\cpputest\tests\CppUTestExt\CppUTestExtTests.exe
+     CppUTestTests.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\cpputest\tests\CppUTest\CppUTestTests.exe
+     alltests.vcxproj -> D:\Repos\OpenAvnu\build\daemons\common\tests\Release\alltests.exe
+     clock_quality_demo.vcxproj -> D:\Repos\OpenAvnu\build\examples\clock_quality_demo\Release\clock_quality_demo.exe
+     clock_quality_tests_consolidated.vcxproj -> D:\Repos\OpenAvnu\build\testing\conformance\avnu_alliance\gptp\clock_quality\Release\clock_quality_tests_consolidated.exe
+     config_demo.vcxproj -> D:\Repos\OpenAvnu\build\examples\clock_quality_demo\Release\config_demo.exe
+     intel-ethernet-hal-static.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\intel-ethernet-hal\Release\intel-ethernet-hal-static.lib
+     gptp.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\gptp\Release\gptp.exe
+     grandmaster_tests.vcxproj -> D:\Repos\OpenAvnu\build\lib\avtp_pipeline\tests\Release\grandmaster_tests.exe
+     hal_device_info.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\intel-ethernet-hal\examples\Release\hal_device_info.exe
+     hal_enable_timestamping.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\intel-ethernet-hal\examples\Release\hal_enable_timestamping.exe
+     intel-ethernet-hal.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\intel-ethernet-hal\Release\intel-ethernet-hal.dll
+     intel_hal_full_test.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\intel-ethernet-hal\tests\Release\intel_hal_full_test.exe
+     intel_hal_validation_test_consolidated.vcxproj -> D:\Repos\OpenAvnu\build\tests\intel_hal_validation_test_consolidated.exe
+     la_networkInterfaceHelper_static.vcxproj -> D:\Repos\OpenAvnu\build\lib\la_avdecc\externals\nih\src\Release\la_networkInterfaceHelper_static.lib
+     la_avdecc_cxx.vcxproj -> D:\Repos\OpenAvnu\build\lib\la_avdecc\src\Release\la_avdecc_cxx.dll
+     la_avdecc_controller_cxx.vcxproj -> D:\Repos\OpenAvnu\build\lib\la_avdecc\src\controller\Release\la_avdecc_controller_cxx.dll
+     la_avdecc_static.vcxproj -> D:\Repos\OpenAvnu\build\lib\la_avdecc\src\Release\la_avdecc_static.lib
+     la_avdecc_controller_static.vcxproj -> D:\Repos\OpenAvnu\build\lib\la_avdecc\src\controller\Release\la_avdecc_controller_static.lib
+     maap_daemon.vcxproj -> D:\Repos\OpenAvnu\build\daemons\maap\Release\maap_daemon.exe
+     maap_test.vcxproj -> D:\Repos\OpenAvnu\build\daemons\maap\tests\Release\maap_test.exe
+     mrpd.vcxproj -> D:\Repos\OpenAvnu\build\daemons\mrpd\Release\mrpd.exe
+     mrpd_simple_test.vcxproj -> D:\Repos\OpenAvnu\build\daemons\mrpd\tests\simple\Release\mrpd_simple_test.exe
+     named_pipe_test.vcxproj -> D:\Repos\OpenAvnu\build\thirdparty\gptp\windows\named_pipe_test\Release\named_pipe_test.exe
+     open1722.vcxproj -> D:\Repos\OpenAvnu\build\Release\open1722.lib
+     openavnu-avtp-open1722.vcxproj -> D:\Repos\OpenAvnu\build\lib\avtp_pipeline\avtp_open1722\Release\openavnu-avtp-open1722.lib
+     openavnu_shaper_windows.vcxproj -> D:\Repos\OpenAvnu\build\daemons\shaper\Release\openavnu_shaper_windows.exe
+     phase2_avb_integration_prototype.vcxproj -> D:\Repos\OpenAvnu\build\testing\integration\phase2\Release\phase2_avb_integration_prototype.exe
+     phase2_baseline_measurement.vcxproj -> D:\Repos\OpenAvnu\build\testing\performance\Release\phase2_baseline_measurement.exe
+     phase2_user_feedback_collection.vcxproj -> D:\Repos\OpenAvnu\build\testing\integration\phase2\Release\phase2_user_feedback_collection.exe
+     phase2_user_feedback_simulation.vcxproj -> D:\Repos\OpenAvnu\build\testing\integration\phase2\Release\phase2_user_feedback_simulation.exe
+     phase3_production_test_consolidated.vcxproj -> D:\Repos\OpenAvnu\build\testing\integration\phase3\Release\phase3_production_test_consolidated.exe
+     test-openavnu-avtp-open1722.vcxproj -> D:\Repos\OpenAvnu\build\lib\avtp_pipeline\avtp_open1722\Release\test-openavnu-avtp-open1722.exe
+     test_avtp_profile_validation.vcxproj -> D:\Repos\OpenAvnu\build\testing\Release\test_avtp_profile_validation.exe
+     test_intervals.vcxproj -> D:\Repos\OpenAvnu\build\daemons\maap\test\Release\test_intervals.exe
+     test_phase2_backend_integration_consolidated.vcxproj -> D:\Repos\OpenAvnu\build\testing\integration\phase2\Release\test_phase2_backend_integration_consolidated.exe
+
+=== Executable Verification ===
+âo. MRPD: BUILD SUCCESS (size: 70656 bytes)
+   Path: daemons\mrpd\Release\mrpd.exe
+   âo. Basic execution: SUCCESS
+âo. MAAP: BUILD SUCCESS (size: 44032 bytes)
+   Path: daemons\maap\Release\maap_daemon.exe
+   âo. Basic execution: SUCCESS
+âo. SHAPER: BUILD SUCCESS (size: 10752 bytes)
+   Path: daemons\shaper\Release\openavnu_shaper_windows.exe
+   âo. Basic execution: SUCCESS
+
+=== Build Performance Summary ===
+powershell.exe : Es ist nicht möglich, eine Methode für einen Ausdruck 
+aufzurufen, der den NULL 
+In D:\Repos\OpenAvnu\DAW02_Package\run_daw02_tests.ps1:60 Zeichen:17
++ ...             & powershell.exe -ExecutionPolicy Bypass -File $TestScrip ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Es ist nicht mö..., der den NULL :St 
+   ring) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+hat.
+In D:\Repos\OpenAvnu\DAW02_Package\test_01_build_verification.ps1:220 Zeichen:41
++ ...  Configuration Time: $($CMakeTime.TotalSeconds.ToString('F1')) second ...
++                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+CMake Configuration Time:  seconds
+Build Time: 4,8 seconds
+Total Time: 4,8 seconds
+Build Directory Size: 7450.3 MB
+
+=== Final Results ===
+dYZ% BUILD VERIFICATION: SUCCESS
+   All three daemons built and verified successfully on Windows DAW02
+Completed: 07/13/2025 22:39:14
