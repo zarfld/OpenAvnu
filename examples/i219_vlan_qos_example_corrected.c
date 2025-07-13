@@ -10,7 +10,9 @@
 #include <stdbool.h>
 
 #ifdef _WIN32
-    #define WIN32_LEAN_AND_MEAN
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
     #include <windows.h>
 #else
     #include <unistd.h>
@@ -26,8 +28,7 @@ static int configure_i219_vlan_filtering(intel_device_t *device)
     intel_vlan_tag_t vlan_tag = {
         .vlan_id = 100,
         .priority = 6,      // High priority for AVB Class A
-        .dei = false,
-        .ethertype = 0x8100
+        .dei = 0
     };
     
     intel_hal_result_t result = intel_hal_set_vlan_tag(device, &vlan_tag);
