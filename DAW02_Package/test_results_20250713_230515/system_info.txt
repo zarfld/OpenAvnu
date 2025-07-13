@@ -1,0 +1,39 @@
+﻿=== DAW02 System Information ===
+Hostname: DAW02
+Date: 07/13/2025 23:05:15
+OS: Microsoft Windows 10 Pro
+Version: 10.0.19045
+Architecture: 64-Bit
+
+=== Hardware Information ===
+CPU Information:
+
+Name                                            NumberOfCores NumberOfLogicalProcessors
+----                                            ------------- -------------------------
+Intel(R) Xeon(R) CPU           X5680  @ 3.33GHz             6                        12
+Intel(R) Xeon(R) CPU           X5680  @ 3.33GHz             6                        12
+
+
+Memory Information:
+Total Physical Memory: 19.99 GB
+Network Interfaces:
+
+Name       InterfaceDescription                       Status      
+----       --------------------                       ------      
+Ethernet   Intel(R) Ethernet I210-T1 GbE NIC          Up          
+Ethernet 2 Intel(R) Ethernet Controller (3) I225-V    Up          
+Ethernet 5 Intel(R) Ethernet Controller (3) I225-V #2 Disconnected
+
+
+Intel Network Hardware:
+
+Name       InterfaceDescription                      
+----       --------------------                      
+Ethernet   Intel(R) Ethernet I210-T1 GbE NIC         
+Ethernet 2 Intel(R) Ethernet Controller (3) I225-V   
+Ethernet 5 Intel(R) Ethernet Controller (3) I225-V #2
+
+
+Development Tools:
+CMake: cmake version 4.1.0-rc1
+Visual Studio: Microsoft Visual Studio Installer
