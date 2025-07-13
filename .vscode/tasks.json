@@ -1954,4 +1954,63 @@
 			}
 		}
 	]
+	,
+	{
+	  "label": "Run DAW02 Windows Test Suite",
+	  "type": "shell",
+	  "command": "powershell",
+	  "args": [
+		"-ExecutionPolicy", "Bypass",
+		"-File",
+		"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/run_daw02_tests.ps1"
+	  ],
+	  "group": "test",
+	  "problemMatcher": [],
+	  "isBackground": false,
+	  "presentation": {
+		"echo": true,
+		"reveal": "always",
+		"focus": false,
+		"panel": "shared"
+	  }
+	},
+	{
+	  "label": "DAW02 Build Verification Only",
+	  "type": "shell",
+	  "command": "powershell",
+	  "args": [
+		"-ExecutionPolicy", "Bypass",
+		"-File",
+		"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/test_01_build_verification.ps1"
+	  ],
+	  "group": "test",
+	  "problemMatcher": [],
+	  "isBackground": false,
+	  "presentation": {
+		"echo": true,
+		"reveal": "always",
+		"focus": false,
+		"panel": "shared"
+	  }
+	},
+	{
+	  "label": "DAW02 Intel HAL Detection Only",
+	  "type": "shell",
+	  "command": "powershell",
+	  "args": [
+		"-ExecutionPolicy", "Bypass",
+		"-File",
+		"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/test_02_intel_hal_detection.ps1"
+	  ],
+	  "group": "test",
+	  "problemMatcher": [],
+	  "isBackground": false,
+	  "presentation": {
+		"echo": true,
+		"reveal": "always",
+		"focus": false,
+		"panel": "shared"
+	  }
+	}
+  ]
 }
