@@ -1439,7 +1439,7 @@
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"Write-Host '🧪 Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\tests\\intel_hal\\Release\\intel_hal_validation_test.exe'; Write-Host ''; & '.\\test\\clock_quality\\Release\\clock_quality_tests.exe'; Write-Host ''; Write-Host '✅ All OpenAvnu tests completed!' -ForegroundColor Green"
+				"Write-Host '[TESTING] Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\tests\\intel_hal\\Release\\intel_hal_validation_test.exe'; Write-Host ''; & '.\\test\\clock_quality\\Release\\clock_quality_tests.exe'; Write-Host ''; Write-Host '[SUCCESS] All OpenAvnu tests completed!' -ForegroundColor Green"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
