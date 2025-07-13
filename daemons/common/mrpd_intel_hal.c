@@ -6,17 +6,23 @@ MRPD Daemon Intel HAL Integration Implementation
 Enhanced Intel adapter support with hardware timestamping for MRP protocols
 *******************************************************************************/
 
-#include "mrpd_intel_hal.h"
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-
 #ifdef _WIN32
+// Fix WinSock header inclusion order for Windows builds
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 #else
 #include <sys/time.h>
 #include <syslog.h>
 #endif
+
+#include "mrpd_intel_hal.h"
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
 
 // Global Intel HAL state for MRPD
 static mrpd_intel_hal_t g_mrpd_hal = {
@@ -79,7 +85,7 @@ int mrpd_intel_hal_init(const char *interface_name) {
     }
 
     // Try to open Intel device by interface name
-    result = intel_hal_open_device_by_name(interface_name, &g_mrpd_hal.device);
+    result = intel_hal_open_device(interface_name, &g_mrpd_hal.device);
     if (result != INTEL_HAL_SUCCESS) {
         MRPD_LOG_INFO("Intel HAL device open failed for %s, using fallback", interface_name);
         g_mrpd_hal.available = false;
@@ -99,11 +105,15 @@ int mrpd_intel_hal_init(const char *interface_name) {
 
     // Get device capabilities and MAC address
     intel_device_info_t device_info;
-    if (intel_hal_get_device_info(g_mrpd_hal.device, &device_info) == INTEL_HAL_SUCCESS) {
-        memcpy(g_mrpd_hal.mac_address, device_info.mac_address, 6);
+    intel_interface_info_t interface_info;
+    
+    if (intel_hal_get_device_info(&g_mrpd_hal.device, &device_info) == INTEL_HAL_SUCCESS) {
         g_mrpd_hal.capabilities = device_info.capabilities;
-        
         MRPD_LOG_INFO("Intel device capabilities: 0x%08X", g_mrpd_hal.capabilities);
+    }
+    
+    if (intel_hal_get_interface_info(&g_mrpd_hal.device, &interface_info) == INTEL_HAL_SUCCESS) {
+        memcpy(g_mrpd_hal.mac_address, interface_info.mac_address, 6);
         MRPD_LOG_INFO("Intel device MAC: %02X:%02X:%02X:%02X:%02X:%02X",
                      g_mrpd_hal.mac_address[0], g_mrpd_hal.mac_address[1],
                      g_mrpd_hal.mac_address[2], g_mrpd_hal.mac_address[3],

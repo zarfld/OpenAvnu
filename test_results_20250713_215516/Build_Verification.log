@@ -1,0 +1,87 @@
+﻿
+=============================================
+  OpenAvnu Build Verification Test
+=============================================
+
+OpenAvnu Root: D:\Repos\OpenAvnu\testing\integration
+
+Step 1: CMake Configuration
+----------------------------
+-- Selecting Windows SDK version 10.0.22621.0 to target Windows 10.0.22631.
+-- ≡ƒÄ╡ AVTP Phase 3 Production Integration Test configured
+--    Purpose: Final validation of AVTP modernization before production deployment
+--    Executable: D:/Repos/OpenAvnu/testing/integration/build/avtp_phase3_production_integration_test
+--    Test Coverage: Open1722 integration, Enhanced mapping, Intel HAL, Performance benchmarks
+-- Configuring done (0.1s)
+powershell.exe : cmake.exe : CMake Warning (dev) in CMakeLists.txt:
+In D:\Repos\OpenAvnu\testing\integration\daemons_phase2_windows_build_verification\run_daw02_test
+s.ps1:70 Zeichen:17
++ ...             & powershell.exe -ExecutionPolicy Bypass -File $FullScrip ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (cmake.exe : CMa...CMakeLists.txt::String) [], Remot 
+   eException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+In D:\Repos\OpenAvnu\testing\integration\daemons_phase2_windows_build_verification\test_01_build_
+verification.ps1:48 Zeichen:5
++     & cmake .. -G "Visual Studio 17 2022" 2>&1
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (CMake Warning (dev) in CMakeLists.txt::String) [],  
+   RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  No project() command is present.  The top-level CMakeLists.txt file must
+  contain a literal, direct call to the project() command.  Add a line of
+  code such as
+    project(ProjectName)
+  near the top of the file, but after cmake_minimum_required().
+  CMake is pretending there is a "project(Project)" command on the first
+  line.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+CMake Warning (dev) in CMakeLists.txt:
+  cmake_minimum_required() should be called prior to this top-level project()
+  call.  Please see the cmake-commands(7) manual for usage documentation of
+  both commands.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+-- Generating done (0.0s)
+-- Build files have been written to: D:/Repos/OpenAvnu/testing/integration/build
+PASSED: CMake configuration successful
+
+Step 2: Build Individual Daemons
+--------------------------------
+
+Building MRPD...
+MSBuild-Version 17.12.12+1cce77968 f├╝r .NET Framework
+MSBUILD : error MSB1009: Die Projektdatei ist nicht vorhanden.
+Schalter: mrpd.vcxproj
+FAILED: MRPD build failed (Exit Code: 1)
+
+Building MAAP...
+MSBuild-Version 17.12.12+1cce77968 f├╝r .NET Framework
+MSBUILD : error MSB1009: Die Projektdatei ist nicht vorhanden.
+Schalter: maap_daemon.vcxproj
+FAILED: MAAP build failed (Exit Code: 1)
+
+Building Shaper...
+MSBuild-Version 17.12.12+1cce77968 f├╝r .NET Framework
+MSBUILD : error MSB1009: Die Projektdatei ist nicht vorhanden.
+Schalter: shaper_windows.vcxproj
+FAILED: Shaper build failed (Exit Code: 1)
+
+Step 3: Basic Functionality Tests
+--------------------------------
+
+=============================================
+  BUILD VERIFICATION SUMMARY
+=============================================
+
+Configuration Time: 0.24 seconds
+Total Daemons: 3
+Successful Builds: 0
+Failed Builds: 3
+
+MRPD: FAILED (0.15s)
+MAAP: FAILED (0.15s)
+Shaper: FAILED (0.12s)
+
+ALL BUILDS FAILED: Check dependencies and configuration.

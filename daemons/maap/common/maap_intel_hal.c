@@ -6,17 +6,23 @@ MAAP Daemon Intel HAL Integration Implementation
 Enhanced Intel adapter support with hardware timestamping for MAAP protocol
 *******************************************************************************/
 
+#ifdef _WIN32
+// Fix WinSock header inclusion order for Windows builds
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
+#include <sys/time.h>
+#endif
+
 #include "maap_intel_hal.h"
 #include "maap_log.h"
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <sys/time.h>
-#endif
 
 // Use Intel HAL specific log component name
 #undef MAAP_LOG_COMPONENT
@@ -66,7 +72,7 @@ int maap_intel_hal_init(const char *interface_name) {
     }
 
     // Try to open Intel device by interface name
-    result = intel_hal_open_device_by_name(interface_name, &g_maap_hal.device);
+    result = intel_hal_open_device(interface_name, &g_maap_hal.device);
     if (result != INTEL_HAL_SUCCESS) {
         MAAP_LOG_INFO("Intel HAL device open failed for %s, using fallback", interface_name);
         g_maap_hal.available = false;
@@ -86,11 +92,15 @@ int maap_intel_hal_init(const char *interface_name) {
 
     // Get device capabilities and MAC address
     intel_device_info_t device_info;
-    if (intel_hal_get_device_info(g_maap_hal.device, &device_info) == INTEL_HAL_SUCCESS) {
-        memcpy(g_maap_hal.mac_address, device_info.mac_address, 6);
+    intel_interface_info_t interface_info;
+    
+    if (intel_hal_get_device_info(&g_maap_hal.device, &device_info) == INTEL_HAL_SUCCESS) {
         g_maap_hal.capabilities = device_info.capabilities;
-        
         MAAP_LOG_INFO("Intel device capabilities: 0x%08X", g_maap_hal.capabilities);
+    }
+    
+    if (intel_hal_get_interface_info(&g_maap_hal.device, &interface_info) == INTEL_HAL_SUCCESS) {
+        memcpy(g_maap_hal.mac_address, interface_info.mac_address, 6);
         MAAP_LOG_INFO("Intel device MAC: %02X:%02X:%02X:%02X:%02X:%02X",
                      g_maap_hal.mac_address[0], g_maap_hal.mac_address[1],
                      g_maap_hal.mac_address[2], g_maap_hal.mac_address[3],

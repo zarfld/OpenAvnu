@@ -1,0 +1,15 @@
+﻿OpenAvnu DAW02 System Information
+Generated: 2025-07-13 21:55:16
+
+=== SYSTEM OVERVIEW ===
+Computer Name: ATGRZWN313892
+User: ZARFLD
+OS: Microsoft Windows 11 Enterprise
+Architecture: AMD64
+Processors: 13th Gen Intel(R) Core(TM) i5-13600HX
+Total Memory: 31.69 GB
+
+=== DEVELOPMENT TOOLS ===
+CMake: cmake version 4.0.3
+Visual Studio: Microsoft Visual Studio Setup WMI Provider
+Git: git version 2.46.0.windows.1

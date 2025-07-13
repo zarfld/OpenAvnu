@@ -13,14 +13,23 @@ Write-Host "=============================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Navigate to OpenAvnu root directory
-$OpenAvnuRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-while (-not (Test-Path (Join-Path $OpenAvnuRoot "CMakeLists.txt"))) {
-    $Parent = Split-Path -Parent $OpenAvnuRoot
-    if ($Parent -eq $OpenAvnuRoot) {
-        Write-Host "ERROR: Could not find OpenAvnu root directory" -ForegroundColor Red
-        exit 1
-    }
-    $OpenAvnuRoot = $Parent
+# We're in testing/integration/daemons_phase2_windows_build_verification, need to go up 3 levels
+$ScriptPath = $PSScriptRoot
+if (-not $ScriptPath) {
+    $ScriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
+}
+if (-not $ScriptPath) {
+    $ScriptPath = Get-Location
+}
+
+# Go up 3 levels: daemons_phase2_windows_build_verification -> integration -> testing -> OpenAvnu
+$OpenAvnuRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $ScriptPath))
+
+# Verify we found the right directory
+if (-not (Test-Path (Join-Path $OpenAvnuRoot "CMakeLists.txt"))) {
+    Write-Host "ERROR: Could not find OpenAvnu root directory with CMakeLists.txt" -ForegroundColor Red
+    Write-Host "Expected: $OpenAvnuRoot" -ForegroundColor Red
+    exit 1
 }
 
 Set-Location $OpenAvnuRoot

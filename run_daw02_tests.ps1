@@ -42,7 +42,7 @@ function Run-Test {
         [string]$TestDescription
     )
     
-    Write-Host "📋 Running: $TestName" -ForegroundColor Blue
+    Write-Host "Running: $TestName" -ForegroundColor Blue
     Write-Host "   $TestDescription"
     
     $LogFile = "$ReportDir\${TestName}_$(Get-Date -Format 'HHmmss').log"
@@ -63,7 +63,7 @@ Started: $(Get-Date)
             }
             
             if ($LASTEXITCODE -eq 0) {
-                Write-Host "   ✅ PASSED" -ForegroundColor Green
+                Write-Host "   [PASSED]" -ForegroundColor Green
                 "Completed: $(Get-Date)" | Out-File -FilePath $LogFile -Append -Encoding UTF8
                 
                 # Add to master report
@@ -78,7 +78,7 @@ $(Get-Content $LogFile -Tail 20 | Out-String)
 
 "@ | Out-File -FilePath $MasterReport -Append -Encoding UTF8
             } else {
-                Write-Host "   ❌ FAILED" -ForegroundColor Red
+                Write-Host "   [FAILED]" -ForegroundColor Red
                 "Failed: $(Get-Date)" | Out-File -FilePath $LogFile -Append -Encoding UTF8
                 
                 # Add to master report
@@ -94,7 +94,7 @@ $(Get-Content $LogFile -Tail 30 | Out-String)
 "@ | Out-File -FilePath $MasterReport -Append -Encoding UTF8
             }
         } catch {
-            Write-Host "   ❌ FAILED (Exception)" -ForegroundColor Red
+            Write-Host "   [FAILED (Exception)]" -ForegroundColor Red
             "Exception: $($_.Exception.Message)" | Out-File -FilePath $LogFile -Append -Encoding UTF8
         }
     } else {
@@ -111,7 +111,7 @@ Test script '$TestScript' not found.
 }
 
 # System Information Collection
-Write-Host "📊 Collecting System Information..." -ForegroundColor Yellow
+Write-Host "Collecting System Information..." -ForegroundColor Yellow
 $SystemInfoFile = "$ReportDir\system_info.txt"
 
 @"
@@ -149,8 +149,18 @@ if ($IntelAdapters) {
 
 # Development Tools
 "Development Tools:" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
-try { "CMake: $(cmake --version 2>$null | Select-Object -First 1)" } catch { "CMake: Not found" } | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
-try { "Visual Studio: $(Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*' | Get-ItemProperty | Where-Object { $_.DisplayName -like '*Visual Studio*' } | Select-Object -First 1 -ExpandProperty DisplayName)" } catch { "Visual Studio: Not detected" } | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+try { 
+    $cmakeVersion = cmake --version 2>$null | Select-Object -First 1
+    "CMake: $cmakeVersion" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+} catch { 
+    "CMake: Not found" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+}
+try { 
+    $vsVersion = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*' | Get-ItemProperty | Where-Object { $_.DisplayName -like '*Visual Studio*' } | Select-Object -First 1 -ExpandProperty DisplayName
+    "Visual Studio: $vsVersion" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+} catch { 
+    "Visual Studio: Not detected" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+}
 
 # Add system info to master report
 @"

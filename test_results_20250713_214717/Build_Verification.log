@@ -1,0 +1,63 @@
+﻿=== OpenAvnu Build Verification Test ===
+System: ATGRZWN313892
+Date: 07/13/2025 21:47:26
+Objective: Verify all daemons compile on Windows DAW02
+
+Build Type: Windows
+Generator: Visual Studio 17 2022
+
+=== Cleaning Previous Build ===
+
+=== CMake Configuration ===
+Command: cmake .. -G "Visual Studio 17 2022"
+
+âo. CMake configuration successful (6,0 seconds)
+   -- ≡ƒöì Detecting PCAP libraries for OpenAvnu components...
+   -- Γ£à Found Npcap SDK: D:\Repos\npcap-sdk
+   -- ≡ƒôª PCAP Summary:
+   --    Type: Npcap
+   --    Source: NPCAP_DIR
+   --    Include: D:\Repos\npcap-sdk/Include
+   --    Libraries: wpcap;Iphlpapi;Ws2_32
+   --    Library Dir: D:\Repos\npcap-sdk/Lib/x64
+   -- Γ£à PCAP detection complete - Available for OpenAvnu components
+   CMake Deprecation Warning at thirdparty/cpputest/CMakeLists.txt:8 (cmake_minimum_required):
+   -- Looking for fork - not found
+   -- Looking for strdup - found
+   -- Building with Intel Ethernet HAL for hardware timestamping
+   -- Intel Ethernet HAL Configuration Summary:
+   -- Γ£à Using Npcap SDK from: D:\Repos\npcap-sdk/Include/..
+   -- Γ£à Intel HAL integration enabled for gPTP
+   --    - Intel HAL headers: ../intel-ethernet-hal/include
+   --    - Intel HAL library: intel-ethernet-hal-static
+   -- ≡ƒöº Configuring L-Acoustics AVDECC with modern PCAP support
+   -- Γ£à Using Npcap for L-Acoustics AVDECC
+   -- Γ£à L-Acoustics AVDECC PCAP compatibility layer ready
+   --    WinPcap compatibility path: D:/Repos/OpenAvnu/lib/la_avdecc/externals/3rdparty/winpcap
+   --    PCAP Interface: ON
+   -- Graphviz's 'dot' not found in the path. Make sure it's installed and in the path if you want class graph in Doxygen. Download it from http://www.graphviz.org/
+   -- Graphviz's 'dot' not found in the path. Make sure it's installed and in the path if you want class graph in Doxygen. Download it from http://www.graphviz.org/
+   CMake Warning at lib/la_avdecc/cmake/cmakeUtils/ProjectMacros.cmake:1817 (message):
+   CMake Warning at lib/la_avdecc/cmake/cmakeUtils/ProjectMacros.cmake:1817 (message):
+   -- ≡ƒöº Building OpenAvnu examples with Npcap support
+   -- Common Tests: Using WinPcap from: D:\Repos\WpdPack
+   -- Common Tests: Using 64-bit PCAP libraries from: D:\Repos\WpdPack/Lib/x64
+   -- MRPD: Using WinPcap from: D:\Repos\WpdPack
+   -- MRPD: Using 64-bit PCAP libraries from: D:\Repos\WpdPack/Lib/x64
+   -- MRPD: Intel HAL integration enabled for Windows
+   -- MRPD Tests: Using WinPcap from: D:\Repos\WpdPack
+   -- MRPD Tests: Using 64-bit PCAP libraries from: D:\Repos\WpdPack/Lib/x64
+   -- MAAP: Using WinPcap from: D:\Repos\WpdPack
+   -- MAAP: Using 64-bit PCAP libraries from: D:\Repos\WpdPack/Lib/x64
+   -- MAAP: Intel HAL integration enabled for Windows
+   -- MAAP Tests: Using WinPcap from: D:\Repos\WpdPack
+   -- MAAP Tests: Using 64-bit PCAP libraries from: D:\Repos\WpdPack/Lib/x64
+   --   - Intel HAL Target: intel-ethernet-hal-static (static library)
+   -- Intel HAL Validation Test Configuration:
+   --   - Intel HAL Include: D:/Repos/OpenAvnu/thirdparty/intel-ethernet-hal/include
+   CMake Warning at testing/CMakeLists.txt:117 (message):
+     Python not found - skipping Python-based performance tests
+
+=== Building All Daemons ===
+Command: cmake --build . --config Release
+

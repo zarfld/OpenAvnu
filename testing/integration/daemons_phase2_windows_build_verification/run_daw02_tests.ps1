@@ -48,7 +48,25 @@ function Run-Test {
     
     try {
         if ($TestScript.EndsWith(".ps1")) {
-            & powershell.exe -ExecutionPolicy Bypass -File $TestScript *>&1 | Out-File -FilePath $LogFile -Append -Encoding UTF8
+            # Use PSScriptRoot which is more reliable than $MyInvocation.MyCommand.Path
+            $ScriptDir = $PSScriptRoot
+            if (-not $ScriptDir) {
+                # Fallback for older PowerShell versions
+                $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+            }
+            $FullScriptPath = Join-Path $ScriptDir $TestScript
+            
+            if (Test-Path $FullScriptPath) {
+                # Run test scripts from the main OpenAvnu root directory
+                $OriginalLocation = Get-Location
+                $OpenAvnuRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $ScriptDir))
+                Set-Location $OpenAvnuRoot
+                
+                & powershell.exe -ExecutionPolicy Bypass -File $FullScriptPath *>&1 | Out-File -FilePath $LogFile -Append -Encoding UTF8
+                Set-Location $OriginalLocation
+            } else {
+                throw "Test script not found: $FullScriptPath"
+            }
         } else {
             & bash $TestScript *>&1 | Out-File -FilePath $LogFile -Append -Encoding UTF8
         }
@@ -112,10 +130,14 @@ try {
 }
 
 try { 
-    $vsInfo = Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -like "*Visual Studio*" } | Select-Object -ExpandProperty DisplayName -First 1
-    "Visual Studio: $vsInfo" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+    $vsInfo = Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -like "*Visual Studio*" } | Select-Object -ExpandProperty Name -First 1
+    if ($vsInfo) {
+        "Visual Studio: $vsInfo" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+    } else {
+        "Visual Studio: Not detected via WMI" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+    }
 } catch { 
-    "Visual Studio: Not detected" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
+    "Visual Studio: Detection failed" | Out-File -FilePath $SystemInfoFile -Append -Encoding UTF8
 }
 
 try { 

@@ -47,15 +47,15 @@ if(WIN32)
             OPENAVNU_BUILD_INTEL_HAL=1
         )
         
-        # Link Intel Ethernet HAL
-        if(EXISTS "${PROJECT_SOURCE_DIR}/lib/intel_ethernet_hal")
-            target_include_directories(${DAEMON_SHAPER_WINDOWS_TARGET} PRIVATE
-                ${PROJECT_SOURCE_DIR}/lib/intel_ethernet_hal/include
-            )
-            target_link_libraries(${DAEMON_SHAPER_WINDOWS_TARGET}
-                ${PROJECT_SOURCE_DIR}/lib/intel_ethernet_hal/lib/intel_ethernet_hal.lib
-            )
-        endif()
+        # Link Intel Ethernet HAL from thirdparty
+        target_include_directories(${DAEMON_SHAPER_WINDOWS_TARGET} PRIVATE
+            ${PROJECT_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+        )
+        target_link_libraries(${DAEMON_SHAPER_WINDOWS_TARGET}
+            intel-ethernet-hal-static
+        )
+        
+        message(STATUS "Shaper: Intel HAL integration enabled")
     endif()
     
     # Compiler-specific settings

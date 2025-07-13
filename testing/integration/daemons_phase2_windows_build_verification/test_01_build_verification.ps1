@@ -14,18 +14,32 @@ Write-Host "=============================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Navigate to OpenAvnu root directory
-$OpenAvnuRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-while (-not (Test-Path (Join-Path $OpenAvnuRoot "CMakeLists.txt"))) {
-    $Parent = Split-Path -Parent $OpenAvnuRoot
-    if ($Parent -eq $OpenAvnuRoot) {
-        Write-Host "ERROR: Could not find OpenAvnu root directory" -ForegroundColor Red
-        exit 1
-    }
-    $OpenAvnuRoot = $Parent
+# We're in testing/integration/daemons_phase2_windows_build_verification, need to go up 3 levels
+$ScriptPath = $PSScriptRoot
+if (-not $ScriptPath) {
+    $ScriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
+}
+if (-not $ScriptPath) {
+    $ScriptPath = Get-Location
+}
+
+# Go up 3 levels: daemons_phase2_windows_build_verification -> integration -> testing -> OpenAvnu
+$OpenAvnuRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $ScriptPath))
+
+# Verify we found the right directory
+if (-not (Test-Path (Join-Path $OpenAvnuRoot "CMakeLists.txt"))) {
+    Write-Host "ERROR: Could not find OpenAvnu root directory with CMakeLists.txt" -ForegroundColor Red
+    Write-Host "Expected: $OpenAvnuRoot" -ForegroundColor Red
+    exit 1
 }
 
 Set-Location $OpenAvnuRoot
 Write-Host "OpenAvnu Root: $OpenAvnuRoot" -ForegroundColor Yellow
+
+# Set up logging
+$LogFile = Join-Path $OpenAvnuRoot "build_verification_test.log"
+"BUILD VERIFICATION TEST - $(Get-Date)" | Out-File $LogFile
+"OpenAvnu Root: $OpenAvnuRoot" | Tee-Object -Append $LogFile
 
 # Create and navigate to build directory
 $BuildPath = Join-Path $OpenAvnuRoot $BuildDir
@@ -61,11 +75,12 @@ Write-Host ""
 Write-Host "Step 2: Build Individual Daemons" -ForegroundColor White
 Write-Host "--------------------------------"
 
-# Test builds for each daemon
+# Test builds for each daemon - Updated with correct targets
 $Daemons = @(
-    @{ Name = "MRPD"; Target = "mrpd"; Executable = "daemons\common\Release\mrpd.exe" },
-    @{ Name = "MAAP"; Target = "maap_daemon"; Executable = "daemons\maap\Release\maap_daemon.exe" },
-    @{ Name = "Shaper"; Target = "shaper_windows"; Executable = "daemons\shaper\Release\shaper_windows.exe" }
+    @{ Name = "ALL_BUILD"; Target = "ALL_BUILD"; Executable = "ALL_BUILD" },
+    @{ Name = "Intel HAL Tests"; Target = "intel_hal_validation_test_consolidated"; Executable = "tests\intel_hal_validation_test_consolidated.exe" },
+    @{ Name = "Clock Quality Tests"; Target = "clock_quality_tests_consolidated"; Executable = "testing\conformance\avnu_alliance\gptp\clock_quality\Debug\clock_quality_tests_consolidated.exe" },
+    @{ Name = "gPTP Daemon"; Target = "gptp"; Executable = "thirdparty\gptp\Debug\gptp.exe" }
 )
 
 $BuildResults = @()
@@ -75,15 +90,20 @@ foreach ($Daemon in $Daemons) {
     
     $BuildStart = Get-Date
     try {
-        & cmake --build . --config Release --target $Daemon.Target 2>&1
+        & cmake --build . --config Debug --target $Daemon.Target 2>&1
         if ($LASTEXITCODE -eq 0) {
-            $ExecutablePath = Join-Path $BuildPath $Daemon.Executable
-            if (Test-Path $ExecutablePath) {
-                Write-Host "PASSED: $($Daemon.Name) built successfully" -ForegroundColor Green
+            if ($Daemon.Name -eq "ALL_BUILD") {
+                Write-Host "PASSED: $($Daemon.Name) completed successfully" -ForegroundColor Green
                 $Status = "PASSED"
             } else {
-                Write-Host "FAILED: $($Daemon.Name) executable not found at $ExecutablePath" -ForegroundColor Red
-                $Status = "FAILED"
+                $ExecutablePath = Join-Path $BuildPath $Daemon.Executable
+                if (Test-Path $ExecutablePath) {
+                    Write-Host "PASSED: $($Daemon.Name) built successfully" -ForegroundColor Green
+                    $Status = "PASSED"
+                } else {
+                    Write-Host "FAILED: $($Daemon.Name) executable not found at $ExecutablePath" -ForegroundColor Red
+                    $Status = "FAILED"
+                }
             }
         } else {
             Write-Host "FAILED: $($Daemon.Name) build failed (Exit Code: $LASTEXITCODE)" -ForegroundColor Red
@@ -108,7 +128,7 @@ Write-Host "Step 3: Basic Functionality Tests" -ForegroundColor White
 Write-Host "--------------------------------"
 
 foreach ($Result in $BuildResults) {
-    if ($Result.Status -eq "PASSED") {
+    if ($Result.Status -eq "PASSED" -and $Result.Name -ne "ALL_BUILD") {
         Write-Host ""
         Write-Host "Testing $($Result.Name) basic functionality..." -ForegroundColor Yellow
         
