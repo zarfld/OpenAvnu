@@ -1180,6 +1180,9 @@ function Test-VlanTagging {
             return Test-I219VlanTagging -Adapter $Adapter
         }
         "I225" {
+            # I225/I226 advanced VLAN tagging
+            return Test-I225VlanTagging -Adapter $Adapter
+        }
         "I226" {
             # I225/I226 advanced VLAN tagging
             return Test-I225VlanTagging -Adapter $Adapter
@@ -1367,6 +1370,8 @@ function Test-PriorityMapping {
             return Test-I219PriorityMapping -Adapter $Adapter
         }
         "I225" {
+            return Test-I225PriorityMapping -Adapter $Adapter
+        }
         "I226" {
             return Test-I225PriorityMapping -Adapter $Adapter
         }
