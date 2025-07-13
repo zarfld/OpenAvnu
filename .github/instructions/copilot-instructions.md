@@ -108,7 +108,20 @@ These rules define coding standards, collaboration protocols, and repository hyg
   * Source of mock data
   * How it was generated
   * Any limitations or assumptions made
+* **integration tests**
+  Ensure integration tests cover all critical workflows and interactions between components.
+  * integration test tools should be stored in `testing/integration/<module>_<phase>_<test_type>_<description>` (information about the test, e.g. `docs/tests/integration/avb_milan_phase2_production_testing_complete.md`)
+ * when creating integration tests ensure that the prepared test is capable to test all supported environment variants (all supported OS, all supported hardware, etc.)
+* should be added to the vscode tasks.json to run the tests automatically
+* should be added to the CI/CD pipeline to run the tests automatically on pull requests
 
+
+
+* **Module Testing**
+  Each module should have its own test suite:
+  * Include unit tests for individual functions or classes
+  * Integration tests for module interactions
+  * End-to-end tests for complete workflows
 ---
 ## 📚 Documentation
 

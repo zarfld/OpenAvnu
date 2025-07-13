@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B40ACBF8-F604-329B-82D9-F2C4E05B0E26}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Repos/OpenAvnu/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-file D:/Repos/OpenAvnu/build_verify/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCXXCompilerFlag.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCXXSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckCompilerFlag.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckFlagCommonConfig.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeCCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeCXXCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeRCCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeSystem.cmake;D:\Repos\OpenAvnu\cmake\FindPCAP.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Repos\OpenAvnu\build_verify\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Repos/OpenAvnu/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-file D:/Repos/OpenAvnu/build_verify/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCXXCompilerFlag.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCXXSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckCompilerFlag.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckFlagCommonConfig.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeCCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeCXXCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeRCCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeSystem.cmake;D:\Repos\OpenAvnu\cmake\FindPCAP.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Repos\OpenAvnu\build_verify\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Repos/OpenAvnu/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-file D:/Repos/OpenAvnu/build_verify/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCXXCompilerFlag.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCXXSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckCompilerFlag.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckFlagCommonConfig.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeCCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeCXXCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeRCCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeSystem.cmake;D:\Repos\OpenAvnu\cmake\FindPCAP.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Repos\OpenAvnu\build_verify\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Repos/OpenAvnu/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-file D:/Repos/OpenAvnu/build_verify/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCXXCompilerFlag.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCXXSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckCompilerFlag.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckFlagCommonConfig.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeCCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeCXXCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeRCCompiler.cmake;D:\Repos\OpenAvnu\build_verify\CMakeFiles\4.0.3\CMakeSystem.cmake;D:\Repos\OpenAvnu\cmake\FindPCAP.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Repos\OpenAvnu\build_verify\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\ZERO_CHECK.vcxproj">
+      <Project>{FC89F9E1-C6FA-31CA-94DA-25D0D726CA35}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\src\CppUTest\CppUTest.vcxproj">
+      <Project>{CE7585DA-9587-3294-9F12-47DAAC7EA3F9}</Project>
+      <Name>CppUTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\src\CppUTestExt\CppUTestExt.vcxproj">
+      <Project>{2DE0D6CF-FCA3-349C-A379-D4A231D0E57C}</Project>
+      <Name>CppUTestExt</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\CppUTestExtTests.vcxproj">
+      <Project>{1C1EF3B2-5935-3358-B643-B36E551E05BF}</Project>
+      <Name>CppUTestExtTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTest\CppUTestTests.vcxproj">
+      <Project>{C143D6CE-ABA1-3103-B74F-6DC1A313ADC8}</Project>
+      <Name>CppUTestTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\daemons\common\tests\alltests.vcxproj">
+      <Project>{43C133D7-5ED0-3FBB-97ED-7659CB3C7F5A}</Project>
+      <Name>alltests</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\examples\clock_quality_demo\clock_quality_demo.vcxproj">
+      <Project>{52A68EB8-6B02-3CD1-978A-6AD7074D03FA}</Project>
+      <Name>clock_quality_demo</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\testing\conformance\avnu_alliance\gptp\clock_quality\clock_quality_tests_consolidated.vcxproj">
+      <Project>{16BD93A5-8B4E-393B-AA50-A62A3652132F}</Project>
+      <Name>clock_quality_tests_consolidated</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\examples\clock_quality_demo\config_demo.vcxproj">
+      <Project>{BC4B65EB-1785-3EAB-9FDE-A7F3D5039B15}</Project>
+      <Name>config_demo</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\thirdparty\gptp\gptp.vcxproj">
+      <Project>{9910164C-C4C3-3761-B45B-4F2A5B9A169E}</Project>
+      <Name>gptp</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\lib\avtp_pipeline\tests\grandmaster_tests.vcxproj">
+      <Project>{477C1270-A767-3279-8B29-1DE3A4ADD0ED}</Project>
+      <Name>grandmaster_tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\controller\la_avdecc_controller_cxx.vcxproj">
+      <Project>{C160BD37-46BF-39E6-91A4-2BE3D7E3F121}</Project>
+      <Name>la_avdecc_controller_cxx</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\controller\la_avdecc_controller_static.vcxproj">
+      <Project>{BBD09358-DED5-310C-9126-378D557E950C}</Project>
+      <Name>la_avdecc_controller_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\la_avdecc_cxx.vcxproj">
+      <Project>{7F915726-5263-3649-976A-AF98E45FADEC}</Project>
+      <Name>la_avdecc_cxx</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\la_avdecc_static.vcxproj">
+      <Project>{E2136B4B-A803-31ED-B57B-F60361F78ACB}</Project>
+      <Name>la_avdecc_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\externals\nih\src\la_networkInterfaceHelper_static.vcxproj">
+      <Project>{7404178F-725D-3A97-9A54-5F58286F8D41}</Project>
+      <Name>la_networkInterfaceHelper_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.vcxproj">
+      <Project>{5CD9A932-54EC-3A18-AADB-46F97C94315F}</Project>
+      <Name>maap_daemon</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\daemons\maap\tests\maap_test.vcxproj">
+      <Project>{64A769EB-7BE6-3911-B062-5F5CAC029BB7}</Project>
+      <Name>maap_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\daemons\mrpd\mrpd.vcxproj">
+      <Project>{E5C13B84-7F66-3063-B39F-3B8D353B1530}</Project>
+      <Name>mrpd</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\daemons\mrpd\tests\simple\mrpd_simple_test.vcxproj">
+      <Project>{BADDD0F2-10B4-3C17-9A42-85403FDDBEC1}</Project>
+      <Name>mrpd_simple_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\thirdparty\gptp\windows\named_pipe_test\named_pipe_test.vcxproj">
+      <Project>{E9B15784-6B3B-3287-BC2D-D95157688F19}</Project>
+      <Name>named_pipe_test</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\open1722.vcxproj">
+      <Project>{09E4C80F-BD8A-312B-8C22-EAD554F6F301}</Project>
+      <Name>open1722</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\lib\avtp_pipeline\avtp_open1722\openavnu-avtp-open1722.vcxproj">
+      <Project>{84419A75-D181-3638-9384-D5DD5E427B87}</Project>
+      <Name>openavnu-avtp-open1722</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\daemons\shaper\openavnu_shaper_windows.vcxproj">
+      <Project>{C2D458DE-E9D2-366A-BA74-1A6C2C3B3A65}</Project>
+      <Name>openavnu_shaper_windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\testing\integration\phase2\phase2_avb_integration_prototype.vcxproj">
+      <Project>{F88D1E1D-AC37-3229-BADD-1C1CED8DE890}</Project>
+      <Name>phase2_avb_integration_prototype</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\testing\performance\phase2_baseline_measurement.vcxproj">
+      <Project>{7326523F-F9D2-3888-8666-5FAF0C80B735}</Project>
+      <Name>phase2_baseline_measurement</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\testing\integration\phase2\phase2_user_feedback_collection.vcxproj">
+      <Project>{BBDE252F-CC91-38D2-BD91-1DB8E9B459D9}</Project>
+      <Name>phase2_user_feedback_collection</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\testing\integration\phase2\phase2_user_feedback_simulation.vcxproj">
+      <Project>{E13FE13C-4BB4-347F-9525-56736D1A5454}</Project>
+      <Name>phase2_user_feedback_simulation</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\testing\integration\phase3\phase3_production_test_consolidated.vcxproj">
+      <Project>{57CAF05E-E3DC-3B7E-A00E-07B382EA8CF7}</Project>
+      <Name>phase3_production_test_consolidated</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\lib\avtp_pipeline\avtp_open1722\test-openavnu-avtp-open1722.vcxproj">
+      <Project>{8F9242B2-FE3E-33FC-946E-2475C23225B4}</Project>
+      <Name>test-openavnu-avtp-open1722</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\testing\test_avtp_profile_validation.vcxproj">
+      <Project>{3AFED3ED-6D26-3EDF-9B6C-715A66A83C28}</Project>
+      <Name>test_avtp_profile_validation</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\daemons\maap\test\test_intervals.vcxproj">
+      <Project>{834AE300-BC54-31A5-B521-9716D31714F5}</Project>
+      <Name>test_intervals</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\testing\integration\phase2\test_phase2_backend_integration_consolidated.vcxproj">
+      <Project>{E38DB801-415B-3879-B3C4-87129B4FDA22}</Project>
+      <Name>test_phase2_backend_integration_consolidated</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

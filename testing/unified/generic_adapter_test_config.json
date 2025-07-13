@@ -1,0 +1,87 @@
+{
+    "framework_version": "1.0",
+    "description": "Generic Intel Adapter Testing Configuration",
+    "test_parameters": {
+        "timeout_seconds": 30,
+        "precision_threshold_ns": 1000,
+        "performance_iterations": 1000,
+        "retry_attempts": 3
+    },
+    "adapter_specific": {
+        "I210": {
+            "test_profile": "BasicTSN",
+            "expected_precision_ns": 1000,
+            "register_access_method": "MMIO",
+            "required_capabilities": ["BASIC_1588", "MMIO"]
+        },
+        "I219": {
+            "test_profile": "MDIO_Access", 
+            "expected_precision_ns": 500,
+            "register_access_method": "MDIO",
+            "required_capabilities": ["BASIC_1588", "MDIO"]
+        },
+        "I225": {
+            "test_profile": "AdvancedTSN",
+            "expected_precision_ns": 100,
+            "register_access_method": "TSN_MMIO",
+            "required_capabilities": ["BASIC_1588", "ENHANCED_TS", "TSN_TAS", "TSN_FP"]
+        },
+        "I226": {
+            "test_profile": "AdvancedTSN",
+            "expected_precision_ns": 100, 
+            "register_access_method": "TSN_MMIO",
+            "required_capabilities": ["BASIC_1588", "ENHANCED_TS", "TSN_TAS", "TSN_FP"]
+        }
+    },
+    "windows_compatibility": {
+        "min_windows_10_build": 19041,
+        "supports_windows_11": true,
+        "requires_admin": true,
+        "driver_requirements": {
+            "intel_drivers": "12.0.0+",
+            "wpcap_support": "optional",
+            "npcap_support": "recommended"
+        }
+    },
+    "test_phases": {
+        "detection": {
+            "enabled": true,
+            "timeout_seconds": 10,
+            "required_for_continuation": true
+        },
+        "register": {
+            "enabled": true,
+            "timeout_seconds": 30,
+            "required_for_continuation": false
+        },
+        "timestamp": {
+            "enabled": true,
+            "timeout_seconds": 45,
+            "required_for_continuation": false
+        },
+        "gptp": {
+            "enabled": true,
+            "timeout_seconds": 60,
+            "required_for_continuation": false
+        },
+        "performance": {
+            "enabled": true,
+            "timeout_seconds": 120,
+            "required_for_continuation": false
+        }
+    },
+    "integration_paths": {
+        "intel_hal_test": "tests/intel_hal/intel_hal_validation_test.exe",
+        "gptp_daemon": "build/Release/daemon_cl.exe",
+        "performance_test": "build/testing/performance/Release/phase2_baseline_measurement.exe",
+        "profile_compliance": "testing/conformance/avnu_alliance/gptp/profile_compliance_test.exe"
+    },
+    "reporting": {
+        "save_results": true,
+        "results_directory": "docs/tests/results",
+        "json_format": true,
+        "include_system_info": true,
+        "include_error_details": true,
+        "include_performance_metrics": true
+    }
+}

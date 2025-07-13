@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Repos\OpenAvnu\testing\performance\phase2_baseline_measurement.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\intel-ethernet-hal\src\hal\intel_hal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\intel-ethernet-hal\src\windows\intel_windows_apis.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\intel-ethernet-hal\src\windows\intel_ndis.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\testing\performance\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5EF4FC18-882E-396D-A842-D14140F6601A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

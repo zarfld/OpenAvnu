@@ -1584,6 +1584,374 @@
 				"focus": false,
 				"panel": "shared"
 			}
+		},
+		{
+			"label": "Run Generic Adapter Tests (All Phases)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-SaveResults",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "List Available Intel Adapters",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-ListAdapters"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Test Intel I219 Adapters Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-AdapterFilter",
+				"I219",
+				"-SaveResults",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Test Intel I225/I226 Adapters Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-AdapterFilter",
+				"I225",
+				"-SaveResults",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Adapter Detection Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-TestPhase",
+				"detection",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Register Access Tests Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-TestPhase",
+				"register",
+				"-SaveResults",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Timestamp Capability Tests Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-TestPhase",
+				"timestamp",
+				"-SaveResults",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run gPTP Integration Tests Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-TestPhase",
+				"gptp",
+				"-SaveResults",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Performance Tests Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-TestPhase",
+				"performance",
+				"-SaveResults",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Generic Adapter Test - Continue on Failure",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-ContinueOnFailure",
+				"-SaveResults",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Generic Adapter Test - Dry Run",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/unified/generic_adapter_testing_framework.ps1",
+				"-DryRun",
+				"-Verbose"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build Modernized MAAP Daemon (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release",
+				"--target",
+				"maap_daemon"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"problemMatcher": ["$msCompile"],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build Modernized MRPD Daemon (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release",
+				"--target",
+				"mrpd"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"problemMatcher": ["$msCompile"],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build Windows Shaper Daemon (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release",
+				"--target",
+				"openavnu_shaper_windows"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"problemMatcher": ["$msCompile"],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Test Daemon Intel HAL Integration (Windows)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"testing/daemons/test_daemon_intel_hal_integration.ps1",
+				"-Verbose",
+				"-SaveResults"
+			],
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": "Build All Modernized Daemons (Windows)",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build All Modernized Daemons (Windows)",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				".",
+				"--config",
+				"Release"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"isBackground": false,
+			"dependsOn": "CMake Configure (Windows)",
+			"problemMatcher": ["$msCompile"],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
 		}
 	]
 }

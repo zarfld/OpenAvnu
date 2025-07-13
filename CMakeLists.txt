@@ -269,6 +269,7 @@ endif()
 add_subdirectory("daemons/common/tests")
 add_subdirectory("daemons/mrpd")
 add_subdirectory("daemons/maap")
+add_subdirectory("daemons/shaper")
 add_subdirectory("lib/avtp_pipeline/tests")
 
 # Add Open1722 wrapper if enabled

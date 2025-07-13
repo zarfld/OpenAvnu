@@ -3,13 +3,22 @@ project (mrpd)
 enable_testing()
 
 include_directories( . "../common" )
-file(GLOB MRPD_SRC "mrp.c" "mvrp.c" "mmrp.c" "msrp.c" "../common/parse.c" "../common/eui64set.c" )
+file(GLOB MRPD_SRC "mrp.c" "mvrp.c" "mmrp.c" "msrp.c" "../common/parse.c" "../common/eui64set.c" "../common/mrpd_intel_hal.c")
 
 if(APPLE)
   add_executable (mrpd ${MRPD_SRC}  "mrpd.c")
 elseif(UNIX)
   add_executable (mrpd ${MRPD_SRC}  "mrpd.c")
   target_link_libraries(mrpd pthread)
+  
+  # Intel HAL integration for Linux
+  if(OPENAVNU_BUILD_INTEL_HAL)
+    target_link_libraries(mrpd intel-ethernet-hal-static)
+    target_include_directories(mrpd PRIVATE 
+      ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include)
+    target_compile_definitions(mrpd PRIVATE OPENAVNU_BUILD_INTEL_HAL)
+    message(STATUS "MRPD: Intel HAL integration enabled for Linux")
+  endif()
 elseif(WIN32)
   # Flexible PCAP library detection - supports both WinPcap and Npcap
   if(DEFINED ENV{WPCAP_DIR})
@@ -34,6 +43,15 @@ elseif(WIN32)
   include_directories(include ${PCAP_ROOT}/Include)
   add_executable(mrpd ${MRPD_SRC} "mrpw.c" "que.c")
   target_link_libraries(mrpd wpcap Packet Iphlpapi Ws2_32)
+  
+  # Intel HAL integration for Windows
+  if(OPENAVNU_BUILD_INTEL_HAL)
+    target_link_libraries(mrpd intel-ethernet-hal-static)
+    target_include_directories(mrpd PRIVATE 
+      ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include)
+    target_compile_definitions(mrpd PRIVATE OPENAVNU_BUILD_INTEL_HAL)
+    message(STATUS "MRPD: Intel HAL integration enabled for Windows")
+  endif()
 endif()
 
 add_subdirectory("tests/simple")

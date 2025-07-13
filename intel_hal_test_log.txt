@@ -1,0 +1,28 @@
+Intel Ethernet HAL - Vollständiger Systemtest
+============================================
+HAL Version: 1.0.0
+
+Gefundene Geräte: 1
+
+Device 1:
+  Name: I219-LM
+  Description: Intel(R) Ethernet Connection (22) I219-LM
+  Vendor ID: 0x8086
+  Device ID: 0x0DC7
+  Family: 3
+  Capabilities: 0x00000281
+  Interface: {3DC822E6-8C68-424C-9798-63CFBF52994B}
+  MAC: C0:47:0E:16:7B:89
+  Speed: 1000 Mbps
+  Link: DOWN
+  Capabilities: 0x00000281
+    [OK] IEEE 1588 Timestamping unterstützt
+    [OK] Timestamping aktiviert
+    [OK] Timestamp[0]: 1014.032408316
+    [OK] Timestamp[1]: 1014.247263516
+    [OK] Timestamp[2]: 1014.448515916
+    [OK] Timestamp[3]: 1014.651702316
+    [OK] Timestamp[4]: 1014.866828616
+    [OK] Timestamps ändern sich wie erwartet.
+
+[DONE] Test abgeschlossen.

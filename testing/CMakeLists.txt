@@ -62,6 +62,15 @@ if(OPENAVNU_BUILD_INTEGRATION_TESTS)
     add_subdirectory(integration/phase2)
     add_subdirectory(integration/phase3)
     
+    # Add AVTP Profile Validation Test
+    add_executable(test_avtp_profile_validation 
+                   integration/test_avtp_profile_validation.cpp
+                   ../lib/avtp_pipeline/avtp_profile.cpp)
+    target_include_directories(test_avtp_profile_validation PRIVATE
+                              ${CMAKE_CURRENT_SOURCE_DIR}/../lib/avtp_pipeline/include
+                              ${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/gptp/common)
+    target_compile_features(test_avtp_profile_validation PRIVATE cxx_std_17)
+    
     # Register integration tests with CTest
     add_test(NAME Phase2Integration 
              COMMAND test_phase2_backend_integration_consolidated
@@ -76,6 +85,13 @@ if(OPENAVNU_BUILD_INTEGRATION_TESTS)
     set_tests_properties(Phase3Production PROPERTIES 
                         LABELS "integration;phase3"
                         TIMEOUT 300)
+                        
+    add_test(NAME AVTPProfileValidation 
+             COMMAND test_avtp_profile_validation
+             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    set_tests_properties(AVTPProfileValidation PROPERTIES 
+                        LABELS "integration;avtp;profiles"
+                        TIMEOUT 60)
 else()
     message(STATUS "⏭️  Skipping integration tests")
 endif()

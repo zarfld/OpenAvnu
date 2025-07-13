@@ -1,0 +1,32 @@
+# OpenAvnu Windows Shaper Configuration Example
+# This file configures the Windows traffic shaper daemon
+
+# Network interface to shape traffic on
+interface=eth0
+
+# Enable Intel TSN hardware acceleration (requires Intel adapter and HAL)
+intel_tsn=false
+
+# Enable Windows QoS integration
+qos_enabled=true
+
+# Maximum number of flows to manage
+max_flows=64
+
+# Maximum total bandwidth in Mbps
+max_bandwidth_mbps=1000
+
+# Statistics monitoring interval in milliseconds
+monitoring_interval_ms=1000
+
+# Traffic class configurations
+# Format: class_<priority>=<max_bandwidth_kbps>,<burst_size_bytes>,<enabled>
+
+# AVB Class A (highest priority)
+class_3=750000,65536,true
+
+# AVB Class B (medium priority)  
+class_2=250000,65536,true
+
+# Best effort traffic (lowest priority)
+class_0=0,32768,true

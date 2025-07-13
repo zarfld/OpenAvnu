@@ -9,6 +9,7 @@ set (ComSource
   "${ComDir}/maap_packet.c"
   "${ComDir}/maap_parse.c"
   "${ComDir}/maap_log_queue.c"
+  "${ComDir}/maap_intel_hal.c"
 )
 include_directories( ${ComDir} )
 
@@ -22,6 +23,15 @@ if(UNIX)
   include_directories( ${OsDir} )
   add_executable(maap_daemon ${ComSource} ${OsSource})
   target_link_libraries(maap_daemon rt pthread)
+  
+  # Intel HAL integration
+  if(OPENAVNU_BUILD_INTEL_HAL)
+    target_link_libraries(maap_daemon intel-ethernet-hal-static)
+    target_include_directories(maap_daemon PRIVATE 
+      ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include)
+    target_compile_definitions(maap_daemon PRIVATE OPENAVNU_BUILD_INTEL_HAL)
+    message(STATUS "MAAP: Intel HAL integration enabled")
+  endif()
 elseif(WIN32)
   set (OsDir "./windows/src")
   set (OsSource
@@ -53,6 +63,15 @@ elseif(WIN32)
   
   add_executable(maap_daemon ${ComSource} ${OsSource})
   target_link_libraries(maap_daemon wpcap Packet Iphlpapi ws2_32)
+  
+  # Intel HAL integration for Windows
+  if(OPENAVNU_BUILD_INTEL_HAL)
+    target_link_libraries(maap_daemon intel-ethernet-hal-static)
+    target_include_directories(maap_daemon PRIVATE 
+      ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include)
+    target_compile_definitions(maap_daemon PRIVATE OPENAVNU_BUILD_INTEL_HAL)
+    message(STATUS "MAAP: Intel HAL integration enabled for Windows")
+  endif()
 endif()
 
 add_subdirectory("test")

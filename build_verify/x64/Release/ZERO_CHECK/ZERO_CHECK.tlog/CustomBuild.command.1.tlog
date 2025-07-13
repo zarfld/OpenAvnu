@@ -1,0 +1,10 @@
+^D:\REPOS\OPENAVNU\BUILD_VERIFY\CMAKEFILES\CE3968A200FC14757AB5F39AE70CEF53\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/Repos/OpenAvnu/build_verify/open-avb.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

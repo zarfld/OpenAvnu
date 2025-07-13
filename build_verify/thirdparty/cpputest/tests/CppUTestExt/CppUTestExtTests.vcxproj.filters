@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\AllTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\CodeMemoryReporterTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\GMockTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\GTest1Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\IEEE754PluginTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\IEEE754PluginTest_c.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MemoryReportAllocatorTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MemoryReporterPluginTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MemoryReportFormatterTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockActualCallTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockCheatSheetTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockCallTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockComparatorCopierTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockExpectedCallTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\ExpectedFunctionsListTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockFailureReporterForTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockFailureTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockHierarchyTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockNamedValueTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockParameterTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockPluginTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockSupportTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockSupport_cTestCFile.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockSupport_cTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockStrictOrderTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockReturnValueTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\OrderedTestTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5EF4FC18-882E-396D-A842-D14140F6601A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+D:\Repos\OpenAvnu\daemons\maap\common\intervals.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\intervals.obj
+D:\Repos\OpenAvnu\daemons\maap\common\maap.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap.obj
+D:\Repos\OpenAvnu\daemons\maap\common\maap_net.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap_net.obj
+D:\Repos\OpenAvnu\daemons\maap\common\maap_packet.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap_packet.obj
+D:\Repos\OpenAvnu\daemons\maap\common\maap_parse.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap_parse.obj
+D:\Repos\OpenAvnu\daemons\maap\common\maap_log_queue.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap_log_queue.obj
+D:\Repos\OpenAvnu\daemons\maap\common\maap_intel_hal.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap_intel_hal.obj
+D:\Repos\OpenAvnu\daemons\maap\windows\src\maap_main.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap_main.obj
+D:\Repos\OpenAvnu\daemons\maap\windows\src\maap_log_windows.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap_log_windows.obj
+D:\Repos\OpenAvnu\daemons\maap\windows\src\maap_timer_windows.c;D:\Repos\OpenAvnu\build_verify\daemons\maap\maap_daemon.dir\Release\maap_timer_windows.obj

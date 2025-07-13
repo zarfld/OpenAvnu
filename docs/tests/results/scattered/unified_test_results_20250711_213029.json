@@ -1,0 +1,412 @@
+﻿{
+    "Summary":  {
+
+                },
+    "Phases":  {
+                   "Phase1":  {
+                                  "NetworkInterface":  true,
+                                  "Details":  {
+                                                  "TsnAdapterCount":  0,
+                                                  "InterfacesPassed":  2,
+                                                  "AdapterCount":  2,
+                                                  "PtpAdapterCount":  1,
+                                                  "DriversPassed":  1
+                                              },
+                                  "HardwareDetection":  true,
+                                  "DriverInterface":  true
+                              },
+                   "Phase2":  {
+                                  "HalIntegration":  true,
+                                  "RegisterAccess":  true,
+                                  "Details":  {
+                                                  "RegisterAccessCount":  1,
+                                                  "CapabilitiesDetected":  1,
+                                                  "HalReadyCount":  1
+                                              },
+                                  "HardwareCapabilities":  true
+                              }
+               },
+    "Log":  [
+                {
+                    "Message":  "=== OpenAvnu Unified Hardware Testing Framework ===",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262223326)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:23"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "System: ATGRZWN313892 | Date: 2025-07-11 21:30:23",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262223329)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:23"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "Detecting Intel network adapters...",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262223333)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:23"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "=== Phase 1: Hardware Detection and Basic Interface ===",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225689)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "Test 1.1: Hardware Detection and Capabilities",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225690)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  Found 2 Intel adapter(s)",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225701)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "  PTP capable: 1",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225703)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  TSN capable: 0",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225705)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  Unknown (7A70): PTP=False, TSN=False",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225711)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  I219-LM (22): PTP=True, TSN=False",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225713)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "Test 1.2: Network Interface Validation",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225719)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  WLAN: Interface accessible",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225809)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "  Ethernet: Interface accessible",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225876)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "Test 1.3: Driver Interface and PTP Properties",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225878)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  Ethernet: PTP properties accessible",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225967)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "Phase 1 Complete: âœ… PASS",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225977)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "=== Phase 2: Register Access and Hardware Interface ===",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225985)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "Test 2.1: Register Access Validation",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262225987)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:25"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  Ethernet: Hardware properties accessible (4 properties)",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226041)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "    PTP Hardware Timestamp: Enabled",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226046)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "    Receive Buffers: 256",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226048)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "    Software Timestamp: RxAll \u0026 TxAll",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226050)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "Test 2.2: Hardware Capabilities Detection",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226052)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  Ethernet: 3/4 capabilities detected",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226112)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "    JumboFrames: âœ…",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226117)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "    PtpHardwareTimestamp: âœ…",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226118)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "    TsnSupport: âŒ",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226120)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "    FlowControl: âœ…",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226121)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "Test 2.3: Intel HAL Integration Prerequisites",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262226124)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:26"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "  Ethernet: 4/4 HAL prerequisites met",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229811)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "    InterfaceAccess: âœ…",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229812)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "    IntelDriver: âœ…",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229814)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "    PtpEnabled: âœ…",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229815)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "    SupportedDeviceId: âœ…",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229816)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "Phase 2 Complete: âœ… PASS",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229821)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229822)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  "=== Test Suite Summary ===",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229823)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "SUCCESS"
+                },
+                {
+                    "Message":  "Completed Phases: 2",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229825)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "INFO"
+                },
+                {
+                    "Message":  ": âŒ FAIL",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229827)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "ERROR"
+                },
+                {
+                    "Message":  ": âŒ FAIL",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229828)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "ERROR"
+                },
+                {
+                    "Message":  "Overall Status: âœ… SUCCESS",
+                    "Timestamp":  {
+                                      "value":  "\/Date(1752262229829)\/",
+                                      "DisplayHint":  2,
+                                      "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                                  },
+                    "Level":  "SUCCESS"
+                }
+            ],
+    "System":  "ATGRZWN313892",
+    "StartTime":  {
+                      "value":  "\/Date(1752262223298)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Freitag, 11. Juli 2025 21:30:23"
+                  },
+    "EndTime":  {
+                    "value":  "\/Date(1752262229830)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Freitag, 11. Juli 2025 21:30:29"
+                },
+    "Duration":  0.108854175
+}

@@ -1,0 +1,206 @@
+{
+  "metadata": {
+    "generation_time": "2025-07-10T10:41:49.219435",
+    "test_suite_version": "1.0",
+    "total_duration": 1.626220941543579
+  },
+  "summary": {
+    "total_tests": 16,
+    "passed": 8,
+    "failed": 2,
+    "skipped": 6,
+    "errors": 0,
+    "success_rate": 50.0
+  },
+  "system_info": {
+    "os_name": "Windows",
+    "os_version": "10.0.22631",
+    "cpu_info": "Intel64 Family 6 Model 191 Stepping 2, GenuineIntel",
+    "memory_gb": 31.692127227783203,
+    "network_interfaces": [
+      {
+        "name": "Barracuda VPN",
+        "mac": "50-48-49-4F-4E-43",
+        "status": true
+      },
+      {
+        "name": "Ethernet",
+        "mac": "C0-47-0E-16-7B-89",
+        "status": false
+      },
+      {
+        "name": "Ethernet 2",
+        "mac": "C0-47-0E-65-6C-03",
+        "status": true
+      },
+      {
+        "name": "Ethernet 3",
+        "mac": "48-0B-B2-D9-6A-D3",
+        "status": true
+      },
+      {
+        "name": "LAN-Verbindung* 1",
+        "mac": "EC-4C-8C-F8-1A-C5",
+        "status": false
+      },
+      {
+        "name": "LAN-Verbindung* 2",
+        "mac": "EE-4C-8C-F8-1A-C4",
+        "status": false
+      },
+      {
+        "name": "WLAN",
+        "mac": "EC-4C-8C-F8-1A-C4",
+        "status": false
+      },
+      {
+        "name": "Bluetooth-Netzwerkverbindung",
+        "mac": "EC-4C-8C-F8-1A-C8",
+        "status": false
+      }
+    ],
+    "kernel_version": "11"
+  },
+  "hardware_info": {
+    "interface_name": "Ethernet",
+    "driver": "e1000e",
+    "driver_version": "unknown",
+    "firmware_version": "unknown",
+    "device_id": "unknown",
+    "vendor_id": "8086",
+    "supports_hardware_ts": true,
+    "ptp_capabilities": []
+  },
+  "test_results": [
+    {
+      "test_name": "System Detection",
+      "status": "PASS",
+      "duration": 0.19005703926086426,
+      "message": "Test completed successfully",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:46.940488"
+    },
+    {
+      "test_name": "Hardware Detection",
+      "status": "PASS",
+      "duration": 1.4361555576324463,
+      "message": "Test completed successfully",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:48.377118"
+    },
+    {
+      "test_name": "Driver Validation",
+      "status": "FAIL",
+      "duration": 0,
+      "message": "Failed to query driver information",
+      "details": {
+        "error": null
+      },
+      "timestamp": "2025-07-10T10:41:49.216318"
+    },
+    {
+      "test_name": "gPTP Build Exists",
+      "status": "FAIL",
+      "duration": 0,
+      "message": "gPTP build directory not found",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.216875"
+    },
+    {
+      "test_name": "Intel HAL Build",
+      "status": "SKIP",
+      "duration": 0,
+      "message": "gPTP build not available",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.217182"
+    },
+    {
+      "test_name": "Hardware Timestamp Support",
+      "status": "PASS",
+      "duration": 3.814697265625e-06,
+      "message": "Test completed successfully",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.217370"
+    },
+    {
+      "test_name": "Ptp Capabilities",
+      "status": "PASS",
+      "duration": 1.6689300537109375e-06,
+      "message": "Test completed successfully",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.217437"
+    },
+    {
+      "test_name": "Cross Timestamp Support",
+      "status": "PASS",
+      "duration": 1.1920928955078125e-06,
+      "message": "Test completed successfully",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.217689"
+    },
+    {
+      "test_name": "gPTP Startup",
+      "status": "SKIP",
+      "duration": 0,
+      "message": "gPTP build or interface not available",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.217929"
+    },
+    {
+      "test_name": "Hardware Timestamps",
+      "status": "SKIP",
+      "duration": 0,
+      "message": "gPTP build or interface not available",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.218112"
+    },
+    {
+      "test_name": "gPTP Synchronization",
+      "status": "SKIP",
+      "duration": 0,
+      "message": "gPTP build or interface not available",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.218234"
+    },
+    {
+      "test_name": "Timestamp Precision",
+      "status": "PASS",
+      "duration": 7.152557373046875e-07,
+      "message": "Test completed successfully",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.218832"
+    },
+    {
+      "test_name": "Sync Accuracy",
+      "status": "PASS",
+      "duration": 2.384185791015625e-07,
+      "message": "Test completed successfully",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.219018"
+    },
+    {
+      "test_name": "Stability Under Load",
+      "status": "SKIP",
+      "duration": 0,
+      "message": "Advanced test - requires load generation setup",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.219165"
+    },
+    {
+      "test_name": "Milan Profile Compliance",
+      "status": "PASS",
+      "duration": 7.152557373046875e-07,
+      "message": "Test completed successfully",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.219303"
+    },
+    {
+      "test_name": "AVB Device Interop",
+      "status": "SKIP",
+      "duration": 0,
+      "message": "Requires AVB devices on network",
+      "details": {},
+      "timestamp": "2025-07-10T10:41:49.219382"
+    }
+  ]
+}

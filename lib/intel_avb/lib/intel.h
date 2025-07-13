@@ -66,6 +66,7 @@ typedef int clockid_t;
 /* Intel device types */
 typedef enum {
     INTEL_DEVICE_I210,
+    INTEL_DEVICE_I217,    /* Intel I217 Lynx Point family */
     INTEL_DEVICE_I219,
     INTEL_DEVICE_I225,
     INTEL_DEVICE_I226,

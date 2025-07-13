@@ -1,0 +1,124 @@
+﻿=== Intel I225/I226 Register Access Test ===
+Testing register accessibility for I225/I226 TimeSync and TSN features
+
+Phase 1: Intel I225/I226 Device Detection
+Found Intel I225/I226 network adapter(s):
+  - Intel(R) Ethernet Controller (3) I225-V
+    Status: 2
+    MAC: C4:62:37:05:B4:65
+  - Intel(R) Ethernet Controller (3) I225-V
+    Status: 7
+    MAC: C4:62:37:05:B4:64
+
+Checking PCI Device IDs...
+Found I225/I226 Device: I225-V (Discrete/NIC)
+  Hardware ID: PCI\VEN_8086&DEV_15F3&SUBSYS_00008086&REV_03
+  Status: OK
+Found I225/I226 Device: I225-V (Discrete/NIC)
+  Hardware ID: PCI\VEN_8086&DEV_15F3&SUBSYS_00008086
+  Status: OK
+Found I225/I226 Device: I225-V (Discrete/NIC)
+  Hardware ID: PCI\VEN_8086&DEV_15F3&CC_020000
+  Status: OK
+Found I225/I226 Device: I225-V (Discrete/NIC)
+  Hardware ID: PCI\VEN_8086&DEV_15F3&CC_0200
+  Status: OK
+Found I225/I226 Device: I225-V (Discrete/NIC)
+  Hardware ID: PCI\VEN_8086&DEV_15F3&SUBSYS_00008086&REV_03
+  Status: OK
+Found I225/I226 Device: I225-V (Discrete/NIC)
+  Hardware ID: PCI\VEN_8086&DEV_15F3&SUBSYS_00008086
+  Status: OK
+Found I225/I226 Device: I225-V (Discrete/NIC)
+  Hardware ID: PCI\VEN_8086&DEV_15F3&CC_020000
+  Status: OK
+Found I225/I226 Device: I225-V (Discrete/NIC)
+  Hardware ID: PCI\VEN_8086&DEV_15F3&CC_0200
+  Status: OK
+
+Phase 2: Driver Analysis
+Driver Found: Intel(R) Ethernet Controller (3) I225-V
+  Version: 1.1.4.43
+  Date: 20240215000000.******+***
+  Provider: Intel
+  Intel driver confirmed
+Driver Found: Intel(R) Ethernet Controller (3) I225-V
+  Version: 1.1.4.43
+  Date: 20240215000000.******+***
+  Provider: Intel
+  Intel driver confirmed
+
+Phase 3: System Prerequisites
+Operating System: Windows 10.0 Build 19045
+Windows 10/11 detected - Good for register access
+Not running as Administrator - Limited register access
+
+Phase 4: I225/I226 Register Analysis
+I225/I226 TimeSync Register Categories:
+  Legacy IEEE 1588 Registers (I210 compatible):
+    SYSTIML/H, TIMINCA, TSYNCTXCTL, TSYNCRXCTL, TSAUXC
+  Enhanced TSN Registers (I225/I226 specific):
+    QBVCYCLET_S/NS - Time Aware Shaper
+    QBVBTIME_S/NS  - Base Time Control
+    FPRXCTL/FPTXCTL - Frame Preemption
+    SDP0/1/2_CTRL  - Software Defined Pins
+    PTM_CTRL/STAT  - PCIe Precision Time Measurement
+
+I225/I226 TSN Features Available:
+  - IEEE 802.1AS-Rev (Enhanced gPTP)
+  - IEEE 802.1Qbv (Time Aware Shaper)
+  - IEEE 802.1Qbu (Frame Preemption)
+  - IEEE 802.3br (Interspersing Express Traffic)
+  - PCIe PTM (Host-NIC synchronization)
+  - 2.5 Gbps support (I225/I226 vs 1 Gbps I210)
+
+Phase 5: Register Access Assessment
+WMI hardware access: Available
+PowerShell PnP access: Available
+Register access methods available: WMI, PowerShell-PnP
+
+Phase 6: Register Value Dump
+Register TSIM (0xB674): [not implemented: requires kernel driver or tool]
+Register TIMADJH (0xB610): [not implemented: requires kernel driver or tool]
+Register SYSTIMR (0xB6F8): [not implemented: requires kernel driver or tool]
+Register PTM_CTRL (0x12000): [not implemented: requires kernel driver or tool]
+Register RXSTMPH (0xB628): [not implemented: requires kernel driver or tool]
+Register TSICR (0xB66C): [not implemented: requires kernel driver or tool]
+Register PTM_STAT (0x12004): [not implemented: requires kernel driver or tool]
+Register TXSTMPH (0xB61C): [not implemented: requires kernel driver or tool]
+Register QBVCYCLET_S (0x331C): [not implemented: requires kernel driver or tool]
+Register QBVBTIME_NS (0x3328): [not implemented: requires kernel driver or tool]
+Register TSYNCTXCTL (0xB614): [not implemented: requires kernel driver or tool]
+Register SYSTIML (0xB600): [not implemented: requires kernel driver or tool]
+Register SYSTIMH (0xB604): [not implemented: requires kernel driver or tool]
+Register SDP1_CTRL (0xE004): [not implemented: requires kernel driver or tool]
+Register SDP2_CTRL (0xE008): [not implemented: requires kernel driver or tool]
+Register FPRXCTL (0x3400): [not implemented: requires kernel driver or tool]
+Register TSAUXC (0xB640): [not implemented: requires kernel driver or tool]
+Register QBVBTIME_S (0x3324): [not implemented: requires kernel driver or tool]
+Register FPTXCTL (0x3404): [not implemented: requires kernel driver or tool]
+Register TXSTMPL (0xB618): [not implemented: requires kernel driver or tool]
+Register TIMINCA (0xB608): [not implemented: requires kernel driver or tool]
+Register TIMADJL (0xB60C): [not implemented: requires kernel driver or tool]
+Register RXSTMPL (0xB624): [not implemented: requires kernel driver or tool]
+Register QBVCYCLET_NS (0x3320): [not implemented: requires kernel driver or tool]
+Register TSYNCRXCTL (0xB620): [not implemented: requires kernel driver or tool]
+Register SDP0_CTRL (0xE000): [not implemented: requires kernel driver or tool]
+
+=== Test Results Summary ===
+Final Score: 305/100
+Assessment: HIGH feasibility for I225/I226 register access
+Recommendation: Proceed with implementation
+
+Detailed Results:
+  Device Detection: PASS
+  Driver Status: PASS
+  Register Access: PASS
+  TSN Features: PASS
+
+=== I225/I226 Advantages over I210 ===
+  - 2.5 Gbps bandwidth (vs 1 Gbps I210)
+  - Enhanced TSN features (802.1Qbv, 802.1Qbu)
+  - PCIe PTM for improved synchronization
+  - Frame preemption for low latency
+  - Industrial temperature variants available

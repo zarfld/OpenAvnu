@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "generation_time": "<AUTOFILL>",
+    "test_suite_version": "1.0",
+    "total_duration": null
+  },
+  "summary": {
+    "total_tests": 16,
+    "passed": null,
+    "failed": null,
+    "skipped": null,
+    "errors": null,
+    "success_rate": null
+  },
+  "system_info": {
+    "os_name": "<AUTOFILL>",
+    "os_version": "<AUTOFILL>",
+    "cpu_info": "<AUTOFILL>",
+    "memory_gb": null,
+    "network_interfaces": [],
+    "kernel_version": "<AUTOFILL>"
+  },
+  "hardware_info": {
+    "interface_name": "Ethernet",
+    "driver": "<AUTOFILL>",
+    "driver_version": "<AUTOFILL>",
+    "firmware_version": "<AUTOFILL>",
+    "device_id": "<AUTOFILL>",
+    "vendor_id": "8086",
+    "supports_hardware_ts": true,
+    "ptp_capabilities": []
+  },
+  "test_results": [
+    { "test_name": "System Detection", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Hardware Detection", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Driver Validation", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "gPTP Build Exists", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Intel HAL Build", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Hardware Timestamp Support", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Ptp Capabilities", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Cross Timestamp Support", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "gPTP Startup", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Hardware Timestamps", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "gPTP Synchronization", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Timestamp Precision", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Sync Accuracy", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Stability Under Load", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "Milan Profile Compliance", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" },
+    { "test_name": "AVB Device Interop", "status": "<AUTOFILL>", "duration": null, "message": "", "details": {}, "timestamp": "" }
+  ]
+}

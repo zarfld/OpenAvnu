@@ -1,0 +1,157 @@
+{
+  "metadata": {
+    "generation_time": "2025-07-10T14:11:22.216203",
+    "benchmark_config": {
+      "test_duration": 30,
+      "hw_timestamp_tests": true,
+      "sw_timestamp_tests": true,
+      "load_test_enabled": false,
+      "load_levels": [
+        100,
+        500,
+        1000,
+        2000
+      ],
+      "network_conditions": [
+        "normal",
+        "congested",
+        "lossy"
+      ],
+      "comparison_nics": [
+        "igb",
+        "e1000e"
+      ]
+    },
+    "total_tests": 5
+  },
+  "summary": {
+    "total_tests": 5,
+    "hardware_tests": 4,
+    "software_tests": 1,
+    "hardware_performance": {
+      "mean_precision": 1000.0,
+      "best_precision": 1000.0,
+      "worst_precision": 1000.0,
+      "mean_jitter": 0,
+      "best_jitter": 0,
+      "worst_jitter": 0
+    },
+    "software_performance": {
+      "mean_precision": 1000.0,
+      "best_precision": 1000.0,
+      "worst_precision": 1000.0,
+      "mean_jitter": 0,
+      "best_jitter": 0,
+      "worst_jitter": 0
+    }
+  },
+  "detailed_results": [
+    {
+      "test_name": "hardware_timestamp_baseline",
+      "config": {
+        "mode": "hardware",
+        "duration": 30
+      },
+      "timestamp_mode": "hardware",
+      "duration": 4.171678304672241,
+      "samples": 1,
+      "mean_precision": 1000.0,
+      "jitter": 0,
+      "max_deviation": 0.0,
+      "min_precision": 1000.0,
+      "max_precision": 1000.0,
+      "stability_score": 1.0,
+      "error_rate": 0.0,
+      "throughput": 0.23971167644446822,
+      "cpu_usage": null,
+      "memory_usage": null
+    },
+    {
+      "test_name": "software_timestamp_baseline",
+      "config": {
+        "mode": "software",
+        "duration": 30
+      },
+      "timestamp_mode": "software",
+      "duration": 3.9423813819885254,
+      "samples": 1,
+      "mean_precision": 1000.0,
+      "jitter": 0,
+      "max_deviation": 0.0,
+      "min_precision": 1000.0,
+      "max_precision": 1000.0,
+      "stability_score": 1.0,
+      "error_rate": 0.0,
+      "throughput": 0.25365379528441334,
+      "cpu_usage": null,
+      "memory_usage": null
+    },
+    {
+      "test_name": "network_condition_congested",
+      "config": {
+        "mode": "hardware",
+        "duration": 30,
+        "network_condition": "congested"
+      },
+      "timestamp_mode": "hardware",
+      "duration": 4.011497974395752,
+      "samples": 1,
+      "mean_precision": 1000.0,
+      "jitter": 0,
+      "max_deviation": 0.0,
+      "min_precision": 1000.0,
+      "max_precision": 1000.0,
+      "stability_score": 1.0,
+      "error_rate": 0.0,
+      "throughput": 0.24928343635786804,
+      "cpu_usage": null,
+      "memory_usage": null
+    },
+    {
+      "test_name": "comparison_igb",
+      "config": {
+        "nic_driver": "igb",
+        "duration": 30
+      },
+      "timestamp_mode": "hardware",
+      "duration": 3.971364974975586,
+      "samples": 1,
+      "mean_precision": 1000.0,
+      "jitter": 0,
+      "max_deviation": 0.0,
+      "min_precision": 1000.0,
+      "max_precision": 1000.0,
+      "stability_score": 0.95,
+      "error_rate": 0.0,
+      "throughput": 0.251802593390739,
+      "cpu_usage": null,
+      "memory_usage": null
+    },
+    {
+      "test_name": "comparison_e1000e",
+      "config": {
+        "nic_driver": "e1000e",
+        "duration": 30
+      },
+      "timestamp_mode": "hardware",
+      "duration": 3.9039552211761475,
+      "samples": 1,
+      "mean_precision": 1000.0,
+      "jitter": 0,
+      "max_deviation": 0.0,
+      "min_precision": 1000.0,
+      "max_precision": 1000.0,
+      "stability_score": 0.95,
+      "error_rate": 0.0,
+      "throughput": 0.25615047902591703,
+      "cpu_usage": null,
+      "memory_usage": null
+    }
+  ],
+  "analysis": {
+    "hw_vs_sw": {
+      "precision_improvement": 0.0,
+      "recommendation": "software"
+    }
+  }
+}

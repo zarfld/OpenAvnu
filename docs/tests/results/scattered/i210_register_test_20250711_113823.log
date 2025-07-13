@@ -1,0 +1,36 @@
+﻿I210 Register Access Test Results
+Generated: 07/11/2025 11:38:23
+Score: /100
+Device Found: 
+Driver OK: 
+Register Access: 
+TSN Features: 
+
+Register Dump:
+Register TIMADJL (0xB60C): [not implemented: requires kernel driver or tool]
+Register RXSTMPL (0xB624): [not implemented: requires kernel driver or tool]
+Register AUXSTMPH1 (0xB668): [not implemented: requires kernel driver or tool]
+Register TRGTTIML1 (0xB64C): [not implemented: requires kernel driver or tool]
+Register TSAUXC (0xB640): [not implemented: requires kernel driver or tool]
+Register AUXSTMPL0 (0xB65C): [not implemented: requires kernel driver or tool]
+Register TIMINCA (0xB608): [not implemented: requires kernel driver or tool]
+Register FREQOUT1 (0xB658): [not implemented: requires kernel driver or tool]
+Register TSICR (0xB66C): [not implemented: requires kernel driver or tool]
+Register RXSTMPH (0xB628): [not implemented: requires kernel driver or tool]
+Register TXSTMPL (0xB618): [not implemented: requires kernel driver or tool]
+Register RXSATRL (0xB62C): [not implemented: requires kernel driver or tool]
+Register SYSTIMR (0xB6F8): [not implemented: requires kernel driver or tool]
+Register TSYNCTXCTL (0xB614): [not implemented: requires kernel driver or tool]
+Register SYSTIMH (0xB604): [not implemented: requires kernel driver or tool]
+Register SYSTIML (0xB600): [not implemented: requires kernel driver or tool]
+Register TRGTTIMH0 (0xB648): [not implemented: requires kernel driver or tool]
+Register TXSTMPH (0xB61C): [not implemented: requires kernel driver or tool]
+Register FREQOUT0 (0xB654): [not implemented: requires kernel driver or tool]
+Register TSIM (0xB674): [not implemented: requires kernel driver or tool]
+Register TIMADJH (0xB610): [not implemented: requires kernel driver or tool]
+Register AUXSTMPH0 (0xB660): [not implemented: requires kernel driver or tool]
+Register TSYNCRXCTL (0xB620): [not implemented: requires kernel driver or tool]
+Register TRGTTIMH1 (0xB650): [not implemented: requires kernel driver or tool]
+Register TRGTTIML0 (0xB644): [not implemented: requires kernel driver or tool]
+Register AUXSTMPL1 (0xB664): [not implemented: requires kernel driver or tool]
+Register RXSATRH (0xB630): [not implemented: requires kernel driver or tool]

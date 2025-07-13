@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\CMakeFiles\la_avdecc_static.dir\cmake_pch.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\avdecc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\endStationImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\executor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\streamFormatInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\watchDog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAcmpdu.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAdpdu.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAecpdu.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAemAecpdu.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAemPayloads.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAaAecpdu.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAvtpdu.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolDefines.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolVuAecpdu.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolMvuAecpdu.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolMvuPayloads.cpp">
+      <Filter>Source Files\Protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface.cpp">
+      <Filter>Source Files\Protocol Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface_pcap.cpp">
+      <Filter>Source Files\Protocol Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\pcapDynamicLinking.cpp">
+      <Filter>Source Files\Protocol Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface_virtual.cpp">
+      <Filter>Source Files\Protocol Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\advertiseStateMachine.cpp">
+      <Filter>Source Files\State Machines</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\commandStateMachine.cpp">
+      <Filter>Source Files\State Machines</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\discoveryStateMachine.cpp">
+      <Filter>Source Files\State Machines</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\stateMachineManager.cpp">
+      <Filter>Source Files\State Machines</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\entityModelTypes.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\localEntityImpl.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\aemHandler.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\aggregateEntityImpl.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\controllerCapabilityDelegate.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\controllerEntityImpl.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\entityModelControlValues.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\entityModelJsonSerializer.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\endStationImpl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\logHelper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAemControlValuesPayloads.hpp">
+      <Filter>Header Files\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolAemPayloads.hpp">
+      <Filter>Header Files\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocol\protocolMvuPayloads.hpp">
+      <Filter>Header Files\Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\ethernetPacketDispatch.hpp">
+      <Filter>Header Files\Protocol Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface_pcap.hpp">
+      <Filter>Header Files\Protocol Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\pcapInterface.hpp">
+      <Filter>Header Files\Protocol Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\protocolInterface\protocolInterface_virtual.hpp">
+      <Filter>Header Files\Protocol Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\advertiseStateMachine.hpp">
+      <Filter>Header Files\State Machines</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\commandStateMachine.hpp">
+      <Filter>Header Files\State Machines</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\discoveryStateMachine.hpp">
+      <Filter>Header Files\State Machines</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\protocolInterfaceDelegate.hpp">
+      <Filter>Header Files\State Machines</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\stateMachine\stateMachineManager.hpp">
+      <Filter>Header Files\State Machines</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\entityImpl.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\aemHandler.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\aggregateEntityImpl.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\controllerCapabilityDelegate.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\controllerEntityImpl.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\avdecc.hpp">
+      <Filter>Header Files\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\executor.hpp">
+      <Filter>Header Files\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\logger.hpp">
+      <Filter>Header Files\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\memoryBuffer.hpp">
+      <Filter>Header Files\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\utils.hpp">
+      <Filter>Header Files\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\watchDog.hpp">
+      <Filter>Header Files\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\aggregateEntity.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\controllerEntity.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\endian.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\endStation.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entity.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityAddressAccessTypes.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityEnums.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModel.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelControlValues.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelControlValuesTraits.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTree.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTreeCommon.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTreeDynamic.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTreeStatic.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\entityModelTypes.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\exception.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\exports.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\instrumentationNotifier.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\jsonSerialization.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\logItems.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAaAecpdu.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAcmpdu.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAdpdu.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAecpdu.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAemAecpdu.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAemPayloadSizes.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolAvtpdu.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolDefines.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolMvuAecpdu.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolMvuPayloadSizes.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolVuAecpdu.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\protocolInterface.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\serialization.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\streamFormatInfo.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\uniqueIdentifier.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\include\la\avdecc\internals\jsonTypes.hpp">
+      <Filter>Header Files\Public\internals</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\pch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\CMakeFiles\la_avdecc_static.dir\Debug\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\CMakeFiles\la_avdecc_static.dir\Release\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\CMakeFiles\la_avdecc_static.dir\MinSizeRel\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Repos\OpenAvnu\build_verify\lib\la_avdecc\src\CMakeFiles\la_avdecc_static.dir\RelWithDebInfo\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="D:\Repos\OpenAvnu\lib\la_avdecc\externals\3rdparty\json\nlohmann_json.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Repos\OpenAvnu\lib\la_avdecc\src\entity\localEntityImpl.ipp">
+      <Filter>Header Files\Entity</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{FFB915F9-CA3B-3E99-AC8A-43D0E0113239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{0F3F721B-CCB5-3747-855E-8A1445F815EF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Protocol">
+      <UniqueIdentifier>{9E0572D1-0D08-3F33-870B-3B021F4D973F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Protocol Interface">
+      <UniqueIdentifier>{A22A566C-E633-3729-A449-6C4CE69E76B2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Public">
+      <UniqueIdentifier>{D9194994-3C66-354A-B8BD-25794838DAD3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Public\internals">
+      <UniqueIdentifier>{BB9DEB02-9592-39CA-9862-143A1CBA5439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\State Machines">
+      <UniqueIdentifier>{8FCF4A44-BEA1-3988-9C74-AEA953C833FC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Precompile Header File">
+      <UniqueIdentifier>{DFFAAF55-D344-3F73-8C9D-6C058D86F3F3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5EF4FC18-882E-396D-A842-D14140F6601A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity">
+      <UniqueIdentifier>{E0A2E376-95F1-312C-B74E-F3D13EC076F3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Protocol">
+      <UniqueIdentifier>{90450DA7-8E9B-36CC-845F-BF576431619B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Protocol Interface">
+      <UniqueIdentifier>{FB1B3016-969F-32AB-95E8-AD5FD502C2E3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State Machines">
+      <UniqueIdentifier>{F073C649-7DB2-31B7-99DB-130C2A3DE0EE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -82,6 +82,14 @@ static const struct intel_device_info intel_devices[] = {
       INTEL_CAP_BASIC_1588 | INTEL_CAP_MMIO,
       "I210-IS", "Intel I210-IS Gigabit Network Connection" },
     
+    /* I217 Series - Lynx Point PHY with dual PCIe+SMBus interface */
+    { 0x153a, INTEL_DEVICE_I217, 
+      INTEL_CAP_BASIC_1588 | INTEL_CAP_MDIO,
+      "I217-LM", "Intel I217-LM Gigabit Network Connection" },
+    { 0x153b, INTEL_DEVICE_I217, 
+      INTEL_CAP_BASIC_1588 | INTEL_CAP_MDIO,
+      "I217-V", "Intel I217-V Gigabit Network Connection" },
+    
     /* I219 Series */
     { 0x15b7, INTEL_DEVICE_I219, 
       INTEL_CAP_BASIC_1588 | INTEL_CAP_MDIO,

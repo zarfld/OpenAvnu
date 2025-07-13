@@ -1,0 +1,455 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1C1EF3B2-5935-3358-B643-B36E551E05BF}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>CppUTestExtTests</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CppUTestExtTests.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CppUTestExtTests</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CppUTestExtTests.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CppUTestExtTests</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CppUTestExtTests.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">CppUTestExtTests</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CppUTestExtTests.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">CppUTestExtTests</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForcedIncludeFiles>D:/Repos/OpenAvnu/thirdparty/cpputest/include/CppUTest/MemoryLeakDetectorMallocMacros.h</ForcedIncludeFiles>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;USING_NPCAP;_CRT_SECURE_NO_WARNINGS;HAVE_REMOTE;CPPUTEST_HAVE_STRDUP=1;STDC_WANT_SECURE_LIB;HAVE_CONFIG_H;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;USING_NPCAP;_CRT_SECURE_NO_WARNINGS;HAVE_REMOTE;CPPUTEST_HAVE_STRDUP=1;STDC_WANT_SECURE_LIB;HAVE_CONFIG_H;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>Discovering Tests in CppUTestExtTests</Message>
+      <Command>setlocal
+cd D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -DTESTS_DETAILED:BOOL=OFF -DEXECUTABLE=CppUTestExtTests -P D:/Repos/OpenAvnu/thirdparty/cpputest/cmake/Scripts/CppUTestBuildTimeDiscoverTests.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\..\src\CppUTest\Debug\CppUTest.lib;..\..\src\CppUTestExt\Debug\CppUTestExt.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/Debug/CppUTestExtTests.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/CppUTestExtTests.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4290</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForcedIncludeFiles>D:/Repos/OpenAvnu/thirdparty/cpputest/include/CppUTest/MemoryLeakDetectorMallocMacros.h</ForcedIncludeFiles>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;USING_NPCAP;_CRT_SECURE_NO_WARNINGS;HAVE_REMOTE;CPPUTEST_HAVE_STRDUP=1;STDC_WANT_SECURE_LIB;HAVE_CONFIG_H;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;USING_NPCAP;_CRT_SECURE_NO_WARNINGS;HAVE_REMOTE;CPPUTEST_HAVE_STRDUP=1;STDC_WANT_SECURE_LIB;HAVE_CONFIG_H;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>Discovering Tests in CppUTestExtTests</Message>
+      <Command>setlocal
+cd D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -DTESTS_DETAILED:BOOL=OFF -DEXECUTABLE=CppUTestExtTests -P D:/Repos/OpenAvnu/thirdparty/cpputest/cmake/Scripts/CppUTestBuildTimeDiscoverTests.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\..\src\CppUTest\Release\CppUTest.lib;..\..\src\CppUTestExt\Release\CppUTestExt.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/Release/CppUTestExtTests.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/CppUTestExtTests.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4290</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForcedIncludeFiles>D:/Repos/OpenAvnu/thirdparty/cpputest/include/CppUTest/MemoryLeakDetectorMallocMacros.h</ForcedIncludeFiles>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;USING_NPCAP;_CRT_SECURE_NO_WARNINGS;HAVE_REMOTE;CPPUTEST_HAVE_STRDUP=1;STDC_WANT_SECURE_LIB;HAVE_CONFIG_H;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;USING_NPCAP;_CRT_SECURE_NO_WARNINGS;HAVE_REMOTE;CPPUTEST_HAVE_STRDUP=1;STDC_WANT_SECURE_LIB;HAVE_CONFIG_H;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>Discovering Tests in CppUTestExtTests</Message>
+      <Command>setlocal
+cd D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -DTESTS_DETAILED:BOOL=OFF -DEXECUTABLE=CppUTestExtTests -P D:/Repos/OpenAvnu/thirdparty/cpputest/cmake/Scripts/CppUTestBuildTimeDiscoverTests.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\..\src\CppUTest\MinSizeRel\CppUTest.lib;..\..\src\CppUTestExt\MinSizeRel\CppUTestExt.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/MinSizeRel/CppUTestExtTests.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/CppUTestExtTests.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForcedIncludeFiles>D:/Repos/OpenAvnu/thirdparty/cpputest/include/CppUTest/MemoryLeakDetectorMallocMacros.h</ForcedIncludeFiles>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;USING_NPCAP;_CRT_SECURE_NO_WARNINGS;HAVE_REMOTE;CPPUTEST_HAVE_STRDUP=1;STDC_WANT_SECURE_LIB;HAVE_CONFIG_H;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;USING_NPCAP;_CRT_SECURE_NO_WARNINGS;HAVE_REMOTE;CPPUTEST_HAVE_STRDUP=1;STDC_WANT_SECURE_LIB;HAVE_CONFIG_H;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Repos\OpenAvnu\thirdparty\cpputest\include\Platforms\VisualCpp;D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest;D:\Repos\OpenAvnu\thirdparty\cpputest\include;D:\Repos\OpenAvnu\thirdparty\cpputest\src\CppUTest\..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>Discovering Tests in CppUTestExtTests</Message>
+      <Command>setlocal
+cd D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -DTESTS_DETAILED:BOOL=OFF -DEXECUTABLE=CppUTestExtTests -P D:/Repos/OpenAvnu/thirdparty/cpputest/cmake/Scripts/CppUTestBuildTimeDiscoverTests.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>..\..\src\CppUTest\RelWithDebInfo\CppUTest.lib;..\..\src\CppUTestExt\RelWithDebInfo\CppUTestExt.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/RelWithDebInfo/CppUTestExtTests.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/CppUTestExtTests.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Repos/OpenAvnu/thirdparty/cpputest/tests/CppUTestExt/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-file D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Repos/OpenAvnu/thirdparty/cpputest/tests/CppUTestExt/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-file D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Repos/OpenAvnu/thirdparty/cpputest/tests/CppUTestExt/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-file D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Repos/OpenAvnu/thirdparty/cpputest/tests/CppUTestExt/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Repos/OpenAvnu -BD:/Repos/OpenAvnu/build_verify --check-stamp-file D:/Repos/OpenAvnu/build_verify/thirdparty/cpputest/tests/CppUTestExt/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\tests\CppUTestExt\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\AllTests.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\CodeMemoryReporterTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\GMockTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\GTest1Test.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\IEEE754PluginTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\IEEE754PluginTest_c.c" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MemoryReportAllocatorTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MemoryReporterPluginTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MemoryReportFormatterTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockActualCallTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockCheatSheetTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockCallTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockComparatorCopierTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockExpectedCallTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\ExpectedFunctionsListTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockFailureReporterForTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockFailureTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockHierarchyTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockNamedValueTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockParameterTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockPluginTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockSupportTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockSupport_cTestCFile.c" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockSupport_cTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockStrictOrderTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\MockReturnValueTest.cpp" />
+    <ClCompile Include="D:\Repos\OpenAvnu\thirdparty\cpputest\tests\CppUTestExt\OrderedTestTest.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\ZERO_CHECK.vcxproj">
+      <Project>{FC89F9E1-C6FA-31CA-94DA-25D0D726CA35}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\src\CppUTest\CppUTest.vcxproj">
+      <Project>{CE7585DA-9587-3294-9F12-47DAAC7EA3F9}</Project>
+      <Name>CppUTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Repos\OpenAvnu\build_verify\thirdparty\cpputest\src\CppUTestExt\CppUTestExt.vcxproj">
+      <Project>{2DE0D6CF-FCA3-349C-A379-D4A231D0E57C}</Project>
+      <Name>CppUTestExt</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

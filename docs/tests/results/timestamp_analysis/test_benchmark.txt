@@ -1,0 +1,66 @@
+Intel I219-LM Performance Benchmark Report
+==================================================
+
+Generated: 2025-07-10T14:11:22.216203
+Total Tests: 5
+
+SUMMARY
+--------------------
+Hardware Timestamping:
+  Mean Precision: 1000.0 ns
+  Best Precision: 1000.0 ns
+  Mean Jitter: 0.0 ns
+
+Software Timestamping:
+  Mean Precision: 1000.0 ns
+  Best Precision: 1000.0 ns
+  Mean Jitter: 0.0 ns
+
+ANALYSIS
+--------------------
+Hardware vs Software:
+  Precision Improvement: 0.0%
+  Recommendation: software
+
+DETAILED RESULTS
+--------------------
+
+Test: hardware_timestamp_baseline
+  Mode: hardware
+  Duration: 4.2s
+  Samples: 1
+  Mean Precision: 1000.0 ns
+  Jitter: 0.0 ns
+  Stability: 100.0%
+
+Test: software_timestamp_baseline
+  Mode: software
+  Duration: 3.9s
+  Samples: 1
+  Mean Precision: 1000.0 ns
+  Jitter: 0.0 ns
+  Stability: 100.0%
+
+Test: network_condition_congested
+  Mode: hardware
+  Duration: 4.0s
+  Samples: 1
+  Mean Precision: 1000.0 ns
+  Jitter: 0.0 ns
+  Stability: 100.0%
+
+Test: comparison_igb
+  Mode: hardware
+  Duration: 4.0s
+  Samples: 1
+  Mean Precision: 1000.0 ns
+  Jitter: 0.0 ns
+  Stability: 95.0%
+
+Test: comparison_e1000e
+  Mode: hardware
+  Duration: 3.9s
+  Samples: 1
+  Mean Precision: 1000.0 ns
+  Jitter: 0.0 ns
+  Stability: 95.0%
