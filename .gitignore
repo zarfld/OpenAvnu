@@ -5,7 +5,7 @@
 *CMakeFiles/
 CMakeCache.txt
 spec/
-
+build_daw02_verify/
 daemons/maap/linux/maap_daemon
 examples/jackd-listener/jack_listener
 examples/jackd-talker/jackd_talker
