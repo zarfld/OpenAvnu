@@ -275,7 +275,7 @@ function Show-AdapterList {
             Family = $adapter.Family
             DeviceId = $adapter.DeviceId
             Status = $adapter.Status
-            Speed = if ($adapter.LinkSpeed) { [math]::Round($adapter.LinkSpeed / 1MB, 1).ToString() + " Mbps" } else { "Unknown" }
+            Speed = if ($adapter.LinkSpeed -and $adapter.LinkSpeed -ne "0 bps" -and $adapter.LinkSpeed -match '^\d+') { [math]::Round([int64]($adapter.LinkSpeed -replace '[^\d]','') / 1MB, 1).ToString() + " Mbps" } else { "Disconnected" }
             Driver = $adapter.DriverVersion
             "HW Timestamp" = if ($adapter.SupportsHardwareTimestamp) { "[YES]" } else { "[NO]" }
             "Advanced TSN" = if ($adapter.SupportsAdvancedFeatures) { "[YES]" } else { "[NO]" }
