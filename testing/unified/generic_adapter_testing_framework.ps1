@@ -1093,9 +1093,6 @@ function Main {
 
 #endregion
 
-# Execute main function
-Main
-
 function Test-VlanCapabilities {
     param([array]$Adapters)
     
@@ -1570,3 +1567,6 @@ function Test-AvbTrafficClasses {
         return $expectedClasses -gt 0
     }
 }
+
+# Execute main function
+Main
