@@ -1587,7 +1587,7 @@
 			"-ExecutionPolicy",
 			"Bypass",
 			"-File",
-			"test_asio_multiadapter_clean.ps1"
+			"test_asio_multiadapter_cmake.ps1"
 		],
 		"options": {
 			"cwd": "${workspaceFolder}"
