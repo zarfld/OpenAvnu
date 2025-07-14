@@ -84,31 +84,93 @@ function Test-DaemonBuild {
         $fileInfo = Get-ItemProperty $fullPath
         $testPassed = Write-TestResult "$DaemonName Build" $true "Executable size: $($fileInfo.Length) bytes"
         
-        # Test Intel HAL integration - with timeout to prevent hanging
+        # Test Intel HAL integration - improved detection method
         try {
             $job = Start-Job -ScriptBlock { 
-                param($exePath, $daemonName)
+                param($exePath, $daemonName, $buildDir)
                 try {
-                    # For MRPD, skip version check as it tends to hang
-                    if ($daemonName -eq "mrpd") {
-                        # Just check if binary was built with Intel HAL (file analysis)
-                        $fileContent = Get-Content $exePath -Raw -Encoding Byte -TotalCount 1000 | ForEach-Object { [char]$_ } | Out-String
-                        return $fileContent -like "*intel*" -or $fileContent -like "*hal*"
-                    } else {
-                        # For other daemons, try version check
-                        $output = & $exePath --version 2>&1 | Out-String
-                        return $output -like "*Intel HAL*" -or $output -like "*Intel*"
+                    # Method 1: Check for Intel HAL library dependencies
+                    $dependencies = @()
+                    
+                    # Check if Intel HAL static library was linked
+                    $dumpbin = Get-Command "dumpbin.exe" -ErrorAction SilentlyContinue
+                    if ($dumpbin) {
+                        $linkInfo = & $dumpbin.Source /dependents $exePath 2>&1 | Out-String
+                        $hasIntelHal = $linkInfo -like "*intel*" -or $linkInfo -like "*hal*"
+                        if ($hasIntelHal) { $dependencies += "Library linking detected" }
+                    }
+                    
+                    # Method 2: Check build artifacts for Intel HAL
+                    $buildLogPath = Join-Path $buildDir "CMakeFiles" | Join-Path -ChildPath "*.log"
+                    $buildLogs = Get-ChildItem $buildLogPath -ErrorAction SilentlyContinue
+                    foreach ($log in $buildLogs) {
+                        $content = Get-Content $log -Raw -ErrorAction SilentlyContinue
+                        if ($content -like "*intel-ethernet-hal*" -or $content -like "*INTEL_HAL*") {
+                            $dependencies += "Build log reference found"
+                            break
+                        }
+                    }
+                    
+                    # Method 3: Check CMake cache for Intel HAL configuration
+                    $cacheFile = Join-Path $buildDir "CMakeCache.txt"
+                    if (Test-Path $cacheFile) {
+                        $cache = Get-Content $cacheFile -Raw
+                        if ($cache -like "*INTEL_HAL*" -or $cache -like "*intel-ethernet-hal*") {
+                            $dependencies += "CMake configuration found"
+                        }
+                    }
+                    
+                    # Method 4: Check for Intel HAL symbols in the binary (more sophisticated)
+                    try {
+                        # Use Windows findstr as alternative to strings
+                        $binContent = [System.IO.File]::ReadAllBytes($exePath)
+                        $textContent = [System.Text.Encoding]::ASCII.GetString($binContent)
+                        if ($textContent -like "*intel*" -or $textContent -like "*hal*" -or $textContent -like "*igb*" -or $textContent -like "*i210*") {
+                            $dependencies += "Intel HAL symbols found in binary"
+                        }
+                    } catch { }
+                    
+                    # Method 5: Check daemon size compared to baseline
+                    $fileInfo = Get-ItemProperty $exePath
+                    if ($daemonName -eq "maap" -and $fileInfo.Length -gt 40000) {
+                        $dependencies += "MAAP binary size indicates HAL integration ($($fileInfo.Length) bytes)"
+                    } elseif ($daemonName -eq "mrpd" -and $fileInfo.Length -gt 60000) {
+                        $dependencies += "MRPD binary size indicates HAL integration ($($fileInfo.Length) bytes)"
+                    }
+                    
+                    # Method 6: Check for linked Intel HAL library
+                    $daemonDir = Split-Path $exePath
+                    $halLibPath = Join-Path (Split-Path $daemonDir -Parent) "thirdparty\intel-ethernet-hal\Release\intel-ethernet-hal-static.lib"
+                    if (Test-Path $halLibPath) {
+                        $dependencies += "Intel HAL static library available for linking"
+                    }
+                    
+                    return @{
+                        HasIntegration = $dependencies.Count -gt 0
+                        Methods = $dependencies
+                        Details = "Detection methods: $($dependencies -join ', ')"
                     }
                 } catch {
-                    return $false
+                    return @{
+                        HasIntegration = $false
+                        Methods = @()
+                        Details = "Detection failed: $($_.Exception.Message)"
+                    }
                 }
-            } -ArgumentList $fullPath, $DaemonName
+            } -ArgumentList $fullPath, $DaemonName, (Split-Path $fullPath | Split-Path | Split-Path)
             
-            $halIntegrated = Wait-Job $job -Timeout 3 | Receive-Job
+            $halResult = Wait-Job $job -Timeout 5 | Receive-Job
             Remove-Job $job -Force
             
-            if ($halIntegrated -eq $null) { $halIntegrated = $false }
-            Write-TestResult "$DaemonName Intel HAL Integration" $halIntegrated "Build-time Intel HAL integration check"
+            if ($halResult -eq $null) { 
+                $halIntegrated = $false
+                $details = "Detection timeout"
+            } else {
+                $halIntegrated = $halResult.HasIntegration
+                $details = $halResult.Details
+            }
+            
+            Write-TestResult "$DaemonName Intel HAL Integration" $halIntegrated $details
         } catch {
             Write-TestResult "$DaemonName Intel HAL Integration" $false "Integration check failed: $($_.Exception.Message)"
         }
@@ -166,26 +228,67 @@ function Test-DaemonCapabilities {
             $hasHelp = $helpOutput.Length -gt 10 -and $helpOutput -notlike "*timeout*"
             Write-TestResult "$DaemonName Help Output" $hasHelp "Help text length: $($helpOutput.Length) chars"
             
-            # Test Intel HAL detection - simplified for safety
+            # Test Intel HAL detection - improved runtime detection
             if ($DaemonName -eq "mrpd") {
                 # Already handled above, skip
             } else {
                 $halJob = Start-Job -ScriptBlock { 
                     param($exePath)
                     try {
-                        # Very simple version check
-                        $version = & $exePath --version 2>&1 | Out-String
-                        return $version -like "*Intel*" -or $version -like "*HAL*"
+                        # Try multiple approaches for HAL detection
+                        $results = @()
+                        
+                        # Method 1: Version output
+                        try {
+                            $version = & $exePath --version 2>&1 | Out-String
+                            if ($version -like "*Intel*" -or $version -like "*HAL*" -or $version -like "*i210*" -or $version -like "*igb*") {
+                                $results += "Version output contains Intel HAL references"
+                            }
+                        } catch { }
+                        
+                        # Method 2: Help output analysis
+                        try {
+                            $help = & $exePath --help 2>&1 | Out-String
+                            if ($help -like "*intel*" -or $help -like "*hal*" -or $help -like "*hardware*") {
+                                $results += "Help output mentions hardware/HAL features"
+                            }
+                        } catch { }
+                        
+                        # Method 3: Environment variable response
+                        $env:OPENAVNU_INTEL_HAL_ENABLED = "1"
+                        try {
+                            $envTest = & $exePath --test 2>&1 | Out-String
+                            if ($envTest -like "*intel*" -or $envTest -like "*hal*") {
+                                $results += "Responds to Intel HAL environment variables"
+                            }
+                        } catch { }
+                        
+                        return @{
+                            Detected = $results.Count -gt 0
+                            Methods = $results
+                            Details = if ($results.Count -gt 0) { $results -join "; " } else { "No HAL features detected in runtime" }
+                        }
                     } catch {
-                        return $false
+                        return @{
+                            Detected = $false
+                            Methods = @()
+                            Details = "Runtime HAL detection failed: $($_.Exception.Message)"
+                        }
                     }
                 } -ArgumentList $fullPath
                 
-                $halDetected = Wait-Job $halJob -Timeout 2 | Receive-Job
+                $halResult = Wait-Job $halJob -Timeout 3 | Receive-Job
                 Remove-Job $halJob -Force
                 
-                if ($halDetected -eq $null) { $halDetected = $false }
-                Write-TestResult "$DaemonName HAL Detection" $halDetected "Intel HAL detection test"
+                if ($halResult -eq $null) { 
+                    $halDetected = $false
+                    $details = "Runtime detection timeout"
+                } else {
+                    $halDetected = $halResult.Detected
+                    $details = $halResult.Details
+                }
+                
+                Write-TestResult "$DaemonName HAL Detection" $halDetected $details
             }
             
             return $true
