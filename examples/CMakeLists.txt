@@ -243,3 +243,93 @@ if(OPENAVNU_BUILD_INTEL_HAL)
         DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples
     )
 endif()
+
+# ==========================================
+# ASIO Audio Listener for Windows
+# ==========================================
+
+if(WIN32 AND OPENAVNU_PCAP_FOUND)
+    message(STATUS "🎵 Building ASIO Audio Listener for Windows")
+    
+    # Simple ASIO Audio Listener (without external ASIO SDK dependency)
+    add_executable(simple_asio_listener
+        asio-listener/simple_asio_listener.c
+    )
+    
+    target_include_directories(simple_asio_listener PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/asio-listener
+        ${OPENAVNU_PCAP_INCLUDE_DIRS}
+    )
+    
+    target_link_libraries(simple_asio_listener 
+        PRIVATE 
+        ws2_32
+        winmm
+        OpenAvnu::PCAP
+    )
+    
+    # Add Windows-specific definitions
+    target_compile_definitions(simple_asio_listener PRIVATE
+        WIN32_LEAN_AND_MEAN
+        _CRT_SECURE_NO_WARNINGS
+    )
+    
+    # Set output directory
+    set_target_properties(simple_asio_listener PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples
+    )
+    
+    # Full ASIO Audio Listener (requires ASIO SDK)
+    if(DEFINED ENV{ASIO_SDK_DIR} AND EXISTS "$ENV{ASIO_SDK_DIR}")
+        message(STATUS "🎹 ASIO SDK found - building full ASIO listener")
+        
+        add_executable(asio_listener
+            asio-listener/asio_listener.c
+        )
+        
+        target_include_directories(asio_listener PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/asio-listener
+            $ENV{ASIO_SDK_DIR}/common
+            $ENV{ASIO_SDK_DIR}/host
+            $ENV{ASIO_SDK_DIR}/host/pc
+            ${OPENAVNU_PCAP_INCLUDE_DIRS}
+        )
+        
+        target_link_libraries(asio_listener 
+            PRIVATE 
+            ws2_32
+            winmm
+            OpenAvnu::PCAP
+        )
+        
+        target_compile_definitions(asio_listener PRIVATE
+            WIN32_LEAN_AND_MEAN
+            _CRT_SECURE_NO_WARNINGS
+        )
+        
+        set_target_properties(asio_listener PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples
+        )
+    else()
+        message(STATUS "ℹ️  ASIO SDK not found - only building simple listener")
+        message(STATUS "   Set ASIO_SDK_DIR environment variable for full ASIO support")
+    endif()
+    
+    # Installation
+    install(TARGETS simple_asio_listener
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/examples
+    )
+    
+    if(TARGET asio_listener)
+        install(TARGETS asio_listener
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/examples
+        )
+    endif()
+    
+    # Install configuration files
+    install(FILES 
+        asio-listener/asio_config.ini
+        asio-listener/asio_listener_config.ini
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/asio-listener
+    )
+endif()
