@@ -800,7 +800,7 @@
 				"--config",
 				"Debug",
 				"--target",
-				"intel_hal_validation_test"
+				"intel_hal_validation_test_consolidated"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
@@ -827,7 +827,7 @@
 				"--build",
 				".",
 				"--target",
-				"intel_hal_validation_test"
+				"intel_hal_validation_test_consolidated"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
@@ -1446,7 +1446,7 @@
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"Write-Host '[TESTING] Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\tests\\intel_hal\\Release\\intel_hal_validation_test.exe'; Write-Host ''; & '.\\testing\\conformance\\avnu_alliance\\gptp\\clock_quality\\Release\\clock_quality_tests_consolidated.exe'; Write-Host ''; Write-Host '[SUCCESS] All OpenAvnu tests completed!' -ForegroundColor Green"
+				"Write-Host '[TESTING] Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\testing\\hardware\\intel_hal\\Release\\intel_hal_validation_test_consolidated.exe'; Write-Host ''; & '.\\testing\\conformance\\avnu_alliance\\gptp\\clock_quality\\Release\\clock_quality_tests_consolidated.exe'; Write-Host ''; Write-Host '[SUCCESS] All OpenAvnu tests completed!' -ForegroundColor Green"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
@@ -1510,7 +1510,7 @@
 		{
 			"label": "Run Intel HAL Tests (Consolidated)",
 			"type": "shell",
-			"command": "./tests/intel_hal_validation_test_consolidated.exe",
+			"command": "./testing/hardware/intel_hal/Release/intel_hal_validation_test_consolidated.exe",
 			"args": [],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
