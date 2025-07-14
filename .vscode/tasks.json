@@ -1386,7 +1386,7 @@
 				"--config",
 				"Release",
 				"--target",
-				"clock_quality_tests"
+				"clock_quality_tests_consolidated"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
@@ -1407,7 +1407,7 @@
 		{
 			"label": "Run Clock Quality Tests (Windows)",
 			"type": "shell",
-			"command": ".\\test\\clock_quality\\Release\\clock_quality_tests.exe",
+			"command": ".\\testing\\conformance\\avnu_alliance\\gptp\\clock_quality\\Release\\clock_quality_tests_consolidated.exe",
 			"args": [],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
@@ -1425,7 +1425,7 @@
 		{
 			"label": "Build and Run Clock Quality Tests (Windows)",
 			"type": "shell",
-			"command": ".\\test\\clock_quality\\Release\\clock_quality_tests.exe",
+			"command": ".\\testing\\conformance\\avnu_alliance\\gptp\\clock_quality\\Release\\clock_quality_tests_consolidated.exe",
 			"args": [],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
@@ -1446,7 +1446,7 @@
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"Write-Host '[TESTING] Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\tests\\intel_hal\\Release\\intel_hal_validation_test.exe'; Write-Host ''; & '.\\test\\clock_quality\\Release\\clock_quality_tests.exe'; Write-Host ''; Write-Host '[SUCCESS] All OpenAvnu tests completed!' -ForegroundColor Green"
+				"Write-Host '[TESTING] Running comprehensive OpenAvnu test suite...' -ForegroundColor Green; Write-Host ''; & '.\\tests\\intel_hal\\Release\\intel_hal_validation_test.exe'; Write-Host ''; & '.\\testing\\conformance\\avnu_alliance\\gptp\\clock_quality\\Release\\clock_quality_tests_consolidated.exe'; Write-Host ''; Write-Host '[SUCCESS] All OpenAvnu tests completed!' -ForegroundColor Green"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/build"
