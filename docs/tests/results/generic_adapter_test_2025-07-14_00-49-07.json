@@ -1,0 +1,219 @@
+{
+    "SystemInfo":  {
+                       "Version":  "10.0.19045",
+                       "Caption":  "Microsoft Windows 10 Pro",
+                       "IsWindows10":  true,
+                       "SupportsAdvancedFeatures":  true,
+                       "Architecture":  "64-Bit",
+                       "IsWindows11":  false,
+                       "BuildNumber":  "19045"
+                   },
+    "TestsRun":  19,
+    "SuccessRate":  100,
+    "WindowsVersion":  "Microsoft Windows 10 Pro",
+    "Phases":  [
+                   {
+                       "TestsRun":  10,
+                       "TestsPassed":  10,
+                       "Name":  "Detection",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752446946712)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Montag, 14. Juli 2025 00:49:06"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752446946743)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Montag, 14. Juli 2025 00:49:06"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  314494,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  31,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  3.6399768518518517E-07,
+                                        "TotalHours":  8.7359444444444445E-06,
+                                        "TotalMilliseconds":  31.4494,
+                                        "TotalMinutes":  0.00052415666666666666,
+                                        "TotalSeconds":  0.031449399999999995
+                                    }
+                   },
+                   {
+                       "TestsRun":  3,
+                       "TestsPassed":  3,
+                       "Name":  "RegisterAccess",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752446946765)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Montag, 14. Juli 2025 00:49:06"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752446946837)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Montag, 14. Juli 2025 00:49:06"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  723831,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  72,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  8.3776736111111106E-07,
+                                        "TotalHours":  2.0106416666666664E-05,
+                                        "TotalMilliseconds":  72.3831,
+                                        "TotalMinutes":  0.001206385,
+                                        "TotalSeconds":  0.072383099999999992
+                                    }
+                   },
+                   {
+                       "TestsRun":  6,
+                       "TestsPassed":  6,
+                       "Name":  "Timestamping",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752446946844)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Montag, 14. Juli 2025 00:49:06"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752446946872)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Montag, 14. Juli 2025 00:49:06"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  274549,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  27,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  3.177650462962963E-07,
+                                        "TotalHours":  7.6263611111111108E-06,
+                                        "TotalMilliseconds":  27.454900000000002,
+                                        "TotalMinutes":  0.00045758166666666668,
+                                        "TotalSeconds":  0.027454899999999997
+                                    }
+                   }
+               ],
+    "Adapters":  [
+                     {
+                         "Status":  "Up",
+                         "InstanceId":  "PCI\\VEN_8086\u0026DEV_1533\u0026SUBSYS_0003103C\u0026REV_03\\4\u00263ED1CE\u00260\u00260008",
+                         "Name":  "Ethernet",
+                         "Description":  "Intel(R) Ethernet I210-T1 GbE NIC",
+                         "Family":  "I210",
+                         "LinkSpeed":  "1 Gbps",
+                         "MacAddress":  "68-05-CA-8B-0D-D0",
+                         "SupportsAdvancedFeatures":  false,
+                         "DeviceId":  "0x1533",
+                         "Capabilities":  [
+                                              "BASIC_1588",
+                                              "MMIO",
+                                              "DMA",
+                                              "NATIVE_OS",
+                                              "VLAN_FILTER",
+                                              "QOS_PRIORITY",
+                                              "AVB_SHAPING"
+                                          ],
+                         "TestProfile":  "BasicTSN_Enhanced",
+                         "SupportsHardwareTimestamp":  true,
+                         "DriverVersion":  "14.0.7.0"
+                     },
+                     {
+                         "Status":  "Up",
+                         "InstanceId":  "PCI\\VEN_8086\u0026DEV_15F3\u0026SUBSYS_00008086\u0026REV_03\\6\u00261B54528C\u00260\u0026001800E0",
+                         "Name":  "Ethernet 2",
+                         "Description":  "Intel(R) Ethernet Controller (3) I225-V",
+                         "Family":  "I225",
+                         "LinkSpeed":  "1 Gbps",
+                         "MacAddress":  "C4-62-37-05-B4-65",
+                         "SupportsAdvancedFeatures":  true,
+                         "DeviceId":  "0x15F3",
+                         "Capabilities":  [
+                                              "BASIC_1588",
+                                              "ENHANCED_TS",
+                                              "TSN_TAS",
+                                              "TSN_FP",
+                                              "PCIe_PTM",
+                                              "2_5G",
+                                              "MMIO",
+                                              "DMA",
+                                              "NATIVE_OS",
+                                              "VLAN_FILTER",
+                                              "QOS_PRIORITY",
+                                              "AVB_SHAPING",
+                                              "SR_IOV",
+                                              "ADVANCED_QOS",
+                                              "TSN_QBV",
+                                              "TSN_QBU",
+                                              "TSN_QAT"
+                                          ],
+                         "TestProfile":  "AdvancedTSN_Full",
+                         "SupportsHardwareTimestamp":  true,
+                         "DriverVersion":  "1.1.4.43"
+                     },
+                     {
+                         "Status":  "Disconnected",
+                         "InstanceId":  "PCI\\VEN_8086\u0026DEV_15F3\u0026SUBSYS_00008086\u0026REV_03\\6\u0026B26C8C5\u00260\u0026001000E0",
+                         "Name":  "Ethernet 5",
+                         "Description":  "Intel(R) Ethernet Controller (3) I225-V #2",
+                         "Family":  "I225",
+                         "LinkSpeed":  "2.5 Gbps",
+                         "MacAddress":  "C4-62-37-05-B4-64",
+                         "SupportsAdvancedFeatures":  true,
+                         "DeviceId":  "0x15F3",
+                         "Capabilities":  [
+                                              "BASIC_1588",
+                                              "ENHANCED_TS",
+                                              "TSN_TAS",
+                                              "TSN_FP",
+                                              "PCIe_PTM",
+                                              "2_5G",
+                                              "MMIO",
+                                              "DMA",
+                                              "NATIVE_OS",
+                                              "VLAN_FILTER",
+                                              "QOS_PRIORITY",
+                                              "AVB_SHAPING",
+                                              "SR_IOV",
+                                              "ADVANCED_QOS",
+                                              "TSN_QBV",
+                                              "TSN_QBU",
+                                              "TSN_QAT"
+                                          ],
+                         "TestProfile":  "AdvancedTSN_Full",
+                         "SupportsHardwareTimestamp":  true,
+                         "DriverVersion":  "1.1.4.43"
+                     }
+                 ],
+    "Errors":  [
+
+               ],
+    "TestsPassed":  19,
+    "StartTime":  {
+                      "value":  "\/Date(1752446942912)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Montag, 14. Juli 2025 00:49:02"
+                  },
+    "EndTime":  {
+                    "value":  "\/Date(1752446947022)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Montag, 14. Juli 2025 00:49:07"
+                },
+    "Duration":  {
+                     "Ticks":  41093788,
+                     "Days":  0,
+                     "Hours":  0,
+                     "Milliseconds":  109,
+                     "Minutes":  0,
+                     "Seconds":  4,
+                     "TotalDays":  4.7562254629629627E-05,
+                     "TotalHours":  0.001141494111111111,
+                     "TotalMilliseconds":  4109.3788,
+                     "TotalMinutes":  0.068489646666666668,
+                     "TotalSeconds":  4.1093788
+                 },
+    "TestsFailed":  0
+}
