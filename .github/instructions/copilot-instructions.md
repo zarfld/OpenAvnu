@@ -25,6 +25,46 @@ These rules define coding standards, collaboration protocols, and repository hyg
   * **Move completed** task descriptions to `docs/completed/`.
   * **Archive outdated** or irrelevant content to `docs/archive/`.
 
+## ✍️ How to Specify a Task (Copilot-Friendly)
+
+- **Be specific** – Describe clearly *what* the function/component should do.
+- **Add context** – Mention libraries, inputs, outputs, dependencies, edge cases.
+- **Use docstrings or comments** – Define the intent and constraints inside the function.
+- **Define "done"** – Include completion criteria:
+  - ✅ Input/output examples or test cases
+  - ✅ Error handling requirements
+  - ✅ Side effects (e.g., file written, DB updated)
+  - ✅ Preconditions and postconditions
+  - ✅ Optional: Checklist or TODO block
+
+### 📋 Task Template
+
+**What**  
+> _Short, clear description of what needs to be implemented or fixed._
+
+**Context**  
+> _Relevant inputs, outputs, modules, libraries, or dependencies involved._
+
+**Done When**
+- [ ] Correctly handles specified input/output cases
+- [ ] All edge cases and errors are accounted for
+- [ ] Code is tested (unit/integration as appropriate)
+- [ ] Side effects (e.g., logs written, state updated) are verified
+- [ ] Meets performance or timing constraints (if any)
+
+**Information Resources**  
+> _Where to find definitions, constants, limits, tolerances, and related documentation:_
+
+- 📄 `docs/specs/<file>.md`
+- 📘 [External standard or datasheet link]
+- 📂 Source code: `src/module/submodule/xyz.c`
+- 🧪 `tests/<area>` for example inputs and edge cases
+- 🔧 `config/defaults.yaml` for default settings
+- 🧠 `docs/insights/` for known quirks and lessons learned
+
+**Optional Notes**
+> _Any blockers, uncertainty, or open questions to resolve before implementation._
+
 ---
 
 ## 🌿 Branch and Commit Conventions

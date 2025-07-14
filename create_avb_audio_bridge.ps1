@@ -91,20 +91,29 @@ Write-Host "  Sample Rate: $SampleRate Hz" -ForegroundColor Gray
 Write-Host "  Buffer Size: $BufferSize samples" -ForegroundColor Gray
 Write-Host ""
 
-# Start the audio bridge process
-Write-Host "🎵 AVB Audio Bridge Active!" -ForegroundColor Green
-Write-Host ""
-Write-Host "Now you can:" -ForegroundColor White
-Write-Host "  ✅ Open Windows Sound Settings" -ForegroundColor Green
-Write-Host "  ✅ Select 'CABLE Input' as recording device" -ForegroundColor Green
-Write-Host "  ✅ Select 'CABLE Output' as playback device" -ForegroundColor Green
-Write-Host "  ✅ AVB audio streams will appear in Windows!" -ForegroundColor Green
-Write-Host ""
-
-# Simulate audio bridge (in real implementation, this would interface with AVTP Pipeline)
-Write-Host "🎧 Monitoring AVB Audio Streams..." -ForegroundColor Yellow
-Write-Host "   (Press Ctrl+C to stop)" -ForegroundColor Gray
-Write-Host ""
+# Check if the compiled bridge exists
+$bridgeExe = ".\build\examples\Release\avb_audio_bridge.exe"
+if (Test-Path $bridgeExe) {
+    Write-Host "🚀 Starting compiled AVB Audio Bridge..." -ForegroundColor Green
+    Write-Host "   Location: $bridgeExe" -ForegroundColor Gray
+    Write-Host ""
+    
+    # Start the real AVB Audio Bridge
+    & $bridgeExe
+    
+} else {
+    Write-Host "⚠️  Compiled AVB Audio Bridge not found!" -ForegroundColor Yellow
+    Write-Host "   Expected: $bridgeExe" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host "📝 Build Instructions:" -ForegroundColor Cyan
+    Write-Host "   1. Run CMake Configure: Task 'CMake Configure (Windows)'" -ForegroundColor White
+    Write-Host "   2. Run Build: Task 'Build All (Windows - CMake)'" -ForegroundColor White
+    Write-Host "   3. The AVB Audio Bridge will be available" -ForegroundColor White
+    Write-Host ""
+    
+    # Fallback to demonstration mode
+    Write-Host "🎵 Running Demonstration Mode..." -ForegroundColor Yellow
+    Write-Host ""
 
 $streamCount = 0
 try {

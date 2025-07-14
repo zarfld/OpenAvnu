@@ -1,0 +1,45 @@
+===========================================
+   OpenAvnu Raw Ethernet AVDECC Entity
+   IEEE 1722.1-2021 + MILAN Compliance
+   Duration: 5 seconds
+===========================================
+
+🔧 Initializing Raw Ethernet interface...
+✅ Found physical interface: \Device\NPF_{9177AF9E-70A0-48EA-9C94-C2228405972E}
+   Description: Intel(R) Wi-Fi 6E AX211 160MHz
+✅ Auto-selected interface: \Device\NPF_{9177AF9E-70A0-48EA-9C94-C2228405972E}
+   Description: Intel(R) Wi-Fi 6E AX211 160MHz
+   Selected interface: \Device\NPF_{9177AF9E-70A0-48EA-9C94-C2228405972E}
+   Description: Intel(R) Wi-Fi 6E AX211 160MHz
+✅ Raw Ethernet interface initialized successfully
+   Ready for IEEE 1722.1 AVDECC packet transmission/reception
+⚠️  CRITICAL: This is a SIMULATION for demonstration
+   Professional AVDECC tools require actual Raw Ethernet implementation
+   To work with Hive-AVDECC, implement WinPcap/Npcap integration
+
+💡 Required for Production:
+   1. Install Npcap SDK (recommended) or WinPcap Developer Pack
+   2. Link with wpcap.lib and packet.lib
+   3. Implement pcap_* functions for Raw Ethernet access
+   4. Run as Administrator for Raw socket privileges
+
+🚀 OpenAvnu Raw Ethernet AVDECC Entity Started
+   Entity ID: 0x001B21481B2F193D
+   MAC Address: C0:47:0E:16:7B:89
+   Protocol: IEEE 1722.1-2021 + MILAN
+   Transport: Raw Ethernet (EtherType 0x22F0)
+   Capabilities: AEM, Class A/B, gPTP, Authentication
+   Streams: 2 Talker + 2 Listener
+   Duration: 5 seconds
+
+❌ Failed to send Raw Ethernet frame: send error: PacketSendPacket failed: Der E/A-Vorgang war nicht erfolgreich, da das Netzwerkmedium getrennt ist oder der Drahtloszugriffspunkt sich nicht im Empfangsbereich befindet.  (2150891551)
+❌ Failed to send ADP advertisement
+📥 Raw Ethernet RX: 84 bytes (AVDECC packet)
+📥 Received AVDECC packet: 84 bytes
+❌ Failed to send Raw Ethernet frame: send error: PacketSendPacket failed: Der E/A-Vorgang war nicht erfolgreich, da das Netzwerkmedium getrennt ist oder der Drahtloszugriffspunkt sich nicht im Empfangsbereich befindet.  (2150891551)
+❌ Failed to send ADP advertisement
+📥 Raw Ethernet RX: 84 bytes (AVDECC packet)
+📥 Received AVDECC packet: 84 bytes
+👋 OpenAvnu AVDECC Entity stopped
+🔒 Raw Ethernet interface closed
+✅ Cleanup completed

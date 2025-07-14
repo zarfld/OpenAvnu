@@ -13,6 +13,7 @@
 
 // L-Acoustics AVDECC Library C Bindings
 #include "la/avdecc/avdecc.h"
+#include "la/avdecc/internals/typedefs.h"  // For capability constants
 
 // Global state
 static LA_AVDECC_PROTOCOL_INTERFACE_HANDLE g_protocol_interface = NULL;

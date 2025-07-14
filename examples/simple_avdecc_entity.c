@@ -28,6 +28,21 @@
 #define ENTITY_CAP_CLASS_A_SUPPORTED        (1 << 1) 
 #define ENTITY_CAP_CLASS_B_SUPPORTED        (1 << 2)
 #define ENTITY_CAP_GPTP_SUPPORTED           (1 << 3)
+
+// Global variables
+static HMODULE g_avdecc_dll = NULL;
+static void* g_entity = NULL;
+
+// Function pointers for L-Acoustics AVDECC library
+typedef void* (*create_entity_func_t)(void);
+typedef int (*start_advertising_func_t)(void*);
+typedef int (*stop_advertising_func_t)(void*);
+typedef int (*destroy_entity_func_t)(void*);
+
+static create_entity_func_t create_entity_func = NULL;
+static start_advertising_func_t start_advertising_func = NULL;
+static stop_advertising_func_t stop_advertising_func = NULL;
+static destroy_entity_func_t destroy_entity_func = NULL;
 #define ENTITY_CAP_AEM_AUTH_SUPPORTED       (1 << 4)
 
 // AVDECC ADP Packet Structure
