@@ -78,7 +78,7 @@ function Test-DaemonBuild {
     }
     $buildPath += ".exe"
     
-    $fullPath = Join-Path $PSScriptRoot "..\..$buildPath"
+    $fullPath = Join-Path $PSScriptRoot "..\..\" | Join-Path -ChildPath $buildPath
     
     if (Test-Path $fullPath) {
         $fileInfo = Get-ItemProperty $fullPath
@@ -111,7 +111,7 @@ function Test-DaemonCapabilities {
     }
     $buildPath += ".exe"
     
-    $fullPath = Join-Path $PSScriptRoot "..\..$buildPath"
+    $fullPath = Join-Path $PSScriptRoot "..\..\" | Join-Path -ChildPath $buildPath
     
     if (Test-Path $fullPath) {
         try {
