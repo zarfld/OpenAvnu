@@ -1,0 +1,69 @@
+{
+    "StartTime":  {
+                      "value":  "\/Date(1752482046167)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Montag, 14. Juli 2025 10:34:06"
+                  },
+    "Daemons":  [
+                    {
+                        "CapabilityPassed":  [
+                                                 true,
+                                                 false,
+                                                 true
+                                             ],
+                        "Name":  "maap",
+                        "BuildPassed":  [
+                                            true,
+                                            true
+                                        ],
+                        "ConfigPassed":  [
+                                             true,
+                                             true,
+                                             true
+                                         ]
+                    },
+                    {
+                        "CapabilityPassed":  [
+                                                 true,
+                                                 true,
+                                                 true
+                                             ],
+                        "Name":  "mrpd",
+                        "BuildPassed":  [
+                                            true,
+                                            true
+                                        ],
+                        "ConfigPassed":  [
+                                             true,
+                                             true,
+                                             true
+                                         ]
+                    }
+                ],
+    "Errors":  [
+                   "maap HAL Detection: No HAL features detected in runtime"
+               ],
+    "TestsRun":  12,
+    "IntelHalVersion":  "",
+    "Duration":  {
+                     "Ticks":  27803062,
+                     "Days":  0,
+                     "Hours":  0,
+                     "Milliseconds":  780,
+                     "Minutes":  0,
+                     "Seconds":  2,
+                     "TotalDays":  3.2179469907407404E-05,
+                     "TotalHours":  0.00077230727777777774,
+                     "TotalMilliseconds":  2780.3062,
+                     "TotalMinutes":  0.04633843666666667,
+                     "TotalSeconds":  2.7803062
+                 },
+    "EndTime":  {
+                    "value":  "\/Date(1752482048947)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Montag, 14. Juli 2025 10:34:08"
+                },
+    "WindowsVersion":  "Microsoft Windows 10 Pro",
+    "TestsPassed":  11,
+    "TestsFailed":  1
+}

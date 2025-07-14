@@ -1,0 +1,15 @@
+﻿OpenAvnu DAW02 System Information
+Generated: 2025-07-14 10:35:18
+
+=== SYSTEM OVERVIEW ===
+Computer Name: DAW02
+User: dzarf
+OS: Microsoft Windows 10 Pro
+Architecture: AMD64
+Processors: Intel(R) Xeon(R) CPU           X5680  @ 3.33GHz Intel(R) Xeon(R) CPU           X5680  @ 3.33GHz
+Total Memory: 19.99 GB
+
+=== DEVELOPMENT TOOLS ===
+CMake: cmake version 4.1.0-rc1
+Visual Studio: Microsoft Visual Studio Setup WMI Provider
+Git: git version 2.47.0.windows.2
