@@ -15,6 +15,13 @@
 	// - Run L-Acoustics AVDECC Integration Example: Executes the integration example application
 	// - Open L-Acoustics AVDECC Documentation: Opens relevant documentation files
 	// - Install WinPCAP Developer Pack: Shows installation instructions for Windows dependencies
+	//
+	// ASIO Audio Listener Tasks:
+	// - Setup ASIO Development Environment: Automated setup of Visual Studio, ASIO SDK, and Npcap SDK
+	// - Build ASIO Audio Listener (Full): Builds with full ASIO and PCAP SDK support
+	// - Build ASIO Audio Listener (Stub): Builds with stub implementations for development
+	// - Test ASIO Audio Listener: Runs the ASIO listener with stub drivers
+	// - Open ASIO Documentation: Opens ASIO listener setup and usage documentation
 	"tasks": [
 		{
 			"label": "Build All (Windows - CMake)",
@@ -1952,65 +1959,160 @@
 				"focus": false,
 				"panel": "shared"
 			}
+		},
+		{
+			"label": "Setup ASIO Development Environment",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"examples/asio-listener/setup.bat"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build ASIO Audio Listener (Full)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"cd examples/asio-listener; ./build.bat"
+			],
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build ASIO Audio Listener (Stub)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"cd examples/asio-listener; ./build_simple.bat"
+			],
+			"group": "build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Test ASIO Audio Listener",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"test_asio_listener.ps1"
+			],
+			"group": "test",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open ASIO Documentation",
+			"type": "shell",
+			"command": "code",
+			"args": [
+				"examples/asio-listener/SETUP_GUIDE.md"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "never",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run DAW02 Windows Test Suite",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy", "Bypass",
+				"-File",
+				"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/run_daw02_tests.ps1"
+			],
+			"group": "test",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "DAW02 Build Verification Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy", "Bypass",
+				"-File",
+				"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/test_01_build_verification.ps1"
+			],
+			"group": "test",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "DAW02 Intel HAL Detection Only",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy", "Bypass",
+				"-File",
+				"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/test_02_intel_hal_detection.ps1"
+			],
+			"group": "test",
+			"problemMatcher": [],
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
 		}
 	]
-	,
-	{
-	  "label": "Run DAW02 Windows Test Suite",
-	  "type": "shell",
-	  "command": "powershell",
-	  "args": [
-		"-ExecutionPolicy", "Bypass",
-		"-File",
-		"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/run_daw02_tests.ps1"
-	  ],
-	  "group": "test",
-	  "problemMatcher": [],
-	  "isBackground": false,
-	  "presentation": {
-		"echo": true,
-		"reveal": "always",
-		"focus": false,
-		"panel": "shared"
-	  }
-	},
-	{
-	  "label": "DAW02 Build Verification Only",
-	  "type": "shell",
-	  "command": "powershell",
-	  "args": [
-		"-ExecutionPolicy", "Bypass",
-		"-File",
-		"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/test_01_build_verification.ps1"
-	  ],
-	  "group": "test",
-	  "problemMatcher": [],
-	  "isBackground": false,
-	  "presentation": {
-		"echo": true,
-		"reveal": "always",
-		"focus": false,
-		"panel": "shared"
-	  }
-	},
-	{
-	  "label": "DAW02 Intel HAL Detection Only",
-	  "type": "shell",
-	  "command": "powershell",
-	  "args": [
-		"-ExecutionPolicy", "Bypass",
-		"-File",
-		"${workspaceFolder}/testing/integration/daemons_phase2_windows_build_verification/test_02_intel_hal_detection.ps1"
-	  ],
-	  "group": "test",
-	  "problemMatcher": [],
-	  "isBackground": false,
-	  "presentation": {
-		"echo": true,
-		"reveal": "always",
-		"focus": false,
-		"panel": "shared"
-	  }
-	}
-  ]
 }
