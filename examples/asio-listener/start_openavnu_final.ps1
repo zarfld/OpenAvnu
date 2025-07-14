@@ -199,15 +199,6 @@ try {
     Write-Host "ERROR: Failed to start MAAP: $($_.Exception.Message)" -ForegroundColor Red
     exit 1
 }
-        Write-Host "ERROR: MAAP daemon failed to start!" -ForegroundColor Red
-        exit 1
-    } else {
-        Write-Host "SUCCESS: MAAP daemon started (PID: $($maapProcess.Id))" -ForegroundColor Green
-    }
-} catch {
-    Write-Host "ERROR: Failed to start MAAP: $($_.Exception.Message)" -ForegroundColor Red
-    exit 1
-}
 
 # Step 5: Verify and show final status
 Write-Host ""
