@@ -1,8 +1,11 @@
-// IEEE 1722.1 AVDECC Entity using L-Acoustics AVDECC Library
-// This creates a real AVDECC entity discoverable by Hive-AVDECC
+// Real IEEE 1722.1 AVDECC Entity with Actual Network Packets
+// This sends proper AVDECC packets discoverable by Hive-AVDECC
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <iphlpapi.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -11,28 +14,61 @@
 #include <stdlib.h>
 #include <signal.h>
 
-// L-Acoustics AVDECC C-style interface declarations
-// These are simple declarations to interface with the AVDECC library
-typedef void* LA_AVDECC_ENTITY_HANDLE;
-typedef void* LA_AVDECC_CONTROLLER_HANDLE;
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "iphlpapi.lib")
 
-// Function pointer types for dynamic loading
-typedef LA_AVDECC_ENTITY_HANDLE (*create_entity_func_t)(uint64_t entity_id, const char* entity_name);
-typedef int (*start_advertising_func_t)(LA_AVDECC_ENTITY_HANDLE entity);
-typedef void (*stop_advertising_func_t)(LA_AVDECC_ENTITY_HANDLE entity);
-typedef void (*destroy_entity_func_t)(LA_AVDECC_ENTITY_HANDLE entity);
+// AVDECC Protocol Constants and Structures
+#define AVDECC_MULTICAST_MAC    {0x91, 0xE0, 0xF0, 0x01, 0x00, 0x00}
+#define AVDECC_ETHERTYPE        0x22F0
+#define AVDECC_ADP_MSGTYPE      0x00    // AVDECC Discovery Protocol
+#define AVDECC_AECP_MSGTYPE     0x01    // AVDECC Enumeration and Control Protocol
+
+// Entity capabilities
+#define ENTITY_CAP_AEM_SUPPORTED            (1 << 0)
+#define ENTITY_CAP_CLASS_A_SUPPORTED        (1 << 1) 
+#define ENTITY_CAP_CLASS_B_SUPPORTED        (1 << 2)
+#define ENTITY_CAP_GPTP_SUPPORTED           (1 << 3)
+#define ENTITY_CAP_AEM_AUTH_SUPPORTED       (1 << 4)
+
+// AVDECC ADP Packet Structure
+#pragma pack(push, 1)
+typedef struct {
+    // Ethernet Header
+    uint8_t  dest_mac[6];
+    uint8_t  src_mac[6];
+    uint16_t ethertype;
+    
+    // AVDECC Common Header
+    uint8_t  message_type;      // 0x00 for ADP
+    uint8_t  status;            // 0x00 for success
+    uint16_t control_data_length;
+    uint64_t entity_id;
+    
+    // ADP Specific Data
+    uint64_t entity_model_id;
+    uint32_t entity_capabilities;
+    uint16_t talker_stream_sources;
+    uint16_t talker_capabilities;
+    uint16_t listener_stream_sinks;
+    uint16_t listener_capabilities;
+    uint32_t controller_capabilities;
+    uint32_t available_index;
+    uint64_t gptp_grandmaster_id;
+    uint8_t  gptp_domain_number;
+    uint8_t  reserved1[3];
+    uint16_t identify_control_index;
+    uint16_t interface_index;
+    uint64_t association_id;
+    uint32_t reserved2;
+} avdecc_adp_packet_t;
+#pragma pack(pop)
 
 // Global variables
-static HMODULE g_avdecc_dll = NULL;
-static LA_AVDECC_ENTITY_HANDLE g_entity = NULL;
+static SOCKET g_socket = INVALID_SOCKET;
 static bool g_running = true;
 static uint64_t g_entity_id = 0;
-
-// Function pointers
-static create_entity_func_t create_entity_func = NULL;
-static start_advertising_func_t start_advertising_func = NULL;
-static stop_advertising_func_t stop_advertising_func = NULL;
-static destroy_entity_func_t destroy_entity_func = NULL;
+static uint8_t g_local_mac[6] = {0};
+static char g_interface_name[256] = {0};
 
 // Generate OpenAvnu entity ID
 uint64_t generate_openavnu_entity_id() {

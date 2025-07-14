@@ -339,6 +339,68 @@ endif()
 # ==========================================
 
 if(WIN32)
+    # Enhanced AVDECC Entity with MILAN protocol support
+    add_executable(enhanced_avdecc_entity
+        ${CMAKE_CURRENT_SOURCE_DIR}/enhanced_avdecc_entity.c
+    )
+    
+    target_link_libraries(enhanced_avdecc_entity
+        ws2_32
+        iphlpapi
+    )
+    
+    # Set output directory
+    set_target_properties(enhanced_avdecc_entity PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/examples/Debug
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/examples/Release
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_BINARY_DIR}/examples/RelWithDebInfo
+    )
+
+    # Real AVDECC Entity with actual UDP multicast packets
+    add_executable(real_avdecc_entity
+        ${CMAKE_CURRENT_SOURCE_DIR}/real_avdecc_entity.c
+    )
+    
+    target_link_libraries(real_avdecc_entity
+        ws2_32
+        iphlpapi
+    )
+    
+    # Set output directory
+    set_target_properties(real_avdecc_entity PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/examples/Debug
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/examples/Release
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_BINARY_DIR}/examples/RelWithDebInfo
+    )
+
+    # Professional IEEE 1722.1 AVDECC Entity with full L-Acoustics library integration
+    add_executable(professional_avdecc_entity
+        ${CMAKE_CURRENT_SOURCE_DIR}/professional_avdecc_entity.c
+    )
+    
+    target_link_libraries(professional_avdecc_entity
+        ws2_32
+        iphlpapi
+    )
+    
+    # Link with L-Acoustics AVDECC library if available
+    if(TARGET la_avdecc_cxx)
+        target_link_libraries(professional_avdecc_entity la_avdecc_cxx)
+        target_include_directories(professional_avdecc_entity PRIVATE
+            ${CMAKE_SOURCE_DIR}/lib/la_avdecc/include
+        )
+        message(STATUS "🎵 Professional AVDECC entity linked with L-Acoustics library")
+    else()
+        message(STATUS "❌ Professional AVDECC entity requires L-Acoustics library")
+    endif()
+    
+    # Set output directory
+    set_target_properties(professional_avdecc_entity PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/examples/Debug
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/examples/Release
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_BINARY_DIR}/examples/RelWithDebInfo
+    )
+
     # Simple AVDECC Entity for Hive-AVDECC discovery with L-Acoustics library
     add_executable(simple_avdecc_entity
         ${CMAKE_CURRENT_SOURCE_DIR}/simple_avdecc_entity.c
