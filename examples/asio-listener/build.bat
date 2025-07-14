@@ -48,26 +48,39 @@ REM Check for required dependencies
 echo.
 echo Checking dependencies...
 
-REM Check ASIO SDK
-set "ASIO_SDK_DIR="
-if exist "C:\ASIOSDK2.3" set "ASIO_SDK_DIR=C:\ASIOSDK2.3"
-if exist "C:\ASIO_SDK" set "ASIO_SDK_DIR=C:\ASIO_SDK"
-if exist "%USERPROFILE%\Documents\ASIOSDK2.3" set "ASIO_SDK_DIR=%USERPROFILE%\Documents\ASIOSDK2.3"
+REM Check ASIO SDK - prefer environment variable
+set "ASIO_SDK_DIR=%ASIOSDK_DIR%"
+if not defined ASIO_SDK_DIR (
+    REM Fallback to common locations
+    if exist "C:\ASIOSDK2.3" set "ASIO_SDK_DIR=C:\ASIOSDK2.3"
+    if exist "C:\ASIO_SDK" set "ASIO_SDK_DIR=C:\ASIO_SDK"
+    if exist "%USERPROFILE%\Documents\ASIOSDK2.3" set "ASIO_SDK_DIR=%USERPROFILE%\Documents\ASIOSDK2.3"
+)
 
 if not defined ASIO_SDK_DIR (
     echo WARNING: ASIO SDK not found!
     echo.
-    echo Download from: https://www.steinberg.net/developers/
-    echo Expected locations:
+    echo Please set ASIOSDK_DIR environment variable or place SDK in:
     echo   - C:\ASIOSDK2.3
     echo   - C:\ASIO_SDK
     echo   - %USERPROFILE%\Documents\ASIOSDK2.3
+    echo.
+    echo Download from: https://www.steinberg.net/developers/
     echo.
     echo Continuing with stub implementation...
     set "ASIO_SDK_DIR=."
     set "ASIO_STUB=1"
 ) else (
-    echo Found ASIO SDK at: %ASIO_SDK_DIR%
+    if not exist "%ASIO_SDK_DIR%\common\asio.h" (
+        echo ERROR: Invalid ASIO SDK directory: %ASIO_SDK_DIR%
+        echo Missing asio.h in common folder
+        echo.
+        echo Continuing with stub implementation...
+        set "ASIO_SDK_DIR=."
+        set "ASIO_STUB=1"
+    ) else (
+        echo Found ASIO SDK at: %ASIO_SDK_DIR%
+    )
 )
 
 REM Check PCAP SDK
@@ -100,8 +113,14 @@ echo Building ASIO Audio Listener...
 echo ====================================================
 
 REM Set compiler flags
-set "CFLAGS=/D_CRT_SECURE_NO_WARNINGS /DWIN32_LEAN_AND_MEAN /I. /I"%ASIO_SDK_DIR%" /I"%PCAP_DIR%\Include""
-set "LDFLAGS=ws2_32.lib winmm.lib "%PCAP_DIR%\Lib\x64\wpcap.lib" "%PCAP_DIR%\Lib\x64\Packet.lib""
+set "CFLAGS=/D_CRT_SECURE_NO_WARNINGS /DWIN32_LEAN_AND_MEAN /I. /I"%ASIO_SDK_DIR%\common" /I"%ASIO_SDK_DIR%\host" /I"%ASIO_SDK_DIR%\host\pc" /I"%PCAP_DIR%\Include""
+set "LDFLAGS=ws2_32.lib winmm.lib ole32.lib oleaut32.lib "%PCAP_DIR%\Lib\x64\wpcap.lib" "%PCAP_DIR%\Lib\x64\Packet.lib""
+
+REM ASIO SDK source files
+set "ASIO_SOURCES="
+if not defined ASIO_STUB (
+    set "ASIO_SOURCES="%ASIO_SDK_DIR%\common\asio.cpp" "%ASIO_SDK_DIR%\host\asiodrivers.cpp" "%ASIO_SDK_DIR%\host\pc\asiolist.cpp""
+)
 
 if defined ASIO_STUB (
     set "CFLAGS=%CFLAGS% /DASIO_STUB"
@@ -127,9 +146,30 @@ if errorlevel 1 (
     exit /b 1
 )
 
+REM Compile ASIO SDK sources if not using stub
+if not defined ASIO_STUB (
+    echo Compiling ASIO SDK sources...
+    if exist "%ASIO_SDK_DIR%\common\asio.cpp" (
+        cl %CFLAGS% /c "%ASIO_SDK_DIR%\common\asio.cpp"
+        if errorlevel 1 goto compile_error
+    )
+    if exist "%ASIO_SDK_DIR%\host\asiodrivers.cpp" (
+        cl %CFLAGS% /c "%ASIO_SDK_DIR%\host\asiodrivers.cpp"
+        if errorlevel 1 goto compile_error
+    )
+    if exist "%ASIO_SDK_DIR%\host\pc\asiolist.cpp" (
+        cl %CFLAGS% /c "%ASIO_SDK_DIR%\host\pc\asiolist.cpp"
+        if errorlevel 1 goto compile_error
+    )
+)
+
 REM Link
 echo Linking executable...
-link asio_listener.obj %LDFLAGS% /out:asio_listener.exe
+if defined ASIO_STUB (
+    link asio_listener.obj %LDFLAGS% /out:asio_listener.exe
+) else (
+    link asio_listener.obj asio.obj asiodrivers.obj asiolist.obj %LDFLAGS% /out:asio_listener.exe
+)
 if errorlevel 1 (
     echo.
     echo ERROR: Linking failed!
@@ -142,6 +182,35 @@ if errorlevel 1 (
     pause
     exit /b 1
 )
+
+goto build_success
+
+:compile_error
+echo.
+echo ERROR: ASIO SDK compilation failed!
+echo.
+echo This might be due to:
+echo   1. Incompatible ASIO SDK version
+echo   2. Missing C++ compiler support
+echo   3. Corrupted ASIO SDK files
+echo.
+echo Retrying with stub implementation...
+set "ASIO_STUB=1"
+set "CFLAGS=%CFLAGS% /DASIO_STUB"
+cl %CFLAGS% /c asio_listener.c
+if errorlevel 1 (
+    echo ERROR: Even stub compilation failed!
+    pause
+    exit /b 1
+)
+link asio_listener.obj %LDFLAGS% /out:asio_listener.exe
+if errorlevel 1 (
+    echo ERROR: Stub linking failed!
+    pause
+    exit /b 1
+)
+
+:build_success
 
 echo.
 echo ====================================================

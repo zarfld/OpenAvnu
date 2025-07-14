@@ -5,9 +5,17 @@ CC = cl
 CFLAGS = /D_CRT_SECURE_NO_WARNINGS /DWIN32_LEAN_AND_MEAN /I. /I$(ASIO_SDK_DIR) /I$(PCAP_DIR)\Include
 LDFLAGS = /link ws2_32.lib winmm.lib $(PCAP_DIR)\Lib\x64\wpcap.lib $(PCAP_DIR)\Lib\x64\Packet.lib
 
-# Directories (set these to match your environment)
-ASIO_SDK_DIR = C:\ASIOSDK2.3
-PCAP_DIR = C:\WpdPack
+# Directories - prefer environment variables
+ASIOSDK_DIR ?= $(ASIO_SDK_DIR)
+ASIO_SDK_DIR ?= $(ASIOSDK_DIR)
+ifeq ($(ASIO_SDK_DIR),)
+	ASIO_SDK_DIR = C:\ASIOSDK2.3
+endif
+
+PCAP_DIR ?= C:\npcap-sdk
+ifeq ($(wildcard $(PCAP_DIR)),)
+	PCAP_DIR = C:\WpdPack
+endif
 
 TARGET = asio_listener.exe
 SOURCES = asio_listener.c

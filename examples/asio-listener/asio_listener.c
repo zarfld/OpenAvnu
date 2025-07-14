@@ -42,6 +42,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #else
 #include "asio.h"
 #include "asiodrivers.h"
+#include "asiolist.h"
+#include "ginclude.h"
 #endif
 
 // Network includes
@@ -68,6 +70,25 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define MAX_CHANNELS 8
 #define DEFAULT_SAMPLE_RATE 48000
 #define DEFAULT_BUFFER_SIZE 256
+#define AUDIO_QUEUE_SIZE 8192  // Ring buffer size for audio data
+#define SAMPLES_PER_PACKET 6   // Typical for 48kHz AVB streams
+
+// Audio format definitions for AVB
+typedef enum {
+    AVB_AUDIO_FORMAT_PCM_16,
+    AVB_AUDIO_FORMAT_PCM_24,
+    AVB_AUDIO_FORMAT_PCM_32,
+    AVB_AUDIO_FORMAT_FLOAT32
+} avb_audio_format_t;
+
+// Audio ring buffer for queuing received AVB data
+typedef struct {
+    float* buffer;
+    volatile long write_pos;
+    volatile long read_pos;
+    long size;
+    volatile bool overflow;
+} audio_ring_buffer_t;
 
 // ASIO callback and driver management
 typedef struct {
@@ -93,6 +114,10 @@ static pcap_t *g_pcap_handle = NULL;
 static char g_interface_name[256] = {0};
 static char g_stream_id[17] = "0123456789ABCDEF"; // Example stream ID
 
+// Audio ring buffers for each channel
+static audio_ring_buffer_t g_audio_buffers[MAX_CHANNELS];
+static volatile bool g_buffers_initialized = false;
+
 // Function prototypes
 static bool init_asio_driver(const char* driver_name);
 static void cleanup_asio_driver(void);
@@ -109,6 +134,14 @@ static long asio_messages(long selector, long value, void* message, double* opt)
 
 // Buffer management
 static void process_audio_buffers(long bufferIndex);
+
+// Audio buffer management functions
+static bool init_audio_buffers(void);
+static void cleanup_audio_buffers(void);
+static void write_audio_sample(int channel, float sample);
+static float read_audio_sample(int channel);
+static void process_avb_audio_data(const u_char* audio_data, int data_len, int num_channels);
+static void convert_avb_to_float(const u_char* input, float* output, int samples, avb_audio_format_t format);
 
 int main(int argc, char* argv[])
 {
@@ -152,6 +185,15 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    // Initialize audio buffers
+    if (!init_audio_buffers()) {
+        printf("ERROR: Failed to initialize audio buffers\\n");
+        cleanup_asio_driver();
+        cleanup_network_capture();
+        WSACleanup();
+        return 1;
+    }
+
     printf("\\nASIO Audio Listener initialized successfully\\n");
     printf("Listening for AVB stream ID: %s\\n", g_stream_id);
     printf("ASIO Driver: %s\\n", g_asio_ctx.driverInfo.name);
@@ -162,8 +204,13 @@ int main(int argc, char* argv[])
     printf("\\nPress Ctrl+C to stop...\\n\\n");
 
     // Start ASIO
+#ifdef ASIO_STUB
+    printf("Starting ASIO stub mode\\n");
+    g_asio_ctx.active = true;
+#else
     if (ASIOStart() == ASE_OK) {
         g_asio_ctx.active = true;
+#endif
         
         // Main packet capture loop
         struct pcap_pkthdr* header;
@@ -188,13 +235,19 @@ int main(int argc, char* argv[])
             }
         }
 
+#ifdef ASIO_STUB
+        // In stub mode, simulate some processing
+        Sleep(10);
+#else
         ASIOStop();
         g_asio_ctx.active = false;
     } else {
         printf("ERROR: Failed to start ASIO\\n");
     }
+#endif
 
     // Cleanup
+    cleanup_audio_buffers();
     cleanup_asio_driver();
     cleanup_network_capture();
     WSACleanup();
@@ -205,8 +258,29 @@ int main(int argc, char* argv[])
 
 static bool init_asio_driver(const char* driver_name)
 {
+#ifdef ASIO_STUB
+    // Using stub implementation
+    printf("Using ASIO stub implementation\\n");
+    
+    // Initialize with dummy values for stub
+    strcpy(g_asio_ctx.driverInfo.name, "ASIO Stub Driver");
+    g_asio_ctx.driverInfo.driverVersion = 1;
+    g_asio_ctx.inputChannels = 0;
+    g_asio_ctx.outputChannels = 2;
+    g_asio_ctx.bufferSize = DEFAULT_BUFFER_SIZE;
+    g_asio_ctx.sampleRate = DEFAULT_SAMPLE_RATE;
+    
+    return true;
+#else
+    // Using real ASIO SDK
+    
     // Load ASIO driver
-    if (!loadAsioDriver((char*)driver_name)) {
+    if (driver_name && !loadAsioDriver((char*)driver_name)) {
+        printf("Failed to load specified ASIO driver: %s\\n", driver_name);
+        driver_name = NULL; // Fall back to automatic selection
+    }
+    
+    if (!driver_name) {
         // Try to find any available ASIO driver
         char** driverNames = NULL;
         long numDrivers = 0;
@@ -251,8 +325,8 @@ static bool init_asio_driver(const char* driver_name)
 
     // Get sample rate
     if (ASIOGetSampleRate(&g_asio_ctx.sampleRate) != ASE_OK) {
-        printf("ERROR: ASIOGetSampleRate failed\\n");
-        return false;
+        printf("WARNING: ASIOGetSampleRate failed, using default\\n");
+        g_asio_ctx.sampleRate = DEFAULT_SAMPLE_RATE;
     }
 
     // Set up callbacks
@@ -285,10 +359,16 @@ static bool init_asio_driver(const char* driver_name)
     }
 
     return true;
+#endif
 }
 
 static void cleanup_asio_driver(void)
 {
+#ifdef ASIO_STUB
+    // Stub implementation - nothing to cleanup
+    printf("ASIO stub cleanup\\n");
+#else
+    // Real ASIO SDK cleanup
     if (g_asio_ctx.active) {
         ASIOStop();
         g_asio_ctx.active = false;
@@ -297,6 +377,7 @@ static void cleanup_asio_driver(void)
     ASIODisposeBuffers();
     ASIOExit();
     removeCurrentDriver();
+#endif
 }
 
 static bool init_network_capture(const char* interface_name)
@@ -382,15 +463,14 @@ static void process_avb_packet(const u_char* packet, int packet_len)
     const u_char* audio_data = packet + HEADER_SIZE;
     int audio_data_len = packet_len - HEADER_SIZE;
     
-    if (audio_data_len > 0) {
-        // TODO: Queue audio data for ASIO playback
-        // This would typically involve:
-        // 1. Converting network byte order to host byte order
-        // 2. Handling different audio formats
-        // 3. Managing timing and synchronization
-        // 4. Buffering for ASIO callback
+    if (audio_data_len > 0 && g_buffers_initialized) {
+        // Parse 1722 audio format - assume 2 channels for now
+        int num_channels = 2; // This should be parsed from the packet header
         
-        printf("Received AVB audio packet: %d bytes of audio data\\n", audio_data_len);
+        // Process the audio data and queue it for ASIO playback
+        process_avb_audio_data(audio_data, audio_data_len, num_channels);
+        
+        printf("Received AVB audio packet: %d bytes, %d channels\\n", audio_data_len, num_channels);
     }
 }
 
@@ -403,23 +483,32 @@ static void signal_handler(int sig)
 // ASIO Callback implementations
 static void buffer_switch(long doubleBufferIndex, ASIOBool directProcess)
 {
+#ifndef ASIO_STUB
     process_audio_buffers(doubleBufferIndex);
+#endif
 }
 
 static ASIOTime* buffer_switch_time_info(ASIOTime* params, long doubleBufferIndex, ASIOBool directProcess)
 {
+#ifndef ASIO_STUB
     process_audio_buffers(doubleBufferIndex);
+#endif
     return params;
 }
 
 static void sample_rate_changed(ASIOSampleRate sRate)
 {
     printf("ASIO sample rate changed to: %.0f Hz\\n", sRate);
+#ifndef ASIO_STUB
     g_asio_ctx.sampleRate = sRate;
+#endif
 }
 
 static long asio_messages(long selector, long value, void* message, double* opt)
 {
+#ifdef ASIO_STUB
+    return 0;
+#else
     long ret = 0;
     
     switch(selector) {
@@ -454,17 +543,20 @@ static long asio_messages(long selector, long value, void* message, double* opt)
             break;
     }
     return ret;
+#endif
 }
 
 static void process_audio_buffers(long bufferIndex)
 {
+#ifdef ASIO_STUB
+    // Stub mode - just simulate processing
+    return;
+#else
+    if (!g_buffers_initialized) {
+        return;
+    }
+
     // Process audio buffers for playback
-    // In a real implementation, this would:
-    // 1. Take audio data from the received AVB stream queue
-    // 2. Apply any necessary format conversions
-    // 3. Handle synchronization and timing
-    // 4. Write to ASIO output buffers
-    
     long numChannels = min(g_asio_ctx.outputChannels, MAX_CHANNELS);
     
     for (long i = 0; i < numChannels; i++) {
@@ -472,21 +564,175 @@ static void process_audio_buffers(long bufferIndex)
             // 16-bit integer samples
             short* buffer = (short*)g_asio_ctx.bufferInfos[i].buffers[bufferIndex];
             for (long j = 0; j < g_asio_ctx.bufferSize; j++) {
-                buffer[j] = 0; // Silence for now
+                float sample = read_audio_sample(i);
+                // Convert float to 16-bit int
+                buffer[j] = (short)(sample * 32767.0f);
             }
         } else if (g_asio_ctx.channelInfos[i].type == ASIOSTInt24LSB) {
             // 24-bit integer samples
             char* buffer = (char*)g_asio_ctx.bufferInfos[i].buffers[bufferIndex];
-            memset(buffer, 0, g_asio_ctx.bufferSize * 3);
+            for (long j = 0; j < g_asio_ctx.bufferSize; j++) {
+                float sample = read_audio_sample(i);
+                // Convert float to 24-bit int
+                int int_sample = (int)(sample * 8388607.0f);
+                buffer[j * 3] = (char)(int_sample & 0xFF);
+                buffer[j * 3 + 1] = (char)((int_sample >> 8) & 0xFF);
+                buffer[j * 3 + 2] = (char)((int_sample >> 16) & 0xFF);
+            }
         } else if (g_asio_ctx.channelInfos[i].type == ASIOSTFloat32LSB) {
             // 32-bit float samples
             float* buffer = (float*)g_asio_ctx.bufferInfos[i].buffers[bufferIndex];
             for (long j = 0; j < g_asio_ctx.bufferSize; j++) {
-                buffer[j] = 0.0f; // Silence for now
+                buffer[j] = read_audio_sample(i);
             }
+        } else {
+            // Unsupported format, output silence
+            memset(g_asio_ctx.bufferInfos[i].buffers[bufferIndex], 0, 
+                   g_asio_ctx.bufferSize * (g_asio_ctx.channelInfos[i].type == ASIOSTInt24LSB ? 3 : 
+                                            g_asio_ctx.channelInfos[i].type == ASIOSTInt16LSB ? 2 : 4));
         }
     }
     
     // Signal that output is ready
     ASIOOutputReady();
+#endif
+}
+
+// Audio buffer management functions implementation
+static bool init_audio_buffers(void)
+{
+    for (int i = 0; i < MAX_CHANNELS; i++) {
+        g_audio_buffers[i].size = AUDIO_QUEUE_SIZE;
+        g_audio_buffers[i].buffer = (float*)malloc(AUDIO_QUEUE_SIZE * sizeof(float));
+        if (!g_audio_buffers[i].buffer) {
+            // Cleanup already allocated buffers
+            for (int j = 0; j < i; j++) {
+                free(g_audio_buffers[j].buffer);
+            }
+            return false;
+        }
+        
+        // Initialize buffer state
+        memset(g_audio_buffers[i].buffer, 0, AUDIO_QUEUE_SIZE * sizeof(float));
+        g_audio_buffers[i].write_pos = 0;
+        g_audio_buffers[i].read_pos = 0;
+        g_audio_buffers[i].overflow = false;
+    }
+    
+    g_buffers_initialized = true;
+    return true;
+}
+
+static void cleanup_audio_buffers(void)
+{
+    g_buffers_initialized = false;
+    
+    for (int i = 0; i < MAX_CHANNELS; i++) {
+        if (g_audio_buffers[i].buffer) {
+            free(g_audio_buffers[i].buffer);
+            g_audio_buffers[i].buffer = NULL;
+        }
+    }
+}
+
+static void write_audio_sample(int channel, float sample)
+{
+    if (channel >= MAX_CHANNELS || !g_buffers_initialized) {
+        return;
+    }
+    
+    audio_ring_buffer_t* buf = &g_audio_buffers[channel];
+    long next_write = (buf->write_pos + 1) % buf->size;
+    
+    if (next_write == buf->read_pos) {
+        // Buffer overflow - skip this sample
+        buf->overflow = true;
+        return;
+    }
+    
+    buf->buffer[buf->write_pos] = sample;
+    buf->write_pos = next_write;
+}
+
+static float read_audio_sample(int channel)
+{
+    if (channel >= MAX_CHANNELS || !g_buffers_initialized) {
+        return 0.0f;
+    }
+    
+    audio_ring_buffer_t* buf = &g_audio_buffers[channel];
+    
+    if (buf->read_pos == buf->write_pos) {
+        // Buffer underrun - return silence
+        return 0.0f;
+    }
+    
+    float sample = buf->buffer[buf->read_pos];
+    buf->read_pos = (buf->read_pos + 1) % buf->size;
+    
+    return sample;
+}
+
+static void process_avb_audio_data(const u_char* audio_data, int data_len, int num_channels)
+{
+    if (!g_buffers_initialized || num_channels > MAX_CHANNELS) {
+        return;
+    }
+    
+    // Assume 24-bit audio samples for now (typical for AVB)
+    // Each sample is 3 bytes, samples are interleaved by channel
+    int bytes_per_sample = 3;
+    int total_samples = data_len / (bytes_per_sample * num_channels);
+    
+    for (int sample = 0; sample < total_samples; sample++) {
+        for (int channel = 0; channel < num_channels; channel++) {
+            const u_char* sample_ptr = audio_data + (sample * num_channels + channel) * bytes_per_sample;
+            
+            // Convert from AVB audio format to float
+            float float_sample;
+            convert_avb_to_float(sample_ptr, &float_sample, 1, AVB_AUDIO_FORMAT_PCM_24);
+            
+            // Queue the sample for ASIO playback
+            write_audio_sample(channel, float_sample);
+        }
+    }
+}
+
+static void convert_avb_to_float(const u_char* input, float* output, int samples, avb_audio_format_t format)
+{
+    for (int i = 0; i < samples; i++) {
+        switch (format) {
+            case AVB_AUDIO_FORMAT_PCM_16: {
+                // Convert 16-bit PCM to float
+                short sample = (short)((input[i * 2 + 1] << 8) | input[i * 2]);
+                output[i] = (float)sample / 32768.0f;
+                break;
+            }
+            case AVB_AUDIO_FORMAT_PCM_24: {
+                // Convert 24-bit PCM to float (network byte order)
+                int sample = (input[i * 3] << 16) | (input[i * 3 + 1] << 8) | input[i * 3 + 2];
+                // Sign extend if negative
+                if (sample & 0x800000) {
+                    sample |= 0xFF000000;
+                }
+                output[i] = (float)sample / 8388608.0f;
+                break;
+            }
+            case AVB_AUDIO_FORMAT_PCM_32: {
+                // Convert 32-bit PCM to float
+                int sample = (input[i * 4] << 24) | (input[i * 4 + 1] << 16) | 
+                           (input[i * 4 + 2] << 8) | input[i * 4 + 3];
+                output[i] = (float)sample / 2147483648.0f;
+                break;
+            }
+            case AVB_AUDIO_FORMAT_FLOAT32: {
+                // Direct copy of float data
+                memcpy(&output[i], &input[i * 4], sizeof(float));
+                break;
+            }
+            default:
+                output[i] = 0.0f;
+                break;
+        }
+    }
 }
