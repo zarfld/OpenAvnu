@@ -333,3 +333,70 @@ if(WIN32 AND OPENAVNU_PCAP_FOUND)
         DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples/asio-listener
     )
 endif()
+
+# ==========================================
+# Simple AVDECC Entity (Windows Compatible)
+# ==========================================
+
+if(WIN32)
+    # Simple AVDECC Entity for Hive-AVDECC discovery with L-Acoustics library
+    add_executable(simple_avdecc_entity
+        ${CMAKE_CURRENT_SOURCE_DIR}/simple_avdecc_entity.c
+    )
+    
+    target_link_libraries(simple_avdecc_entity
+        ws2_32
+        iphlpapi
+    )
+    
+    # Link with L-Acoustics AVDECC library if available
+    if(TARGET la_avdecc_cxx)
+        target_link_libraries(simple_avdecc_entity la_avdecc_cxx)
+        target_include_directories(simple_avdecc_entity PRIVATE
+            ${CMAKE_SOURCE_DIR}/lib/la_avdecc/include
+        )
+        message(STATUS "🎵 AVDECC entity linked with L-Acoustics library")
+    else()
+        message(STATUS "ℹ️  AVDECC entity using simulation mode (L-Acoustics not available)")
+    endif()
+    
+    # Set output directory
+    set_target_properties(simple_avdecc_entity PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/examples/Debug
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/examples/Release
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_BINARY_DIR}/examples/RelWithDebInfo
+    )
+    
+    message(STATUS "✅ Added simple AVDECC entity for Windows (UDP-based)")
+endif()
+
+# ==========================================
+# L-Acoustics AVDECC Integration Example
+# ==========================================
+
+if(WIN32 AND TARGET la_avdecc_cxx)
+    # L-Acoustics AVDECC integration example
+    add_executable(la_avdecc_integration_example_simple
+        ${CMAKE_CURRENT_SOURCE_DIR}/la_avdecc_test.c
+    )
+    
+    # Link with the L-Acoustics AVDECC library
+    target_link_libraries(la_avdecc_integration_example_simple
+        la_avdecc_cxx
+        ws2_32
+    )
+    
+    # Include L-Acoustics AVDECC headers
+    target_include_directories(la_avdecc_integration_example_simple PRIVATE
+        ${CMAKE_SOURCE_DIR}/lib/la_avdecc/include
+    )
+    
+    # Set output directory
+    set_target_properties(la_avdecc_integration_example_simple PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/examples/Debug
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/examples/Release
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_BINARY_DIR}/examples/RelWithDebInfo
+    )
+    
+    message(STATUS "✅ Added L-Acoustics AVDECC integration example")
+endif()
