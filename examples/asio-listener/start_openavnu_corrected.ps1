@@ -1,9 +1,45 @@
 Write-Host "=== OpenAvnu ASIO Startup with Corrected MAAP ===" -ForegroundColor Cyan
 Write-Host ""
 
-$buildDir = "d:\Repos\OpenAvnu\build"
-$mrpdPath = "$buildDir\daemons\mrpd\Release\mrpd.exe"
-$maapPath = "$buildDir\daemons\maap\Release\maap_daemon.exe"
+# Dynamically find the build directory and executables
+$scriptLocation = Split-Path -Parent $MyInvocation.MyCommand.Path
+$workspaceRoot = Split-Path -Parent (Split-Path -Parent $scriptLocation)
+
+# Try different possible build directory locations
+$possibleBuildDirs = @(
+    "$workspaceRoot\build",
+    "$workspaceRoot\..\build",
+    "C:\Users\$env:USERNAME\Source\OpenAvnu\build",
+    ".\..\..\build",
+    "build"
+)
+
+$buildDir = $null
+$mrpdPath = $null
+$maapPath = $null
+
+foreach ($dir in $possibleBuildDirs) {
+    $testMrpd = "$dir\daemons\mrpd\Release\mrpd.exe"
+    $testMaap = "$dir\daemons\maap\Release\maap_daemon.exe"
+    
+    if ((Test-Path $testMrpd) -and (Test-Path $testMaap)) {
+        $buildDir = $dir
+        $mrpdPath = $testMrpd
+        $maapPath = $testMaap
+        Write-Host "Found OpenAvnu build at: $buildDir" -ForegroundColor Green
+        break
+    }
+}
+
+if (-not $buildDir) {
+    Write-Host "ERROR: OpenAvnu executables not found!" -ForegroundColor Red
+    Write-Host "Searched in:" -ForegroundColor Yellow
+    foreach ($dir in $possibleBuildDirs) {
+        Write-Host "  $dir" -ForegroundColor Gray
+    }
+    Write-Host "Please build OpenAvnu first or check paths" -ForegroundColor Yellow
+    exit 1
+}
 
 # Step 1: Get Intel I219 interface details
 Write-Host "Step 1: Detecting Intel I219 interface..." -ForegroundColor Yellow
@@ -43,15 +79,26 @@ Start-Sleep -Seconds 2
 # Step 3: Start MRPD daemon
 Write-Host "Step 3: Starting MRPD daemon..." -ForegroundColor Yellow
 try {
+    # Ensure working directory exists and is valid
+    $workingDir = Split-Path -Parent $mrpdPath
+    if (-not (Test-Path $workingDir)) {
+        $workingDir = $buildDir
+    }
+    if (-not (Test-Path $workingDir)) {
+        $workingDir = Get-Location
+    }
+    
+    Write-Host "  Using working directory: $workingDir" -ForegroundColor Gray
+    
     $mrpdProcess = Start-Process -FilePath $mrpdPath -ArgumentList @("-i", "`"$windowsInterfaceName`"") `
-                                -WorkingDirectory $buildDir -PassThru -WindowStyle Hidden
+                                -WorkingDirectory $workingDir -PassThru -WindowStyle Hidden
     Start-Sleep -Seconds 2
     
-    if ($mrpdProcess.HasExited) {
+    if ($mrpdProcess -and -not $mrpdProcess.HasExited) {
+        Write-Host "SUCCESS: MRPD daemon started (PID: $($mrpdProcess.Id))" -ForegroundColor Green
+    } else {
         Write-Host "ERROR: MRPD daemon failed to start!" -ForegroundColor Red
         exit 1
-    } else {
-        Write-Host "SUCCESS: MRPD daemon started (PID: $($mrpdProcess.Id))" -ForegroundColor Green
     }
 } catch {
     Write-Host "ERROR: Failed to start MRPD: $($_.Exception.Message)" -ForegroundColor Red
@@ -61,11 +108,31 @@ try {
 # Step 4: Start MAAP daemon with pcap device name
 Write-Host "Step 4: Starting MAAP daemon..." -ForegroundColor Yellow
 try {
+    # Ensure working directory exists and is valid
+    $workingDir = Split-Path -Parent $maapPath
+    if (-not (Test-Path $workingDir)) {
+        $workingDir = $buildDir
+    }
+    if (-not (Test-Path $workingDir)) {
+        $workingDir = Get-Location
+    }
+    
+    Write-Host "  Using working directory: $workingDir" -ForegroundColor Gray
+    
     $maapProcess = Start-Process -FilePath $maapPath -ArgumentList @("-i", "`"$pcapDeviceName`"") `
-                                -WorkingDirectory $buildDir -PassThru -WindowStyle Hidden
+                                -WorkingDirectory $workingDir -PassThru -WindowStyle Hidden
     Start-Sleep -Seconds 2
     
-    if ($maapProcess.HasExited) {
+    if ($maapProcess -and -not $maapProcess.HasExited) {
+        Write-Host "SUCCESS: MAAP daemon started (PID: $($maapProcess.Id))" -ForegroundColor Green
+    } else {
+        Write-Host "ERROR: MAAP daemon failed to start!" -ForegroundColor Red
+        exit 1
+    }
+} catch {
+    Write-Host "ERROR: Failed to start MAAP: $($_.Exception.Message)" -ForegroundColor Red
+    exit 1
+}
         Write-Host "ERROR: MAAP daemon failed to start!" -ForegroundColor Red
         # Show error details
         Write-Host "Exit code: $($maapProcess.ExitCode)" -ForegroundColor Red
