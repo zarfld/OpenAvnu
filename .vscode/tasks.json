@@ -2041,23 +2041,6 @@
 			}
 		},
 		{
-			"label": "Open ASIO Documentation",
-			"type": "shell",
-			"command": "code",
-			"args": [
-				"examples/asio-listener/SETUP_GUIDE.md"
-			],
-			"group": "build",
-			"problemMatcher": [],
-			"isBackground": false,
-			"presentation": {
-				"echo": true,
-				"reveal": "never",
-				"focus": false,
-				"panel": "shared"
-			}
-		},
-		{
 			"label": "Run DAW02 Windows Test Suite",
 			"type": "shell",
 			"command": "powershell",
@@ -2113,6 +2096,214 @@
 				"focus": false,
 				"panel": "shared"
 			}
+		},
+		{
+			"label": "Start OpenAvnu Daemons (Multi-Adapter)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"start_openavnu_final.ps1"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "test",
+			"isBackground": true,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Start OpenAvnu Daemons (I219 Specific)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"start_openavnu_corrected.ps1"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "test",
+			"isBackground": true,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Stop OpenAvnu Daemons",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Write-Host '[CLEANUP] Stopping OpenAvnu Daemons...' -ForegroundColor Yellow; Get-Process -Name 'mrpd','maap_daemon' -ErrorAction SilentlyContinue | ForEach-Object { Write-Host 'Stopping' $_.ProcessName '(PID:' $_.Id ')' -ForegroundColor Red; Stop-Process -Id $_.Id -Force }; Start-Sleep -Seconds 2; Write-Host '[SUCCESS] All OpenAvnu daemons stopped' -ForegroundColor Green"
+			],
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Test ASIO Listener with Auto-Daemon Startup (Multi-Adapter)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Write-Host '[PHASE 1] Starting OpenAvnu Daemons with Multi-Adapter Detection...' -ForegroundColor Cyan; & '.\\start_openavnu_final.ps1'; Start-Sleep -Seconds 3; Write-Host '[PHASE 2] Building ASIO Audio Listener...' -ForegroundColor Cyan; cd examples\\asio-listener; if (Test-Path 'build.bat') { & '.\\build.bat' } else { Write-Host 'Building with CMake...' -ForegroundColor Yellow; cmake --build ..\\..\\build --target asio_listener --config Release }; Write-Host '[PHASE 3] Starting ASIO Audio Listener...' -ForegroundColor Cyan; if (Test-Path 'asio_listener.exe') { & '.\\asio_listener.exe' } else { Write-Host 'ASIO Listener executable not found, check build output' -ForegroundColor Red }"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Test ASIO Listener with Auto-Daemon Startup (I219)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Write-Host '[PHASE 1] Starting OpenAvnu Daemons for Intel I219...' -ForegroundColor Cyan; & '.\\start_openavnu_corrected.ps1'; Start-Sleep -Seconds 3; Write-Host '[PHASE 2] Building ASIO Audio Listener...' -ForegroundColor Cyan; cd examples\\asio-listener; if (Test-Path 'build.bat') { & '.\\build.bat' } else { Write-Host 'Building with CMake...' -ForegroundColor Yellow; cmake --build ..\\..\\build --target asio_listener --config Release }; Write-Host '[PHASE 3] Starting ASIO Audio Listener...' -ForegroundColor Cyan; if (Test-Path 'asio_listener.exe') { & '.\\asio_listener.exe' } else { Write-Host 'ASIO Listener executable not found, check build output' -ForegroundColor Red }"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "test",
+			"isBackground": false,
+			"dependsOn": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Build and Test ASIO Listener (Complete Workflow)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"test_asio_listener_complete.ps1"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Debug ASIO Listener with Daemon Logs",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Write-Host '[DEBUG] Starting OpenAvnu Daemons with logging...' -ForegroundColor Magenta; & '.\\start_openavnu_final.ps1'; Write-Host '[DEBUG] Waiting for daemon stabilization...' -ForegroundColor Magenta; Start-Sleep -Seconds 5; Write-Host '[DEBUG] Checking daemon status...' -ForegroundColor Magenta; Get-Process -Name 'mrpd','maap_daemon' -ErrorAction SilentlyContinue | Format-Table ProcessName, Id, CPU, WorkingSet; Write-Host '[DEBUG] Starting ASIO Listener in debug mode...' -ForegroundColor Magenta; cd examples\\asio-listener; if (Test-Path 'asio_listener.exe') { Write-Host 'Running with debug output...' -ForegroundColor Yellow; & '.\\asio_listener.exe' --debug --verbose } else { Write-Host 'ASIO Listener not found, building first...' -ForegroundColor Red; & '.\\build.bat' }"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Monitor Daemon Performance during ASIO Test",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Write-Host '[MONITOR] Starting performance monitoring...' -ForegroundColor Green; & '.\\start_openavnu_final.ps1'; Write-Host '[MONITOR] Daemons started, monitoring performance...' -ForegroundColor Green; for ($i = 1; $i -le 10; $i++) { Write-Host 'Monitor cycle' $i 'of 10:' -ForegroundColor Cyan; Get-Process -Name 'mrpd','maap_daemon' -ErrorAction SilentlyContinue | Select-Object ProcessName, Id, @{Name='CPU%';Expression={$_.CPU}}, @{Name='Memory(MB)';Expression={[math]::Round($_.WorkingSet/1MB,2)}} | Format-Table; Start-Sleep -Seconds 2 }; Write-Host '[MONITOR] Performance monitoring complete' -ForegroundColor Green"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify ASIO Integration Environment",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Write-Host '[VERIFY] Checking ASIO Integration Environment...' -ForegroundColor Cyan; Write-Host ''; Write-Host '1. Intel Network Adapter Detection:' -ForegroundColor White; Get-NetAdapter | Where-Object { $_.InterfaceDescription -like '*Intel*' } | Select-Object Name, InterfaceDescription, Status | Format-Table; Write-Host '2. OpenAvnu Executable Status:' -ForegroundColor White; @('daemons\\mrpd\\mrpd.exe', 'daemons\\maap\\daemon\\maap_daemon.exe') | ForEach-Object { if (Test-Path $_) { Write-Host '✓' $_ 'exists' -ForegroundColor Green } else { Write-Host '✗' $_ 'missing' -ForegroundColor Red } }; Write-Host '3. ASIO Listener Build Status:' -ForegroundColor White; if (Test-Path 'examples\\asio-listener\\asio_listener.exe') { Write-Host '✓ ASIO Listener built' -ForegroundColor Green } else { Write-Host '✗ ASIO Listener needs building' -ForegroundColor Yellow }; Write-Host '4. PCAP Library Status:' -ForegroundColor White; if ($env:NPCAP_DIR -or $env:NPCAP_SDK_DIR -or $env:WPCAP_DIR) { Write-Host '✓ PCAP environment configured' -ForegroundColor Green } else { Write-Host '⚠ PCAP environment may need configuration' -ForegroundColor Yellow }; Write-Host ''; Write-Host '[VERIFY] Environment check complete' -ForegroundColor Cyan"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": "test",
+			"isBackground": false,
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated"
+			},
+			"problemMatcher": []
 		}
 	]
 }
