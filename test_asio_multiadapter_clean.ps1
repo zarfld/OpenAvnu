@@ -1,5 +1,5 @@
 # ============================================================================
-# ASIO Listener Test with Multi-Adapter Auto-Detection (Clean Version)
+# ASIO Listener Test with Multi-Adapter Auto-Detection (Clean CMake Version)
 # ============================================================================
 
 Write-Host ""
@@ -44,159 +44,65 @@ if ($daemons) {
     exit 1
 }
 
-# Phase 2: Build ASIO Listener
+# Phase 2: Build ASIO Listener using CMake
 Write-Host ""
-Write-Host "[PHASE 2] Building ASIO Audio Listener..." -ForegroundColor Cyan
+Write-Host "[PHASE 2] Building ASIO Audio Listener with CMake..." -ForegroundColor Cyan
 
 $buildSuccess = $false
-$originalLocation = Get-Location
+$asioExecutable = $null
 
-# Try CMake build first (preferred method)
-Write-Host "Attempting CMake build (recommended)..." -ForegroundColor Yellow
+# Try CMake build (preferred method)
 try {
-    Set-Location "..\.."
+    Write-Host "Building with CMake system..." -ForegroundColor Yellow
     if (Test-Path "build") {
         $cmakeOutput = & cmake --build .\build --config Release --target simple_asio_listener 2>&1
-        Write-Host "CMake build output:" -ForegroundColor Gray
-        Write-Host $cmakeOutput -ForegroundColor Gray
+        Write-Host "CMake output:" -ForegroundColor Gray
+        $cmakeOutput | ForEach-Object { Write-Host "  $_" -ForegroundColor Gray }
         
         if (Test-Path "build\examples\Release\simple_asio_listener.exe") {
-            Write-Host "CMake build successful" -ForegroundColor Green
+            Write-Host "SUCCESS: CMake build completed!" -ForegroundColor Green
             $asioExecutable = "build\examples\Release\simple_asio_listener.exe"
             $buildSuccess = $true
         } else {
-            Write-Host "CMake build failed - executable not found" -ForegroundColor Yellow
+            Write-Host "CMake build failed - executable not found" -ForegroundColor Red
         }
     } else {
-        Write-Host "Build directory not found - need to configure CMake first" -ForegroundColor Yellow
+        Write-Host "Build directory not found - need to configure CMake first" -ForegroundColor Red
+        Write-Host "Run: cmake .. -G \"Visual Studio 17 2022\" in build directory" -ForegroundColor Yellow
     }
 } catch {
-    Write-Host "CMake build failed: $($_.Exception.Message)" -ForegroundColor Yellow
-}
-
-# Fallback to old build system if CMake failed
-if (-not $buildSuccess) {
-    Write-Host "Falling back to legacy build system..." -ForegroundColor Yellow
-    Set-Location $originalLocation
-    Set-Location "examples\asio-listener"
-    
-    # Check what build options are available
-    Write-Host "Checking legacy build options..." -ForegroundColor White
-    
-    # Try simple build first
-    Write-Host "Trying simple build (build_simple.bat)..." -ForegroundColor Yellow
-    try {
-        & ".\build_simple.bat"
-        if (Test-Path "asio_listener.exe") {
-            Write-Host "Simple build successful" -ForegroundColor Green
-            $buildSuccess = $true
-        }
-    } catch {
-        Write-Host "Simple build failed: $($_.Exception.Message)" -ForegroundColor Yellow
-    }
-}
-
-# Try manual compilation if simple build didn't work
-if (-not $buildSuccess) {
-    Write-Host "Trying manual compilation..." -ForegroundColor Yellow
-    if (Test-Path "manual_compile_clean.ps1") {
-        & ".\manual_compile_clean.ps1"
-        if (Test-Path "asio_listener.exe") {
-            Write-Host "Manual compilation successful" -ForegroundColor Green
-            $buildSuccess = $true
-        }
-    }
-}
-
-# Try direct gcc compilation first
-if (-not $buildSuccess -and (Test-Path "simple_asio_listener.c")) {
-    Write-Host "Trying direct gcc compilation..." -ForegroundColor Yellow
-    try {
-        $gccOutput = & gcc -o asio_listener.exe simple_asio_listener.c -lws2_32 2>&1
-        if (Test-Path "asio_listener.exe") {
-            Write-Host "Direct gcc compilation successful" -ForegroundColor Green
-            $buildSuccess = $true
-        } else {
-            Write-Host "gcc output: $gccOutput" -ForegroundColor Gray
-        }
-    } catch {
-        Write-Host "gcc not available: $($_.Exception.Message)" -ForegroundColor Yellow
-    }
-}
-
-# Try CMake build if direct compilation didn't work
-if (-not $buildSuccess) {
-    Write-Host "Attempting CMake build..." -ForegroundColor Yellow
-    if (Test-Path "..\..\build") {
-        $cmakeResult = & cmake --build "..\..\build" --config Release 2>&1
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "CMake build successful" -ForegroundColor Green
-            # Look for created executables
-            Get-ChildItem "..\..\build" -Recurse -Name "*.exe" | ForEach-Object {
-                Write-Host "Found executable: $_" -ForegroundColor Gray
-            }
-            $buildSuccess = $true
-        } else {
-            Write-Host "CMake build had issues:" -ForegroundColor Yellow
-            Write-Host $cmakeResult -ForegroundColor Gray
-        }
-    } else {
-        Write-Host "Build directory not found" -ForegroundColor Yellow
-    }
+    Write-Host "CMake build failed: $($_.Exception.Message)" -ForegroundColor Red
 }
 
 if (-not $buildSuccess) {
-    Write-Host "Build unsuccessful, checking for existing executable..." -ForegroundColor Yellow
-    if (Test-Path "asio_listener.exe") {
-        Write-Host "Found existing asio_listener.exe" -ForegroundColor Green
-        $buildSuccess = $true
-    }
+    Write-Host "Build failed - cannot continue with ASIO listener test" -ForegroundColor Red
+    Write-Host "Please ensure CMake is properly configured and build directory exists" -ForegroundColor Yellow
+    exit 1
 }
 
 # Phase 3: Start ASIO Listener
 Write-Host ""
 Write-Host "[PHASE 3] Starting ASIO Audio Listener..." -ForegroundColor Cyan
 
-# Check for CMake-built executable first
-if ($buildSuccess -and (Test-Path "build\examples\Release\simple_asio_listener.exe")) {
+if ($asioExecutable -and (Test-Path $asioExecutable)) {
     Write-Host "Starting CMake-built ASIO Audio Listener..." -ForegroundColor Green
     Write-Host "(Press Ctrl+C to stop)" -ForegroundColor Gray
     
     # Show some info about the executable
-    $fileInfo = Get-Item "build\examples\Release\simple_asio_listener.exe"
-    Write-Host "Executable: $([math]::Round($fileInfo.Length/1KB,2)) KB, Modified: $($fileInfo.LastWriteTime)" -ForegroundColor Gray
+    $fileInfo = Get-Item $asioExecutable
+    Write-Host "Executable: $asioExecutable ($([math]::Round($fileInfo.Length/1KB,2)) KB)" -ForegroundColor Gray
+    Write-Host "Modified: $($fileInfo.LastWriteTime)" -ForegroundColor Gray
+    Write-Host ""
     
     try {
-        & ".\build\examples\Release\simple_asio_listener.exe"
+        & $asioExecutable
     } catch {
         Write-Host "ASIO Listener stopped: $($_.Exception.Message)" -ForegroundColor Yellow
     }
-} elseif (Test-Path "examples\asio-listener\asio_listener.exe") {
-    # Fallback to legacy executable
-    Write-Host "Starting legacy ASIO Audio Listener..." -ForegroundColor Green
-    Write-Host "(Press Ctrl+C to stop)" -ForegroundColor Gray
-    
-    Set-Location "examples\asio-listener"
-    try {
-        & ".\asio_listener.exe"
-    } catch {
-        Write-Host "ASIO Listener stopped: $($_.Exception.Message)" -ForegroundColor Yellow
-    }
-    Set-Location "..\..\"
 } else {
-    Write-Host "ASIO Listener executable not found" -ForegroundColor Red
-    Write-Host "Available files:" -ForegroundColor Gray
-    if (Test-Path "build\examples\Release") {
-        Get-ChildItem "build\examples\Release" -Name "*.exe" | ForEach-Object { Write-Host "  build\examples\Release\$_" -ForegroundColor Gray }
-    }
-    if (Test-Path "examples\asio-listener") {
-        Get-ChildItem "examples\asio-listener" -Name "*.exe" | ForEach-Object { Write-Host "  examples\asio-listener\$_" -ForegroundColor Gray }
-        Get-ChildItem "examples\asio-listener" -Name "*.c" | ForEach-Object { Write-Host "  $_ (source)" -ForegroundColor Blue }
-    }
+    Write-Host "ASIO Listener executable not found at: $asioExecutable" -ForegroundColor Red
 }
-
-# Return to workspace root
-Set-Location "..\..\"
 
 Write-Host ""
 Write-Host "ASIO Listener Test Complete!" -ForegroundColor Magenta
+Write-Host "Daemons are still running - use 'Get-Process mrpd,maap_daemon | Stop-Process' to stop them" -ForegroundColor Gray
