@@ -82,6 +82,84 @@
 - [ ] 📋 **Stream Enumeration**: Audio stream discovery and configuration working
 - [ ] 📋 **Control Validation**: AVDECC control commands functional
 
+### **Milan Compliance Verification (NEW PRIORITY)**
+
+#### **Step 1: Review Milan Specification v1.2**
+- [ ] Read and summarize key Milan requirements (Baseline Interoperability, Discovery/Connection/Control, Stream Formats, Media Clocking, Redundancy, AEM models)
+- [ ] Identify all Milan-specific protocol commands (GET_MILAN_INFO, MVU, clock reference, redundancy)
+
+#### **Step 2: Gap Analysis**
+- [ ] Compare OpenAvnu AVDECC entity and stream implementation against Milan requirements
+- [ ] List missing features, descriptors, and protocol support
+- [ ] Document gaps in a checklist for implementation
+
+#### **Step 3: Milan Compliance Checklist Creation**
+
+##### Milan Compliance Checklist (Based on Milan Specification v1.2)
+
+- [ ] **Baseline Interoperability**
+    - [ ] Device supports IEEE 802.1BA-2021 AVB profile
+    - [ ] Device supports IEEE 1722.1-2021 ATDECC protocol
+    - [ ] Device operates at 100 Mbps or higher
+    - [ ] Plug-and-play operation verified
+
+- [ ] **Discovery, Connection, and Control**
+    - [ ] ADP (Entity Available) advertisements sent with correct timing and format
+    - [ ] AECP (AVDECC Entity Control Protocol) supported, including GET_MILAN_INFO and MVU commands
+    - [ ] ACMP (AVDECC Connection Management Protocol) supported for stream connection/disconnection
+    - [ ] Entity model includes all required Milan descriptors (AEM, TIMING, PTP_INSTANCE, PTP_PORT)
+    - [ ] User names and configuration support per Milan spec
+
+- [ ] **Protocol Extensions**
+    - [ ] GET_MILAN_INFO command implemented and responds correctly
+    - [ ] MVU (Milan Vendor Unique) payload format supported
+    - [ ] GET_SYSTEM_UNIQUE_ID and SET_SYSTEM_UNIQUE_ID commands implemented
+    - [ ] Dynamic mapping changes supported while running
+
+- [ ] **Base Stream Formats**
+    - [ ] Audio stream formats: AAF and IEC 61883-6 supported
+    - [ ] Stream descriptors correctly advertise supported formats
+    - [ ] Stream enumeration and configuration functional in professional tools
+
+- [ ] **Media Clocking**
+    - [ ] gPTP (IEEE 802.1AS) used for media clock source
+    - [ ] Media clock reference selection supported
+    - [ ] Holdover during Grandmaster change implemented (Annex B)
+    - [ ] Media clock reference info commands supported
+
+- [ ] **Seamless Network Redundancy**
+    - [ ] Redundant stream support implemented (Annex D)
+    - [ ] Redundancy state machines for listener and advertiser
+    - [ ] Redundancy configuration and failover tested
+
+- [ ] **Entity Model and Descriptors**
+    - [ ] AEM model matches Milan examples (Annex A)
+    - [ ] All required descriptors present and correctly formatted
+    - [ ] Entity capabilities correctly advertised (Milan, AVB, etc.)
+
+- [ ] **Control and Connection Management**
+    - [ ] Control commands functional (GET/SET, enumeration, connection)
+    - [ ] Connection management verified with professional AVDECC tools
+
+- [ ] **Professional Tool Interoperability**
+    - [ ] Device recognized and enumerated by Hive-AVDECC and L-Acoustics Network Manager
+    - [ ] All Milan-specific commands and responses verified in professional tools
+
+- [ ] **Documentation and Reporting**
+    - [ ] Milan compliance test results documented in `docs/tests/results/`
+    - [ ] Checklist updated with pass/fail status for each item
+
+#### **Step 4: Test Planning**
+- [ ] Plan Milan-specific protocol and interoperability tests
+- [ ] Prepare test cases for professional AVDECC tools (Hive-AVDECC, L-Acoustics Network Manager)
+- [ ] Document expected results and compliance criteria
+
+#### **Step 5: Implementation and Verification**
+- [ ] Implement missing Milan features and update entity model
+- [ ] Run automated and manual Milan compliance tests
+- [ ] Record results in `docs/tests/results/` and update documentation
+
+---
 ### **Phase 3: Release Preparation (DEFERRED - After AVDECC Resolution)**
 - [ ] ⏸️ **DEFERRED**: Extended Runtime Testing - 7+ day stability validation
 - [ ] ⏸️ **DEFERRED**: Multi-Adapter Testing - Test multiple Intel adapters simultaneously  

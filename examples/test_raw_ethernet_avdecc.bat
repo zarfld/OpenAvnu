@@ -1,53 +1,105 @@
 @echo off
-echo ===========================================
-echo   OpenAvnu Raw Ethernet AVDECC Entity Test
-echo   Critical Path Solution for Hive-AVDECC
-echo ===========================================
+echo.
+echo =====================================
+echo  OpenAvnu Raw Ethernet AVDECC Test
+echo =====================================
 echo.
 
-echo 🎯 Testing Raw Ethernet AVDECC Entity...
-echo.
-
-echo 📋 Prerequisites Check:
-echo   1. Npcap installed and running
-echo   2. Administrator privileges for Raw Ethernet access
-echo   3. Network interface available for AVDECC
-echo.
-
-echo ⚠️  IMPORTANT: Run as Administrator for Raw Ethernet access
-echo.
-
-if not exist "..\build\examples\Release\raw_ethernet_avdecc_entity.exe" (
-    echo ❌ Raw Ethernet AVDECC Entity not found!
-    echo    Please build using: cmake --build ..\build --target raw_ethernet_avdecc_entity --config Release
+REM Check if running as Administrator
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo ❌ ERROR: This script must be run as Administrator
+    echo.
+    echo Raw Ethernet access requires administrator privileges.
+    echo Right-click on this batch file and select "Run as administrator"
+    echo.
     pause
     exit /b 1
 )
 
-echo ✅ Raw Ethernet AVDECC Entity found
+echo ✅ Running with Administrator privileges
+
+REM Check if the executable exists
+if exist "raw_ethernet_avdecc_entity.exe" (
+    set ENTITY_EXE=raw_ethernet_avdecc_entity.exe
+    echo ✅ Found local raw_ethernet_avdecc_entity.exe
+) else if exist "..\build\examples\Release\raw_ethernet_avdecc_entity.exe" (
+    set ENTITY_EXE=..\build\examples\Release\raw_ethernet_avdecc_entity.exe
+    echo ✅ Found CMake build raw_ethernet_avdecc_entity.exe
+) else (
+    echo ❌ ERROR: raw_ethernet_avdecc_entity.exe not found
+    echo.
+    echo Please build the entity first using:
+    echo    build_raw_ethernet_avdecc.bat
+    echo    OR
+    echo    cmake --build ..\build --target raw_ethernet_avdecc_entity --config Release
+    echo.
+    pause
+    exit /b 1
+)
+
+REM Check for Npcap installation
+echo.
+echo 🔍 Checking for Npcap installation...
+
+sc query npcap >nul 2>&1
+if %errorlevel% == 0 (
+    echo ✅ Npcap service found and running
+) else (
+    echo ⚠️  Npcap service not found
+    echo.
+    echo For production AVDECC compatibility, install Npcap:
+    echo    1. Download from: https://npcap.com/
+    echo    2. Install with "WinPcap API-compatible Mode" enabled
+    echo    3. Restart this test
+    echo.
+    echo Continuing with available build...
+    echo.
+)
+
+REM Run the entity
+echo.
+echo 🚀 Starting OpenAvnu Raw Ethernet AVDECC Entity...
+echo.
+echo This will:
+echo   1. Send ADP Entity Available advertisements every 2 seconds
+echo   2. Listen for AECP READ_DESCRIPTOR commands from Hive
+echo   3. Respond with Entity and Configuration descriptors
+echo.
+echo ⏱️  Running for 60 seconds (use Ctrl+C to stop early)
+echo.
+echo 📋 Testing Steps:
+echo   1. Start Hive-AVDECC on the same machine or network
+echo   2. Select the same network interface in Hive settings
+echo   3. Look for "OpenAvnu AVDECC Entity" in Hive's device list
+echo   4. Try to read entity information in Hive
+echo.
+echo 🎯 Expected Results:
+echo   - ADP advertisements sent every 2 seconds
+echo   - Hive discovers and lists the entity
+echo   - Entity and Configuration descriptors readable
 echo.
 
-echo 🚀 Starting Raw Ethernet AVDECC Entity...
-echo.
-echo 💡 This entity:
-echo    - Uses Real Raw Ethernet (not UDP simulation)
-echo    - Sends proper IEEE 1722.1 AVDECC frames
-echo    - Should be discoverable by Hive-AVDECC
-echo    - Implements MILAN-compliant entity capabilities
+pause
+
+echo Starting entity (60 seconds)...
 echo.
 
-echo Press Ctrl+C to stop the entity when testing is complete.
-echo.
-
-REM Start the Raw Ethernet AVDECC entity
-"..\build\examples\Release\raw_ethernet_avdecc_entity.exe"
+"%ENTITY_EXE%" --duration 60
 
 echo.
-echo 👋 Raw Ethernet AVDECC Entity stopped
+echo 🏁 Test completed!
 echo.
-
-echo 📊 Testing Results:
-echo   - If entity started successfully: ✅ Raw Ethernet transport working
+echo 📊 Results Analysis:
+echo   - If you saw "Raw Ethernet TX" messages: Packets were sent
+echo   - If you saw "AECP Command" messages: Hive tried to read descriptors
+echo   - If entity appeared in Hive: SUCCESS - Professional tool compatibility achieved!
+echo.
+echo � Troubleshooting:
+echo   - No TX messages: Check Npcap installation and administrator privileges
+echo   - TX but no Hive discovery: Check interface selection in Hive settings
+echo   - Discovery but no descriptors: Check firewall or network configuration
+echo.
 echo   - If discoverable by Hive-AVDECC: ✅ Professional tool compatibility achieved
 echo   - If ADP advertisements sent: ✅ IEEE 1722.1 protocol compliance confirmed
 echo.
