@@ -193,9 +193,15 @@ int main() {
 
     // Create Protocol Interface
     printf("\n📡 Creating AVDECC Protocol Interface...\n");
+    printf("   Target Interface: Intel(R) Ethernet Controller I219-LM\n");
+    printf("   Interface GUID: {3DC822E6-8C68-424C-9798-63CFBF52994B}\n");
+    
+    // Use specific Intel I219-LM interface that we verified works
+    const char* interface_name = "Intel(R) Ethernet Controller I219-LM";
+    
     avdecc_protocol_interface_error_t pi_error = LA_AVDECC_ProtocolInterface_create(
         avdecc_protocol_interface_type_pcap,  // Use PCAP for Windows
-        NULL,  // Use default network interface
+        interface_name,  // Use specific Intel I219-LM interface
         "OpenAvnu",  // Executor name
         &g_protocol_interface
     );
