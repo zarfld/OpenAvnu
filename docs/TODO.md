@@ -450,7 +450,7 @@
 - **Success Criteria**: Validated compatibility matrix for I219 variants
 
 #### 🔄 **ACTIVE**: Advanced gPTP Features Implementation
-- [ ] Implement hardware-assisted PDelay measurement using I219 capabilities
+- [x] Implement hardware-assisted PDelay measurement using I219 capabilities (see: docs/tests/results/generic_adapter_test_2025-07-17_15-38-37.json)
 - [ ] Add support for IEEE 802.1AS-2020 enhanced features
 - [ ] Optimize cross-timestamp correlation algorithms for I219
 - [ ] Add hardware clock synchronization features

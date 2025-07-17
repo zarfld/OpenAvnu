@@ -2,287 +2,172 @@
 applyTo: '**'
 ---
 
-# 🛠️ Repository Rules and Best Practices
-
-These rules define coding standards, collaboration protocols, and repository hygiene for working in this project. They apply to all files and folders (`applyTo: '**'`).
-
----
-
-## ✅ General Principles
-
-* **Real-World Testing**
-  Never mark a feature or fix as *"ready"*, *"done"*, or *"complete"* until it has passed all relevant tests, including **real hardware testing** if applicable.
-
-* **Maintain `Todo.md`**
-
-  * When a task is completed, **remove it from `Todo.md`**.
-  * Log completed tasks in `docs/completed/`.
-  * Newly discovered tasks or requirements must be added to `Todo.md`.
-
-* **Manage Documentation Lifecycle**
-
-  * **Consolidate** duplicate or redundant task descriptions.
-  * **Move completed** task descriptions to `docs/completed/`.
-  * **Archive outdated** or irrelevant content to `docs/archive/`.
-
-## ✍️ How to Specify a Task (Copilot-Friendly)
-
-- **Be specific** – Describe clearly *what* the function/component should do.
-- **Add context** – Mention libraries, inputs, outputs, dependencies, edge cases.
-- **Use docstrings or comments** – Define the intent and constraints inside the function.
-- **Define "done"** – Include completion criteria:
-  - ✅ Input/output examples or test cases
-  - ✅ Error handling requirements
-  - ✅ Side effects (e.g., file written, DB updated)
-  - ✅ Preconditions and postconditions
-  - ✅ Optional: Checklist or TODO block
-
-### 📋 Task Template
-
-**What**  
-> _Short, clear description of what needs to be implemented or fixed._
-
-**Context**  
-> _Relevant inputs, outputs, modules, libraries, or dependencies involved._
-
-**Done When**
-- [ ] Correctly handles specified input/output cases
-- [ ] All edge cases and errors are accounted for
-- [ ] Code is tested (unit/integration as appropriate)
-- [ ] Side effects (e.g., logs written, state updated) are verified
-- [ ] Meets performance or timing constraints (if any)
-
-**Information Resources**  
-> _Where to find definitions, constants, limits, tolerances, and related documentation:_
-
-- 📄 `docs/specs/<file>.md`
-- 📘 [External standard or datasheet link]
-- 📂 Source code: `src/module/submodule/xyz.c`
-- 🧪 `tests/<area>` for example inputs and edge cases
-- 🔧 `config/defaults.yaml` for default settings
-- 🧠 `docs/insights/` for known quirks and lessons learned
-
-**Optional Notes**
-> _Any blockers, uncertainty, or open questions to resolve before implementation._
-
----
-
-## 🌿 Branch and Commit Conventions
-
-* **Branch Naming**
-  Use clear, conventional prefixes:
-
-  ```
-  feature/*    for new features  
-  bugfix/*     for bug fixes  
-  hotfix/*     for critical patches  
-  refactor/*   for code restructuring  
-  doc/*        for documentation-only changes
-  ```
-
-* **Commit Message Format**
-  Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-  ```
-  feat: Add login form validation  
-  fix: Correct rounding error in tax calculator  
-  chore: Update npm dependencies  
-  docs: Rewrite usage section of README  
-  refactor: Simplify caching logic
-  ```
-
----
-
-## 🔍 Code Quality and Reviews
-
-* **Code Reviews**
-  All non-trivial changes must undergo **peer review** before merging into the main branch.
-
-* **Static Analysis and Linting**
-  Code must pass **all linters and static analysis checks** before being committed or merged.
-
-* **Mark Experimental Work**
-  Clearly prefix experimental features or unstable prototypes with `EXPERIMENTAL:` in:
-
-  * Commit messages
-  * Documentation
-  * Code comments, where applicable
-
----
-## Testing
-* **Test Coverage**
-  All new features and bug fixes must include unit tests with at least 80% coverage.
-* **Integration Tests**
-  Ensure integration tests cover all critical workflows and interactions between components.
-* **Test Documentation**
-  Document test cases and expected outcomes in `docs/tests/`:
-  * Include test setup instructions
-  * Describe test scenarios and expected results
-* **Test Results**
-  Store test results in `docs/tests/results/`:
-  * Include date and time of test runs
-  * Summary of results
-  * Any issues or failures encountered
-
-  * **Test Environment**
-  before running tests, ensure the environment is set up correctly:
-  * Use `docs/machine/` to get Machine-specific information. (create if not exists)
-  * respect machine capabilities and limitations
-  * Document any specific configurations or dependencies required for testing in `docs/tests/setup.md`
-* **Test Automation**
-  Automate tests using CI/CD pipelines where possible. Ensure:
-  * All tests run automatically on pull requests
-  * Test results are reported back to the pull request  
-* **Test Documentation**
-  Document test cases and expected outcomes in `docs/tests/`: 
-  * Include test setup instructions
-  * Describe test scenarios and expected results
-* **Test Results**
-  Store test results in `docs/tests/results/`:
-  * Include date and time of test runs
-  * Summary of results
-  * Any issues or failures encountered
-* **mock and simulated data**
- For testing with real data, the use of mock or simulated data is not allowed!
-  Use mock or simulated data for testing when real data is not available, only. Document:
-  * Source of mock data
-  * How it was generated
-  * Any limitations or assumptions made
-* **integration tests**
-  Ensure integration tests cover all critical workflows and interactions between components.
-  * integration test tools should be stored in `testing/integration/<module>_<phase>_<test_type>_<description>` (information about the test, e.g. `docs/tests/integration/avb_milan_phase2_production_testing_complete.md`)
- * when creating integration tests ensure that the prepared test is capable to test all supported environment variants (all supported OS, all supported hardware, etc.)
-* should be added to the vscode tasks.json to run the tests automatically
-* should be added to the CI/CD pipeline to run the tests automatically on pull requests
-
-
-
-* **Module Testing**
-  Each module should have its own test suite:
-  * Include unit tests for individual functions or classes
-  * Integration tests for module interactions
-  * End-to-end tests for complete workflows
----
-## 📚 Documentation
-
- * documentation should be written in english
- * Use `docs/` for all project documentation. 
-
-* **Design Decision Logs**
-  Use `docs/decisions/` to document key architecture or design decisions. Use the [ADR pattern](https://adr.github.io/) for consistency.
-
-* **Technical Debt and Refactoring**
-
-  * Mark areas needing cleanup in code using `TODO (refactor)`
-  * Schedule regular refactoring sessions to resolve tech debt items from `Todo.md`
-
-* **Completed Taskss**
-  Use `docs/completed/` to log completed tasks, features, or fixes. Include:
-
-  * Date of completion
-  * Description of work done
-  * Any relevant links or references
-* **Archive Outdated Content**
-  Move outdated or irrelevant documentation to `docs/archive/` to keep the main docs clean and focused.
-
-* **Work In Progress (WIP) Documentation**
-  Use `docs/work-in-progress/` for ongoing work that is not yet ready for review or merging. Include:
-
-  * Clear status updates
-  * Next steps or blockers
-  * Links to related issues or discussions
-
-* **Implementation Plans**
-if we come up with implementation Plans we should init a new file in `docs/work-in-progress/` folder
-  Use `docs/work-in-progress/` for detailed implementation plans. Include:
-
-  * Background and context
-  * Problem statement
-  * Proposed solution
-  * Risks and open questions
-  * Next steps or milestones
-
-  which should keep maintained while work is in progress.
-
-* **Reports and Insights**
-  Use `docs/reports/` for any testresults, reports, metrics, or performance analyses. Include:
-
-  * Date of report
-  * Summary of findings
-  * Any relevant charts or data visualizations
-
-* **Machine Documentation**
-  Use `docs/machine/` for Machine-specific documentation. Include:
-  * Machine configuration details
-  * Hardware specifications
-  * Software versions and dependencies
-  * Known issues or limitations
-
-
-
----
-## 🧠 Concept and Design Proposal Rules
-
-When proposing a new **concept**, **feature**, or **architecture**:
-
-- **Respect Existing Design Decisions**  
-- Review `docs/decisions/` and `docs/completed/` before starting any concept.  
-- Avoid contradicting past decisions unless you explicitly justify and document the changes.
-
-- **Create Structured Concept Documents**  
-- Use the `docs/concepts/` folder.  
-- Naming convention:  
-  ```
-  docs/concepts/YYYY-MM-DD_short-title.md
-  ```
-- Each file should include the following sections:
-  - **Background** – context and motivation  
-  - **Problem Statement** – what needs solving  
-  - **Prior Decisions** – list of related ADRs or completed items  
-  - **Proposed Solution** – clear, focused proposal  
-  - **Alternatives Considered**  
-  - **Risks and Open Questions**  
-  - **Next Steps** – implementation or review plan
-
-- **Ensure Real Abstractions**  
-Abstraction layers must:
-- Be **generic and reusable**  
-- **Hide implementation details** cleanly  
-- Be **extensible** without breaking existing interfaces  
-- **Avoid tight coupling** between layers or modules  
-- Document **extension mechanisms** (e.g., callbacks, interfaces, hooks)
-
-- **Discuss Before You Build**  
-- Submit a concept as a pull request or internal review before beginning implementation.  
-- Encourage feedback and iteration early in the process.
-- Do not rely on assumptions. Always verify behavior, inputs, and results through tests, logs, documentation, or direct inspection. If something is unclear, investigate until you are certain.
-
-⚠️ Avoid Assumptions – Verify Everything
-Do not rely on assumptions. Always verify behavior, inputs, outputs, and side effects through testing, logs, or direct inspection. If something is unclear — investigate until it’s confirmed.
-
-Document Lessons Learned
-------------------------
-
-To avoid repeating mistakes and to enable optimized workflows, all important discoveries and debugging insights must be documented.
-
-Use the 'docs/insights/' Folder:
-- Store each lesson learned or technical insight as a separate file in docs/insights/.
-
-Purpose:
-- Prevent recurring mistakes and inefficient trial-and-error
-- Capture non-obvious behavior or system quirks
-- Enable better decision-making and onboarding
-- Serve as a long-term reference for debugging or optimizing
-
-File Naming Convention:
-- docs/insights/YYYY-MM-DD_short-title.md
-
-Each Insight File Should Contain:
-- Context        – What problem was being worked on
-- Observation    – What was discovered or unexpected
-- Root Cause     – (if identified)
-- Resolution     – What fixed or improved the situation
-- Takeaways      – Key points to remember or apply in the future
-
-Guideline:
-- If something took more than 15 minutes to figure out and might happen again — write it down.
+# OpenAvnu AI Coding Agent Instructions
+
+## Project Overview
+
+OpenAvnu is a comprehensive Audio Video Bridging (AVB)/Time-Sensitive Networking (TSN) implementation for real-time media streaming. The project provides IEEE 802.1AS (gPTP) time synchronization, IEEE 1722 (AVTP) media transport, and IEEE 1722.1 (AVDECC) device control protocols.
+
+**Architecture**: Multi-layered system with hardware abstraction (Intel NICs), protocol stacks (gPTP/AVTP/AVDECC), daemons for system services, and example applications.
+
+## Critical Build System Knowledge
+
+### CMake-Centric Build Process
+```bash
+# Standard build pattern
+mkdir -p build && cd build
+cmake .. -DOPENAVNU_BUILD_GPTP=ON -DOPENAVNU_BUILD_LA_AVDECC=ON
+cmake --build . --config Release
+```
+
+**Key CMake Options**:
+- `OPENAVNU_BUILD_INTEL_HAL=ON` - Intel I210/I219/I225/I226 hardware support
+- `OPENAVNU_BUILD_GPTP=ON` - gPTP time synchronization daemon  
+- `OPENAVNU_BUILD_LA_AVDECC=ON` - Modern AVDECC (IEEE 1722.1-2021) support
+- `OPENAVNU_BUILD_TESTING=ON` - Comprehensive test framework
+
+### PCAP Detection System
+The project uses unified PCAP detection (`cmake/FindPCAP.cmake`) supporting both Npcap and WinPcap on Windows. Set environment variables:
+- `NPCAP_DIR` or `NPCAP_SDK_DIR` for Npcap
+- `WPCAP_DIR` for WinPcap (legacy fallback)
+
+## Architecture Components
+
+### Core Libraries (`lib/`)
+- **`avtp_pipeline/`** - AVTP media streaming engine with GStreamer integration
+- **`intel_avb/`** - Intel hardware timestamping and register access
+- **`atl_avb/`** - ATL (Atheros) hardware support  
+- **`la_avdecc/`** - Modern AVDECC implementation (IEEE 1722.1-2021)
+- **`common/`** - Shared utilities and platform abstraction
+
+### System Daemons (`daemons/`)
+- **`maap/`** - Multicast Address Allocation Protocol daemon
+- **`mrpd/`** - Multiple Registration Protocol daemon (SRP)
+- **`shaper/`** - Traffic shaping for QoS compliance
+
+### Hardware Abstraction
+The Intel HAL (`thirdparty/intel-ethernet-hal/`) provides unified access to I210/I219/I225/I226 features:
+- Hardware timestamping
+- Precision Time Protocol (PTP) registers
+- AVB queue configuration
+
+## Critical Development Patterns
+
+### Protocol Compliance Focus
+Always use authoritative constants from jdksavdecc library:
+```c
+#include "../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_command.h"
+// Use: JDKSAVDECC_AEM_COMMAND_READ_DESCRIPTOR  
+// NOT: hardcoded 0x0004
+```
+
+### AEM Checksum Implementation
+IEEE 1722.1 requires AEM checksums for descriptor integrity:
+```c
+// Calculate CRC32 over descriptor excluding checksum field
+uint32_t aem_checksum = calculate_aem_checksum(descriptor, sizeof(descriptor), 
+                                              offsetof(descriptor_t, aem_checksum));
+descriptor->aem_checksum = htonl(aem_checksum);
+```
+
+### Testing Framework Integration
+Use the unified testing framework (`testing/unified/`) for hardware validation:
+```powershell
+# Run all adapter tests
+./testing/unified/generic_adapter_testing_framework.ps1 -SaveResults -Verbose
+
+# Test specific hardware
+./testing/unified/generic_adapter_testing_framework.ps1 -AdapterFilter "I225" -TestPhase "timestamp"
+```
+
+## Project-Specific Conventions
+
+### Documentation Lifecycle Management
+- **Active tasks**: Update `docs/TODO.md` when starting work
+- **Completed features**: Move documentation to `docs/completed/`
+- **Obsolete content**: Archive to `docs/archive/`
+- **Status tracking**: Use `PROJECT_OVERVIEW.md` for high-level status
+
+### Hardware-First Validation
+Never mark features as "complete" without real hardware testing. The project has specific Intel NIC hardware requirements (I210/I219/I225/I226) and requires actual network synchronization validation.
+
+### VS Code Task Integration
+The project provides comprehensive VS Code tasks for all major operations:
+- Build tasks for different configurations (Debug/Release/RelWithDebInfo)
+- Hardware-specific tests (Intel adapter types)
+- Daemon lifecycle management (start/stop/configure)
+- Testing phases (detection/register/timestamp/gPTP/performance)
+
+## AVDECC Entity Development
+
+### Protocol Compliance Requirements
+When developing AVDECC entities for Hive-AVDECC compatibility:
+1. Use jdksavdecc constants for all command/descriptor types
+2. Implement proper AEM checksums using CRC32
+3. Handle available_index increment correctly (only on state change)
+4. Support Milan extensions (command 0x004b GET_DYNAMIC_INFO)
+5. Include all mandatory descriptors (ENTITY, CONFIGURATION, STREAM_INPUT/OUTPUT, AVB_INTERFACE)
+
+### Testing with Real Controllers
+Examples include realistic implementations:
+- `examples/hive_compatible_avdecc_entity.c` - Hive-AVDECC validated entity
+- `examples/professional_avdecc_entity.c` - Production-grade implementation
+- `examples/raw_ethernet_avdecc_entity.c` - Low-level packet handling
+
+## Cross-Platform Considerations
+
+### Windows-Specific Requirements
+- Requires PCAP (Npcap recommended, WinPcap legacy support)
+- Use PowerShell for automation scripts
+- Intel driver compatibility critical for hardware timestamping
+
+### Linux Requirements  
+- Requires libpcap-dev, libpci-dev for hardware access
+- Use bash scripts for automation
+- Kernel module support for Intel drivers
+
+## Integration Points
+
+### External Dependencies
+- **GStreamer**: Media processing pipeline integration
+- **PCAP**: Network packet capture (cross-platform)
+- **CppUTest**: Unit testing framework
+- **L-Acoustics AVDECC**: Modern AVDECC protocol stack
+
+### Cross-Component Communication
+- gPTP provides time base for AVTP streams
+- MAAP allocates multicast addresses for streams  
+- MRP reserves bandwidth for AVB streams
+- AVDECC provides device discovery and control
+
+## Development Workflow
+
+1. **Setup**: Initialize git submodules (`git submodule update --init --recursive`)
+2. **Configure**: Create build directory and run CMake with appropriate options
+3. **Build**: Use cmake --build for cross-platform compilation
+4. **Test**: Run unified testing framework before claiming completion
+5. **Document**: Update status in PROJECT_OVERVIEW.md and move docs appropriately
+
+## Performance Expectations
+
+**gPTP Synchronization**: ±80ns accuracy target (Milan: stricter requirements)
+**AVTP Latency**: Sub-millisecond for real-time audio
+**Memory Usage**: Stable allocation patterns for long-running daemons
+**CPU Usage**: Minimal impact on host system performance
+
+## Essential Testing & Validation Rules
+
+### Real-World Hardware Testing Required
+Never mark features as "complete" without testing on actual Intel hardware (I210/I219/I225/I226). Use the unified testing framework in `testing/unified/` which provides comprehensive validation across all adapter types.
+
+### Documentation Lifecycle
+- **TODO tracking**: Use `docs/TODO.md` for active work items
+- **Completion**: Move finished work documentation to `docs/completed/`
+- **Archive**: Move obsolete documentation to `docs/archive/`
+- **Insights**: Document lessons learned in `docs/insights/` to prevent recurring issues
+
+### No Mocking for Integration Tests
+Do not use mock or simulated data for integration testing - OpenAvnu requires real hardware validation for network synchronization, timestamping, and protocol compliance.
+
+### Verify All Assumptions
+Always verify behavior through testing, logs, or direct inspection. If unclear - investigate until confirmed. Document findings in `docs/insights/` for future reference.
