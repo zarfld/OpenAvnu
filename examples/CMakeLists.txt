@@ -90,15 +90,24 @@ if(PCAP_FOUND)
         ../lib/Standards
     )
     
+    # Use the proper PCAP libraries from the main project's detection
     target_link_libraries(intel_pcap_avdecc_entity_responsive PRIVATE 
         ${PCAP_LIBRARIES}
     )
+    
+    # Add explicit library directory for linker
+    if(WIN32 AND PCAP_LIBRARY_DIRS)
+        target_link_directories(intel_pcap_avdecc_entity_responsive PRIVATE 
+            ${PCAP_LIBRARY_DIRS}
+        )
+    endif()
     
     if(WIN32)
         target_compile_definitions(intel_pcap_avdecc_entity_responsive PRIVATE _CRT_SECURE_NO_WARNINGS)
     endif()
     
     message(STATUS "   📍 Your working AVDECC entity: intel_pcap_avdecc_entity_responsive.exe")
+    message(STATUS "   🔗 Using PCAP: ${PCAP_TYPE} (${PCAP_LIBRARIES})")
 endif()
 
 # IEEE 1722-2016 Demo executable
