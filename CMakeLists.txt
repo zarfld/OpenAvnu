@@ -273,7 +273,10 @@ add_subdirectory("daemons/shaper")
 add_subdirectory("lib/avtp_pipeline/tests")
 
 # Add IEEE Standards implementation library
-add_subdirectory("lib/Standards")
+# TEMPORARILY DISABLED due to Windows MSVC compatibility issues with __attribute__((packed))
+# The working AVDECC entity (intel_pcap_avdecc_entity_responsive.cpp) doesn't need these
+# TODO: Fix Windows compatibility in IEEE standards files later
+# add_subdirectory("lib/Standards")
 
 # Add Open1722 wrapper if enabled
 if(OPENAVNU_USE_OPEN1722)

@@ -77,11 +77,37 @@ endif()
 
 message(STATUS "🚀 Examples configuration complete")
 
-# IEEE 1722-2016 Demo executable
-add_executable(ieee_1722_2016_demo
-    ieee_standards_integration_demo.cpp
-)
+# Intel PCAP AVDECC Entity (Your working implementation) 
+# Build the improved responsive entity that we just fixed
+if(PCAP_FOUND)
+    message(STATUS "✅ Building your improved Intel PCAP AVDECC Entity")
+    add_executable(intel_pcap_avdecc_entity_responsive
+        ../lib/Standards/intel_pcap_avdecc_entity_responsive.cpp
+    )
+    
+    target_include_directories(intel_pcap_avdecc_entity_responsive PRIVATE 
+        ${PCAP_INCLUDE_DIRS}
+        ../lib/Standards
+    )
+    
+    target_link_libraries(intel_pcap_avdecc_entity_responsive PRIVATE 
+        ${PCAP_LIBRARIES}
+    )
+    
+    if(WIN32)
+        target_compile_definitions(intel_pcap_avdecc_entity_responsive PRIVATE _CRT_SECURE_NO_WARNINGS)
+    endif()
+    
+    message(STATUS "   📍 Your working AVDECC entity: intel_pcap_avdecc_entity_responsive.exe")
+endif()
 
-target_link_libraries(ieee_1722_2016_demo PRIVATE ieee_1722_2016_avtp)
-target_include_directories(ieee_1722_2016_demo PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Standards)
-target_compile_features(ieee_1722_2016_demo PRIVATE cxx_std_17)
+# IEEE 1722-2016 Demo executable
+# TEMPORARILY DISABLED - depends on IEEE standards libraries that have Windows MSVC compatibility issues
+# TODO: Re-enable after fixing Windows compatibility in IEEE standards files
+# add_executable(ieee_1722_2016_demo
+#     ieee_standards_integration_demo.cpp
+# )
+# 
+# target_link_libraries(ieee_1722_2016_demo PRIVATE ieee_1722_2016_avtp)
+# target_include_directories(ieee_1722_2016_demo PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Standards)
+# target_compile_features(ieee_1722_2016_demo PRIVATE cxx_std_17)
