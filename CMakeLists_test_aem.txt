@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.16)
+project(test_aem_checksum)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Create test executable for AEM checksum validation
+add_executable(test_aem_checksum test_aem_checksum.cpp)
+
+# Set output directory
+set_target_properties(test_aem_checksum PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
+# Add test
+enable_testing()
+add_test(NAME aem_checksum_validation COMMAND test_aem_checksum)

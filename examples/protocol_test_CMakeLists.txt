@@ -1,0 +1,24 @@
+cmake_minimum_required(VERSION 3.12)
+project(IEEE_1722_1_2021_Protocols_Test)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Add the include directory for our standards
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../lib/Standards)
+
+# Create the test executable
+add_executable(test_1722_1_2021_protocols 
+    test_1722_1_2021_protocols.cpp
+    ../lib/Standards/1722_1-2021_clean.cpp
+)
+
+# Add compile definitions for Windows
+if(WIN32)
+    target_compile_definitions(test_1722_1_2021_protocols PRIVATE _WIN32_WINNT=0x0601)
+endif()
+
+# Link against Winsock2 on Windows
+if(WIN32)
+    target_link_libraries(test_1722_1_2021_protocols ws2_32)
+endif()

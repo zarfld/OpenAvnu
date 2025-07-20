@@ -272,6 +272,9 @@ add_subdirectory("daemons/maap")
 add_subdirectory("daemons/shaper")
 add_subdirectory("lib/avtp_pipeline/tests")
 
+# Add IEEE Standards implementation library
+add_subdirectory("lib/Standards")
+
 # Add Open1722 wrapper if enabled
 if(OPENAVNU_USE_OPEN1722)
     add_subdirectory("lib/avtp_pipeline/avtp_open1722")

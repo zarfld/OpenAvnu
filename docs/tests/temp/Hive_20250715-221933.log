@@ -1,0 +1,92 @@
+2025-07-15 - 21:57:14	Hive	Info	Settings location: C:/Users/zarfld/AppData/Roaming/KikiSoft/Hive-1.3.ini
+2025-07-15 - 21:57:14	Generic	Info	Using wpcap.dll: Npcap version 1.82, based on libpcap version 1.10.5
+2025-07-15 - 21:57:15	Generic	Info	Using wpcap.dll: Npcap version 1.82, based on libpcap version 1.10.5
+2025-07-15 - 21:57:15	Controller	Info	[0x480bb2d96ad30082] Controller automatic discovery delay set to 5000 msec
+2025-07-15 - 21:57:15	Controller	Info	[0x480bb2d96ad30082] AEM-CACHE Enabled
+2025-07-15 - 21:57:15	Controller	Info	[0x480bb2d96ad30082] Controller advertising enabled
+2025-07-15 - 21:57:15	Hive	Info	A new update has been found
+2025-07-15 - 21:57:16	Controller	Warning	[0x480bb2fffed96ad2] Too many timeouts for Milan mandatory command: GET_DYNAMIC_INFO
+2025-07-15 - 21:57:16	Controller	Warning	[0x480bb2fffed96ad2] Downgrading Milan compatibility version from 1.2.0.0 to 1.0.0.0
+2025-07-15 - 21:57:17	Json Serializer	Warning	Unknown Enum value: 0x00040000
+2025-07-15 - 21:57:17	Controller	Info	[0x480bb2fffed96ad2] AEM-CACHE: Cached model for EntityModelID 0x480bb2009f04b954
+2025-07-15 - 22:06:07	Hive	Error	Error reading from the active Network Interface
+2025-07-15 - 22:06:08	Generic	Info	Using wpcap.dll: Npcap version 1.82, based on libpcap version 1.10.5
+2025-07-15 - 22:06:08	Controller	Info	[0xc0470e167b890082] Controller automatic discovery delay set to 5000 msec
+2025-07-15 - 22:06:08	Controller	Info	[0xc0470e167b890082] AEM-CACHE Enabled
+2025-07-15 - 22:06:08	Controller	Info	[0xc0470e167b890082] Controller advertising enabled
+2025-07-15 - 22:17:25	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:17:36	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:17:40	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:17:42	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:17:44	Generic	Info	Using wpcap.dll: Npcap version 1.82, based on libpcap version 1.10.5
+2025-07-15 - 22:17:44	Controller	Info	[0x480bb2d96ad30082] Controller automatic discovery delay set to 5000 msec
+2025-07-15 - 22:17:44	Controller	Info	[0x480bb2d96ad30082] AEM-CACHE Enabled
+2025-07-15 - 22:17:44	Controller	Info	[0x480bb2d96ad30082] Controller advertising enabled
+2025-07-15 - 22:17:45	Controller	Warning	[0x480bb2fffed96ad2] Too many timeouts for Milan mandatory command: GET_DYNAMIC_INFO
+2025-07-15 - 22:17:45	Controller	Warning	[0x480bb2fffed96ad2] Downgrading Milan compatibility version from 1.2.0.0 to 1.0.0.0
+2025-07-15 - 22:17:45	Controller	Info	[0x480bb2fffed96ad2] AEM-CACHE: Loaded model for EntityModelID 0x480bb2009f04b954
+2025-07-15 - 22:17:46	Json Serializer	Warning	Unknown Enum value: 0x00040000
+2025-07-15 - 22:17:46	Controller	Info	[0x480bb2fffed96ad2] AEM-CACHE: Cached model for EntityModelID 0x480bb2009f04b954
+2025-07-15 - 22:17:46	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:17:48	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:17:51	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:17:53	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:17:55	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:17:57	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:00	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:02	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:04	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:06	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:08	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:11	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:13	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:15	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:17	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:19	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:22	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:24	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:26	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:28	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:30	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:33	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:35	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:37	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:39	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:41	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:44	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:46	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:49	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:51	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:53	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:56	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:18:58	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:00	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:02	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:05	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:08	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:10	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:12	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:14	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:15	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:16	Hive	Error	Error reading from the active Network Interface
+2025-07-15 - 22:19:16	Generic	Info	Using wpcap.dll: Npcap version 1.82, based on libpcap version 1.10.5
+2025-07-15 - 22:19:16	Controller	Info	[0xc0470e167b890082] Controller automatic discovery delay set to 5000 msec
+2025-07-15 - 22:19:16	Controller	Info	[0xc0470e167b890082] AEM-CACHE Enabled
+2025-07-15 - 22:19:16	Controller	Info	[0xc0470e167b890082] Controller advertising enabled
+2025-07-15 - 22:19:17	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:19	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:19	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:21	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:21	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:24	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:24	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:27	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:27	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:29	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:29	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:31	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:31	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:34	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:34	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error
+2025-07-15 - 22:19:52	Controller State Machine	Info	[0x41001b21430e167b] Entity ADP field incoherently changed (available_index should always increment). Consider it a different entity by simulating offline/online
+2025-07-15 - 22:19:52	Controller	Error	[0x41001b21430e167b] Got Fatal Enumeration Error

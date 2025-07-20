@@ -1,0 +1,377 @@
+{
+    "SystemInfo":  {
+                       "Version":  "10.0.22631",
+                       "Caption":  "Microsoft Windows 11 Enterprise",
+                       "IsWindows10":  false,
+                       "SupportsAdvancedFeatures":  true,
+                       "Architecture":  "64-Bit",
+                       "IsWindows11":  true,
+                       "BuildNumber":  "22631"
+                   },
+    "TestsRun":  29,
+    "SuccessRate":  100,
+    "WindowsVersion":  "Microsoft Windows 11 Enterprise",
+    "Phases":  [
+                   {
+                       "TestsRun":  4,
+                       "TestsPassed":  4,
+                       "Name":  "Detection",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759200619)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759200634)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  151592,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  15,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  1.7545370370370371E-07,
+                                        "TotalHours":  4.2108888888888884E-06,
+                                        "TotalMilliseconds":  15.1592,
+                                        "TotalMinutes":  0.00025265333333333336,
+                                        "TotalSeconds":  0.0151592
+                                    }
+                   },
+                   {
+                       "TestsRun":  1,
+                       "TestsPassed":  1,
+                       "Name":  "RegisterAccess",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759200652)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759200696)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  440985,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  44,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  5.103993055555555E-07,
+                                        "TotalHours":  1.2249583333333332E-05,
+                                        "TotalMilliseconds":  44.0985,
+                                        "TotalMinutes":  0.000734975,
+                                        "TotalSeconds":  0.0440985
+                                    }
+                   },
+                   {
+                       "TestsRun":  2,
+                       "TestsPassed":  2,
+                       "Name":  "Timestamping",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759200700)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759200708)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  80006,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  8,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  9.2599537037037028E-08,
+                                        "TotalHours":  2.2223888888888887E-06,
+                                        "TotalMilliseconds":  8.0006,
+                                        "TotalMinutes":  0.00013334333333333333,
+                                        "TotalSeconds":  0.0080006
+                                    }
+                   },
+                   {
+                       "TestsRun":  3,
+                       "TestsPassed":  3,
+                       "Name":  "VLAN",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759200711)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759200729)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  180037,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  18,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  2.0837615740740739E-07,
+                                        "TotalHours":  5.0010277777777773E-06,
+                                        "TotalMilliseconds":  18.003700000000002,
+                                        "TotalMinutes":  0.00030006166666666665,
+                                        "TotalSeconds":  0.018003699999999997
+                                    }
+                   },
+                   {
+                       "TestsRun":  3,
+                       "TestsPassed":  3,
+                       "Name":  "QoS",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759200732)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759200741)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  89989,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  8,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  1.0415393518518518E-07,
+                                        "TotalHours":  2.4996944444444443E-06,
+                                        "TotalMilliseconds":  8.9989,
+                                        "TotalMinutes":  0.00014998166666666668,
+                                        "TotalSeconds":  0.0089988999999999989
+                                    }
+                   },
+                   {
+                       "TestsRun":  3,
+                       "TestsPassed":  3,
+                       "Name":  "AVB",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759200743)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759200751)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  81962,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  8,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  9.4863425925925927E-08,
+                                        "TotalHours":  2.2767222222222221E-06,
+                                        "TotalMilliseconds":  8.196200000000001,
+                                        "TotalMinutes":  0.00013660333333333333,
+                                        "TotalSeconds":  0.008196199999999999
+                                    }
+                   },
+                   {
+                       "TestsRun":  2,
+                       "TestsPassed":  2,
+                       "Name":  "gPTP",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759200753)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759200759)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  50172,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  5,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  5.8069444444444439E-08,
+                                        "TotalHours":  1.3936666666666667E-06,
+                                        "TotalMilliseconds":  5.0172,
+                                        "TotalMinutes":  8.362E-05,
+                                        "TotalSeconds":  0.0050171999999999994
+                                    }
+                   },
+                   {
+                       "TestsRun":  2,
+                       "TestsPassed":  2,
+                       "Name":  "Performance",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759200762)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:33:20"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759516845)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:38:36"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  3160838470,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  83,
+                                        "Minutes":  5,
+                                        "Seconds":  16,
+                                        "TotalDays":  0.0036583778587962962,
+                                        "TotalHours":  0.0878010686111111,
+                                        "TotalMilliseconds":  316083.847,
+                                        "TotalMinutes":  5.2680641166666664,
+                                        "TotalSeconds":  316.083847
+                                    }
+                   },
+                   {
+                       "TestsRun":  3,
+                       "TestsPassed":  3,
+                       "Name":  "VLAN",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759516848)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:38:36"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759516864)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:38:36"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  159991,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  15,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  1.8517476851851852E-07,
+                                        "TotalHours":  4.4441944444444444E-06,
+                                        "TotalMilliseconds":  15.9991,
+                                        "TotalMinutes":  0.00026665166666666666,
+                                        "TotalSeconds":  0.0159991
+                                    }
+                   },
+                   {
+                       "TestsRun":  3,
+                       "TestsPassed":  3,
+                       "Name":  "QoS",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759516866)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:38:36"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759516912)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:38:36"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  454138,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  45,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  5.2562268518518514E-07,
+                                        "TotalHours":  1.2614944444444444E-05,
+                                        "TotalMilliseconds":  45.4138,
+                                        "TotalMinutes":  0.00075689666666666671,
+                                        "TotalSeconds":  0.0454138
+                                    }
+                   },
+                   {
+                       "TestsRun":  3,
+                       "TestsPassed":  3,
+                       "Name":  "AVB",
+                       "StartTime":  {
+                                         "value":  "\/Date(1752759516914)\/",
+                                         "DisplayHint":  2,
+                                         "DateTime":  "Donnerstag, 17. Juli 2025 15:38:36"
+                                     },
+                       "EndTime":  {
+                                       "value":  "\/Date(1752759516919)\/",
+                                       "DisplayHint":  2,
+                                       "DateTime":  "Donnerstag, 17. Juli 2025 15:38:36"
+                                   },
+                       "Duration":  {
+                                        "Ticks":  50017,
+                                        "Days":  0,
+                                        "Hours":  0,
+                                        "Milliseconds":  5,
+                                        "Minutes":  0,
+                                        "Seconds":  0,
+                                        "TotalDays":  5.7890046296296293E-08,
+                                        "TotalHours":  1.3893611111111111E-06,
+                                        "TotalMilliseconds":  5.0017000000000005,
+                                        "TotalMinutes":  8.3361666666666672E-05,
+                                        "TotalSeconds":  0.0050016999999999995
+                                    }
+                   }
+               ],
+    "Adapters":  [
+                     {
+                         "Status":  "Up",
+                         "InstanceId":  "PCI\\VEN_8086\u0026DEV_0DC7\u0026SUBSYS_0C421028\u0026REV_11\\3\u002611583659\u00260\u0026FE",
+                         "Name":  "Ethernet",
+                         "Description":  "Intel(R) Ethernet Connection (22) I219-LM",
+                         "Family":  "I219",
+                         "LinkSpeed":  "1 Gbps",
+                         "MacAddress":  "C0-47-0E-16-7B-89",
+                         "SupportsAdvancedFeatures":  true,
+                         "DeviceId":  "0x0DC7",
+                         "Capabilities":  [
+                                              "BASIC_1588",
+                                              "MDIO",
+                                              "NATIVE_OS",
+                                              "VLAN_FILTER",
+                                              "QOS_PRIORITY",
+                                              "AVB_SHAPING",
+                                              "ADVANCED_QOS"
+                                          ],
+                         "TestProfile":  "MDIO_Access_Enhanced",
+                         "SupportsHardwareTimestamp":  true,
+                         "DriverVersion":  "12.19.2.60"
+                     }
+                 ],
+    "Errors":  [
+
+               ],
+    "TestsPassed":  29,
+    "StartTime":  {
+                      "value":  "\/Date(1752759196553)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Donnerstag, 17. Juli 2025 15:33:16"
+                  },
+    "EndTime":  {
+                    "value":  "\/Date(1752759517012)\/",
+                    "DisplayHint":  2,
+                    "DateTime":  "Donnerstag, 17. Juli 2025 15:38:37"
+                },
+    "Duration":  {
+                     "Ticks":  3204586372,
+                     "Days":  0,
+                     "Hours":  0,
+                     "Milliseconds":  458,
+                     "Minutes":  5,
+                     "Seconds":  20,
+                     "TotalDays":  0.0037090120046296294,
+                     "TotalHours":  0.0890162881111111,
+                     "TotalMilliseconds":  320458.6372,
+                     "TotalMinutes":  5.3409772866666669,
+                     "TotalSeconds":  320.4586372
+                 },
+    "TestsFailed":  0
+}

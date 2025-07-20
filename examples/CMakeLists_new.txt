@@ -1,0 +1,78 @@
+# OpenAvnu Examples CMakeLists.txt
+# Modern CMake configuration for examples that use PCAP
+
+cmake_minimum_required(VERSION 3.10)
+project(OpenAvnuExamples)
+
+# Use the same PCAP detection as the main project
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
+include(FindPCAP)
+
+# AVDECC Protocol Compliance Test (no PCAP dependency)
+# This tests that our refactored AVDECC constants work correctly
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_command.h")
+    message(STATUS "🔧 Building AVDECC protocol compliance test")
+    
+    # Test executable to verify AVDECC constants resolve correctly
+    add_executable(test_avdecc_constants test_avdecc_constants.c)
+    target_include_directories(test_avdecc_constants PRIVATE ../avdecc-lib/jdksavdecc-c/include)
+    
+    # Create a simplified test file to verify AVDECC protocol constants compile
+    file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/test_protocol_compliance.c" "
+#include <stdio.h>
+#include <jdksavdecc_aem_command.h>
+#include <jdksavdecc_aem_descriptor.h>
+
+int main() {
+    printf(\"✅ AVDECC Protocol Compliance Test\\n\");
+    printf(\"REGISTER_UNSOLICITED_NOTIFICATION: 0x%04X\\n\", JDKSAVDECC_AEM_COMMAND_REGISTER_UNSOLICITED_NOTIFICATION);
+    printf(\"DEREGISTER_UNSOLICITED_NOTIFICATION: 0x%04X\\n\", JDKSAVDECC_AEM_COMMAND_DEREGISTER_UNSOLICITED_NOTIFICATION);
+    printf(\"ENTITY descriptor: 0x%04X\\n\", JDKSAVDECC_DESCRIPTOR_ENTITY);
+    printf(\"CONFIGURATION descriptor: 0x%04X\\n\", JDKSAVDECC_DESCRIPTOR_CONFIGURATION);
+    printf(\"All AVDECC protocol constants are accessible!\\n\");
+    return 0;
+}
+")
+    
+    add_executable(test_protocol_compliance "${CMAKE_CURRENT_BINARY_DIR}/test_protocol_compliance.c")
+    target_include_directories(test_protocol_compliance PRIVATE ../avdecc-lib/jdksavdecc-c/include)
+    
+    # Build the REAL Hive Compatible AVDECC Entity executable using main project's PCAP detection
+    if(PCAP_FOUND)
+        message(STATUS "✅ Using main project's PCAP detection - building hive_compatible_avdecc_entity.exe")
+        message(STATUS "   PCAP Type: ${PCAP_TYPE}")
+        message(STATUS "   PCAP Include: ${PCAP_INCLUDE_DIRS}")
+        message(STATUS "   PCAP Libraries: ${PCAP_LIBRARIES}")
+        
+        add_executable(hive_compatible_avdecc_entity hive_compatible_avdecc_entity.c)
+        target_include_directories(hive_compatible_avdecc_entity PRIVATE 
+            ../avdecc-lib/jdksavdecc-c/include
+            ${PCAP_INCLUDE_DIRS}
+        )
+        target_link_libraries(hive_compatible_avdecc_entity ${PCAP_LIBRARIES})
+        
+        if(WIN32)
+            target_link_libraries(hive_compatible_avdecc_entity ws2_32 iphlpapi)
+            if(PCAP_LIBRARY_DIRS)
+                target_link_directories(hive_compatible_avdecc_entity PRIVATE ${PCAP_LIBRARY_DIRS})
+            endif()
+        endif()
+        
+        message(STATUS "✅ Real AVDECC entity will be built at: hive_compatible_avdecc_entity.exe")
+    else()
+        message(STATUS "⚠️  PCAP not found by main project - cannot build real hive_compatible_avdecc_entity.exe")
+        message(STATUS "   Install Npcap SDK or WinPcap Developer Pack and reconfigure main project")
+    endif()
+    
+    message(STATUS "✅ AVDECC protocol compliance tests configured")
+else()
+    message(STATUS "⚠️  jdksavdecc headers not found - skipping AVDECC protocol compliance test")
+endif()
+
+# Only build PCAP examples if PCAP is available from main project
+if(NOT PCAP_FOUND)
+    message(STATUS "⚠️  Skipping PCAP-dependent examples - PCAP library not found by main project")
+    return()
+endif()
+
+message(STATUS "🚀 Examples configuration complete")
