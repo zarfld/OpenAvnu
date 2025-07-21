@@ -34,9 +34,9 @@ Area Networks”.
  using IEEE::_1722::_2016; // AVTP Protocol Implementation
  using IEEE::_1722_1::_2021; // AVDECC Entity Model
 
- namespace AVNu {
+ namespace AVnu {
     namespace Milan {
-        namespace _1_2_2023{
+        namespace _1_2_2023 {
 
         }
     }

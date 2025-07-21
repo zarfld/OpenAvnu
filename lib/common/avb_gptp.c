@@ -4,10 +4,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <fcntl.h>
-#include <pthread.h>
+
+#ifdef _WIN32
+  #include <windows.h>
+  #include <io.h>
+  /* Windows doesn't have POSIX shared memory, use stubs for now */
+  #define HANDLE_INVALID ((void*)-1)
+#else
+  #include <unistd.h>
+  #include <sys/mman.h>
+  #include <fcntl.h>
+  #include <pthread.h>
+#endif
 
 /**
  * @brief Open the memory mapping used for IPC

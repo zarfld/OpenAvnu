@@ -130,12 +130,14 @@ endif()
 # - Your responsive AVDECC entity
 # ===================================================================
 
-if(PCAP_FOUND AND OPENAVNU_BUILD_INTEL_HAL)
+# Temporarily disable this target due to linking conflicts
+# TODO: Fix Intel driver integration and multiple main() functions
+if(FALSE AND PCAP_FOUND AND OPENAVNU_BUILD_INTEL_HAL)
     message(STATUS "🚀 Building Complete AVB Entity with Intel Filter Driver")
     
     add_executable(complete_avb_entity_with_intel_driver
         complete_avb_entity_with_intel_driver.cpp
-        ../lib/Standards/intel_pcap_avdecc_entity_responsive.cpp
+        # NOTE: Removed intel_pcap_avdecc_entity_responsive.cpp - causes duplicate main()
     )
     
     # Include directories
@@ -164,8 +166,10 @@ if(PCAP_FOUND AND OPENAVNU_BUILD_INTEL_HAL)
     message(STATUS "   📍 Complete AVB Entity: complete_avb_entity_with_intel_driver.exe")
     message(STATUS "   🔗 Integrates: gPTP + Intel Driver + AVDECC + AVTP")
     message(STATUS "   🎯 Target Hardware: Intel I210/I219/I225/I226")
+endif()
 
-    # Add the integration demonstration example
+# Add the working integration demonstration example (always enabled if PCAP found)
+if(PCAP_FOUND)
     add_executable(complete_avb_entity_integration
         complete_avb_entity_integration.cpp
     )
@@ -188,9 +192,15 @@ if(PCAP_FOUND AND OPENAVNU_BUILD_INTEL_HAL)
     )
     
     # Add gPTP library source files directly since there's no library target
-    target_sources(complete_avb_entity_integration PRIVATE
-        ${CMAKE_SOURCE_DIR}/lib/common/avb_gptp.c
-    )
+    if(WIN32)
+        target_sources(complete_avb_entity_integration PRIVATE
+            ${CMAKE_SOURCE_DIR}/lib/common/avb_gptp_windows.c
+        )
+    else()
+        target_sources(complete_avb_entity_integration PRIVATE
+            ${CMAKE_SOURCE_DIR}/lib/common/avb_gptp.c
+        )
+    endif()
     
     if(WIN32)
         target_link_directories(complete_avb_entity_integration PRIVATE 

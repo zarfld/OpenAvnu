@@ -276,6 +276,7 @@ add_subdirectory("lib/avtp_pipeline/tests")
 # TEMPORARILY DISABLED due to Windows MSVC compatibility issues with __attribute__((packed))
 # The working AVDECC entity (intel_pcap_avdecc_entity_responsive.cpp) doesn't need these
 # TODO: Fix Windows compatibility in IEEE standards files later
+# TODO: Fix IEEE Standards library Windows compilation errors  
 # add_subdirectory("lib/Standards")
 
 # Add Open1722 wrapper if enabled

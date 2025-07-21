@@ -54,6 +54,7 @@ typedef struct pcap_if pcap_if_t;
 #include <thread>
 #include <atomic>
 #include <chrono>
+#include <vector>                                       // For std::vector
 #include <cstring>  // for std::memcpy, std::memset
 
 // Include your existing components
@@ -79,42 +80,17 @@ typedef struct pcap_if pcap_if_t;
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "wpcap.lib")
 
-// gPTP interface declarations (from lib/common/avb_gptp.h)
-typedef long double FrequencyRatio;
-
-typedef struct {
-    int64_t ml_phoffset;
-    int64_t ls_phoffset;
-    FrequencyRatio ml_freqoffset;
-    FrequencyRatio ls_freqoffset;
-    uint64_t local_time;
-    
-    /* Current grandmaster information */
-    uint8_t gptp_grandmaster_id[8];
-    uint8_t gptp_domain_number;
-    
-    /* Grandmaster support for the network interface */
-    uint8_t  clock_identity[8];
-    uint8_t  priority1;
-    uint8_t  clock_class;
-    int16_t  offset_scaled_log_variance;
-    uint8_t  clock_accuracy;
-    uint8_t  priority2;
-    uint8_t  domain_number;
-    int8_t   log_sync_interval;
-    int8_t   log_announce_interval;
-    int8_t   log_pdelay_interval;
-    uint16_t port_number;
-} gPtpTimeData;
-
-// gPTP function declarations
-extern "C" {
-    int gptpinit(int *shm_fd, char **shm_map);
-    int gptpdeinit(int *shm_fd, char **shm_map);
-    int gptpgetdata(char *shm_mmap, gPtpTimeData *td);
-    bool gptplocaltime(const gPtpTimeData * td, uint64_t* now_local);
+// Namespace aliases for IEEE standards
+namespace avtp_protocol {
+    namespace ieee_1722_2016 {
+        enum AudioFormat { MILAN_PCM = 0x02 };
+        enum SampleRate { RATE_48KHZ = 48000 };
+        enum Subtype { AAF = 0x02 };
+        const uint8_t AVTP_VERSION_2016 = 0x00;
+    }
 }
 
+// gPTP integration is handled via the included avb_gptp.h header
 // Forward declarations for gPTP integration
 namespace gptp_integration {
     bool initialize_gptp_daemon(const std::string& interface_name);
@@ -171,8 +147,41 @@ private:
         uint8_t sequence_number = 0;
     } avtp_state_;
     
+    // AVTP Audio Stream (for IEEE 1722-2016 streaming)
+    struct AudioStream {
+        uint8_t stream_id[8];
+        uint8_t format;
+        uint32_t nominal_sample_rate;
+        uint8_t channels;
+        uint8_t bit_depth;
+        uint32_t samples_per_frame;
+        uint8_t subtype;
+        bool stream_valid;
+        uint8_t version;
+        bool tv;
+        uint32_t avtp_timestamp;
+        std::vector<uint8_t> payload;
+        uint16_t stream_data_length;
+        uint8_t sequence_num;
+        
+        void serialize(uint8_t* buffer, size_t& size) {
+            // Basic AVTP packet serialization
+            size = 0;
+            if (buffer) {
+                // Simplified serialization for demo
+                size = stream_data_length + 24; // AVTP header + payload
+            }
+        }
+    };
+    std::unique_ptr<AudioStream> audio_stream_;
+    
 public:
-    CompleteAVBEntity() : running_(false), streaming_active_(false), pcap_handle_(nullptr) {}
+    CompleteAVBEntity() : running_(false), streaming_active_(false), pcap_handle_(nullptr) {
+        // Initialize audio stream
+        audio_stream_ = std::make_unique<AudioStream>();
+        audio_stream_->payload.resize(1500); // Max ethernet payload
+        audio_stream_->sequence_num = 0;
+    }
 
     ~CompleteAVBEntity() {
         shutdown();

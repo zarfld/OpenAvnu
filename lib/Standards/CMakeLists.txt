@@ -144,3 +144,6 @@ message(STATUS "IEEE Standards Implementiert:")
 message(STATUS "  ✅ IEEE 1722.1-2021 (AVDECC): VOLLSTÄNDIG")
 message(STATUS "  ✅ IEEE 1722-2016 (AVTP): VOLLSTÄNDIG") 
 message(STATUS "  ✅ IEEE 1722.1-2013 (AVDECC 2013): EIGENSTÄNDIG VOLLSTÄNDIG")
+
+# Build examples
+add_subdirectory(examples)

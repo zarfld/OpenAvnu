@@ -7,6 +7,12 @@
     <ClCompile Include="D:\Repos\OpenAvnu\lib\Standards\ieee_1722_1_2021_complete_entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\Standards\ieee_1722_1_2021_aecp_windows_compatible.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Repos\OpenAvnu\lib\Standards\ieee_1722_1_2021_acmp_implementation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Repos\OpenAvnu\lib\Standards\1722_1-2021_clean.h">

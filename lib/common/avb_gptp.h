@@ -35,9 +35,15 @@ typedef struct {
 	uint16_t port_number;					/* The portNumber field of the interface, or 0x0000 if not supported */
 } gPtpTimeData;
 
-/*TODO fix this*/
-#ifndef false
+/* C++ compatibility - don't redefine bool in C++ */
+#ifdef __cplusplus
+extern "C" {
+#else
+/* Define bool for C if not already defined */
+#ifndef __bool_true_false_are_defined
 typedef enum { false = 0, true = 1 } bool;
+#define __bool_true_false_are_defined 1
+#endif
 #endif
 
 int gptpinit(int *shm_fd, char **shm_map);
@@ -46,5 +52,9 @@ int gptpgetdata(char *shm_mmap, gPtpTimeData *td);
 int gptpscaling(char *shm_mmap, gPtpTimeData *td);
 bool gptplocaltime(const gPtpTimeData * td, uint64_t* now_local);
 bool gptpmaster2local(const gPtpTimeData *td, const uint64_t master, uint64_t *local);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
