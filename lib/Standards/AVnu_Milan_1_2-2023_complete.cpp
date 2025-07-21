@@ -208,6 +208,132 @@ bool GetMilanInfoResponse::deserialize(const std::vector<uint8_t>& data) {
 }
 
 // ============================================================================
+// SetSystemUniqueIdCommand Implementation
+// ============================================================================
+
+SetSystemUniqueIdCommand::SetSystemUniqueIdCommand()
+    : command_type(static_cast<uint16_t>(MilanMVUCommandType::SET_SYSTEM_UNIQUE_ID))
+    , reserved(0)
+    , protocol_identifier(MILAN_MVU_PROTOCOL_ID)
+    , system_unique_id(0) {
+}
+
+bool SetSystemUniqueIdCommand::serialize(std::vector<uint8_t>& data) const {
+    data.clear();
+    data.reserve(20);  // Expected size
+    
+    // Serialize in network byte order
+    data.push_back((command_type >> 8) & 0xFF);
+    data.push_back(command_type & 0xFF);
+    data.push_back((reserved >> 8) & 0xFF);
+    data.push_back(reserved & 0xFF);
+    
+    // Protocol identifier (8 bytes)
+    for (int i = 7; i >= 0; --i) {
+        data.push_back((protocol_identifier >> (i * 8)) & 0xFF);
+    }
+    
+    // System unique ID (8 bytes)
+    for (int i = 7; i >= 0; --i) {
+        data.push_back((system_unique_id >> (i * 8)) & 0xFF);
+    }
+    
+    return true;
+}
+
+bool SetSystemUniqueIdCommand::deserialize(const std::vector<uint8_t>& data) {
+    if (data.size() < 20) {
+        return false;
+    }
+    
+    size_t idx = 0;
+    
+    // Deserialize from network byte order
+    command_type = (static_cast<uint16_t>(data[idx]) << 8) | data[idx + 1];
+    idx += 2;
+    reserved = (static_cast<uint16_t>(data[idx]) << 8) | data[idx + 1];
+    idx += 2;
+    
+    // Protocol identifier (8 bytes)
+    protocol_identifier = 0;
+    for (int i = 0; i < 8; ++i) {
+        protocol_identifier = (protocol_identifier << 8) | data[idx + i];
+    }
+    idx += 8;
+    
+    // System unique ID (8 bytes)
+    system_unique_id = 0;
+    for (int i = 0; i < 8; ++i) {
+        system_unique_id = (system_unique_id << 8) | data[idx + i];
+    }
+    
+    return true;
+}
+
+// ============================================================================
+// GetSystemUniqueIdResponse Implementation
+// ============================================================================
+
+GetSystemUniqueIdResponse::GetSystemUniqueIdResponse()
+    : command_type(static_cast<uint16_t>(MilanMVUCommandType::GET_SYSTEM_UNIQUE_ID) | 0x8000)
+    , status(0)
+    , protocol_identifier(MILAN_MVU_PROTOCOL_ID)
+    , system_unique_id(0) {
+}
+
+bool GetSystemUniqueIdResponse::serialize(std::vector<uint8_t>& data) const {
+    data.clear();
+    data.reserve(20);  // Expected size
+    
+    // Serialize in network byte order
+    data.push_back((command_type >> 8) & 0xFF);
+    data.push_back(command_type & 0xFF);
+    data.push_back((status >> 8) & 0xFF);
+    data.push_back(status & 0xFF);
+    
+    // Protocol identifier (8 bytes)
+    for (int i = 7; i >= 0; --i) {
+        data.push_back((protocol_identifier >> (i * 8)) & 0xFF);
+    }
+    
+    // System unique ID (8 bytes)
+    for (int i = 7; i >= 0; --i) {
+        data.push_back((system_unique_id >> (i * 8)) & 0xFF);
+    }
+    
+    return true;
+}
+
+bool GetSystemUniqueIdResponse::deserialize(const std::vector<uint8_t>& data) {
+    if (data.size() < 20) {
+        return false;
+    }
+    
+    size_t idx = 0;
+    
+    // Deserialize from network byte order
+    command_type = (static_cast<uint16_t>(data[idx]) << 8) | data[idx + 1];
+    idx += 2;
+    status = (static_cast<uint16_t>(data[idx]) << 8) | data[idx + 1];
+    idx += 2;
+    
+    // Protocol identifier (8 bytes)
+    protocol_identifier = 0;
+    for (int i = 0; i < 8; ++i) {
+        protocol_identifier = (protocol_identifier << 8) | data[idx + i];
+    }
+    idx += 8;
+    
+    // System unique ID (8 bytes)
+    system_unique_id = 0;
+    for (int i = 0; i < 8; ++i) {
+        system_unique_id = (system_unique_id << 8) | data[idx + i];
+    }
+    
+    return true;
+}
+
+// ============================================================================
 // MilanPAADEntity Implementation
 // ============================================================================
 
