@@ -120,3 +120,50 @@ endif()
 # target_link_libraries(ieee_1722_2016_demo PRIVATE ieee_1722_2016_avtp)
 # target_include_directories(ieee_1722_2016_demo PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Standards)
 # target_compile_features(ieee_1722_2016_demo PRIVATE cxx_std_17)
+
+# ===================================================================
+# Complete AVB Entity with Intel Filter Driver Integration
+# ===================================================================
+# This demonstrates integration of:
+# - Your gPTP submodule (thirdparty/gptp)
+# - Your Intel AVB filter driver (lib/intel_avb/lib/)  
+# - Your responsive AVDECC entity
+# ===================================================================
+
+if(PCAP_FOUND AND OPENAVNU_BUILD_INTEL_HAL)
+    message(STATUS "🚀 Building Complete AVB Entity with Intel Filter Driver")
+    
+    add_executable(complete_avb_entity_with_intel_driver
+        complete_avb_entity_with_intel_driver.cpp
+        ../lib/Standards/intel_pcap_avdecc_entity_responsive.cpp
+    )
+    
+    # Include directories
+    target_include_directories(complete_avb_entity_with_intel_driver PRIVATE 
+        ${PCAP_INCLUDE_DIRS}
+        ../lib/intel_avb/lib
+        ../lib/Standards
+        ../avdecc-lib/jdksavdecc-c/include
+        ../thirdparty/intel-ethernet-hal/include
+    )
+    
+    # Link libraries
+    target_link_libraries(complete_avb_entity_with_intel_driver PRIVATE 
+        ${PCAP_LIBRARIES}
+        intel-ethernet-hal-static
+    )
+    
+    # Add library directories for Windows
+    if(WIN32 AND PCAP_LIBRARY_DIRS)
+        target_link_directories(complete_avb_entity_with_intel_driver PRIVATE 
+            ${PCAP_LIBRARY_DIRS}
+        )
+        target_compile_definitions(complete_avb_entity_with_intel_driver PRIVATE _CRT_SECURE_NO_WARNINGS)
+    endif()
+    
+    message(STATUS "   📍 Complete AVB Entity: complete_avb_entity_with_intel_driver.exe")
+    message(STATUS "   🔗 Integrates: gPTP + Intel Driver + AVDECC + AVTP")
+    message(STATUS "   🎯 Target Hardware: Intel I210/I219/I225/I226")
+else()
+    message(STATUS "⏭️  Skipping Complete AVB Entity (requires PCAP + Intel HAL)")
+endif()
