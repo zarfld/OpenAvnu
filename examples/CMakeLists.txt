@@ -164,6 +164,84 @@ if(PCAP_FOUND AND OPENAVNU_BUILD_INTEL_HAL)
     message(STATUS "   📍 Complete AVB Entity: complete_avb_entity_with_intel_driver.exe")
     message(STATUS "   🔗 Integrates: gPTP + Intel Driver + AVDECC + AVTP")
     message(STATUS "   🎯 Target Hardware: Intel I210/I219/I225/I226")
+
+    # Add the integration demonstration example
+    add_executable(complete_avb_entity_integration
+        complete_avb_entity_integration.cpp
+    )
+    
+    target_include_directories(complete_avb_entity_integration PRIVATE 
+        ${PCAP_INCLUDE_DIRS}
+        ${CMAKE_SOURCE_DIR}/lib/Standards
+        ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib
+        ${CMAKE_SOURCE_DIR}/lib/common
+        ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+        ${CMAKE_SOURCE_DIR}/thirdparty/gptp
+        ${CMAKE_SOURCE_DIR}/thirdparty/open1722/include
+    )
+    
+    target_link_libraries(complete_avb_entity_integration PRIVATE 
+        ${PCAP_LIBRARIES}
+        intel-ethernet-hal-static
+        wsock32
+        ws2_32
+    )
+    
+    # Add gPTP library source files directly since there's no library target
+    target_sources(complete_avb_entity_integration PRIVATE
+        ${CMAKE_SOURCE_DIR}/lib/common/avb_gptp.c
+    )
+    
+    if(WIN32)
+        target_link_directories(complete_avb_entity_integration PRIVATE 
+            ${PCAP_LIBRARY_DIRS}
+        )
+        target_compile_definitions(complete_avb_entity_integration PRIVATE _CRT_SECURE_NO_WARNINGS)
+    endif()
+    
+    message(STATUS "   📍 Integration Demo: complete_avb_entity_integration.exe")
+    
+    # Complete CMake-Compatible AVB Entity (with real PCAP packet transmission)
+    message(STATUS "🔧 Building Complete CMake-Compatible AVB Entity")
+    
+    add_executable(complete_cmake_avb_entity complete_avb_entity_cmake_integration.cpp)
+    
+    # Add PCAP support for real packet transmission
+    if(PCAP_FOUND)
+        message(STATUS "✅ Adding PCAP support for real packet transmission")
+        message(STATUS "   PCAP Type: ${PCAP_TYPE}")
+        message(STATUS "   PCAP Include: ${PCAP_INCLUDE_DIRS}")
+        message(STATUS "   PCAP Libraries: ${PCAP_LIBRARIES}")
+        
+        target_include_directories(complete_cmake_avb_entity PRIVATE ${PCAP_INCLUDE_DIRS})
+        target_link_libraries(complete_cmake_avb_entity PRIVATE ${PCAP_LIBRARIES})
+        target_compile_definitions(complete_cmake_avb_entity PRIVATE HAVE_PCAP=1)
+        
+        if(WIN32)
+            target_link_libraries(complete_cmake_avb_entity PRIVATE 
+                wsock32
+                ws2_32
+                iphlpapi
+            )
+            if(PCAP_LIBRARY_DIRS)
+                target_link_directories(complete_cmake_avb_entity PRIVATE ${PCAP_LIBRARY_DIRS})
+            endif()
+            target_compile_definitions(complete_cmake_avb_entity PRIVATE _CRT_SECURE_NO_WARNINGS)
+        endif()
+        
+        message(STATUS "   📍 Real Packet Demo: complete_cmake_avb_entity.exe (PCAP enabled)")
+    else()
+        message(WARNING "⚠️ PCAP not found - complete_cmake_avb_entity will not send real packets")
+        if(WIN32)
+            target_link_libraries(complete_cmake_avb_entity PRIVATE 
+                wsock32
+                ws2_32
+            )
+            target_compile_definitions(complete_cmake_avb_entity PRIVATE _CRT_SECURE_NO_WARNINGS)
+        endif()
+        message(STATUS "   📍 Simulation Mode: complete_cmake_avb_entity.exe (no real packets)")
+    endif()
+    
 else()
     message(STATUS "⏭️  Skipping Complete AVB Entity (requires PCAP + Intel HAL)")
 endif()

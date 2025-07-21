@@ -50,6 +50,7 @@
 #include <chrono>
 #include <vector>
 #include <string>
+#include <cstring>
 
 // Include your Intel AVB filter driver
 #include "../lib/intel_avb/lib/intel.h"
@@ -57,6 +58,19 @@
 
 // Include PCAP for fallback network access
 #include <pcap.h>
+
+#ifndef PCAP_ERRBUF_SIZE
+#define PCAP_ERRBUF_SIZE 256
+#endif
+
+// Forward declare PCAP types if header not found
+#ifndef HAVE_PCAP_TYPES
+#ifdef _WIN32
+typedef struct pcap pcap_t;
+typedef struct pcap_if pcap_if_t;
+#endif
+#define HAVE_PCAP_TYPES
+#endif
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "wpcap.lib")
@@ -439,29 +453,44 @@ private:
         // 3. Prepare AVTP packet (simplified)
         struct avtp_audio_packet {
             // Ethernet header
-            uint8_t dest_mac[6] = {0x91, 0xe0, 0xf0, 0x01, 0x00, 0x00}; // AVB multicast
-            uint8_t src_mac[6] = {0xc0, 0x47, 0xe0, 0x16, 0x7b, 0x89};   // Entity ID based
-            uint16_t ethertype = 0x22f0; // IEEE 1722
+            uint8_t dest_mac[6];
+            uint8_t src_mac[6];
+            uint16_t ethertype;
             
             // AVTP header
-            uint8_t subtype = 0x02;      // AAF
-            uint8_t sv_version = 0x00;   // sv=0, version=0
-            uint8_t mr_tv_seq = 0x80;    // mr=1, tv=0, seq=0 (will be updated)
-            uint8_t reserved = 0x00;
-            uint64_t stream_id = stream_config_.stream_id;
-            uint32_t avtp_timestamp = (uint32_t)(presentation_time & 0xFFFFFFFF);
-            uint32_t format_info = (stream_config_.channels << 8) | stream_config_.bit_depth;
-            uint16_t packet_info = stream_config_.samples_per_frame;
+            uint8_t subtype;
+            uint8_t sv_version;
+            uint8_t mr_tv_seq;
+            uint8_t reserved;
+            uint64_t stream_id;
+            uint32_t avtp_timestamp;
+            uint32_t format_info;
+            uint16_t packet_info;
             
             // Audio data (placeholder)
             uint8_t audio_data[144]; // 6 samples * 8 channels * 3 bytes (24-bit)
         } packet;
         
+        // Initialize packet
+        std::memcpy(packet.dest_mac, "\x91\xe0\xf0\x01\x00\x00", 6); // AVB multicast
+        std::memcpy(packet.src_mac, "\xc0\x47\xe0\x16\x7b\x89", 6);   // Entity ID based
+        packet.ethertype = 0x22f0; // IEEE 1722
+        packet.subtype = 0x02;      // AAF
+        packet.sv_version = 0x00;   // sv=0, version=0
+        packet.mr_tv_seq = 0x80;    // mr=1, tv=0, seq=0 (will be updated)
+        packet.reserved = 0x00;
+        packet.stream_id = stream_config_.stream_id;
+        packet.avtp_timestamp = (uint32_t)(presentation_time & 0xFFFFFFFF);
+        packet.format_info = (stream_config_.channels << 8) | stream_config_.bit_depth;
+        packet.packet_info = stream_config_.samples_per_frame;
+        
         // 4. Send packet using Intel driver (high performance path)
         struct intel_packet intel_pkt;
-        intel_pkt.data = (uint8_t*)&packet;
+        std::memset(&intel_pkt, 0, sizeof(intel_pkt));
+        intel_pkt.vaddr = (void*)&packet;
         intel_pkt.len = sizeof(packet);
-        intel_pkt.timestamp = hw_timestamp;
+        intel_pkt.attime = hw_timestamp;
+        intel_pkt.flags = INTEL_PACKET_LAUNCHTIME;
         
         if (intel_xmit(&intel_device_, 0, &intel_pkt) == 0) {
             // Success - packet sent via Intel driver

@@ -33,7 +33,7 @@
 #include <cstdio>
 
 namespace IEEE {
-namespace _1722_1 {
+namespace _1722 {
 namespace _2021 {
 namespace StateMachines {
 

@@ -1464,6 +1464,7 @@ public:
     }
 };
 
+#ifndef INTEGRATION_MODE
 int main() {
     std::cout << "🎯 Enhanced AVDECC Entity with Full Streaming Support" << std::endl;
     std::cout << "=====================================================" << std::endl;
@@ -1504,3 +1505,4 @@ int main() {
     
     return 0;
 }
+#endif

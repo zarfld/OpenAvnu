@@ -54,12 +54,16 @@ typedef struct pcap_if pcap_if_t;
 #include <thread>
 #include <atomic>
 #include <chrono>
+#include <cstring>  // for std::memcpy, std::memset
 
 // Include your existing components
-#include "../lib/Standards/ieee_1722_2016_streaming.h"  // Your IEEE 1722-2016 implementation
+#include "avb_gptp.h"                                   // Real gPTP integration via shared memory
 #include "../lib/intel_avb/lib/intel.h"                 // Your Intel AVB filter driver
 #include "../lib/intel_avb/lib/intel_windows.h"         // Windows driver interface
 
+// Define INTEGRATION_MODE to prevent main() from the AVDECC entity
+#define INTEGRATION_MODE
+#include "../lib/Standards/intel_pcap_avdecc_entity_responsive.cpp" // Your responsive AVDECC entity
 
 // Include PCAP for network access
 #ifdef _WIN32
@@ -75,13 +79,41 @@ typedef struct pcap_if pcap_if_t;
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "wpcap.lib")
 
-// Forward declaration of your AVDECC entity
-class ResponsiveAVDECCEntity {
-public:
-    bool initialize();
-    void run();
-    void stop();
-};
+// gPTP interface declarations (from lib/common/avb_gptp.h)
+typedef long double FrequencyRatio;
+
+typedef struct {
+    int64_t ml_phoffset;
+    int64_t ls_phoffset;
+    FrequencyRatio ml_freqoffset;
+    FrequencyRatio ls_freqoffset;
+    uint64_t local_time;
+    
+    /* Current grandmaster information */
+    uint8_t gptp_grandmaster_id[8];
+    uint8_t gptp_domain_number;
+    
+    /* Grandmaster support for the network interface */
+    uint8_t  clock_identity[8];
+    uint8_t  priority1;
+    uint8_t  clock_class;
+    int16_t  offset_scaled_log_variance;
+    uint8_t  clock_accuracy;
+    uint8_t  priority2;
+    uint8_t  domain_number;
+    int8_t   log_sync_interval;
+    int8_t   log_announce_interval;
+    int8_t   log_pdelay_interval;
+    uint16_t port_number;
+} gPtpTimeData;
+
+// gPTP function declarations
+extern "C" {
+    int gptpinit(int *shm_fd, char **shm_map);
+    int gptpdeinit(int *shm_fd, char **shm_map);
+    int gptpgetdata(char *shm_mmap, gPtpTimeData *td);
+    bool gptplocaltime(const gPtpTimeData * td, uint64_t* now_local);
+}
 
 // Forward declarations for gPTP integration
 namespace gptp_integration {
@@ -132,8 +164,12 @@ private:
         uint32_t presentation_offset_us = 2000;  // 2ms presentation offset
     } gptp_state_;
     
-    // AVTP audio stream (from your 1722-2016 library)
-    std::unique_ptr<avtp_protocol::ieee_1722_2016::AudioAVTPDU> audio_stream_;
+    // Basic AVTP stream state for future expansion
+    struct AVTPStreamState {
+        bool active = false;
+        uint64_t stream_id = 0;
+        uint8_t sequence_number = 0;
+    } avtp_state_;
     
 public:
     CompleteAVBEntity() : running_(false), streaming_active_(false), pcap_handle_(nullptr) {}
@@ -177,10 +213,9 @@ public:
         }
         std::cout << "✅ IEEE 1722.1 AVDECC entity initialized" << std::endl;
 
-        // 5. Initialize IEEE 1722-2016 audio stream
-        audio_stream_ = std::make_unique<avtp_protocol::ieee_1722_2016::AudioAVTPDU>();
-        configure_audio_stream();
-        std::cout << "✅ IEEE 1722-2016 audio stream configured" << std::endl;
+        // 5. Initialize basic AVTP stream state
+        avtp_state_.stream_id = 0x91E0F000FE010000ULL; // Example stream ID
+        std::cout << "✅ AVTP stream state initialized" << std::endl;
 
         std::cout << "🎯 Complete AVB Entity initialization successful!" << std::endl;
         return true;
@@ -465,34 +500,100 @@ private:
 // gPTP Integration Functions
 // =============================
 namespace gptp_integration {
-    // These would interface with your gPTP submodule
-    // For now, these are stubs that demonstrate the integration points
+    // gPTP shared memory variables
+    static int gptp_shm_fd = -1;
+    static char* gptp_shm_map = nullptr;
+    static gPtpTimeData gptp_data;
     
     bool initialize_gptp_daemon(const std::string& interface_name) {
-        // TODO: Launch your gPTP daemon from thirdparty/gptp with the correct interface
-        // Example: system(("start /B ..\\thirdparty\\gptp\\gptp_daemon.exe -i " + interface_name + " -p automotive").c_str());
-        std::cout << "📡 Initializing gPTP daemon from thirdparty/gptp on interface: " << interface_name << std::endl;
-        // You may want to use CreateProcess or a service manager for production
-        return true; // Replace with actual launch logic
+        std::cout << "📡 Initializing gPTP integration for interface: " << interface_name << std::endl;
+        
+        // First try to connect to existing gPTP daemon via shared memory
+        if (gptpinit(&gptp_shm_fd, &gptp_shm_map) == 0) {
+            std::cout << "✅ Connected to existing gPTP daemon via shared memory" << std::endl;
+            return true;
+        }
+        
+        // If no existing daemon, try to start one
+        std::cout << "📡 Starting gPTP daemon from thirdparty/gptp..." << std::endl;
+        
+        // Build command to start gPTP daemon
+        std::string gptp_cmd = "start /B \"gPTP Daemon\" ";
+        gptp_cmd += "..\\thirdparty\\gptp\\build\\windows\\daemon_cl.exe ";
+        gptp_cmd += "-i " + interface_name + " ";
+        gptp_cmd += "-p automotive ";
+        gptp_cmd += "-l 1";  // Log level 1
+        
+        std::cout << "� Executing: " << gptp_cmd << std::endl;
+        
+        int result = system(gptp_cmd.c_str());
+        if (result != 0) {
+            std::cerr << "⚠️  gPTP daemon start command returned: " << result << std::endl;
+        }
+        
+        // Wait a moment for daemon to start
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        
+        // Try to connect again
+        if (gptpinit(&gptp_shm_fd, &gptp_shm_map) == 0) {
+            std::cout << "✅ Connected to newly started gPTP daemon" << std::endl;
+            return true;
+        }
+        
+        std::cerr << "❌ Failed to connect to gPTP daemon" << std::endl;
+        return false;
     }
 
     uint64_t get_gptp_time_ns() {
-        // TODO: Query your gPTP daemon for the current synchronized time
-        // This should call into your gPTP API or shared memory interface
-        // Example: return gptp_get_time_ns();
-        return 0; // Replace with actual gPTP time
+        if (gptp_shm_map == nullptr) {
+            return 0; // No gPTP connection
+        }
+        
+        // Get current gPTP data
+        if (gptpgetdata(gptp_shm_map, &gptp_data) < 0) {
+            return 0;
+        }
+        
+        // Convert to nanoseconds
+        uint64_t local_time_ns;
+        if (gptplocaltime(&gptp_data, &local_time_ns)) {
+            return local_time_ns;
+        }
+        
+        return 0;
     }
 
     bool is_gptp_synchronized() {
-        // TODO: Query your gPTP daemon for synchronization status
-        // Example: return gptp_is_synchronized();
-        return false; // Replace with actual sync check
+        if (gptp_shm_map == nullptr) {
+            return false;
+        }
+        
+        // Get current gPTP data
+        if (gptpgetdata(gptp_shm_map, &gptp_data) < 0) {
+            return false;
+        }
+        
+        // Check if we have a valid grandmaster
+        for (int i = 0; i < 8; i++) {
+            if (gptp_data.gptp_grandmaster_id[i] != 0) {
+                return true; // Non-zero grandmaster ID means synchronized
+            }
+        }
+        
+        return false;
     }
 
     void shutdown_gptp_daemon() {
-        // TODO: Cleanly shutdown your gPTP daemon
-        std::cout << "📡 Shutting down gPTP daemon..." << std::endl;
-        // Example: system("taskkill /IM gptp_daemon.exe /F");
+        std::cout << "📡 Shutting down gPTP integration..." << std::endl;
+        
+        if (gptp_shm_map != nullptr) {
+            gptpdeinit(&gptp_shm_fd, &gptp_shm_map);
+            gptp_shm_map = nullptr;
+            gptp_shm_fd = -1;
+        }
+        
+        // Optionally terminate the gPTP daemon
+        // system("taskkill /IM daemon_cl.exe /F");
     }
 }
 
