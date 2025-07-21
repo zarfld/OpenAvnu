@@ -13,10 +13,6 @@ include(FindPCAP)
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_command.h")
     message(STATUS "🔧 Building AVDECC protocol compliance test")
     
-    # Test executable to verify AVDECC constants resolve correctly
-    add_executable(test_avdecc_constants test_avdecc_constants.c)
-    target_include_directories(test_avdecc_constants PRIVATE ../avdecc-lib/jdksavdecc-c/include)
-    
     # Create a simplified test file to verify AVDECC protocol constants compile
     file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/test_protocol_compliance.c" "
 #include <stdio.h>
@@ -37,33 +33,6 @@ int main() {
     add_executable(test_protocol_compliance "${CMAKE_CURRENT_BINARY_DIR}/test_protocol_compliance.c")
     target_include_directories(test_protocol_compliance PRIVATE ../avdecc-lib/jdksavdecc-c/include)
     
-    # Build the REAL Hive Compatible AVDECC Entity executable using main project's PCAP detection
-    if(PCAP_FOUND)
-        message(STATUS "✅ Using main project's PCAP detection - building hive_compatible_avdecc_entity.exe")
-        message(STATUS "   PCAP Type: ${PCAP_TYPE}")
-        message(STATUS "   PCAP Include: ${PCAP_INCLUDE_DIRS}")
-        message(STATUS "   PCAP Libraries: ${PCAP_LIBRARIES}")
-        
-        add_executable(hive_compatible_avdecc_entity hive_compatible_avdecc_entity.c)
-        target_include_directories(hive_compatible_avdecc_entity PRIVATE 
-            ../avdecc-lib/jdksavdecc-c/include
-            ${PCAP_INCLUDE_DIRS}
-        )
-        target_link_libraries(hive_compatible_avdecc_entity ${PCAP_LIBRARIES})
-        
-        if(WIN32)
-            target_link_libraries(hive_compatible_avdecc_entity ws2_32 iphlpapi)
-            if(PCAP_LIBRARY_DIRS)
-                target_link_directories(hive_compatible_avdecc_entity PRIVATE ${PCAP_LIBRARY_DIRS})
-            endif()
-        endif()
-        
-        message(STATUS "✅ Real AVDECC entity will be built at: hive_compatible_avdecc_entity.exe")
-    else()
-        message(STATUS "⚠️  PCAP not found by main project - cannot build real hive_compatible_avdecc_entity.exe")
-        message(STATUS "   Install Npcap SDK or WinPcap Developer Pack and reconfigure main project")
-    endif()
-    
     message(STATUS "✅ AVDECC protocol compliance tests configured")
 else()
     message(STATUS "⚠️  jdksavdecc headers not found - skipping AVDECC protocol compliance test")
@@ -77,38 +46,11 @@ endif()
 
 message(STATUS "🚀 Examples configuration complete")
 
-# Intel PCAP AVDECC Entity (Your working implementation) 
-# Build the improved responsive entity that we just fixed
-if(PCAP_FOUND)
-    message(STATUS "✅ Building your improved Intel PCAP AVDECC Entity")
-    add_executable(intel_pcap_avdecc_entity_responsive
-        ../lib/Standards/intel_pcap_avdecc_entity_responsive.cpp
-    )
-    
-    target_include_directories(intel_pcap_avdecc_entity_responsive PRIVATE 
-        ${PCAP_INCLUDE_DIRS}
-        ../lib/Standards
-    )
-    
-    # Use the proper PCAP libraries from the main project's detection
-    target_link_libraries(intel_pcap_avdecc_entity_responsive PRIVATE 
-        ${PCAP_LIBRARIES}
-    )
-    
-    # Add explicit library directory for linker
-    if(WIN32 AND PCAP_LIBRARY_DIRS)
-        target_link_directories(intel_pcap_avdecc_entity_responsive PRIVATE 
-            ${PCAP_LIBRARY_DIRS}
-        )
-    endif()
-    
-    if(WIN32)
-        target_compile_definitions(intel_pcap_avdecc_entity_responsive PRIVATE _CRT_SECURE_NO_WARNINGS)
-    endif()
-    
-    message(STATUS "   📍 Your working AVDECC entity: intel_pcap_avdecc_entity_responsive.exe")
-    message(STATUS "   🔗 Using PCAP: ${PCAP_TYPE} (${PCAP_LIBRARIES})")
-endif()
+# NOTE: AVDECC entities have been moved to lib/avdecc-entities/ for better organization
+# Use the new organized structure instead of examples:
+#   cmake --build build --target avdecc_entity_responsive         # Primary choice
+#   cmake --build build --target avdecc_entity_hive_compatible   # Backup choice
+#   cmake --build build --target avdecc_entity_complete_standards # Integration demo
 
 # IEEE 1722-2016 Demo executable
 # TEMPORARILY DISABLED - depends on IEEE standards libraries that have Windows MSVC compatibility issues

@@ -313,6 +313,24 @@ if(OPENAVNU_USE_OPEN1722)
 endif()
 
 # ==========================================
+# AVDECC Entity Implementations
+# ==========================================
+
+# Production-ready AVDECC entities with clean organization
+option(OPENAVNU_BUILD_AVDECC_ENTITIES "Build organized AVDECC entity implementations" ON)
+
+if(OPENAVNU_BUILD_AVDECC_ENTITIES)
+    message(STATUS "🎯 Building AVDECC entities with organized structure")
+    add_subdirectory("lib/avdecc-entities")
+    message(STATUS "✅ AVDECC entities configured:")
+    message(STATUS "   Production: intel_pcap_responsive (PRIMARY)")
+    message(STATUS "   Production: hive_compatible (BACKUP)")
+    message(STATUS "   Production: complete_standards (INTEGRATION)")
+else()
+    message(STATUS "⏭️  AVDECC entities disabled")
+endif()
+
+# ==========================================
 # Testing Framework Configuration
 # ==========================================
 
