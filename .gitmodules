@@ -22,3 +22,6 @@
 [submodule "thirdparty/intel-ethernet-hal"]
 	path = thirdparty/intel-ethernet-hal
 	url = https://github.com/zarfld/intel-ethernet-hal.git
+[submodule "lib/intel_avb"]
+	path = lib/intel_avb
+	url = https://github.com/zarfld/intel_avb.git
