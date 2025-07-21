@@ -208,6 +208,34 @@ be ignored by git. See .gitignore for the appropriate entry.
     add_definitions(-DOPENAVNU_HAS_LA_AVDECC)
 endif()
 
+# Optional Milan v1.2 Protocol Implementation for Professional Audio AVB
+option(OPENAVNU_BUILD_MILAN_V1_2 "Build Milan v1.2 protocol implementation for professional audio AVB" ON)
+
+if(OPENAVNU_BUILD_MILAN_V1_2)
+    message(STATUS "Building with Milan v1.2 protocol implementation")
+    message(STATUS "🎵 Milan v1.2 provides professional audio AVB compatibility")
+    
+    # Include Milan v1.2 CMake configuration
+    include(CMakeLists_Milan_v1_2.txt)
+    
+    # Define flag for conditional compilation in OpenAvnu code
+    add_definitions(-DOPENAVNU_HAS_MILAN_V1_2)
+    add_definitions(-DMILAN_VERSION_MAJOR=1)
+    add_definitions(-DMILAN_VERSION_MINOR=2)
+    add_definitions(-DMILAN_VERSION_PATCH=0)
+    
+    message(STATUS "📦 Milan v1.2 configuration:")
+    message(STATUS "   Professional Audio AVB Device (PAAD) Entity: ENABLED")
+    message(STATUS "   Milan MVU Commands: ENABLED")
+    message(STATUS "   Media Clock Management: ENABLED")
+    message(STATUS "   Seamless Network Redundancy: ENABLED")
+    message(STATUS "   Professional Tool Compatibility: ENABLED")
+    message(STATUS "   Compatible with: Hive-AVDECC, L-Acoustics Network Manager")
+else()
+    message(STATUS "⚠️  Milan v1.2 protocol implementation disabled")
+    message(STATUS "    Professional audio tool compatibility may be limited")
+endif()
+
 # Optional Open1722 AVTP library for modernized AVTP implementation
 option(OPENAVNU_USE_OPEN1722 "Use Open1722 for AVTP implementation" ON)
 

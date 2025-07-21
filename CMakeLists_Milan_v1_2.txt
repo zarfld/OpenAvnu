@@ -1,0 +1,59 @@
+# Milan v1.2 Implementation CMakeLists.txt
+# Builds the complete Milan protocol implementation
+
+cmake_minimum_required(VERSION 3.16)
+
+# Milan library
+add_library(milan_v1_2 STATIC
+    lib/Standards/AVnu_Milan_1_2-2023_complete.cpp
+    lib/Standards/AVnu_Milan_1_2-2023_complete.h
+)
+
+target_include_directories(milan_v1_2 PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/Standards
+)
+
+target_compile_features(milan_v1_2 PUBLIC cxx_std_17)
+
+# Milan example application
+add_executable(milan_avdecc_entity_example
+    examples/milan_avdecc_entity_example.cpp
+)
+
+target_link_libraries(milan_avdecc_entity_example
+    milan_v1_2
+)
+
+target_compile_features(milan_avdecc_entity_example PUBLIC cxx_std_17)
+
+# Set compile definitions for Milan
+target_compile_definitions(milan_v1_2 PUBLIC
+    MILAN_VERSION_MAJOR=1
+    MILAN_VERSION_MINOR=2
+    MILAN_VERSION_PATCH=0
+)
+
+# Installation rules
+install(TARGETS milan_v1_2 milan_avdecc_entity_example
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+install(FILES lib/Standards/AVnu_Milan_1_2-2023_complete.h
+    DESTINATION include/openavnu/milan
+)
+
+# Add to main OpenAvnu build if included
+if(DEFINED OPENAVNU_BUILD_MILAN_V1_2)
+    message(STATUS "Building Milan v1.2 implementation...")
+    
+    # Add Milan targets to the main build
+    set_target_properties(milan_v1_2 PROPERTIES
+        FOLDER "Libraries/Milan"
+    )
+    
+    set_target_properties(milan_avdecc_entity_example PROPERTIES
+        FOLDER "Examples/Milan"
+    )
+endif()
