@@ -76,9 +76,23 @@ if(BUILD_AVDECC_PRODUCTION AND PCAP_FOUND)
     # Complete Standards Integration ⭐⭐⭐⭐
     add_executable(avdecc_entity_complete_standards
         production/responsive/complete_standards.cpp
+        ../Standards/1722-2016_impl.cpp
     )
-    target_include_directories(avdecc_entity_complete_standards PRIVATE ${PCAP_INCLUDE_DIR})
+    target_include_directories(avdecc_entity_complete_standards PRIVATE 
+        ${PCAP_INCLUDE_DIR}
+        ../Standards
+        ../common
+    )
     target_link_libraries(avdecc_entity_complete_standards PRIVATE ${PCAP_LIBRARY})
+    
+    # Add Windows-specific definitions
+    target_compile_definitions(avdecc_entity_complete_standards PRIVATE 
+        USING_NPCAP
+        WIN32_LEAN_AND_MEAN
+        NOMINMAX
+    )
+    
+    message(STATUS "✅ complete_standards: Configured with IEEE 1722-2016 implementation")
     
     if(WIN32)
         target_link_libraries(avdecc_entity_complete_standards PRIVATE ws2_32 iphlpapi)

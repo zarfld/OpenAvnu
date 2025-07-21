@@ -64,7 +64,7 @@ typedef struct pcap_if pcap_if_t;
 
 // Define INTEGRATION_MODE to prevent main() from the AVDECC entity
 #define INTEGRATION_MODE
-#include "../lib/Standards/intel_pcap_avdecc_entity_responsive.cpp" // Your responsive AVDECC entity
+#include "../lib/avdecc-entities/production/responsive/intel_pcap_responsive.cpp" // Your responsive AVDECC entity
 
 // Include PCAP for network access
 #ifdef _WIN32

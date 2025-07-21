@@ -39,12 +39,13 @@
 #include <pcap.h>
 
 // Include authoritative AVDECC protocol definitions
-#include "../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_command.h"
-#include "../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_descriptor.h"
+#include "../../../../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_command.h"
+#include "../../../../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_descriptor.h"
 
-#pragma comment(lib, "ws2_32.lib")
-#pragma comment(lib, "wpcap.lib")
-#pragma comment(lib, "packet.lib")
+// Note: Libraries are linked via CMake, not pragma comments
+// #pragma comment(lib, "ws2_32.lib")     - Handled by CMake target_link_libraries
+// #pragma comment(lib, "wpcap.lib")      - Handled by CMake PCAP_LIBRARY
+// #pragma comment(lib, "packet.lib")     - Not needed with Npcap
 
 // AVDECC Constants
 #define AVDECC_MULTICAST_MAC    {0x91, 0xe0, 0xf0, 0x01, 0x00, 0x00}
