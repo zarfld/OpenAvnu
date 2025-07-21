@@ -71,12 +71,21 @@ message(STATUS "Intel HAL Validation Test Configuration:")
 message(STATUS "  - Intel HAL Include: ${INTEL_HAL_INCLUDE_DIR}")
 message(STATUS "  - Output Directory: ${CMAKE_BINARY_DIR}/tests")
 
-# Add as a test if CTest is enabled
-if(CMAKE_TESTING_ENABLED OR BUILD_TESTING)
+# Add as a test if CTest is enabled AND not in CI environment  
+# Hardware tests require real Intel adapters and will fail on virtual machines
+set(IS_CI_BUILD OFF)
+if(DEFINED ENV{CI} OR DEFINED ENV{GITHUB_ACTIONS} OR DEFINED ENV{TRAVIS} OR DEFINED ENV{APPVEYOR})
+    set(IS_CI_BUILD ON)
+endif()
+
+if((CMAKE_TESTING_ENABLED OR BUILD_TESTING) AND NOT IS_CI_BUILD)
     enable_testing()
     add_test(NAME IntelHALValidation COMMAND intel_hal_validation_test)
     set_tests_properties(IntelHALValidation PROPERTIES
         TIMEOUT 60
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
     )
+    message(STATUS "✅ Intel HAL validation test registered (hardware environment)")
+elseif(IS_CI_BUILD)
+    message(STATUS "⏭️  Skipping Intel HAL validation test (CI environment - no real hardware)")
 endif()

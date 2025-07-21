@@ -52,7 +52,16 @@ jobs:
       - name: Build project
         run: cmake --build build --config Release
 
-      - name: Run tests
+      - name: Run tests (excluding hardware-dependent tests)
         run: |
           cd build
-          ctest -C Release --output-on-failure
+          echo "🤖 Running tests in CI environment (hardware tests automatically skipped)"
+          echo "⏭️  Skipped tests that require real hardware:"
+          echo "   - IntelHalValidation (requires Intel I210/I219/I225/I226 adapters)"
+          echo "   - TimestampAnalysisSuite (requires hardware timestamp precision)"
+          echo "   - IntelHALValidation (requires real Intel Ethernet adapters)"
+          echo ""
+          echo "✅ Running software-only tests..."
+          # Run tests but exclude hardware-dependent tests that require real Intel adapters
+          # These tests will fail on virtual machines without actual hardware
+          ctest -C Release --output-on-failure -E "(IntelHalValidation|TimestampAnalysisSuite|IntelHALValidation)"

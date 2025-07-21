@@ -14,6 +14,13 @@ option(OPENAVNU_BUILD_HARDWARE_TESTS "Build hardware validation tests" ON)
 option(OPENAVNU_BUILD_INTEGRATION_TESTS "Build integration tests" ON)
 option(OPENAVNU_BUILD_PERFORMANCE_TESTS "Build performance tests" ON)
 
+# Detect CI environment to disable hardware-dependent tests
+set(OPENAVNU_CI_BUILD OFF)
+if(DEFINED ENV{CI} OR DEFINED ENV{GITHUB_ACTIONS} OR DEFINED ENV{TRAVIS} OR DEFINED ENV{APPVEYOR})
+    set(OPENAVNU_CI_BUILD ON)
+    message(STATUS "🤖 CI environment detected - hardware tests will be skipped")
+endif()
+
 # Include directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/gptp/common)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/intel-ethernet-hal/include)
@@ -39,7 +46,7 @@ endif()
 # =============================================================================
 # Hardware Testing
 # =============================================================================
-if(OPENAVNU_BUILD_HARDWARE_TESTS AND OPENAVNU_BUILD_INTEL_HAL)
+if(OPENAVNU_BUILD_HARDWARE_TESTS AND OPENAVNU_BUILD_INTEL_HAL AND NOT OPENAVNU_CI_BUILD)
     message(STATUS "🔧 Building hardware tests")
     add_subdirectory(hardware/intel/hal)
     
@@ -50,8 +57,10 @@ if(OPENAVNU_BUILD_HARDWARE_TESTS AND OPENAVNU_BUILD_INTEL_HAL)
     set_tests_properties(IntelHalValidation PROPERTIES 
                         LABELS "hardware;intel;hal"
                         TIMEOUT 120)
+elseif(OPENAVNU_CI_BUILD)
+    message(STATUS "⏭️  Skipping hardware tests (CI environment - no real hardware available)")
 else()
-    message(STATUS "⏭️  Skipping hardware tests (requires Intel HAL)")
+    message(STATUS "⏭️  Skipping hardware tests (requires Intel HAL and real hardware)")
 endif()
 
 # =============================================================================
@@ -99,7 +108,7 @@ endif()
 # =============================================================================
 # Performance Testing
 # =============================================================================
-if(OPENAVNU_BUILD_PERFORMANCE_TESTS)
+if(OPENAVNU_BUILD_PERFORMANCE_TESTS AND NOT OPENAVNU_CI_BUILD)
     message(STATUS "📊 Building performance tests")
     # Performance tests are primarily Python-based
     # Add any C++ performance tests here if needed
@@ -116,6 +125,8 @@ if(OPENAVNU_BUILD_PERFORMANCE_TESTS)
     else()
         message(WARNING "Python not found - skipping Python-based performance tests")
     endif()
+elseif(OPENAVNU_CI_BUILD)
+    message(STATUS "⏭️  Skipping performance tests (CI environment - require real hardware)")
 else()
     message(STATUS "⏭️  Skipping performance tests")
 endif()
