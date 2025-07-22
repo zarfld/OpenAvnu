@@ -25,3 +25,6 @@
 [submodule "lib/intel_avb"]
 	path = lib/intel_avb
 	url = https://github.com/zarfld/intel_avb.git
+[submodule "lib/Standards"]
+	path = lib/Standards
+	url = https://github.com/zarfld/libmedia-network-standards.git
