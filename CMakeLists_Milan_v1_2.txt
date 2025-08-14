@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.16)
 
 # Milan library
 add_library(milan_v1_2 STATIC
-    lib/Standards/AVnu_Milan_1_2-2023_complete.cpp
-    lib/Standards/AVnu_Milan_1_2-2023_complete.h
+    lib/Standards/AVnu/Milan/1.2-2023/AVnu_Milan_1_2-2023_complete.cpp
+    lib/Standards/AVnu/Milan/1.2-2023/AVnu_Milan_1_2-2023_complete.h
 )
 
 target_include_directories(milan_v1_2 PUBLIC

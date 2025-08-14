@@ -300,12 +300,8 @@ add_subdirectory("daemons/maap")
 add_subdirectory("daemons/shaper")
 add_subdirectory("lib/avtp_pipeline/tests")
 
-# Add IEEE Standards implementation library
-# TEMPORARILY DISABLED due to Windows MSVC compatibility issues with __attribute__((packed))
-# The working AVDECC entity (intel_pcap_avdecc_entity_responsive.cpp) doesn't need these
-# TODO: Fix Windows compatibility in IEEE standards files later
-# TODO: Fix IEEE Standards library Windows compilation errors  
-# add_subdirectory("lib/Standards")
+# Add IEEE Standards implementation library - Re-enabled after Phase 2B namespace fixes
+add_subdirectory("lib/Standards")
 
 # Add Open1722 wrapper if enabled
 if(OPENAVNU_USE_OPEN1722)
@@ -429,3 +425,29 @@ Features configured in OpenAvnu root CMakeFile.txt:
 
 -------------------------------------------------------
 ")
+
+# ==========================================
+# Phase 2B Header Rationalization Test
+# ==========================================
+# Test to validate that the rationalized IEEE 1722.1-2021 headers work correctly
+add_executable(test_phase2b_working
+    test_phase2b_working.cpp
+)
+
+# Use the minimal core library that we know compiles
+target_link_libraries(test_phase2b_working PRIVATE
+    ieee_1722_1_2021_core
+)
+
+# Include directories for the test
+target_include_directories(test_phase2b_working PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/lib/Standards/IEEE/1722.1/2021"
+    "${CMAKE_CURRENT_SOURCE_DIR}/lib/Standards"
+)
+
+# Set C++11 standard for the test
+set_target_properties(test_phase2b_working PROPERTIES
+    CXX_STANDARD 11
+    CXX_STANDARD_REQUIRED ON
+)

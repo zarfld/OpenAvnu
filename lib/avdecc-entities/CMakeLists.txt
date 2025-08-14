@@ -76,7 +76,7 @@ if(BUILD_AVDECC_PRODUCTION AND PCAP_FOUND)
     # Complete Standards Integration ⭐⭐⭐⭐
     add_executable(avdecc_entity_complete_standards
         production/responsive/complete_standards.cpp
-        ../Standards/1722-2016_impl.cpp
+        ../Standards/IEEE/1722/2016/streaming/ieee_1722_2016_streaming.cpp
     )
     target_include_directories(avdecc_entity_complete_standards PRIVATE 
         ${PCAP_INCLUDE_DIR}

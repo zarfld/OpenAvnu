@@ -50,8 +50,8 @@
 #pragma comment(lib, "ws2_32.lib")
 
 // Include ONLY standards protocols from lib/Standards (NOT entity implementations!)
-#include "../../../Standards/1722_1-2021_clean.h"
-#include "../../../Standards/1722-2016.h"
+#include "../../../Standards/IEEE/1722.1/2021/core/ieee_1722_1_2021_clean.h"
+#include "../../../Standards/IEEE/1722/2016/streaming/ieee_1722_2016_streaming.h"
 
 // Forward declarations for proper application-level entity
 namespace OpenAvnu {
@@ -488,19 +488,19 @@ private:
         uint64_t hw_timestamp = get_hardware_timestamp();
         
         // Use IEEE 1722-2016 AudioAVTPDU from Standards library
-        IEEE::_1722::_2016::AudioAVTPDU aaf_packet;
+        avtp_protocol::ieee_1722_2016::AudioAVTPDU aaf_packet;
         
         // Configure audio format using standards
         aaf_packet.set_audio_format(
-            IEEE::_1722::_2016::AudioFormat::MILAN_PCM, 
+            avtp_protocol::ieee_1722_2016::AudioFormat::MILAN_PCM, 
             static_cast<uint8_t>(stream_config_.channels), 
             static_cast<uint8_t>(stream_config_.bit_depth)
         );
         
         // Set AVTP common header using standards
-        aaf_packet.subtype = static_cast<uint8_t>(IEEE::_1722::_2016::Subtype::AVTP_AUDIO);
+        aaf_packet.subtype = static_cast<uint8_t>(avtp_protocol::ieee_1722_2016::Subtype::AVTP_AUDIO);
         aaf_packet.stream_valid = true;
-        aaf_packet.version = IEEE::_1722::_2016::AVTP_VERSION_2016;
+        aaf_packet.version = avtp_protocol::ieee_1722_2016::AVTP_VERSION_2016;
         aaf_packet.tv = true; // timestamp valid
         aaf_packet.sequence_num = 0;
         
@@ -510,7 +510,7 @@ private:
         aaf_packet.avtp_timestamp = static_cast<uint32_t>(hw_timestamp & 0xFFFFFFFF);
         
         // Set audio-specific parameters using standards
-        aaf_packet.nominal_sample_rate = IEEE::_1722::_2016::SampleRate::RATE_48KHZ;
+        aaf_packet.nominal_sample_rate = avtp_protocol::ieee_1722_2016::SampleRate::RATE_48KHZ;
         aaf_packet.samples_per_frame = stream_config_.samples_per_frame;
         aaf_packet.stream_data_length = stream_config_.channels * (stream_config_.bit_depth / 8) * stream_config_.samples_per_frame;
         
