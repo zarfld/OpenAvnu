@@ -37,6 +37,17 @@ extern "C" {
 #include <time.h>
 
 /* ============================================================================
+ * FORWARD DECLARATIONS  
+ * ============================================================================ */
+
+/* Forward declare all major types to avoid circular dependencies */
+typedef struct network_hal_device network_hal_device_t;
+typedef struct network_hal_vendor_operations network_hal_vendor_operations_t;
+typedef struct network_hal_vendor_adapter network_hal_vendor_adapter_t;
+typedef struct network_hal_timestamp network_hal_timestamp_t;
+typedef struct network_hal_device_info network_hal_device_info_t;
+
+/* ============================================================================
  * CONSTANTS & DEFINITIONS
  * ============================================================================ */
 
@@ -152,8 +163,23 @@ typedef enum {
     NETWORK_HAL_ERROR_TIMEOUT       = -7,
     
     /** Hardware I/O error */
-    NETWORK_HAL_ERROR_IO            = -8
+    NETWORK_HAL_ERROR_IO            = -8,
+    
+    /** Device not initialized */  
+    NETWORK_HAL_ERROR_NOT_INITIALIZED = -9,
+    
+    /** No resources available */
+    NETWORK_HAL_ERROR_NO_RESOURCES   = -10
 } network_hal_result_t;
+
+/* Compatibility defines for gPTP HAL integration */
+#define NETWORK_HAL_ERROR_INVALID_PARAMETER  NETWORK_HAL_ERROR_INVALID_PARAM
+
+/* Capability group defines */
+#define NETWORK_HAL_CAP_TSN_FEATURES   (NETWORK_HAL_CAP_TIME_AWARE_SHAPER | NETWORK_HAL_CAP_FRAME_PREEMPTION)
+#define NETWORK_HAL_CAP_AVB_FEATURES   (NETWORK_HAL_CAP_PTP | NETWORK_HAL_CAP_AVB)
+#define NETWORK_HAL_CAP_HARDWARE_TIMESTAMPING  NETWORK_HAL_CAP_HW_TIMESTAMP
+#define NETWORK_HAL_CAP_CROSS_TIMESTAMP        NETWORK_HAL_CAP_PCIE_PTM
 
 /* ============================================================================
  * DATA STRUCTURES
@@ -179,7 +205,7 @@ typedef enum {
  * Vendor-agnostic device identification and capability information.
  * Populated during device enumeration and used for adapter selection.
  */
-typedef struct {
+typedef struct network_hal_device_info {
     /** Device name/path (e.g., "Intel(R) Ethernet Controller I210" or "eth0") */
     char name[NETWORK_HAL_MAX_NAME_LEN];
     
@@ -214,30 +240,108 @@ typedef struct {
 /**
  * @brief Generic network device handle
  * 
- * Opaque handle representing an attached network device.
- * Contains vendor-specific context and function pointers.
+ * Device handle containing vendor-specific context and function pointers.
+ * Internal structure for HAL device management.
  */
-typedef struct network_hal_device network_hal_device_t;
+typedef struct network_hal_device {
+    uint32_t device_index;                   /**< Device index within vendor */
+    bool is_initialized;                     /**< Device initialization status */
+    network_hal_vendor_adapter_t *vendor_adapter;  /**< Vendor-specific adapter */
+    void *vendor_context;                    /**< Opaque vendor context */
+    network_hal_device_info_t device_info;  /**< Device information */
+    int ref_count;                           /**< Reference count for cleanup tracking */
+} network_hal_device_t;
 
 /**
  * @brief Hardware timestamp structure
  * 
  * Unified timestamp representation for hardware timestamping.
- * Compatible with Intel hardware timestamp format.
+ * Compatible with Intel hardware timestamp format and gPTP HAL integration.
  */
-typedef struct {
-    /** Timestamp in nanoseconds since device time base */
-    uint64_t hw_timestamp_ns;
+typedef struct network_hal_timestamp {
+    /** Seconds since epoch or device time base */
+    uint64_t seconds;
     
-    /** Associated system timestamp for correlation */
-    struct timespec system_timestamp;
+    /** Nanoseconds within second (0-999,999,999) */
+    uint32_t nanoseconds;
     
     /** Timestamp accuracy/precision in nanoseconds */
     uint32_t accuracy_ns;
     
-    /** Vendor-specific timestamp flags */
+    /** Timestamp source (hardware/software/cross-timestamp) */
+    uint8_t source;
+    
+    /** Hardware timestamp in nanoseconds since device time base (legacy) */
+    uint64_t hw_timestamp_ns;
+    
+    /** Associated system timestamp for correlation (legacy) */
+    struct timespec system_timestamp;
+    
+    /** Vendor-specific timestamp flags (legacy) */
     uint32_t flags;
 } network_hal_timestamp_t;
+
+/* Timestamp source constants (compatible with gPTP HAL integration) */
+#define NETWORK_HAL_TIMESTAMP_SOURCE_UNKNOWN           0
+#define NETWORK_HAL_TIMESTAMP_SOURCE_INTEL_HARDWARE    1  
+#define NETWORK_HAL_TIMESTAMP_SOURCE_GENERIC_HARDWARE  2
+#define NETWORK_HAL_TIMESTAMP_SOURCE_CROSS_TIMESTAMP   3
+#define NETWORK_HAL_TIMESTAMP_SOURCE_SOFTWARE          4
+
+/* ============================================================================
+ * VENDOR ADAPTER STRUCTURES  
+ * ============================================================================ */
+
+/**
+ * @brief Vendor-specific operations table
+ * 
+ * Function pointers for vendor-specific HAL operations.
+ * Implemented by each vendor adapter (Intel, Broadcom, etc.).
+ */
+typedef struct network_hal_vendor_operations {
+    network_hal_result_t (*init)(void);
+    network_hal_result_t (*cleanup)(void);
+    network_hal_result_t (*enumerate_devices)(
+        network_hal_device_info_t *device_list,
+        uint32_t max_devices,
+        uint32_t *device_count);
+    network_hal_result_t (*device_open)(
+        const network_hal_device_info_t *device_info,
+        void **vendor_context);
+    network_hal_result_t (*device_close)(void *vendor_context);
+    network_hal_result_t (*get_time)(void *vendor_context, 
+                                     network_hal_timestamp_t *timestamp);
+    network_hal_result_t (*set_time)(void *vendor_context, 
+                                     const network_hal_timestamp_t *timestamp);
+    network_hal_result_t (*adjust_frequency)(void *vendor_context, int32_t frequency_ppb);
+    network_hal_result_t (*configure_time_aware_shaper)(void *vendor_context, const void *config);
+    network_hal_result_t (*configure_frame_preemption)(void *vendor_context, const void *config);
+    uint32_t (*get_capabilities)(void *vendor_context);
+    bool (*has_capability)(void *vendor_context, network_hal_capability_t capability);
+    network_hal_result_t (*get_device_info)(void *vendor_context, void *info);
+} network_hal_vendor_operations_t;
+
+/**
+ * @brief Vendor adapter registration structure
+ * 
+ * Describes a vendor-specific adapter implementation.
+ * Used for runtime adapter discovery and registration.
+ */
+typedef struct network_hal_vendor_adapter {
+    uint32_t vendor_type;                    /**< Vendor identifier (Intel, Broadcom, etc.) */
+    const char *vendor_name;                 /**< Human-readable vendor name */
+    uint32_t version;                        /**< Adapter implementation version */
+    network_hal_vendor_operations_t operations;  /**< Function pointers */
+    bool is_initialized;                     /**< Initialization status */
+    struct network_hal_vendor_adapter *next; /**< Linked list pointer */
+} network_hal_vendor_adapter_t;
+
+/* Vendor type constants */
+#define NETWORK_HAL_VENDOR_UNKNOWN    0
+#define NETWORK_HAL_VENDOR_INTEL      1
+#define NETWORK_HAL_VENDOR_BROADCOM   2
+#define NETWORK_HAL_VENDOR_MARVELL    3
+#define NETWORK_HAL_VENDOR_GENERIC    0xFFFF
 
 /* ============================================================================
  * CORE API FUNCTIONS
@@ -369,7 +473,8 @@ network_hal_result_t network_hal_device_close(
  */
 network_hal_result_t network_hal_get_time(
     network_hal_device_t *device_handle,
-    network_hal_timestamp_t *timestamp
+    network_hal_timestamp_t *system_time,
+    network_hal_timestamp_t *device_time
 );
 
 /**
@@ -423,6 +528,63 @@ network_hal_result_t network_hal_set_time(
 network_hal_result_t network_hal_adjust_frequency(
     network_hal_device_t *device_handle,
     int32_t frequency_ppb
+);
+
+/**
+ * @brief Open device by interface name
+ * 
+ * Opens network device by system interface name (e.g., "eth0", "Ethernet 2").
+ * Creates device context and initializes vendor-specific operations.
+ * 
+ * @param interface_name System interface name to open
+ * @param device_handle  Output device handle pointer
+ * 
+ * @returns NETWORK_HAL_SUCCESS on success,
+ *          NETWORK_HAL_ERROR_DEVICE_NOT_FOUND if interface doesn't exist,
+ *          NETWORK_HAL_ERROR_NO_RESOURCES if maximum devices reached
+ */
+network_hal_result_t network_hal_device_open_by_name(
+    const char *interface_name,
+    network_hal_device_t **device_handle
+);
+
+/**
+ * @brief Get device capabilities  
+ * 
+ * Returns bitmask of hardware capabilities supported by device.
+ * 
+ * @param device_handle Handle to network device
+ * 
+ * @returns Capability bitmask (network_hal_capability_t flags)
+ */
+uint32_t network_hal_device_get_capabilities(
+    network_hal_device_t *device_handle
+);
+
+/**
+ * @brief Get device vendor type
+ * 
+ * Returns vendor identification for device-specific operations.
+ * 
+ * @param device_handle Handle to network device  
+ * 
+ * @returns Vendor type identifier
+ */
+uint32_t network_hal_device_get_vendor(
+    network_hal_device_t *device_handle
+);
+
+/**
+ * @brief Get vendor-specific context
+ * 
+ * Returns opaque vendor context for direct vendor API access.
+ * 
+ * @param device_handle Handle to network device
+ * 
+ * @returns Vendor context pointer (Intel device_t*, etc.)
+ */
+void* network_hal_device_get_vendor_context(
+    network_hal_device_t *device_handle
 );
 
 /* ============================================================================

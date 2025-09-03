@@ -31,11 +31,24 @@
 #include <string.h>
 #include <stdio.h>
 
+/* Windows API includes for timing functions */
+#ifdef _WIN32
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#include <winbase.h>
+#endif
+
 /* Intel AVB library integration - respect existing interface */
 #ifdef OPENAVNU_BUILD_INTEL_HAL
 #include "../../intel_avb/lib/intel.h"
 #else
 /* Stub definitions when Intel HAL not available */
+struct device {
+    /* Minimal stub structure for compilation without Intel AVB library */
+    void *placeholder;
+};
 typedef struct device device_t;
 #define INTEL_CAP_BASIC_1588    (1 << 0)
 #define INTEL_CAP_ENHANCED_TS   (1 << 1)
@@ -46,6 +59,11 @@ typedef struct device device_t;
 #define INTEL_CAP_MDIO          (1 << 6)
 #define INTEL_CAP_MMIO          (1 << 7)
 #endif
+
+/* Forward declarations */
+extern network_hal_vendor_adapter_t g_intel_adapter;
+/* Operations table defined at end of file */
+static void intel_init_operations_table(void);
 
 /* ============================================================================
  * CONSTANTS & DEFINITIONS
@@ -455,6 +473,9 @@ static network_hal_result_t intel_adapter_init(void)
 #endif
     
     g_intel_adapter_state.is_initialized = true;
+    
+    /* Initialize operations function pointers */
+    intel_init_operations_table();
     
     printf("[INTEL_ADAPTER] Intel adapter initialization completed\n");
     return NETWORK_HAL_SUCCESS;
@@ -1119,9 +1140,31 @@ static const network_hal_vendor_operations_t intel_adapter_operations = {
  */
 network_hal_vendor_adapter_t g_intel_adapter = {
     .vendor_type = NETWORK_HAL_VENDOR_INTEL,
-    .vendor_name = "Intel Corporation",
+    .vendor_name = "Intel Corporation", 
     .version = 0x00010000,  /* Version 1.0.0 */
-    .operations = intel_adapter_operations,
+    .operations = {0},      /* Will be initialized in intel_adapter_init() */
     .is_initialized = false,
     .next = NULL
 };
+
+/**
+ * @brief Initialize operations table for intel adapter
+ * 
+ * Helper function to initialize the operations structure after 
+ * the static const table is defined.
+ */
+static void intel_init_operations_table(void)
+{
+    g_intel_adapter.operations.init = intel_adapter_init;
+    g_intel_adapter.operations.cleanup = intel_adapter_cleanup;
+    g_intel_adapter.operations.enumerate_devices = intel_adapter_enumerate_devices;
+    g_intel_adapter.operations.device_open = intel_adapter_device_open;
+    g_intel_adapter.operations.device_close = intel_adapter_device_close;
+    g_intel_adapter.operations.get_time = intel_adapter_get_time;
+    g_intel_adapter.operations.set_time = intel_adapter_set_time;
+    g_intel_adapter.operations.adjust_frequency = intel_adapter_adjust_frequency;
+    g_intel_adapter.operations.configure_time_aware_shaper = intel_adapter_configure_time_aware_shaper;
+    g_intel_adapter.operations.configure_frame_preemption = intel_adapter_configure_frame_preemption;
+    g_intel_adapter.operations.has_capability = intel_adapter_has_capability;
+    g_intel_adapter.operations.get_device_info = intel_adapter_get_device_info;
+}

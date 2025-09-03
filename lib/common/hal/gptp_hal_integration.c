@@ -459,7 +459,7 @@ bool gptp_hal_get_time(
     network_hal_timestamp_t hal_system_time, hal_device_time;
     network_hal_result_t result;
     bool hw_success = false;
-    uint32_t accuracy_ns;
+    uint32_t accuracy_ns = GPTP_HAL_ACCURACY_SOFTWARE;
     
     if (!device_context || !system_time || !device_time) {
         return false;
@@ -494,13 +494,13 @@ bool gptp_hal_get_time(
             uint64_t ns_since_1601 = uli.QuadPart * 100;
             uint64_t ns_since_1970 = ns_since_1601 - 116444736000000000ULL;
             
-            hal_system_time.nanoseconds = ns_since_1970;
-            hal_device_time.nanoseconds = ns_since_1970;  /* Same as system time */
+            hal_system_time.hw_timestamp_ns = ns_since_1970;
+            hal_device_time.hw_timestamp_ns = ns_since_1970;  /* Same as system time */
         #else
             struct timespec ts;
             if (clock_gettime(CLOCK_REALTIME, &ts) == 0) {
-                hal_system_time.nanoseconds = (uint64_t)ts.tv_sec * 1000000000ULL + ts.tv_nsec;
-                hal_device_time.nanoseconds = hal_system_time.nanoseconds;
+                hal_system_time.hw_timestamp_ns = (uint64_t)ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+                hal_device_time.hw_timestamp_ns = hal_system_time.hw_timestamp_ns;
             } else {
                 return false;
             }
@@ -711,7 +711,7 @@ void gptp_hal_convert_timestamp_reverse(
                        gptp_timestamp->seconds_ls;
     
     /* Convert to total nanoseconds */
-    hal_timestamp->nanoseconds = seconds * 1000000000ULL + gptp_timestamp->nanoseconds;
+    hal_timestamp->hw_timestamp_ns = seconds * 1000000000ULL + gptp_timestamp->nanoseconds;
     hal_timestamp->accuracy_ns = gptp_timestamp->accuracy_ns;
     
     /* Convert source types */

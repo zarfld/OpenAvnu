@@ -248,52 +248,11 @@ elseif(INTEL_HAL_AVAILABLE)
 endif()
 
 # ============================================================================
-# INSTALLATION RULES
+# INSTALLATION RULES (DISABLED FOR INTERNAL BUILD)
 # ============================================================================
 
-# Install library
-install(TARGETS ${NETWORK_HAL_LIB_NAME}
-    EXPORT OpenAvnuNetworkHALTargets
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
-)
-
-# Install headers
-install(FILES network_hal.h
-    DESTINATION include/openavnu
-    COMPONENT development
-)
-
-# Install CMake config files (for find_package support)
-install(EXPORT OpenAvnuNetworkHALTargets
-    FILE OpenAvnuNetworkHALTargets.cmake
-    NAMESPACE OpenAvnu::
-    DESTINATION lib/cmake/OpenAvnuNetworkHAL
-)
-
-# Create config file
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/OpenAvnuNetworkHALConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/OpenAvnuNetworkHALConfig.cmake"
-    INSTALL_DESTINATION lib/cmake/OpenAvnuNetworkHAL
-)
-
-# Create version file
-write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/OpenAvnuNetworkHALConfigVersion.cmake"
-    VERSION 1.0.0
-    COMPATIBILITY SameMajorVersion
-)
-
-# Install config and version files
-install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/OpenAvnuNetworkHALConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/OpenAvnuNetworkHALConfigVersion.cmake"
-    DESTINATION lib/cmake/OpenAvnuNetworkHAL
-)
+# Installation disabled for internal OpenAvnu build
+# Library is statically linked into gPTP and other components
 
 # ============================================================================
 # TESTING SUPPORT

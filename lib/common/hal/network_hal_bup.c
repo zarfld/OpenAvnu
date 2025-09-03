@@ -228,7 +228,7 @@ static network_hal_vendor_adapter_t* hal_find_vendor_adapter(
     network_hal_vendor_adapter_t *current = g_hal_state.vendor_adapters;
     
     while (current) {
-        if (current->vendor_type == (uint32_t)vendor_type) {
+        if (current->vendor_type == vendor_type) {
             return current;
         }
         current = current->next;
@@ -619,19 +619,9 @@ network_hal_result_t network_hal_get_time(
         return NETWORK_HAL_ERROR_NOT_SUPPORTED;
     }
     
-    /* Call vendor get_time for device time (primary timestamp) */
-    network_hal_result_t result = device_handle->vendor_adapter->operations.get_time(
-        device_handle->vendor_context, device_time
+    return device_handle->vendor_adapter->operations.get_time(
+        device_handle->vendor_context, system_time, device_time
     );
-    
-    /* If system_time requested and device_time succeeded, get system time too */
-    if (result == NETWORK_HAL_SUCCESS && system_time) {
-        /* For now, copy device time to system time - vendors can override this */
-        memcpy(system_time, device_time, sizeof(network_hal_timestamp_t));
-        /* TODO: Add actual system timestamp correlation if vendor supports it */
-    }
-    
-    return result;
 }
 
 /**
@@ -919,10 +909,6 @@ static network_hal_result_t intel_adapter_enumerate_devices(
     uint32_t *device_count
 )
 {
-    /* Suppress unused parameter warnings */
-    (void)device_list;
-    (void)max_devices;
-    
     printf("[INTEL_ADAPTER] Enumerating Intel devices...\n");
     
     /* TODO: Enumerate Intel devices via intel_avb

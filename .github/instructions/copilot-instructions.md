@@ -9,6 +9,7 @@ applyTo: '**'
 -- No Fake, No Stubs, no Simulations, simplified code allowed in productive Code
 -- no implementation based assumtions, use specification or analysis results (ask if required)
 -- no false advertising, prove and ensure correctness
+-- never fix public APIs in a way that breaks existing clients, prefer fixing implementation instead
 -- prevent dead code or orphan files: fix code rather that creating new versions, ensure ALL code compiles.
 -- always use real hardware access patterns
 -- use Intel hardware specifications for register access

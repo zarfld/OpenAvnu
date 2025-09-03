@@ -81,8 +81,55 @@ if(OPENAVNU_BUILD_INTEL_HAL)
     message(STATUS "Building with Intel Ethernet HAL for hardware timestamping")
     add_subdirectory("thirdparty/intel-ethernet-hal")
     set(OPENAVNU_INTEL_HAL_AVAILABLE TRUE)
+    
+    # ==========================================
+    # Intel HAL Detection and Configuration
+    # ==========================================
+    # Detect Intel HAL capabilities for feature-based compilation
+    # Following repository rules: real hardware access, no simulations
+    
+    find_package(IntelHAL QUIET)
+    if(IntelHAL_FOUND)
+        message(STATUS "✅ Intel HAL found: ${IntelHAL_VERSION}")
+        message(STATUS "   📍 Include Directory: ${IntelHAL_INCLUDE_DIRS}")
+        message(STATUS "   📚 Libraries: ${IntelHAL_LIBRARIES}")
+        
+        # Export Intel HAL availability to OpenAvnu components
+        set(OPENAVNU_INTEL_HAL_FOUND TRUE)
+        
+        # Feature-based compilation flags based on actual hardware capabilities
+        # Reference: Intel I210/I219/I225/I226 Controller Datasheets
+        if(INTEL_HAL_HAS_TIMESTAMPING)
+            message(STATUS "   ⏱️  Hardware timestamping support detected")
+            set(OPENAVNU_INTEL_TIMESTAMPING_AVAILABLE TRUE)
+        endif()
+        
+        if(INTEL_HAL_HAS_TSN_TAS)
+            message(STATUS "   🚦 TSN Time-Aware Shaper support detected (I225/I226)")
+            set(OPENAVNU_INTEL_TSN_TAS_AVAILABLE TRUE)
+        endif()
+        
+        if(INTEL_HAL_HAS_TSN_FP)
+            message(STATUS "   ⚡ TSN Frame Preemption support detected (I225/I226)")
+            set(OPENAVNU_INTEL_TSN_FP_AVAILABLE TRUE)
+        endif()
+        
+        if(INTEL_HAL_HAS_LAUNCHTIME)
+            message(STATUS "   🎯 LAUNCHTIME timed transmission support detected")
+            set(OPENAVNU_INTEL_LAUNCHTIME_AVAILABLE TRUE)
+        endif()
+        
+    else()
+        message(WARNING "⚠️  Intel HAL not found - advanced features unavailable")
+        set(OPENAVNU_INTEL_HAL_FOUND FALSE)
+        set(OPENAVNU_INTEL_TIMESTAMPING_AVAILABLE FALSE)
+        set(OPENAVNU_INTEL_TSN_TAS_AVAILABLE FALSE)
+        set(OPENAVNU_INTEL_TSN_FP_AVAILABLE FALSE)
+        set(OPENAVNU_INTEL_LAUNCHTIME_AVAILABLE FALSE)
+    endif()
 else()
     set(OPENAVNU_INTEL_HAL_AVAILABLE FALSE)
+    set(OPENAVNU_INTEL_HAL_FOUND FALSE)
 endif()
 
 # Optional gPTP daemon for time synchronization
@@ -91,6 +138,40 @@ option(OPENAVNU_BUILD_GPTP "Build gPTP daemon for time synchronization" ON)
 if(OPENAVNU_BUILD_GPTP)
     message(STATUS "Building with gPTP daemon support")
     add_subdirectory("thirdparty/gptp")
+    
+    # ==========================================
+    # gPTP Intel HAL Integration
+    # ==========================================
+    # Configure gPTP to use Intel HAL for hardware timestamping when available
+    # Following repository rules: real hardware access, no simulation
+    
+    if(OPENAVNU_INTEL_HAL_FOUND AND TARGET gptp2)
+        message(STATUS "🔗 Configuring gPTP with Intel HAL integration")
+        
+        # Add Intel HAL compile definitions to gPTP
+        target_compile_definitions(gptp2 PRIVATE OPENAVNU_INTEL_HAL=1)
+        
+        # Link Intel HAL library to gPTP
+        target_link_libraries(gptp2 PRIVATE IntelHAL::IntelHAL)
+        
+        # Feature-based compilation flags for gPTP
+        if(OPENAVNU_INTEL_TIMESTAMPING_AVAILABLE)
+            target_compile_definitions(gptp2 PRIVATE INTEL_HAL_TIMESTAMPING=1)
+            message(STATUS "   ⏱️  gPTP will use Intel hardware timestamping")
+        endif()
+        
+        if(OPENAVNU_INTEL_TSN_TAS_AVAILABLE)
+            target_compile_definitions(gptp2 PRIVATE INTEL_HAL_TSN_TAS=1)
+            message(STATUS "   🚦 gPTP TSN Time-Aware Shaper support enabled")
+        endif()
+        
+    else()
+        if(OPENAVNU_BUILD_INTEL_HAL)
+            message(STATUS "⚠️  gPTP will use software timestamping (Intel HAL not found)")
+        else()
+            message(STATUS "📝 gPTP using software timestamping (Intel HAL disabled)")
+        endif()
+    endif()
 endif()
 
 # Optional L-Acoustics AVDECC library for modern AVDECC support
@@ -207,6 +288,14 @@ be ignored by git. See .gitignore for the appropriate entry.
     # Define flag for conditional compilation in OpenAvnu code
     add_definitions(-DOPENAVNU_HAS_LA_AVDECC)
 endif()
+
+# ==========================================
+# Generic Network HAL (required for gPTP)
+# ==========================================
+
+# Always build the Generic Network HAL for gPTP integration
+message(STATUS "🔧 Building Generic Network HAL for gPTP integration")
+add_subdirectory("lib/common/hal")
 
 # Optional Milan v1.2 Protocol Implementation for Professional Audio AVB
 option(OPENAVNU_BUILD_MILAN_V1_2 "Build Milan v1.2 protocol implementation for professional audio AVB" ON)
