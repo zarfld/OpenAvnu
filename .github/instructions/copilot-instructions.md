@@ -4,6 +4,33 @@ applyTo: '**'
 
 # OpenAvnu AI Coding Agent Instructions
 
+## Working principles
+-- ensure you understand the architecture and patterns before coding
+-- No Fake, No Stubs, no Simulations, simplified code allowed in productive Code
+-- no implementation based assumtions, use specification or analysis results (ask if required)
+-- no false advertising, prove and ensure correctness
+-- always use real hardware access patterns
+-- use Intel hardware specifications for register access
+-- code needs to compile before commit, no broken code
+-- Always reference the exact Intel datasheet section or spec version when implementing register access.
+-- Validate all hardware reads/writes with range checks or masks from the specification.
+-- Every function must have a Doxygen comment explaining purpose, parameters, return values, and hardware context.
+-- no duplicate or redundant implementations to avoid inconsistencies and confusion; use centralized, reusable functions instead
+-- no ad-hoc file copies (e.g., *_fixed, *_new, *_correct); refactor in place step-by-step to avoid breakage
+-- Clean submit rules:
+   - each commit compiles and passes checks
+   - small, single-purpose, reviewable diffs (no WIP noise)
+   - no dead or commented-out code; remove unused files
+   - run formatter and static analysis before commit
+   - update docs/tests and reference the spec/issue in the message
+   - use feature flags or compatibility layers when incremental changes risk breakage
+-- Avoid unnecessary duplication. Duplication is acceptable when it improves clarity, isolates modules, or is required for performance.
+-- Avoid code that is difficult to understand. Prefer clear naming and structure over excessive comments or unnecessary helper variables.
+-- Avoid unnecessary complexity. Keep required abstractions for maintainability, testability, or hardware safety
+-- Design modules so that changes in one module do not require changes in unrelated modules. Avoid dependencies that cause single changes to break multiple areas.
+-- Design components for reuse where practical, but prioritize correctness and domain fit over forced generalization.
+-- Prefer incremental modification of existing code over reimplementation; adapt existing functions instead of creating redundant new ones
+
 ## Project Overview
 
 OpenAvnu is a comprehensive Audio Video Bridging (AVB)/Time-Sensitive Networking (TSN) implementation for real-time media streaming. The project provides IEEE 802.1AS (gPTP) time synchronization, IEEE 1722 (AVTP) media transport, and IEEE 1722.1 (AVDECC) device control protocols.
