@@ -1,0 +1,23 @@
+# Phase 2 gPTP HAL Integration Test CMakeLists.txt
+cmake_minimum_required(VERSION 3.16)
+
+project(phase2_test C)
+
+# Include directories for Phase 2 components
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/common/hal)
+
+# Create test executable
+add_executable(test_phase2_compilation test_phase2_compilation.c)
+
+# Link Phase 2 gPTP HAL integration library
+# Note: For compilation test, we only need to verify headers compile
+# Real runtime testing would need the actual library linking
+
+# Set C standard
+set_property(TARGET test_phase2_compilation PROPERTY C_STANDARD 99)
+
+# On Windows, ensure proper linkage
+if(WIN32)
+    target_link_libraries(test_phase2_compilation ws2_32)
+endif()

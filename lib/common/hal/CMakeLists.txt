@@ -75,6 +75,12 @@ set(NETWORK_HAL_CORE_SOURCES
     network_hal.h
 )
 
+# gPTP HAL integration sources (always included)
+set(GPTP_HAL_INTEGRATION_SOURCES
+    gptp_hal_integration.c
+    gptp_hal_integration.h
+)
+
 # Intel adapter sources (conditional)
 set(INTEL_ADAPTER_SOURCES
     intel_adapter.c
@@ -83,6 +89,7 @@ set(INTEL_ADAPTER_SOURCES
 # Combine sources based on availability
 set(NETWORK_HAL_SOURCES
     ${NETWORK_HAL_CORE_SOURCES}
+    ${GPTP_HAL_INTEGRATION_SOURCES}
 )
 
 # Add Intel adapter if available
@@ -92,6 +99,8 @@ if(INTEL_HAL_AVAILABLE)
 else()
     message(STATUS "Intel adapter excluded from build (intel_avb not available)")
 endif()
+
+message(STATUS "Including gPTP HAL integration in build")
 
 # Add platform-specific sources
 if(PLATFORM_SOURCES)
