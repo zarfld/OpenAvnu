@@ -1,234 +1,217 @@
-# Agents & Copilot Instructions for zarfld/OpenAvnu
+applyTo: '**'
+---
 
-This file defines **working principles** for humans and AI assistants contributing to this repository.  
-It ensures the codebase remains **correct, lean, and alive**: no dead code, no broken builds, no guesswork.
+# 🛠️ Repository Rules and Best Practices (OpenAvnu fork)
 
-`TODO.md` in the root is the **living backlog**.  
-This file (`agents.md`) is the **permanent contract** for contribution style and repository health.
+This file defines **coding standards, collaboration protocols, and repository hygiene** for this project.  
+It applies to all files and folders (`applyTo: '**'`).  
+
+👉 `TODO.md` in the root is the **living backlog**.  
+👉 `agents.md` (this file) is the **permanent ruleset** for contributions.
 
 ---
 
-## 0) Purpose
-- Maintain a **spec-accurate**, **well-documented**, and **clean** implementation of AVB/TSN stack components.  
-- Prevent dead code and abandoned forks.  
-- Ensure all contributions are **traceable to specs** (IEEE / Intel datasheets).  
-- Keep the repository **organized**: docs cleanly structured, no clutter.
+## ✅ General Principles
+
+* **Real-World Testing**  
+  Never mark a feature or fix as *ready* until it has passed **all relevant tests**, including hardware-level testing when applicable.
+
+* **Build with CMake**  
+  All builds must go through `cmake`.  
+  Dependencies must be properly specified in `CMakeLists.txt`.  
+  No broken or half-configured build files may be committed.
+
+* **No Assumptions – Verify Everything**  
+  Always prove behavior, inputs, outputs, and side effects with tests, logs, or direct inspection.  
+  If something is unclear → investigate until confirmed.
+
+* **Documentation is Mandatory**  
+  - Every function, class, and module must include Doxygen comments.  
+  - For HAL and AVDECC code, cite the **exact IEEE or Intel datasheet section/revision**.  
+  - Keep explanations short, clear, and in English.
+
+* **Version Control Discipline**  
+  - Use Git branches (`feature/*`, `bugfix/*`, …).  
+  - Follow [Conventional Commits](https://www.conventionalcommits.org/).  
+  - Each commit must compile and pass CI checks.
+
+* **Code Quality**  
+  - Follow consistent style (naming, formatting).  
+  - Run formatter + static analysis before committing.  
+  - No dead code, no commented-out code.
+
+* **Maintain `TODO.md`**  
+  - Add new tasks here.  
+  - Remove completed items, and log them under `docs/completed/`.  
+  - Consolidate duplicates and clean regularly.
+
+* **Documentation Lifecycle**  
+  - `docs/completed/` → finished tasks and verified docs  
+  - `docs/work-in-progress/` → ongoing work, implementation plans  
+  - `docs/status/` → high-level progress and status reports  
+  - `docs/archive/` → obsolete or historical content
 
 ---
 
-## 1) Non-Negotiables
-- **Understand first**: read the architecture and patterns before coding. Summarize assumptions in the PR.
-- **No fake production code**: no stubs, no simplified placeholders in productive paths. (Test harnesses may exist but must use real HAL patterns.)
-- **Spec over assumption**: implement only from spec or documented analysis. If unclear → ask, don’t guess.
-- **Truth in labeling**: no unproven features. Validate with asserts, checks, or test coverage.
-- **Fix in place**: refactor instead of duplicating. **All code must compile**; remove or revive—never abandon.
-- **Intel HAL = source of truth**: every register access cites the datasheet section/revision.
-- **Guard I/O**: always use masks/range checks derived from specs.
-- **Document functions**: Doxygen required for all public APIs and HAL functions.
-- **One implementation rule**: avoid duplicate code. Centralize logic in HAL/lib.
-- **No file suffix churn**: never commit `_new`, `_fixed`, `_copy` variants. Use incremental commits.
-
----
-
-## 2) Repository Layout
-
-```
-
-/docs/                # Specs, ADRs, register maps, HW notes
-/docs/completed/      # Validated, permanent docs
-/docs/wip/            # Work in progress
-/docs/status/         # Status overviews
-/docs/archive/        # Historical references
-/include/             # Public headers (registers, API defs)
-/lib/                 # Shared libraries
-/daemons/             # gPTP, AVDECC, other daemons
-/apps/                # AVTP applications and demos
-/scripts/             # Run/CI helper scripts
-/tests/               # Test harnesses (real access patterns)
-/ci/                  # CI/CD configs and helper scripts
-TODO.md               # Living backlog (keep updated!)
-agents.md             # This ruleset
-
-````
-
-- **Register definitions** live only in `/include/intel_regs.h`.  
-- No magic numbers in code.
-
----
-
-## 3) Branching & Commits
-
-- **Trunk-based flow**: short feature branches, protected `main`.
-- **Clean submit rules**:
-  - Each commit compiles across supported targets and passes CI.
-  - Small, single-purpose diffs; no WIP noise.
-  - No dead/commented code. Remove unused files.
-  - Run formatter + static analysis before commit.
-  - Update docs/tests; reference spec section + issue ID in commit message.
-  - Use feature flags or compat layers when incremental changes risk breakage.
-
-- **Commit style**: Conventional Commits (`feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `ci:`, …).
-
----
-
-## 4) OpenAvnu-Specific Rules
+## 🔒 OpenAvnu-Specific Rules
 
 ### AVDECC (lib/daemons)
-- All AECP/ACMP/ADP/state-machine changes must pass **32/32 protocol tests**.
-- CI runs full AVDECC protocol suite on every PR.
-- No divergence of state machines—evolution must remain spec-accurate.
+- Any PR touching **AECP, ACMP, ADP, or state machines** must pass the **32/32 AVDECC protocol test suite** before merge.  
+- No duplicate or alternative state machines — refactor in place.  
+- State transitions must remain spec-accurate.
 
 ### Intel HAL (lib/hal)
-- Every function cites **Intel datasheet section/rev**.
-- All reads/writes validated with masks/range checks.
-- Wrapper functions (`mmio_read32`, `mmio_write32_masked`, …) are mandatory.
-- No raw `*(volatile*)` accesses in driver logic.
+- All register access must:
+  - Use wrapper functions (`mmio_read32`, `mmio_write32_masked`, …).  
+  - Validate writes with masks/ranges from specs.  
+  - Include Doxygen comments with **datasheet section/revision**.  
+- No raw `*(volatile*)` casts in production code.  
+- All constants defined centrally in `/include/intel_regs.h`.  
 
 ### gPTP (submodule)
-- Submodule reference must be consistent and buildable.
-- CI ensures `run_gptp.sh` launches and AVTP apps can bind to it.
-- Document changes in `/docs/completed/gPTP_Integration.md`.
+- gPTP must build automatically via submodule.  
+- CI must launch `run_gptp.sh` and confirm AVTP apps bind correctly.  
+- Any changes documented in `docs/completed/gPTP_Integration.md`.
 
 ---
 
-## 5) No Dead Code – Enforcement
+## ✍️ How to Specify a Task
 
-**Compiler/Linker flags**
-- `-Wall -Wextra -Werror -Wunused -Wunreachable-code`
-- `-ffunction-sections -fdata-sections -Wl,--gc-sections`
+When adding to `TODO.md`, creating an issue, or drafting a PR, use this structure:
 
-**Static analysis**
-- `clang-tidy` + `cppcheck` run in CI.
-- Fail CI on warnings.
+**What**  
+> _Clear description of the feature or fix._
 
-**Repo hygiene**
-- `/tools/scan_copies.sh` blocks suffix-files (`*_new`, `*_copy`, …).
-- `/tools/spec_refs_check.py` ensures register writes cite spec sections.
+**Context**  
+> _Inputs, outputs, dependencies, related docs/specs._
 
-**Coverage sanity**
-- Coverage tracking highlights never-executed utilities → flagged for removal/refactor.
+**Done When**
+- [ ] Handles all specified I/O cases  
+- [ ] Covers edge cases and errors  
+- [ ] Has unit/integration tests  
+- [ ] Passes hardware tests where relevant  
+- [ ] Meets performance/timing constraints  
 
----
-
-## 6) Documentation Standards
-
-- **Doxygen required** for all exported functions and HW accessors.
-- CI runs doxygen; warnings treated as errors.
-- Keep `/docs/spec-index.md` updated (registers → datasheet sections/rev).
-
-**Template:**
-```c
-/**
- * @brief  Programs RX descriptor ring base
- * @param  n   Adapter handle
- * @param  dma DMA address (aligned per spec)
- * @return 0 on success, -EINVAL on misalignment
- * @hwctx Requires device in reset-held state; see Intel I210 Spec §7.2
- */
-int rx_ring_program(struct nic* n, uint64_t dma);
-````
+**Resources**  
+- 📄 `docs/specs/...`  
+- 📘 Intel datasheet / IEEE standard  
+- 📂 Source code under `src/`, `lib/`, `daemons/`  
+- 🧪 `tests/...`
 
 ---
 
-## 7) Testing & Validation
+## 🌿 Branch and Commit Conventions
 
-* Tests use real HAL APIs.
-* Offline tests may use **buffer-backed fake HAL** under `/tests/hal_backing/`.
-
-  > Production code must never link against fake HAL.
-* CI includes:
-
-  * AVDECC 32/32 tests
-  * gPTP startup test
-  * Static analysis
-  * Doxygen build
-* Smoke tests on hardware (Intel NICs) run before protected branch merges.
-
----
-
-## 8) Reviews, Ownership, ADRs
-
-* **CODEOWNERS** per module: at least 1 owner + 1 peer review required.
-* **ADR** required for architecture changes → add to `/docs/adrs/`.
-* Breaking changes: add migration steps + changelog entry.
-
----
-
-## 9) PR Template (add to `.github/pull_request_template.md`)
-
-```
-### What & Why
-- Summary:
-- Issue(s):
-
-### Spec references
-- IEEE section(s):
-- Intel datasheet section(s):
-
-### Affected areas
-- AVDECC / HAL / gPTP / Docs / Other:
-
-### Validation
-- Build & CI checks passed?
-- AVDECC tests 32/32 passed?
-- gPTP launch verified?
-
-### Docs
-- Doxygen updated?
-- /docs/* updated (completed/wip/status)?
-
-### Cleanliness
-- Dead/commented code removed? ☐
-- No *_new or *_copy files? ☐
+**Branch names**
 ```
 
----
+feature/\*    new features
+bugfix/\*     bug fixes
+hotfix/\*     urgent patches
+refactor/\*   code restructuring
+doc/\*        documentation-only
 
-## 10) CI Minimum Matrix
+```
 
-* **Builds**: GCC + Clang, Debug/Release, `-Werror`, `--gc-sections`
-* **Static**: clang-tidy, cppcheck
-* **Docs**: doxygen (fail on warning)
-* **Format**: clang-format
-* **Tests**: AVDECC suite, gPTP launch
-* **Hygiene**: run `scan_copies.sh`, `spec_refs_check.py`
-
----
-
-## 11) AI Assistant Guardrails
-
-When suggesting code or docs, assistants must:
-
-1. Reuse existing modules before proposing new ones.
-2. Modify in place; propose small, compiling diffs.
-3. Always include Doxygen + spec citation for HW functions.
-4. Use `/include/intel_regs.h` constants only (no magic numbers).
-5. Update docs/tests in the same PR.
-6. Never propose `_new` or `_fixed` files.
-7. Provide a build-check list with patch suggestions.
+**Commits**
+- Use Conventional Commits, e.g.:  
+  - `feat: Add RX ring setup`  
+  - `fix: Correct ACMP transition timing`  
+  - `docs: Update gPTP integration notes`  
+- Reference spec section + issue ID whenever relevant.
 
 ---
 
-## 12) Deprecation & Removal
+## 🔍 Code Quality and Reviews
 
-* Mark deprecated APIs with `DEPRECATED` macro + tracking issue.
-* Remove deprecated code within one minor release window.
-* Archive docs in `/docs/archive/` if obsolete.
+* **Code Reviews**
+  - Required for all non-trivial PRs.  
+  - HAL/AVDECC PRs must include at least one reviewer familiar with the spec.
 
----
+* **Static Analysis & Linting**
+  - `clang-tidy` and `cppcheck` must run clean.  
+  - Treat warnings as errors.
 
-### Quick Review Checklist
-
-* [ ] Builds cleanly across matrix, no warnings.
-* [ ] No dead/commented code or suffix-files.
-* [ ] Spec references present for all HW touches.
-* [ ] Doxygen present and accurate.
-* [ ] Tests/docs updated.
-* [ ] AVDECC tests 32/32 passed.
-* [ ] gPTP launch verified.
-* [ ] Small, focused diff with clear rationale.
+* **Experimental Work**
+  - Prefix with `EXPERIMENTAL:` in commits and docs.  
+  - Must be isolated from production paths.
 
 ---
 
+## 🧪 Testing Rules
 
+- **Coverage**  
+  - New code must include unit tests; aim for ≥80% coverage where feasible.  
+
+- **Integration Tests**  
+  - Cover critical AVTP, AVDECC, and gPTP workflows.  
+  - Integration tools live under `testing/integration/...`.  
+
+- **Test Documentation**  
+  - Store test definitions in `docs/tests/`.  
+  - Results go in `docs/tests/results/` with date + summary.  
+
+- **Machine Documentation**  
+  - Store configs in `docs/machine/` (hardware, OS, dependencies).  
+
+- **Automation**  
+  - Add tests to CI and VSCode tasks.json.  
+  - PRs must show results in CI.  
+
+- **Mocks & Simulations**  
+  - Allowed only in tests, not production.  
+  - Document source, generation method, and limitations.
+
+---
+
+## 📚 Documentation Rules
+
+- Use English.  
+- Use `docs/decisions/` for ADRs.  
+- Use `docs/concepts/YYYY-MM-DD_short-title.md` for new proposals.  
+- Use `docs/insights/` to record debugging lessons:  
+```
+
+docs/insights/YYYY-MM-DD\_short-title.md
+
+```
+Each file must include: context, observation, root cause, resolution, takeaways.
+
+---
+
+## 🧠 Concepts and Design Proposals
+
+- Review existing ADRs and completed docs before drafting.  
+- New proposals must include background, problem, prior decisions, proposed solution, alternatives, risks, next steps.  
+- Submit concepts as PRs for early discussion.  
+- Abstractions must be reusable, generic, and extensible — not tightly coupled.  
+
+---
+
+## 🚫 Dead Code and Hygiene Enforcement
+
+* **CI compiler/linker flags**  
+- `-Wall -Wextra -Werror -Wunused -Wunreachable-code`  
+- `-ffunction-sections -fdata-sections -Wl,--gc-sections`  
+
+* **Repo hygiene scripts**  
+- `/tools/scan_copies.sh`: fails CI if `*_new`, `*_copy`, `*_fixed` files exist.  
+- `/tools/spec_refs_check.py`: ensures each register access cites a spec section.  
+
+* **Doxygen**  
+- Must build without warnings (CI fails otherwise).  
+
+---
+
+## ✅ Review Checklist
+
+- [ ] Builds across all CI targets, no warnings  
+- [ ] No dead or commented-out code  
+- [ ] No `_new`, `_copy`, `_fixed` files  
+- [ ] All HAL/driver code cites datasheet sections  
+- [ ] Doxygen present and valid  
+- [ ] Tests + docs updated  
+- [ ] AVDECC 32/32 tests pass  
+- [ ] gPTP launch verified  
+- [ ] PR is small, focused, and justified
 
