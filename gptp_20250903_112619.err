@@ -1,0 +1,36 @@
+STATUS   : GPTP [11:26:19:852] *** MAIN: Entered _tmain() ***
+DEBUG    : GPTP [11:26:19:858] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:109] Enhanced packet reception debugging enabled
+
+DEBUG    : GPTP [11:26:19:862] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:111] Packet tracking initialized - total=0, ptp=0, timeouts=0
+
+INFO     : GPTP [11:26:19:866] *** STANDARD PROFILE CREATED: IEEE 802.1AS default behavior ***
+INFO     : GPTP [11:26:19:870] Starting IPC listener thread succeeded
+INFO     : GPTP [11:26:19:870] Parsing MAC address string: 'grandmaster_test.ini' (length: 17)
+INFO     : GPTP [11:26:19:870]   Byte 0: 00
+INFO     : GPTP [11:26:19:871]   Byte 1: 00
+INFO     : GPTP [11:26:19:871]   Byte 2: 0A
+INFO     : GPTP [11:26:19:871]   Byte 3: 0D
+INFO     : GPTP [11:26:19:872]   Byte 4: 0A
+INFO     : GPTP [11:26:19:872]   Byte 5: 00
+DEBUG    : GPTP [11:26:19:872] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:1146] Enhanced software timestamper initialized with method: 1
+DEBUG    : GPTP [11:26:19:872] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:1207] Calibrated timestamp precision: 1000 ns
+INFO     : GPTP [11:26:19:873] Configuration file gptp_cfg.ini not found, using default values
+INFO     : GPTP [11:26:19:873] Clock quality configured from profile 'standard': class=248, accuracy=0xFE, variance=0x4E5D
+INFO     : GPTP [11:26:19:873] Clock quality manually set: class=248, accuracy=0xFE, variance=0x4E5D
+STATUS   : GPTP [11:26:19:874] *** MAIN: About to create EtherPort ***
+INFO     : GPTP [11:26:19:874] Port initialized with standard profile: Standard IEEE 802.1AS Profile
+STATUS   : GPTP [11:26:19:874] *** Standard IEEE 802.1AS Profile PROFILE ENABLED *** (sync: 1000.000ms, convergence target: 0ms)
+STATUS   : GPTP [11:26:19:875] *** MAIN: EtherPort created successfully ***
+STATUS   : GPTP [11:26:19:875] *** MAIN: About to set link speed ***
+ERROR    : GPTP [11:26:19:886] Could not find adapter for specified MAC address
+STATUS   : GPTP [11:26:19:886] *** MAIN: Link speed set successfully ***
+STATUS   : GPTP [11:26:19:886] *** MAIN: About to initialize port ***
+INFO     : GPTP [11:26:19:891] Target MAC address: 00-00-0A-0D-0A-00
+INFO     : GPTP [11:26:19:891] Available network adapters:
+INFO     : GPTP [11:26:19:892]   Adapter: {34641F96-A8DB-4A47-9F37-52F55BBDDA4D}, MAC: 68-05-CA-8B-76-4E
+INFO     : GPTP [11:26:19:892]   Adapter: {2D278D1B-05B5-457C-AE8A-8120BA65DC9B}, MAC: 00-A0-C9-26-12-43
+INFO     : GPTP [11:26:19:893]   Adapter: {911F13F8-C15C-4B29-92CB-0B4BA60C7796}, MAC: 00-25-90-22-F9-2C
+INFO     : GPTP [11:26:19:893] Search for MAC address completed. Adapter found: NO
+ERROR    : GPTP [11:26:19:893] createInterface: openInterfaceByAddr failed
+ERROR    : GPTP [11:26:19:893] createInterface: cleaning up after error, returning false
+ERROR    : GPTP [11:26:19:894] init_port: OSNetworkInterfaceFactory::buildInterface failed

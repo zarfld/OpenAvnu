@@ -1,0 +1,455 @@
+STATUS   : GPTP [12:29:31:487] *** MAIN: Entered _tmain() ***
+DEBUG    : GPTP [12:29:31:493] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:109] Enhanced packet reception debugging enabled
+
+DEBUG    : GPTP [12:29:31:496] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:111] Packet tracking initialized - total=0, ptp=0, timeouts=0
+
+INFO     : GPTP [12:29:31:499] *** STANDARD PROFILE CREATED: IEEE 802.1AS default behavior ***
+INFO     : GPTP [12:29:31:503] Starting IPC listener thread succeeded
+INFO     : GPTP [12:29:31:503] Parsing MAC address string: '68:05:CA:8B:76:4E' (length: 17)
+INFO     : GPTP [12:29:31:504]   Byte 0: 68
+INFO     : GPTP [12:29:31:504]   Byte 1: 05
+INFO     : GPTP [12:29:31:504]   Byte 2: CA
+INFO     : GPTP [12:29:31:505]   Byte 3: 8B
+INFO     : GPTP [12:29:31:505]   Byte 4: 76
+INFO     : GPTP [12:29:31:506]   Byte 5: 4E
+DEBUG    : GPTP [12:29:31:506] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:1146] Enhanced software timestamper initialized with method: 1
+DEBUG    : GPTP [12:29:31:506] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:1207] Calibrated timestamp precision: 1000 ns
+INFO     : GPTP [12:29:31:507] Configuration file gptp_cfg.ini not found, using default values
+INFO     : GPTP [12:29:31:507] Clock quality configured from profile 'standard': class=248, accuracy=0xFE, variance=0x4E5D
+INFO     : GPTP [12:29:31:508] Clock quality manually set: class=248, accuracy=0xFE, variance=0x4E5D
+STATUS   : GPTP [12:29:31:508] *** MAIN: About to create EtherPort ***
+INFO     : GPTP [12:29:31:508] Port initialized with standard profile: Standard IEEE 802.1AS Profile
+STATUS   : GPTP [12:29:31:509] *** Standard IEEE 802.1AS Profile PROFILE ENABLED *** (sync: 1000.000ms, convergence target: 0ms)
+STATUS   : GPTP [12:29:31:510] *** MAIN: EtherPort created successfully ***
+STATUS   : GPTP [12:29:31:510] *** MAIN: About to set link speed ***
+INFO     : GPTP [12:29:31:518] Detected raw link speed: 1000000000 bits/sec
+VERBOSE  : GPTP [12:29:31:518] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\daemon_cl.cpp:542] Link speed in Kbps: 1000000
+INFO     : GPTP [12:29:31:518] Detected 1 Gigabit Ethernet
+STATUS   : GPTP [12:29:31:519] *** MAIN: Link speed set successfully ***
+STATUS   : GPTP [12:29:31:519] *** MAIN: About to initialize port ***
+INFO     : GPTP [12:29:31:523] Target MAC address: 68-05-CA-8B-76-4E
+INFO     : GPTP [12:29:31:523] Available network adapters:
+INFO     : GPTP [12:29:31:523]   Adapter: {34641F96-A8DB-4A47-9F37-52F55BBDDA4D}, MAC: 68-05-CA-8B-76-4E
+INFO     : GPTP [12:29:31:524]   ✅ Found matching adapter: {34641F96-A8DB-4A47-9F37-52F55BBDDA4D}
+INFO     : GPTP [12:29:31:524] Search for MAC address completed. Adapter found: YES
+INFO     : GPTP [12:29:31:524] Packet capture backend: Npcap (modern: yes)
+
+INFO     : GPTP [12:29:31:524] Opening: rpcap://\Device\NPF_{34641F96-A8DB-4A47-9F37-52F55BBDDA4D}
+
+DEBUG    : GPTP [12:29:31:525] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:224] Using debug timeout 10ms for enhanced packet detection
+
+INFO     : GPTP [12:29:31:525] About to open interface: rpcap://\Device\NPF_{34641F96-A8DB-4A47-9F37-52F55BBDDA4D}
+INFO     : GPTP [12:29:31:527] Successfully opened interface: rpcap://\Device\NPF_{34641F96-A8DB-4A47-9F37-52F55BBDDA4D}
+INFO     : GPTP [12:29:31:534] Using detected clock rate 1250000000 Hz for interface Intel(R) Ethernet I210-T1 GbE NIC
+INFO     : GPTP [12:29:31:534] Adapter UID: {34641F96-A8DB-4A47-9F37-52F55BBDDA4D}
+
+WARNING  : GPTP [12:29:31:535] Failed to query timestamp capability (error: 50, returned: 0/24), attempting fallback
+INFO     : GPTP [12:29:31:535] Driver does not support timestamp capability queries, using software timestamping
+STATUS   : GPTP [12:29:31:535] Falling back to software timestamping for interface Intel(R) Ethernet I210-T1 GbE NIC
+STATUS   : GPTP [12:29:31:535] Intel device detected - checking OID availability
+STATUS   : GPTP [12:29:31:536] Detected Intel I210/I211 Ethernet controller with hardware PTP
+STATUS   : GPTP [12:29:31:536] Testing basic Intel OID functionality for Intel(R) Ethernet I210-T1 GbE NIC
+WARNING  : GPTP [12:29:31:536] Intel OID test failed for Intel(R) Ethernet I210-T1 GbE NIC: error=50, returned=0/24
+WARNING  : GPTP [12:29:31:537] OID_INTEL_GET_RXSTAMP - failed
+WARNING  : GPTP [12:29:31:537] OID_INTEL_GET_TXSTAMP - failed
+WARNING  : GPTP [12:29:31:537] Intel device detected but custom OIDs not available - using software timestamping
+INFO     : GPTP [12:29:31:537] This may indicate: 1) Intel OID reads return zero timestamps, 2) Driver doesn't support PTP OIDs, 3) Administrator privileges required, 4) Device doesn't support hardware timestamping
+STATUS   : GPTP [12:29:31:538] Falling back to RDTSC method for timestamping on Intel device
+INFO     : GPTP [12:29:31:538] Checking Intel PTP registry settings for adapter: Intel(R) Ethernet I210-T1 GbE NIC
+STATUS   : GPTP [12:29:31:538] [OK] Intel PTP Hardware Timestamp: Enabled/Aktiviert
+INFO     : GPTP [12:29:31:538] Software Timestamp setting: RxAll & TxAll (keyword: *SoftwareTimestamp )
+INFO     : GPTP [12:29:31:539] PTP registry settings check completed for Intel(R) Ethernet I210-T1 GbE NIC
+INFO     : GPTP [12:29:31:539] Checking Intel PTP registry settings for adapter: Intel(R) Ethernet I210-T1 GbE NIC
+STATUS   : GPTP [12:29:31:539] [OK] Intel PTP Hardware Timestamp: Enabled/Aktiviert
+INFO     : GPTP [12:29:31:539] Software Timestamp setting: RxAll & TxAll (keyword: *SoftwareTimestamp )
+INFO     : GPTP [12:29:31:540] PTP registry settings check completed for Intel(R) Ethernet I210-T1 GbE NIC
+STATUS   : GPTP [12:29:31:540] Using software timestamping for interface Intel(R) Ethernet I210-T1 GbE NIC
+INFO     : GPTP [12:29:31:540] TSC frequency: 10000000 Hz
+INFO     : GPTP [12:29:31:540] Initializing cross-timestamping for Intel device (software path)
+INFO     : GPTP [12:29:31:540] RDTSC timestamping available
+VERBOSE  : GPTP [12:29:31:809] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_crosststamp.cpp:418] Cross-timestamp correlation calibrated with 10 samples
+VERBOSE  : GPTP [12:29:31:809] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_crosststamp.cpp:430] Initial RDTSC cross-timestamp quality assessment: 60% (error: 687 ns)
+INFO     : GPTP [12:29:31:810] Cross-timestamp initial quality assessment complete: 60% (method 2)
+STATUS   : GPTP [12:29:31:811] Cross-timestamping initialized for interface Intel(R) Ethernet I210-T1 GbE NIC using method 2
+STATUS   : GPTP [12:29:31:811] Cross-timestamping initialized for interface Intel(R) Ethernet I210-T1 GbE NIC with quality 60%
+INFO     : GPTP [12:29:31:812] Medium-quality cross-timestamping available
+STATUS   : GPTP [12:29:31:812] === gPTP Runtime Configuration Summary ===
+STATUS   : GPTP [12:29:31:813] Interface: Intel(R) Ethernet I210-T1 GbE NIC
+STATUS   : GPTP [12:29:31:813] Adapter UID: {34641F96-A8DB-4A47-9F37-52F55BBDDA4D}
+STATUS   : GPTP [12:29:31:813] TSC Frequency: 10000000 Hz
+STATUS   : GPTP [12:29:31:814] Network Clock: 1250000000 Hz
+STATUS   : GPTP [12:29:31:814] === Diagnosing Hardware Timestamping Capabilities ===
+STATUS   : GPTP [12:29:31:814] Miniport handle is valid (0x00000000000001D8)
+STATUS   : GPTP [12:29:31:815] Testing OID_INTEL_GET_SYSTIM...
+ERROR    : GPTP [12:29:31:815] ✗ OID_INTEL_GET_SYSTIM: FAILED - error 50 (0x00000032)
+ERROR    : GPTP [12:29:31:815]   Adapter does not support Intel timestamping OIDs
+STATUS   : GPTP [12:29:31:816] Testing OID_INTEL_GET_RXSTAMP availability...
+WARNING  : GPTP [12:29:31:816] ⚠ OID_INTEL_GET_RXSTAMP: May not be supported (result=50)
+STATUS   : GPTP [12:29:31:816] Testing OID_INTEL_GET_TXSTAMP availability...
+WARNING  : GPTP [12:29:31:817] ⚠ OID_INTEL_GET_TXSTAMP: May not be supported (result=50)
+STATUS   : GPTP [12:29:31:817] Clock frequencies: TSC=10000000 Hz, Network=1250000000 Hz
+STATUS   : GPTP [12:29:31:818] === Diagnosis complete - Basic Intel OID support: UNAVAILABLE ===
+WARNING  : GPTP [12:29:31:818] Timestamping diagnostic failed - hardware timestamps may not work correctly
+STATUS   : GPTP [12:29:31:818] Timestamping Method: Hybrid Cross-Timestamping (Medium Precision) - Good performance
+STATUS   : GPTP [12:29:31:819] System Health Score: 105/100
+STATUS   : GPTP [12:29:31:819] Health Details: [OK] Adapter access [OK] TSC available [OK] Network clock [OK] Cross-timestamping 
+STATUS   : GPTP [12:29:31:819] Overall Status: [EXCELLENT] - Optimal PTP performance
+STATUS   : GPTP [12:29:31:819] Recommendation: System is optimally configured for high-precision timing
+STATUS   : GPTP [12:29:31:820] Platform: Windows 10.0
+STATUS   : GPTP [12:29:31:820] Platform Note: Modern Windows - advanced PTP APIs potentially available
+STATUS   : GPTP [12:29:31:820] Privileges: Standard User [WARNING]
+STATUS   : GPTP [12:29:31:820] Privilege Note: Run as Administrator for full hardware access
+STATUS   : GPTP [12:29:31:821] ==========================================
+INFO     : GPTP [12:29:31:821] Initializing enhanced software timestamping...
+DEBUG    : GPTP [12:29:31:821] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:1207] Calibrated timestamp precision: 1000 ns
+INFO     : GPTP [12:29:31:822] === Enhanced Software Timestamping Capabilities ===
+INFO     : GPTP [12:29:31:822] Preferred method: 1, Available: Yes, Precision: 1000 ns
+INFO     : GPTP [12:29:31:822] Method availability:
+INFO     : GPTP [12:29:31:822]   QueryPerformanceCounter: Available
+INFO     : GPTP [12:29:31:823]   GetSystemTimePrecise: Available
+INFO     : GPTP [12:29:31:823]   Winsock timestamp: Not available
+STATUS   : GPTP [12:29:31:823] Timestamping strategy: Cross-timestamping with enhanced software fallback
+STATUS   : GPTP [12:29:31:823] Enhanced timestamping initialization complete
+STATUS   : GPTP [12:29:31:824] *** MAIN: Port initialized successfully, about to process POWERUP event ***
+DEBUG    : GPTP [12:29:31:824] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\common_port.cpp:702] Received POWERUP/INITIALIZE event
+DEBUG    : GPTP [12:29:31:824] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:266] *** addEventTimerLocked: target=0000023B228641C0, event=14, time_ns=3000000000, thread_id=7688 ***
+DEBUG    : GPTP [12:29:31:825] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:279] *** addEventTimerLocked: About to acquire timer queue lock ***
+DEBUG    : GPTP [12:29:31:825] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:285] *** addEventTimerLocked: Timer queue lock acquired successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:825] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:288] *** addEventTimerLocked: About to call addEventTimer ***
+DEBUG    : GPTP [12:29:31:826] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:300] *** addEventTimerLocked: timerq=0000023B2285D140, calling addEventTimer ***
+DEBUG    : GPTP [12:29:31:826] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:502] *** WindowsTimerQueue::cleanupRetiredTimers: ENTER (thread_id=7688) ***
+DEBUG    : GPTP [12:29:31:826] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:505] *** cleanupRetiredTimers: About to acquire retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:827] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:507] *** cleanupRetiredTimers: Acquired retiredTimersLock, retired list size=0 ***
+DEBUG    : GPTP [12:29:31:827] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:512] *** cleanupRetiredTimers: Starting iteration through retired timers ***
+DEBUG    : GPTP [12:29:31:827] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:535] *** cleanupRetiredTimers: About to release retiredTimersLock, toDelete size=0 ***
+DEBUG    : GPTP [12:29:31:827] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:537] *** cleanupRetiredTimers: Released retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:828] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:540] *** cleanupRetiredTimers: About to clean up 0 timer structures ***
+DEBUG    : GPTP [12:29:31:828] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:556] *** cleanupRetiredTimers: Cleanup completed successfully ***
+DEBUG    : GPTP [12:29:31:828] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:563] *** WindowsTimerQueue::cleanupRetiredTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:829] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:567] *** WindowsTimerQueue::cleanupCompletedTimers: ENTER (thread_id=7688) ***
+DEBUG    : GPTP [12:29:31:829] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:571] *** cleanupCompletedTimers: Iterating through timerQueueMap (size=0) ***
+DEBUG    : GPTP [12:29:31:829] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:606] *** cleanupCompletedTimers: All queues processed successfully ***
+DEBUG    : GPTP [12:29:31:829] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:613] *** WindowsTimerQueue::cleanupCompletedTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:830] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:302] *** addEventTimerLocked: addEventTimer completed successfully ***
+DEBUG    : GPTP [12:29:31:830] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:321] *** addEventTimerLocked: About to release timer queue lock ***
+DEBUG    : GPTP [12:29:31:831] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:327] *** addEventTimerLocked: Timer queue lock released successfully (result=0) ***
+STATUS   : GPTP [12:29:31:831] Starting PDelay
+DEBUG    : GPTP [12:29:31:831] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:193] startPDelay() called, pdelayHalted=false, active_profile=standard ***
+DEBUG    : GPTP [12:29:31:832] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:205] standard profile - starting PDelay timer with 1000000000 ns interval (1.000 s) ***
+STATUS   : GPTP [12:29:31:832] *** ASCAPABLE STARTUP: Beginning PDelay exchanges - need 1 successful exchanges for asCapable=true (estimated: 1.0 seconds) ***
+STATUS   : GPTP [12:29:31:832] *** ASCAPABLE CONFIG: Profile 'standard' requires 1 successful PDelay exchanges minimum ***
+DEBUG    : GPTP [12:29:31:833] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1339] startPDelayIntervalTimer() called with waitTime=1000000000 ns (1000.000 ms) ***
+DEBUG    : GPTP [12:29:31:833] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1340] *** NETWORK THREAD: About to acquire pDelayIntervalTimerLock (thread_id=7688, stack_ptr=000000AD538FF098) ***
+DEBUG    : GPTP [12:29:31:833] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1349] *** NETWORK THREAD: Acquired pDelayIntervalTimerLock (thread_id=7688, stack_ptr=000000AD538FF098) ***
+DEBUG    : GPTP [12:29:31:833] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1359] *** NETWORK THREAD: About to call clock->deleteEventTimerLocked ***
+DEBUG    : GPTP [12:29:31:834] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:342] *** deleteEventTimerLocked: target=0000023B228641C0, event=11, thread_id=7688 ***
+DEBUG    : GPTP [12:29:31:834] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:355] *** deleteEventTimerLocked: About to acquire timer queue lock ***
+DEBUG    : GPTP [12:29:31:835] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:361] *** deleteEventTimerLocked: Timer queue lock acquired successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:835] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:364] *** deleteEventTimerLocked: About to call timerq->cancelEvent ***
+DEBUG    : GPTP [12:29:31:835] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:376] *** deleteEventTimerLocked: timerq=0000023B2285D140, event=11, calling cancelEvent ***
+DEBUG    : GPTP [12:29:31:836] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:662] *** WindowsTimerQueue::cancelEvent: ENTER (type=11, event=0000000000000000, thread_id=7688) ***
+DEBUG    : GPTP [12:29:31:836] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:667] *** WindowsTimerQueue::cancelEvent: Event type 11 not found in map, returning false ***
+DEBUG    : GPTP [12:29:31:836] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:378] *** deleteEventTimerLocked: timerq->cancelEvent completed successfully ***
+DEBUG    : GPTP [12:29:31:836] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:397] *** deleteEventTimerLocked: About to release timer queue lock ***
+DEBUG    : GPTP [12:29:31:837] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:403] *** deleteEventTimerLocked: Timer queue lock released successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:837] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1361] *** NETWORK THREAD: About to call clock->addEventTimerLocked ***
+DEBUG    : GPTP [12:29:31:837] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:266] *** addEventTimerLocked: target=0000023B228641C0, event=11, time_ns=1000000000, thread_id=7688 ***
+DEBUG    : GPTP [12:29:31:837] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:279] *** addEventTimerLocked: About to acquire timer queue lock ***
+DEBUG    : GPTP [12:29:31:837] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:285] *** addEventTimerLocked: Timer queue lock acquired successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:838] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:288] *** addEventTimerLocked: About to call addEventTimer ***
+DEBUG    : GPTP [12:29:31:838] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:300] *** addEventTimerLocked: timerq=0000023B2285D140, calling addEventTimer ***
+DEBUG    : GPTP [12:29:31:838] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:502] *** WindowsTimerQueue::cleanupRetiredTimers: ENTER (thread_id=7688) ***
+DEBUG    : GPTP [12:29:31:838] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:505] *** cleanupRetiredTimers: About to acquire retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:839] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:507] *** cleanupRetiredTimers: Acquired retiredTimersLock, retired list size=0 ***
+DEBUG    : GPTP [12:29:31:839] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:512] *** cleanupRetiredTimers: Starting iteration through retired timers ***
+DEBUG    : GPTP [12:29:31:839] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:535] *** cleanupRetiredTimers: About to release retiredTimersLock, toDelete size=0 ***
+DEBUG    : GPTP [12:29:31:839] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:537] *** cleanupRetiredTimers: Released retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:840] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:540] *** cleanupRetiredTimers: About to clean up 0 timer structures ***
+DEBUG    : GPTP [12:29:31:840] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:556] *** cleanupRetiredTimers: Cleanup completed successfully ***
+DEBUG    : GPTP [12:29:31:840] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:563] *** WindowsTimerQueue::cleanupRetiredTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:840] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:567] *** WindowsTimerQueue::cleanupCompletedTimers: ENTER (thread_id=7688) ***
+DEBUG    : GPTP [12:29:31:841] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:571] *** cleanupCompletedTimers: Iterating through timerQueueMap (size=1) ***
+DEBUG    : GPTP [12:29:31:841] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:574] *** cleanupCompletedTimers: Processing queue for type 14 ***
+DEBUG    : GPTP [12:29:31:841] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:576] *** cleanupCompletedTimers: About to acquire SRW lock for type 14 ***
+DEBUG    : GPTP [12:29:31:841] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:579] *** cleanupCompletedTimers: Acquired SRW lock for type 14, arg_list size=1 ***
+DEBUG    : GPTP [12:29:31:842] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:591] *** cleanupCompletedTimers: Checking timer arg 0000023B2287AA70 (completed=false) ***
+DEBUG    : GPTP [12:29:31:842] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:603] *** cleanupCompletedTimers: About to release SRW lock for type 14 ***
+DEBUG    : GPTP [12:29:31:842] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:606] *** cleanupCompletedTimers: All queues processed successfully ***
+DEBUG    : GPTP [12:29:31:842] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:613] *** WindowsTimerQueue::cleanupCompletedTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:843] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:302] *** addEventTimerLocked: addEventTimer completed successfully ***
+DEBUG    : GPTP [12:29:31:843] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:321] *** addEventTimerLocked: About to release timer queue lock ***
+DEBUG    : GPTP [12:29:31:843] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:327] *** addEventTimerLocked: Timer queue lock released successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:843] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1363] *** NETWORK THREAD: Clock timer operations completed successfully ***
+DEBUG    : GPTP [12:29:31:844] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1374] *** NETWORK THREAD: About to release pDelayIntervalTimerLock (thread_id=7688, stack_ptr=000000AD538FF098) ***
+DEBUG    : GPTP [12:29:31:844] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1376] *** NETWORK THREAD: Released pDelayIntervalTimerLock (thread_id=7688, stack_ptr=000000AD538FF098) ***
+DEBUG    : GPTP [12:29:31:844] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1377] PDelay interval timer set successfully ***
+DEBUG    : GPTP [12:29:31:845] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:222] *** PDelay timer started with interval: 0 (1.000 seconds) ***
+DEBUG    : GPTP [12:29:31:845] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:687] *** NETWORK THREAD: port_ready_condition->wait_prelock() returned (thread_id=7688, stack_ptr=000000AD538FF150) ***
+STATUS   : GPTP [12:29:31:845] *** ATTEMPTING TO START LINK WATCH THREAD ***
+STATUS   : GPTP [12:29:31:845] *** LINK WATCH THREAD STARTED SUCCESSFULLY ***
+STATUS   : GPTP [12:29:31:846] *** ATTEMPTING TO START LISTENING THREAD ***
+DEBUG    : GPTP [12:29:31:846] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:699] About to call linkOpen(openPortWrapper, this) (thread_id=7688, stack_ptr=0000023B228641C0)
+STATUS   : GPTP [12:29:31:846] *** OSThreadCallback ENTRY (thread_id=15080, input=0000023B2285E4C0) ***
+STATUS   : GPTP [12:29:31:847] *** OSThreadCallback: About to call func=00007FF61DEA83D0 with arg=0000023B228641C0 (thread_id=15080) ***
+STATUS   : GPTP [12:29:31:847] *** watchNetLinkWrapper() called ***
+DEBUG    : GPTP [12:29:31:846] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:701] linkOpen(openPortWrapper, this) returned 1 (thread_id=7688, stack_ptr=0000023B228641C0)
+STATUS   : GPTP [12:29:31:847] *** LISTENING THREAD STARTED SUCCESSFULLY ***
+STATUS   : GPTP [12:29:31:847] *** Calling port->watchNetLink() ***
+STATUS   : GPTP [12:29:31:848] === WindowsPCAPNetworkInterface::watchNetLink() called ===
+STATUS   : GPTP [12:29:31:848] Starting link monitoring for MAC: 68:05:ca:8b:76:4e
+STATUS   : GPTP [12:29:31:849] *** standard PROFILE: Setting asCapable=false (initial=false, link_up_behavior=false_initially) ***
+STATUS   : GPTP [12:29:31:849] *** ANNOUNCE MESSAGES WILL START AFTER EARNING asCapable ***
+STATUS   : GPTP [12:29:31:849] *** TRIGGERING LINKUP EVENT FOR BMCA ***
+DEBUG    : GPTP [12:29:31:849] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:193] startPDelay() called, pdelayHalted=false, active_profile=standard ***
+DEBUG    : GPTP [12:29:31:850] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:205] standard profile - starting PDelay timer with 1000000000 ns interval (1.000 s) ***
+STATUS   : GPTP [12:29:31:850] *** ASCAPABLE STARTUP: Beginning PDelay exchanges - need 1 successful exchanges for asCapable=true (estimated: 1.0 seconds) ***
+STATUS   : GPTP [12:29:31:850] *** ASCAPABLE CONFIG: Profile 'standard' requires 1 successful PDelay exchanges minimum ***
+DEBUG    : GPTP [12:29:31:850] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1339] startPDelayIntervalTimer() called with waitTime=1000000000 ns (1000.000 ms) ***
+DEBUG    : GPTP [12:29:31:851] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1340] *** NETWORK THREAD: About to acquire pDelayIntervalTimerLock (thread_id=15080, stack_ptr=000000AD53DFFB18) ***
+DEBUG    : GPTP [12:29:31:851] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1349] *** NETWORK THREAD: Acquired pDelayIntervalTimerLock (thread_id=15080, stack_ptr=000000AD53DFFB18) ***
+DEBUG    : GPTP [12:29:31:851] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1359] *** NETWORK THREAD: About to call clock->deleteEventTimerLocked ***
+DEBUG    : GPTP [12:29:31:851] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:342] *** deleteEventTimerLocked: target=0000023B228641C0, event=11, thread_id=15080 ***
+DEBUG    : GPTP [12:29:31:852] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:355] *** deleteEventTimerLocked: About to acquire timer queue lock ***
+DEBUG    : GPTP [12:29:31:852] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:361] *** deleteEventTimerLocked: Timer queue lock acquired successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:852] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:364] *** deleteEventTimerLocked: About to call timerq->cancelEvent ***
+DEBUG    : GPTP [12:29:31:852] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:376] *** deleteEventTimerLocked: timerq=0000023B2285D140, event=11, calling cancelEvent ***
+DEBUG    : GPTP [12:29:31:852] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:662] *** WindowsTimerQueue::cancelEvent: ENTER (type=11, event=0000000000000000, thread_id=15080) ***
+DEBUG    : GPTP [12:29:31:853] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:671] *** WindowsTimerQueue::cancelEvent: Found event type 11, about to acquire SRW lock ***
+DEBUG    : GPTP [12:29:31:853] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:673] *** WindowsTimerQueue::cancelEvent: Acquired SRW lock for type 11 ***
+DEBUG    : GPTP [12:29:31:853] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:676] *** WindowsTimerQueue::cancelEvent: Processing timer in arg_list (size=1) ***
+DEBUG    : GPTP [12:29:31:853] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:683] *** WindowsTimerQueue::cancelEvent: About to pop front from arg_list ***
+DEBUG    : GPTP [12:29:31:854] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:685] *** WindowsTimerQueue::cancelEvent: About to release SRW lock for DeleteTimerQueueTimer ***
+DEBUG    : GPTP [12:29:31:854] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:690] *** WindowsTimerQueue::cancelEvent: About to call DeleteTimerQueueTimer (queue_handle=0000023B2285CFC0, timer_handle=0000023B22863650) ***
+DEBUG    : GPTP [12:29:31:854] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:692] *** WindowsTimerQueue::cancelEvent: DeleteTimerQueueTimer completed ***
+DEBUG    : GPTP [12:29:31:854] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:696] *** WindowsTimerQueue::cancelEvent: About to acquire retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:855] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:698] *** WindowsTimerQueue::cancelEvent: About to add to retiredTimers list ***
+DEBUG    : GPTP [12:29:31:855] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:700] *** WindowsTimerQueue::cancelEvent: About to release retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:855] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:703] *** WindowsTimerQueue::cancelEvent: About to reacquire SRW lock for next iteration ***
+DEBUG    : GPTP [12:29:31:855] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:706] *** WindowsTimerQueue::cancelEvent: All timers processed, about to release final SRW lock ***
+DEBUG    : GPTP [12:29:31:856] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:710] *** WindowsTimerQueue::cancelEvent: About to call cleanupRetiredTimers ***
+DEBUG    : GPTP [12:29:31:856] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:502] *** WindowsTimerQueue::cleanupRetiredTimers: ENTER (thread_id=15080) ***
+DEBUG    : GPTP [12:29:31:856] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:505] *** cleanupRetiredTimers: About to acquire retiredTimersLock ***
+STATUS   : GPTP [12:29:31:846] *** OSThreadCallback ENTRY (thread_id=16940, input=0000023B228C10D0) ***
+STATUS   : GPTP [12:29:31:857] *** OSThreadCallback: About to call func=00007FF61DEA6BB0 with arg=0000023B228641C0 (thread_id=16940) ***
+STATUS   : GPTP [12:29:31:857] *** openPortWrapper() called (thread_id=16940, arg=0000023B228641C0) ***
+STATUS   : GPTP [12:29:31:858] *** Calling port->openPort() (thread_id=16940, port=0000023B228641C0) ***
+DEBUG    : GPTP [12:29:31:857] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:507] *** cleanupRetiredTimers: Acquired retiredTimersLock, retired list size=1 ***
+STATUS   : GPTP [12:29:31:858] *** EtherPort::openPort ENTRY (thread_id=16940, port=0000023B228641C0, stack_canary=deadbeef, stack_ptr=000000AD53EFF9A8) ***
+STATUS   : GPTP [12:29:31:858] *** NETWORK THREAD: About to signal port_ready_condition ***
+DEBUG    : GPTP [12:29:31:858] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:512] *** cleanupRetiredTimers: Starting iteration through retired timers ***
+DEBUG    : GPTP [12:29:31:859] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:515] *** cleanupRetiredTimers: Processing retired timer ***
+DEBUG    : GPTP [12:29:31:859] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:525] *** cleanupRetiredTimers: About to call DeleteTimerQueueTimer for cleanup (queue_handle=0000023B2285CFC0, timer_handle=0000023B22863650) ***
+DEBUG    : GPTP [12:29:31:860] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:529] *** cleanupRetiredTimers: Timer already deleted in cancelEvent, safe to clean up ***
+DEBUG    : GPTP [12:29:31:860] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:535] *** cleanupRetiredTimers: About to release retiredTimersLock, toDelete size=1 ***
+DEBUG    : GPTP [12:29:31:860] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:537] *** cleanupRetiredTimers: Released retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:860] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:540] *** cleanupRetiredTimers: About to clean up 1 timer structures ***
+STATUS   : GPTP [12:29:31:859] *** NETWORK THREAD: port_ready_condition->signal() completed ***
+STATUS   : GPTP [12:29:31:861] *** NETWORK THREAD: About to set listening thread running ***
+STATUS   : GPTP [12:29:31:861] *** NETWORK THREAD: setListeningThreadRunning(true) completed ***
+STATUS   : GPTP [12:29:31:861] *** NETWORK THREAD: About to initialize heartbeat ***
+STATUS   : GPTP [12:29:31:862] *** NETWORK THREAD: Heartbeat initialization completed ***
+STATUS   : GPTP [12:29:31:862] *** NETWORK THREAD: Starting packet reception loop ***
+DEBUG    : GPTP [12:29:31:862] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:432] *** NETWORK THREAD: Successfully got initial timestamp from clock ***
+DEBUG    : GPTP [12:29:31:862] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:443] *** NETWORK THREAD: LOOP START (loop_counter=0, thread_id=16940, stack_ptr=000000AD53EFF9A0) ***
+INFO     : GPTP [12:29:31:863] *** NETWORK THREAD: First entry into receive loop (loop_counter=1) ***
+DEBUG    : GPTP [12:29:31:863] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:511] *** NETWORK THREAD: About to check port_ready_condition (signal) (loop_counter=1) ***
+DEBUG    : GPTP [12:29:31:863] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:515] *** NETWORK THREAD: About to call recv() - loop #1
+DEBUG    : GPTP [12:29:31:863] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:184] nrecv: call recvFrame - Waiting for packet on interface 68:05:ca:8b:76:4e
+DEBUG    : GPTP [12:29:31:861] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:548] *** cleanupRetiredTimers: Cleaning up timer arg 0000023B2287A8E0 (rm=true) ***
+DEBUG    : GPTP [12:29:31:864] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:550] *** cleanupRetiredTimers: About to delete inner_arg 0000023B2285E5E0 ***
+DEBUG    : GPTP [12:29:31:864] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:553] *** cleanupRetiredTimers: About to delete arg 0000023B2287A8E0 ***
+DEBUG    : GPTP [12:29:31:864] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:556] *** cleanupRetiredTimers: Cleanup completed successfully ***
+DEBUG    : GPTP [12:29:31:865] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:563] *** WindowsTimerQueue::cleanupRetiredTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:865] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:713] *** WindowsTimerQueue::cancelEvent: About to call cleanupCompletedTimers ***
+DEBUG    : GPTP [12:29:31:865] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:567] *** WindowsTimerQueue::cleanupCompletedTimers: ENTER (thread_id=15080) ***
+DEBUG    : GPTP [12:29:31:865] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:571] *** cleanupCompletedTimers: Iterating through timerQueueMap (size=2) ***
+DEBUG    : GPTP [12:29:31:866] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:574] *** cleanupCompletedTimers: Processing queue for type 11 ***
+DEBUG    : GPTP [12:29:31:866] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:576] *** cleanupCompletedTimers: About to acquire SRW lock for type 11 ***
+DEBUG    : GPTP [12:29:31:866] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:579] *** cleanupCompletedTimers: Acquired SRW lock for type 11, arg_list size=0 ***
+DEBUG    : GPTP [12:29:31:866] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:603] *** cleanupCompletedTimers: About to release SRW lock for type 11 ***
+DEBUG    : GPTP [12:29:31:867] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:574] *** cleanupCompletedTimers: Processing queue for type 14 ***
+DEBUG    : GPTP [12:29:31:867] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:576] *** cleanupCompletedTimers: About to acquire SRW lock for type 14 ***
+DEBUG    : GPTP [12:29:31:867] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:579] *** cleanupCompletedTimers: Acquired SRW lock for type 14, arg_list size=1 ***
+DEBUG    : GPTP [12:29:31:867] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:591] *** cleanupCompletedTimers: Checking timer arg 0000023B2287AA70 (completed=false) ***
+DEBUG    : GPTP [12:29:31:868] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:603] *** cleanupCompletedTimers: About to release SRW lock for type 14 ***
+DEBUG    : GPTP [12:29:31:868] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:606] *** cleanupCompletedTimers: All queues processed successfully ***
+DEBUG    : GPTP [12:29:31:868] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:613] *** WindowsTimerQueue::cleanupCompletedTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:868] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:715] *** WindowsTimerQueue::cancelEvent: EXIT (returning true) ***
+DEBUG    : GPTP [12:29:31:869] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:378] *** deleteEventTimerLocked: timerq->cancelEvent completed successfully ***
+DEBUG    : GPTP [12:29:31:869] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:397] *** deleteEventTimerLocked: About to release timer queue lock ***
+DEBUG    : GPTP [12:29:31:864] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:304] recvFrame: ENTER (thread_id=16940, handle=0000023B2287B280)
+
+DEBUG    : GPTP [12:29:31:869] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:323] recvFrame: Calling update_network_thread_heartbeat (thread_id=16940)
+
+DEBUG    : GPTP [12:29:31:869] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:403] *** deleteEventTimerLocked: Timer queue lock released successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:870] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1361] *** NETWORK THREAD: About to call clock->addEventTimerLocked ***
+DEBUG    : GPTP [12:29:31:870] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:266] *** addEventTimerLocked: target=0000023B228641C0, event=11, time_ns=1000000000, thread_id=15080 ***
+DEBUG    : GPTP [12:29:31:870] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:279] *** addEventTimerLocked: About to acquire timer queue lock ***
+DEBUG    : GPTP [12:29:31:871] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:285] *** addEventTimerLocked: Timer queue lock acquired successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:871] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:288] *** addEventTimerLocked: About to call addEventTimer ***
+DEBUG    : GPTP [12:29:31:871] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:300] *** addEventTimerLocked: timerq=0000023B2285D140, calling addEventTimer ***
+DEBUG    : GPTP [12:29:31:871] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:502] *** WindowsTimerQueue::cleanupRetiredTimers: ENTER (thread_id=15080) ***
+DEBUG    : GPTP [12:29:31:872] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:505] *** cleanupRetiredTimers: About to acquire retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:872] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:507] *** cleanupRetiredTimers: Acquired retiredTimersLock, retired list size=0 ***
+DEBUG    : GPTP [12:29:31:872] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:512] *** cleanupRetiredTimers: Starting iteration through retired timers ***
+DEBUG    : GPTP [12:29:31:873] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:535] *** cleanupRetiredTimers: About to release retiredTimersLock, toDelete size=0 ***
+DEBUG    : GPTP [12:29:31:873] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:537] *** cleanupRetiredTimers: Released retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:859] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:711] *** NETWORK THREAD: port_ready_condition->wait() returned (thread_id=7688, stack_ptr=000000AD538FF150) ***
+DEBUG    : GPTP [12:29:31:874] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1204] EtherPort::processEvent() returning true
+DEBUG    : GPTP [12:29:31:874] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:540] *** cleanupRetiredTimers: About to clean up 0 timer structures ***
+DEBUG    : GPTP [12:29:31:875] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:556] *** cleanupRetiredTimers: Cleanup completed successfully ***
+DEBUG    : GPTP [12:29:31:875] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:563] *** WindowsTimerQueue::cleanupRetiredTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:875] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:567] *** WindowsTimerQueue::cleanupCompletedTimers: ENTER (thread_id=15080) ***
+DEBUG    : GPTP [12:29:31:875] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:571] *** cleanupCompletedTimers: Iterating through timerQueueMap (size=2) ***
+DEBUG    : GPTP [12:29:31:875] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:574] *** cleanupCompletedTimers: Processing queue for type 11 ***
+DEBUG    : GPTP [12:29:31:876] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:576] *** cleanupCompletedTimers: About to acquire SRW lock for type 11 ***
+DEBUG    : GPTP [12:29:31:876] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:579] *** cleanupCompletedTimers: Acquired SRW lock for type 11, arg_list size=0 ***
+DEBUG    : GPTP [12:29:31:876] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:603] *** cleanupCompletedTimers: About to release SRW lock for type 11 ***
+DEBUG    : GPTP [12:29:31:876] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:574] *** cleanupCompletedTimers: Processing queue for type 14 ***
+DEBUG    : GPTP [12:29:31:877] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:576] *** cleanupCompletedTimers: About to acquire SRW lock for type 14 ***
+DEBUG    : GPTP [12:29:31:877] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:579] *** cleanupCompletedTimers: Acquired SRW lock for type 14, arg_list size=1 ***
+DEBUG    : GPTP [12:29:31:877] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:591] *** cleanupCompletedTimers: Checking timer arg 0000023B2287AA70 (completed=false) ***
+DEBUG    : GPTP [12:29:31:877] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:603] *** cleanupCompletedTimers: About to release SRW lock for type 14 ***
+DEBUG    : GPTP [12:29:31:878] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:606] *** cleanupCompletedTimers: All queues processed successfully ***
+DEBUG    : GPTP [12:29:31:878] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:613] *** WindowsTimerQueue::cleanupCompletedTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:878] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:302] *** addEventTimerLocked: addEventTimer completed successfully ***
+DEBUG    : GPTP [12:29:31:878] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:321] *** addEventTimerLocked: About to release timer queue lock ***
+DEBUG    : GPTP [12:29:31:879] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:327] *** addEventTimerLocked: Timer queue lock released successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:879] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1363] *** NETWORK THREAD: Clock timer operations completed successfully ***
+DEBUG    : GPTP [12:29:31:879] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1374] *** NETWORK THREAD: About to release pDelayIntervalTimerLock (thread_id=15080, stack_ptr=000000AD53DFFB18) ***
+DEBUG    : GPTP [12:29:31:879] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1376] *** NETWORK THREAD: Released pDelayIntervalTimerLock (thread_id=15080, stack_ptr=000000AD53DFFB18) ***
+DEBUG    : GPTP [12:29:31:880] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1377] PDelay interval timer set successfully ***
+DEBUG    : GPTP [12:29:31:880] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:222] *** PDelay timer started with interval: 0 (1.000 seconds) ***
+STATUS   : GPTP [12:29:31:880] *** standard LINKUP ***
+STATUS   : GPTP [12:29:31:880] *** LINKUP BMCA DECISION: Priority1=248, PortState=13 ***
+STATUS   : GPTP [12:29:31:881] *** STARTING ANNOUNCE RECEIPT TIMEOUT: 3000000000 ns (3.0 seconds) ***
+DEBUG    : GPTP [12:29:31:881] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:266] *** addEventTimerLocked: target=0000023B228641C0, event=14, time_ns=3000000000, thread_id=15080 ***
+DEBUG    : GPTP [12:29:31:881] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:279] *** addEventTimerLocked: About to acquire timer queue lock ***
+DEBUG    : GPTP [12:29:31:881] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:285] *** addEventTimerLocked: Timer queue lock acquired successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:882] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:288] *** addEventTimerLocked: About to call addEventTimer ***
+DEBUG    : GPTP [12:29:31:882] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:300] *** addEventTimerLocked: timerq=0000023B2285D140, calling addEventTimer ***
+DEBUG    : GPTP [12:29:31:882] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:502] *** WindowsTimerQueue::cleanupRetiredTimers: ENTER (thread_id=15080) ***
+DEBUG    : GPTP [12:29:31:882] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:505] *** cleanupRetiredTimers: About to acquire retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:883] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:507] *** cleanupRetiredTimers: Acquired retiredTimersLock, retired list size=0 ***
+DEBUG    : GPTP [12:29:31:883] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:512] *** cleanupRetiredTimers: Starting iteration through retired timers ***
+DEBUG    : GPTP [12:29:31:883] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:535] *** cleanupRetiredTimers: About to release retiredTimersLock, toDelete size=0 ***
+DEBUG    : GPTP [12:29:31:883] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:537] *** cleanupRetiredTimers: Released retiredTimersLock ***
+DEBUG    : GPTP [12:29:31:884] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:540] *** cleanupRetiredTimers: About to clean up 0 timer structures ***
+DEBUG    : GPTP [12:29:31:884] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:556] *** cleanupRetiredTimers: Cleanup completed successfully ***
+DEBUG    : GPTP [12:29:31:884] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:563] *** WindowsTimerQueue::cleanupRetiredTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:884] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:567] *** WindowsTimerQueue::cleanupCompletedTimers: ENTER (thread_id=15080) ***
+DEBUG    : GPTP [12:29:31:885] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:571] *** cleanupCompletedTimers: Iterating through timerQueueMap (size=2) ***
+DEBUG    : GPTP [12:29:31:885] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:574] *** cleanupCompletedTimers: Processing queue for type 11 ***
+DEBUG    : GPTP [12:29:31:885] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:576] *** cleanupCompletedTimers: About to acquire SRW lock for type 11 ***
+DEBUG    : GPTP [12:29:31:886] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:579] *** cleanupCompletedTimers: Acquired SRW lock for type 11, arg_list size=1 ***
+DEBUG    : GPTP [12:29:31:886] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:591] *** cleanupCompletedTimers: Checking timer arg 0000023B2287A480 (completed=false) ***
+DEBUG    : GPTP [12:29:31:886] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:603] *** cleanupCompletedTimers: About to release SRW lock for type 11 ***
+DEBUG    : GPTP [12:29:31:886] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:574] *** cleanupCompletedTimers: Processing queue for type 14 ***
+DEBUG    : GPTP [12:29:31:887] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:576] *** cleanupCompletedTimers: About to acquire SRW lock for type 14 ***
+DEBUG    : GPTP [12:29:31:887] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:579] *** cleanupCompletedTimers: Acquired SRW lock for type 14, arg_list size=1 ***
+DEBUG    : GPTP [12:29:31:887] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:591] *** cleanupCompletedTimers: Checking timer arg 0000023B2287AA70 (completed=false) ***
+DEBUG    : GPTP [12:29:31:887] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:603] *** cleanupCompletedTimers: About to release SRW lock for type 14 ***
+DEBUG    : GPTP [12:29:31:888] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:606] *** cleanupCompletedTimers: All queues processed successfully ***
+DEBUG    : GPTP [12:29:31:888] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:613] *** WindowsTimerQueue::cleanupCompletedTimers: EXIT ***
+DEBUG    : GPTP [12:29:31:888] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:302] *** addEventTimerLocked: addEventTimer completed successfully ***
+DEBUG    : GPTP [12:29:31:889] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:321] *** addEventTimerLocked: About to release timer queue lock ***
+DEBUG    : GPTP [12:29:31:889] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ieee1588clock.cpp:327] *** addEventTimerLocked: Timer queue lock released successfully (result=0) ***
+DEBUG    : GPTP [12:29:31:889] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:1204] EtherPort::processEvent() returning true
+ERROR    : GPTP [12:29:31:890] default switch - Unhandled event 7 in CommonPort::processEvent()
+STATUS   : GPTP [12:29:31:890] Link monitoring setup complete (simplified mode)
+STATUS   : GPTP [12:29:31:890] *** OSThreadCallback: func returned successfully (thread_id=15080) ***
+STATUS   : GPTP [12:29:31:890] *** OSThreadCallback EXIT (thread_id=15080) ***
+DEBUG    : GPTP [12:29:31:870] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:53] update_network_thread_heartbeat: ENTER (thread_id=16940, gptp_ether_port=0000023B228641C0)
+
+DEBUG    : GPTP [12:29:31:891] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:73] update_network_thread_heartbeat: thread_id=16940, GetTickCount64()=11605750 ms, QPC=116059061207, gptp_ether_port=0000023B228641C0, heartbeat=2, last_activity(QPC)=116059061207
+
+DEBUG    : GPTP [12:29:31:891] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:325] recvFrame: update_network_thread_heartbeat returned(thread_id=16940)
+
+DEBUG    : GPTP [12:29:31:892] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:329] recvFrame: Before WaitForSingleObject (thread_id=16940)
+
+DEBUG    : GPTP [12:29:31:892] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:332] recvFrame: After WaitForSingleObject (thread_id=16940, wait_result=0, WAIT_OBJECT_0=0, WAIT_TIMEOUT=258, WAIT_FAILED=4294967295, GetLastError()=0)
+
+DEBUG    : GPTP [12:29:31:892] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:379] recvFrame: Before pcap_next_ex (thread_id=16940)
+
+STATUS   : GPTP [12:29:31:874] *** MAIN: About to setup watchdog ***
+INFO     : GPTP [12:29:31:893] Creating Windows watchdog handler.
+DEBUG    : GPTP [12:29:31:892] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:382] recvFrame: After pcap_next_ex (thread_id=16940, pcap_result=1)
+
+DEBUG    : GPTP [12:29:31:893] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:470] Packet #1 received, size=68 bytes
+
+DEBUG    : GPTP [12:29:31:894] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:477] *** PTP PACKET #1 DETECTED *** Type=0x88F7, Size=68
+
+DEBUG    : GPTP [12:29:31:894] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:482] PTP Message Type=2, Transport=1, Total PTP: 1 of 1 packets
+
+DEBUG    : GPTP [12:29:31:894] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:511] recvFrame: EXIT (thread_id=16940, ret=0, length=54)
+
+DEBUG    : GPTP [12:29:31:894] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\packet.cpp:513] recvFrame: EXIT (thread_id=16940, ret=0)
+
+DEBUG    : GPTP [12:29:31:895] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:186] nrecv: recvFrame returned with error 0
+DEBUG    : GPTP [12:29:31:895] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:196] nrecv: recvFrame succeeded, returning net_succeed
+DEBUG    : GPTP [12:29:31:895] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:520] *** NETWORK THREAD: recv() returned 2 - loop #1
+DEBUG    : GPTP [12:29:31:895] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:527] *** NETWORK RX: Received 54 bytes from network, link_speed=4294967295
+DEBUG    : GPTP [12:29:31:896] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:533] *** NETWORK RX: PTP-like packet - messageType=2, seqId=33844, length=54
+DEBUG    : GPTP [12:29:31:896] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:536] *** NETWORK RX: About to call processMessage for 54 bytes (loop_counter=1) ***
+VERBOSE  : GPTP [12:29:31:896] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:251] Processing network buffer
+DEBUG    : GPTP [12:29:31:896] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:254] *** MSG PROCESSING: Processing 54 bytes from network
+VERBOSE  : GPTP [12:29:31:897] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:119] Captured Sequence Id: 33844
+INFO     : GPTP [12:29:31:893] Windows watchdog handler initialized. Service mode: NO
+DEBUG    : GPTP [12:29:31:897] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:1538] RXSTAMP OID failure 1/10 (error 50)
+WARNING  : GPTP [12:29:31:897] *** Received an event packet but cannot retrieve timestamp, discarding. messageType=2,error=50 (0x00000032) (Attempt 1, Failures: 1)
+INFO     : GPTP [12:29:31:898] Driver does not support Intel RX timestamping OID - trying fallback methods
+VERBOSE  : GPTP [12:29:31:898] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:1622] Attempting enhanced timestamp fallback (attempt 1) for messageType=2, seq=33844
+INFO     : GPTP [12:29:31:898] *** NDIS FALLBACK METHOD CALLED *** for seq=33844, messageType=2
+VERBOSE  : GPTP [12:29:31:898] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:856] Attempting NDIS-based timestamp fallback for message ID: seq=33844, messageType=2
+DEBUG    : GPTP [12:29:31:899] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:896] Attempting NDIS timestamp capability query
+DEBUG    : GPTP [12:29:31:899] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:918] NDIS timestamp capability query failed with error: 50
+DEBUG    : GPTP [12:29:31:899] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:928] Attempting NDIS performance counter correlation
+INFO     : GPTP [12:29:31:897] Windows watchdog interval: 30000000 microseconds
+INFO     : GPTP [12:29:31:900] Watchdog interval read from configuration: 30000000 us
+STATUS   : GPTP [12:29:31:900] Starting Windows watchdog handler (Update every: 15000000 us)
+DEBUG    : GPTP [12:29:31:899] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:936] NDIS performance counter correlation successful
+VERBOSE  : GPTP [12:29:31:900] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.cpp:873] NDIS performance counter correlation successful
+VERBOSE  : GPTP [12:29:31:901] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:1627] NDIS timestamp fallback successful: messageType=2, seq=33844
+VERBOSE  : GPTP [12:29:31:901] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:164] Timestamping event packet
+DEBUG    : GPTP [12:29:31:901] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:181] Received message type 2, sequenceId 33844, sourcePortIdentity 00:0a:92:ff:fe:01:c2:eb:3
+INFO     : GPTP [12:29:31:900] Windows watchdog update thread started (thread id: 15508)
+INFO     : GPTP [12:29:31:902] Watchdog: Waiting 5 seconds for network thread startup...
+DEBUG    : GPTP [12:29:31:901] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:260] *** Received PDelay Request message
+STATUS   : GPTP [12:29:31:902] *** MSG RX: PDELAY_REQ (type=2, seq=33844, len=54)
+DEBUG    : GPTP [12:29:31:902] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:301] *** MSG RX: Source: 00:0a:92:ff:fe:01:c2:eb:3
+VERBOSE  : GPTP [12:29:31:903] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:303] Processing message type: 2
+INFO     : GPTP [12:29:31:903] *** RECEIVED PDelay Request - calling processMessage
+DEBUG    : GPTP [12:29:31:903] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:308] PDELAY REQUEST: Received PDelay Request seq=33844 from source
+DEBUG    : GPTP [12:29:31:904] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:314] PDELAY REQUEST: RX timestamp: 1756895371.899886700
+DEBUG    : GPTP [12:29:31:904] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:319] PDELAY REQUEST: Port state: 13, asCapable: false
+DEBUG    : GPTP [12:29:31:904] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:364] RX PHY compensation: 0 0.000000000 sec
+INFO     : GPTP [12:29:31:900] Windows watchdog started successfully. Thread ID: 15508
+STATUS   : GPTP [12:29:31:905] *** MAIN: Watchdog setup completed successfully ***
+STATUS   : GPTP [12:29:31:905] *** MAIN: About to register Ctrl-C handler ***
+STATUS   : GPTP [12:29:31:905] *** MAIN: Ctrl-C handler registered, entering main loop ***
+INFO     : GPTP [12:29:31:904] *** PTPMessagePathDelayReq::processMessage - START processing PDelay Request
+DEBUG    : GPTP [12:29:31:906] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:1259] PDELAY RESPONSE: Processing request seq=33844
+DEBUG    : GPTP [12:29:31:906] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:1276] PDELAY RESPONSE: Port state check - current state: 13
+INFO     : GPTP [12:29:31:907] *** PTPMessagePathDelayReq::processMessage - passed state checks, creating response
+DEBUG    : GPTP [12:29:31:907] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:1293] PDELAY RESPONSE: State checks passed - creating PDelay Response
+DEBUG    : GPTP [12:29:31:907] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:1301] Process PDelay Request SeqId: 33844	
+INFO     : GPTP [12:29:31:907] *** About to send PDelay Response - acquiring TX lock
+INFO     : GPTP [12:29:31:908] *** TX lock acquired, calling sendPort
+VERBOSE  : GPTP [12:29:31:908] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:655] Sending Sequence Id: 33844
+VERBOSE  : GPTP [12:29:31:908] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:1550] PDelay Resp Timestamp: 1756895371,899886700
+STATUS   : GPTP [12:29:31:908] *** MSG TX: Sending 54 bytes, type=0, seq=0, PDELAY_MCAST, timestamp=true
+DEBUG    : GPTP [12:29:31:909] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ether_port.cpp:628] *** MSG TX: Send successful
+DEBUG    : GPTP [12:29:31:909] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:1356] TXSTAMP OID failure 1/10 (error 50)
+WARNING  : GPTP [12:29:31:909] Error (TX) timestamping PDelay request, error=50 (0x00000032). Intel OID may not be supported or accessible
+INFO     : GPTP [12:29:31:909] Driver does not support Intel TX timestamping OID - trying fallback methods
+VERBOSE  : GPTP [12:29:31:910] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:1408] Attempting TX timestamp fallback for messageType=3, seq=33844
+VERBOSE  : GPTP [12:29:32:063] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_crosststamp.cpp:418] Cross-timestamp correlation calibrated with 10 samples
+VERBOSE  : GPTP [12:29:32:064] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal.hpp:1421] TX timestamp cross-timestamp fallback successful: messageType=3, seq=33844
+DEBUG    : GPTP [12:29:32:065] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:602] TX PHY compensation: 0 0.000000000 sec
+INFO     : GPTP [12:29:32:065] *** sendPort returned, releasing TX lock
+DEBUG    : GPTP [12:29:32:065] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:1318] *** Sent PDelay Response message
+INFO     : GPTP [12:29:32:066] *** TX lock released
+VERBOSE  : GPTP [12:29:32:067] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:1342] Response Depart(sec): 2
+VERBOSE  : GPTP [12:29:32:068] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\ptp_message.cpp:1343] Request Arrival(sec): 1756895371
+DEBUG    : GPTP [12:29:32:892] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\windows\daemon_cl\windows_hal_common.cpp:84] Timer queue handler fired: type=11
+DEBUG    : GPTP [12:29:32:893] [C:\Users\dzarf\source\repos\OpenAvnu-2\thirdparty\gptp\common\common_port.cpp:844] PDELAY_INTERVAL_TIMEOUT_EXPIRES occured
