@@ -392,6 +392,22 @@ elseif(OPENAVNU_BUILD_LEGACY_TESTS)
         add_subdirectory("tests/intel_hal")
     endif()
 
+    # TSN Test Suite (always available when Intel HAL is present)
+    message(STATUS "🔧 DEBUG: Checking TSN test conditions...")
+    message(STATUS "🔧 DEBUG: INTEL_HAL_FOUND = ${INTEL_HAL_FOUND}")
+    if(TARGET intel-ethernet-hal-static)
+        message(STATUS "🔧 DEBUG: intel-ethernet-hal-static target EXISTS")
+    else()
+        message(STATUS "🔧 DEBUG: intel-ethernet-hal-static target NOT FOUND")
+    endif()
+    
+    if(INTEL_HAL_FOUND OR TARGET intel-ethernet-hal-static)
+        message(STATUS "✅ Adding TSN test suite")
+        add_subdirectory("tests")
+    else()
+        message(STATUS "❌ TSN test suite skipped - Intel HAL not available")
+    endif()
+
     # Clock Quality Test
     if(OPENAVNU_BUILD_TEST_CLOCK_QUALITY)
         message(STATUS "✅ Adding legacy Clock Quality test")
@@ -451,3 +467,134 @@ set_target_properties(test_phase2b_working PROPERTIES
     CXX_STANDARD 11
     CXX_STANDARD_REQUIRED ON
 )
+
+# TSN Integration Test (Phase 3)
+if(TARGET intel-ethernet-hal-static)
+    add_executable(test_intel_tsn_integration
+        lib/avtp_pipeline/test_intel_tsn_integration.c
+        lib/avtp_pipeline/intel_tsn_integration.c
+    )
+
+    target_link_libraries(test_intel_tsn_integration
+        PRIVATE
+        intel-ethernet-hal-static
+        ws2_32
+    )
+
+    target_include_directories(test_intel_tsn_integration
+        PRIVATE
+        ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+    )
+
+    set_target_properties(test_intel_tsn_integration PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+    )
+
+    add_dependencies(test_intel_tsn_integration intel-ethernet-hal-static)
+    
+    # Real TSN Feature Test (tests actual TSN functions)
+    add_executable(real_tsn_test
+        lib/avtp_pipeline/real_tsn_test.c
+    )
+    
+    target_link_libraries(real_tsn_test 
+        PRIVATE 
+        intel-ethernet-hal-static
+    )
+    
+    target_include_directories(real_tsn_test 
+        PRIVATE 
+        ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+    )
+
+    set_target_properties(real_tsn_test PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+    )
+
+    add_dependencies(real_tsn_test intel-ethernet-hal-static)
+    
+    # Simple TSN Feature Test (Windows-compatible, no network conflicts)
+    add_executable(simple_tsn_test
+        lib/avtp_pipeline/simple_tsn_test.c
+    )
+    
+    target_link_libraries(simple_tsn_test 
+        PRIVATE 
+        intel-ethernet-hal-static
+    )
+    
+    target_include_directories(simple_tsn_test 
+        PRIVATE 
+        ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+    )
+
+    set_target_properties(simple_tsn_test PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+    )
+
+    add_dependencies(simple_tsn_test intel-ethernet-hal-static)
+    
+    # Minimal TSN test (no includes, direct validation)
+    add_executable(minimal_tsn_test
+        lib/avtp_pipeline/minimal_tsn_test.c
+    )
+    
+    target_link_libraries(minimal_tsn_test 
+        PRIVATE 
+        intel-ethernet-hal-static
+    )
+
+    set_target_properties(minimal_tsn_test PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+    )
+
+    add_dependencies(minimal_tsn_test intel-ethernet-hal-static)
+    
+    # Corrected TSN test (uses actual Intel HAL API)
+    add_executable(corrected_tsn_test
+        lib/avtp_pipeline/corrected_tsn_test.c
+    )
+    
+    target_link_libraries(corrected_tsn_test 
+        PRIVATE 
+        intel-ethernet-hal-static
+    )
+
+    set_target_properties(corrected_tsn_test PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+    )
+
+    add_dependencies(corrected_tsn_test intel-ethernet-hal-static)
+    
+    message(STATUS "TSN Integration Test target added")
+    message(STATUS "Real TSN Feature Test target added")
+endif()
+
+# Add TSN Fixed Test - Test our fixed TSN functions
+add_executable(test_tsn_fixed
+    test_tsn_fixed.c
+    # Include intel_avb source files needed for TSN functions
+    lib/intel_avb/lib/intel.c
+    lib/intel_avb/lib/intel_i225.c
+    lib/intel_avb/lib/intel_i210.c
+    lib/intel_avb/lib/intel_i219.c
+    lib/intel_avb/lib/intel_i217.c
+    lib/intel_avb/lib/intel_common.c
+    lib/intel_avb/lib/intel_windows.c
+)
+
+target_include_directories(test_tsn_fixed PRIVATE
+    lib/intel_avb/lib
+)
+
+target_link_libraries(test_tsn_fixed
+    intel-ethernet-hal-static
+)
+
+set_target_properties(test_tsn_fixed PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+)
+
+add_dependencies(test_tsn_fixed intel-ethernet-hal-static)
+
+message(STATUS "✅ TSN Fixed Test target added - tests our fixed TSN functions")

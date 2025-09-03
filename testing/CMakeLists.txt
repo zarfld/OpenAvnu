@@ -50,6 +50,26 @@ if(OPENAVNU_BUILD_HARDWARE_TESTS AND OPENAVNU_BUILD_INTEL_HAL AND NOT OPENAVNU_C
     message(STATUS "🔧 Building hardware tests")
     add_subdirectory(hardware/intel/hal)
     
+    # Add comprehensive TSN test
+    if(TARGET intel-ethernet-hal-static)
+        message(STATUS "✅ Adding comprehensive TSN test")
+        add_executable(comprehensive_tsn_test hardware/comprehensive_tsn_working.c)
+        target_link_libraries(comprehensive_tsn_test PRIVATE intel-ethernet-hal-static)
+        target_include_directories(comprehensive_tsn_test PRIVATE 
+                                  ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include)
+        if(WIN32)
+            # Remove socket dependencies to avoid conflicts
+            # target_link_libraries(comprehensive_tsn_test PRIVATE ws2_32 setupapi)
+        endif()
+        
+        # Set output directory
+        set_target_properties(comprehensive_tsn_test PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/Debug"
+            RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/Release"
+            RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/tests/RelWithDebInfo"
+        )
+    endif()
+    
     # Register hardware tests with CTest
     add_test(NAME IntelHalValidation 
              COMMAND intel_hal_validation_test_consolidated
@@ -57,6 +77,16 @@ if(OPENAVNU_BUILD_HARDWARE_TESTS AND OPENAVNU_BUILD_INTEL_HAL AND NOT OPENAVNU_C
     set_tests_properties(IntelHalValidation PROPERTIES 
                         LABELS "hardware;intel;hal"
                         TIMEOUT 120)
+    
+    # Register comprehensive TSN test
+    if(TARGET comprehensive_tsn_test)
+        add_test(NAME ComprehensiveTSN 
+                 COMMAND comprehensive_tsn_test
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
+        set_tests_properties(ComprehensiveTSN PROPERTIES 
+                            LABELS "hardware;intel;tsn;comprehensive"
+                            TIMEOUT 300)
+    endif()
 elseif(OPENAVNU_CI_BUILD)
     message(STATUS "⏭️  Skipping hardware tests (CI environment - no real hardware available)")
 else()

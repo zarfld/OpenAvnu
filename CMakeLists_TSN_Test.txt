@@ -1,0 +1,31 @@
+# TSN Integration Test CMake Configuration
+cmake_minimum_required(VERSION 3.16)
+
+# Add TSN integration test target
+add_executable(test_intel_tsn_integration
+    lib/avtp_pipeline/test_intel_tsn_integration.c
+    lib/avtp_pipeline/intel_tsn_integration.c
+)
+
+# Link with Intel HAL
+target_link_libraries(test_intel_tsn_integration
+    PRIVATE
+    intel-ethernet-hal-static
+    ws2_32
+)
+
+# Include Intel HAL headers
+target_include_directories(test_intel_tsn_integration
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+)
+
+# Set output directory
+set_target_properties(test_intel_tsn_integration PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+)
+
+# Ensure Intel HAL is built first
+add_dependencies(test_intel_tsn_integration intel-ethernet-hal-static)
+
+message(STATUS "Added TSN integration test target")

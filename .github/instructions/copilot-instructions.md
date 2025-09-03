@@ -9,6 +9,7 @@ applyTo: '**'
 -- No Fake, No Stubs, no Simulations, simplified code allowed in productive Code
 -- no implementation based assumtions, use specification or analysis results (ask if required)
 -- no false advertising, prove and ensure correctness
+-- prevent dead code or orphan files: fix code rather that creating new versions, ensure ALL code compiles.
 -- always use real hardware access patterns
 -- use Intel hardware specifications for register access
 -- code needs to compile before commit, no broken code
@@ -16,6 +17,7 @@ applyTo: '**'
 -- Validate all hardware reads/writes with range checks or masks from the specification.
 -- Every function must have a Doxygen comment explaining purpose, parameters, return values, and hardware context.
 -- no duplicate or redundant implementations to avoid inconsistencies and confusion; use centralized, reusable functions instead
+-- prevent downgrades e.g. fix rather than delete
 -- no ad-hoc file copies (e.g., *_fixed, *_new, *_correct); refactor in place step-by-step to avoid breakage
 -- Clean submit rules:
    - each commit compiles and passes checks
