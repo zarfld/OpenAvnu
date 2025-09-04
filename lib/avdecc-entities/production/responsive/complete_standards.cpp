@@ -139,7 +139,7 @@ private:
         uint64_t entity_id;
         uint32_t available_index;
         uint16_t current_configuration;
-        IEEE::_1722_1::_2021::EntityCapabilities capabilities;
+        IEEE::_1722_1::_2021::AEM::EntityCapabilities capabilities;
         std::vector<IEEE::_1722_1::_2021::AEM::ConfigurationDescriptor> configurations;
     } avdecc_state_;
     
@@ -189,9 +189,9 @@ public:
         avdecc_state_.entity_id = stream_config_.stream_id;
         avdecc_state_.available_index = 0;
         avdecc_state_.current_configuration = 0;
-        avdecc_state_.capabilities = IEEE::_1722_1::_2021::EntityCapabilities::AEM_SUPPORTED |
-                                    IEEE::_1722_1::_2021::EntityCapabilities::GPTP_SUPPORTED |
-                                    IEEE::_1722_1::_2021::EntityCapabilities::CLASS_A_SUPPORTED;
+        avdecc_state_.capabilities = IEEE::_1722_1::_2021::AEM::EntityCapabilities::AEM_SUPPORTED |
+                                    IEEE::_1722_1::_2021::AEM::EntityCapabilities::GPTP_SUPPORTED |
+                                    IEEE::_1722_1::_2021::AEM::EntityCapabilities::CLASS_A_SUPPORTED;
         
         performance_stats_.start_time = std::chrono::steady_clock::now();
     }
@@ -331,9 +331,9 @@ private:
             
             // Set capabilities according to IEEE 1722.1-2021 standards
             avdecc_state_.capabilities = 
-                IEEE::_1722_1::_2021::EntityCapabilities::AEM_SUPPORTED |
-                IEEE::_1722_1::_2021::EntityCapabilities::GPTP_SUPPORTED |
-                IEEE::_1722_1::_2021::EntityCapabilities::CLASS_A_SUPPORTED;
+                IEEE::_1722_1::_2021::AEM::EntityCapabilities::AEM_SUPPORTED |
+                IEEE::_1722_1::_2021::AEM::EntityCapabilities::GPTP_SUPPORTED |
+                IEEE::_1722_1::_2021::AEM::EntityCapabilities::CLASS_A_SUPPORTED;
             
             std::cout << "✅ IEEE 1722.1-2021 AVDECC protocols initialized!" << std::endl;
             std::cout << "   📋 Using Standards protocols from lib/Standards/" << std::endl;
