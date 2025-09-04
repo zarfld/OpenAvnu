@@ -6,24 +6,10 @@
  * 
  * This header provides stub definitions for Intel HAL types and constants
  * used by the Intel TSN integration tests. These are test framework stubs only.
+ * 
+ * NOTE: This header completely avoids socket-related includes to prevent
+ *       Windows socket header conflicts.
  */
-
-// Complete Windows socket conflict prevention
-#ifdef _WIN32
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-// Prevent winsock.h inclusion to avoid conflicts
-#ifndef _WINSOCKAPI_
-#define _WINSOCKAPI_
-#endif
-// Use only winsock2 for modern socket support
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#endif
 
 #include <stdint.h>
 #include <stdbool.h>

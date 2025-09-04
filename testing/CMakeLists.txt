@@ -50,19 +50,35 @@ if(OPENAVNU_BUILD_HARDWARE_TESTS AND OPENAVNU_BUILD_INTEL_HAL AND NOT OPENAVNU_C
     message(STATUS "🔧 Building hardware tests")
     add_subdirectory(hardware/intel/hal)
     
-    # Add comprehensive TSN test (using compatibility layer, not real Intel HAL)
-    message(STATUS "✅ Adding comprehensive TSN test with compatibility layer")
-    add_executable(comprehensive_tsn_test hardware/comprehensive_tsn_working.c)
-    # Note: NOT linking against intel-ethernet-hal-static - using compatibility layer instead
-    target_include_directories(comprehensive_tsn_test PRIVATE 
-                              ${CMAKE_SOURCE_DIR}/lib/avtp_pipeline)
+    # Add comprehensive TSN test using PRODUCTION Intel HAL (production-compatible)
+    message(STATUS "✅ Adding comprehensive TSN test with Production Intel HAL")
+    add_executable(comprehensive_tsn_test hardware/comprehensive_tsn_production.c)
+    
+    # Use EXACT same approach as production MRPD daemon for Intel HAL integration
     if(WIN32)
-        # Remove socket dependencies to avoid conflicts
-        # target_link_libraries(comprehensive_tsn_test PRIVATE ws2_32 setupapi)
+        target_link_libraries(comprehensive_tsn_test intel-ethernet-hal-static ws2_32 iphlpapi)
+        target_include_directories(comprehensive_tsn_test PRIVATE 
+            ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include)
+        target_compile_definitions(comprehensive_tsn_test PRIVATE 
+            OPENAVNU_BUILD_INTEL_HAL
+            _CRT_SECURE_NO_WARNINGS
+        )
+        message(STATUS "Comprehensive TSN test: Production Intel HAL integration enabled for Windows")
+    else()
+        target_link_libraries(comprehensive_tsn_test intel-ethernet-hal-static pthread)
+        target_include_directories(comprehensive_tsn_test PRIVATE 
+            ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include)
+        target_compile_definitions(comprehensive_tsn_test PRIVATE OPENAVNU_BUILD_INTEL_HAL)
+        message(STATUS "Comprehensive TSN test: Production Intel HAL integration enabled for Linux")
     endif()
+    
+    # Add simple working TSN test (completely self-contained, no dependencies)
+    message(STATUS "✅ Adding simple working TSN test (no dependencies)")
+    add_executable(simple_working_tsn_test hardware/simple_working_tsn_test.c)
+    # This test is completely self-contained with no external dependencies
         
         # Set output directory
-        set_target_properties(comprehensive_tsn_test PROPERTIES
+        set_target_properties(comprehensive_tsn_test simple_working_tsn_test PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests/Debug"
             RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/Release"
             RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/tests/RelWithDebInfo"
