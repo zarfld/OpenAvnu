@@ -1,4 +1,5 @@
 #include "intel_tsn_integration.h"
+#include "intel_hal_compatibility.h"
 #include <stdio.h>
 #include <string.h>
 #include <memory.h>

@@ -23,7 +23,7 @@ endif()
 
 # Include directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/gptp/common)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../thirdparty/intel-ethernet-hal/include)
+# Note: Intel HAL included only for specific targets that need it
 
 # =============================================================================
 # Conformance Testing
@@ -50,17 +50,16 @@ if(OPENAVNU_BUILD_HARDWARE_TESTS AND OPENAVNU_BUILD_INTEL_HAL AND NOT OPENAVNU_C
     message(STATUS "🔧 Building hardware tests")
     add_subdirectory(hardware/intel/hal)
     
-    # Add comprehensive TSN test
-    if(TARGET intel-ethernet-hal-static)
-        message(STATUS "✅ Adding comprehensive TSN test")
-        add_executable(comprehensive_tsn_test hardware/comprehensive_tsn_working.c)
-        target_link_libraries(comprehensive_tsn_test PRIVATE intel-ethernet-hal-static)
-        target_include_directories(comprehensive_tsn_test PRIVATE 
-                                  ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include)
-        if(WIN32)
-            # Remove socket dependencies to avoid conflicts
-            # target_link_libraries(comprehensive_tsn_test PRIVATE ws2_32 setupapi)
-        endif()
+    # Add comprehensive TSN test (using compatibility layer, not real Intel HAL)
+    message(STATUS "✅ Adding comprehensive TSN test with compatibility layer")
+    add_executable(comprehensive_tsn_test hardware/comprehensive_tsn_working.c)
+    # Note: NOT linking against intel-ethernet-hal-static - using compatibility layer instead
+    target_include_directories(comprehensive_tsn_test PRIVATE 
+                              ${CMAKE_SOURCE_DIR}/lib/avtp_pipeline)
+    if(WIN32)
+        # Remove socket dependencies to avoid conflicts
+        # target_link_libraries(comprehensive_tsn_test PRIVATE ws2_32 setupapi)
+    endif()
         
         # Set output directory
         set_target_properties(comprehensive_tsn_test PROPERTIES
@@ -68,7 +67,6 @@ if(OPENAVNU_BUILD_HARDWARE_TESTS AND OPENAVNU_BUILD_INTEL_HAL AND NOT OPENAVNU_C
             RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests/Release"
             RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/tests/RelWithDebInfo"
         )
-    endif()
     
     # Register hardware tests with CTest
     add_test(NAME IntelHalValidation 

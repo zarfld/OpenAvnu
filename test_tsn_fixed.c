@@ -10,6 +10,7 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include "thirdparty/intel-ethernet-hal/include/intel_ethernet_hal.h"
+#include "lib/avtp_pipeline/intel_hal_compatibility.h"
 
 int main(void) {
     printf("=== Intel HAL TSN Function Test ===\n");

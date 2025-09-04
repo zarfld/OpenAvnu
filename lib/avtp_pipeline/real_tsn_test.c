@@ -23,6 +23,7 @@
 #endif
 
 #include "../../thirdparty/intel-ethernet-hal/include/intel_ethernet_hal.h"
+#include "intel_hal_compatibility.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
