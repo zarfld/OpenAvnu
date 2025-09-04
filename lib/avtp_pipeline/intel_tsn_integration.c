@@ -28,6 +28,9 @@ static intel_tsn_context_t g_tsn_context = {0};
 int intel_tsn_init(const char* interface_name)
 {
     intel_hal_result_t hal_result;
+    intel_device_info_t devices[16];
+    uint32_t device_count = 16;
+    char device_id_str[32];
     
     printf("Initializing Intel TSN integration for interface: %s\n", interface_name ? interface_name : "(auto-detect)");
     
@@ -43,8 +46,24 @@ int intel_tsn_init(const char* interface_name)
         return -EIO;
     }
     
-    // Open Intel device (first available if interface_name is NULL)
-    hal_result = intel_hal_open_device(interface_name, &g_tsn_context.intel_device);
+    // Enumerate available Intel devices
+    hal_result = intel_hal_enumerate_devices(devices, &device_count);
+    if (hal_result != INTEL_HAL_SUCCESS || device_count == 0) {
+        printf("No Intel devices found on system: %d\n", hal_result);
+        intel_hal_cleanup();
+        return -ENODEV;
+    }
+    
+    printf("Found %u Intel devices, using first available device\n", device_count);
+    
+    // Use the first available Intel device
+    // Format device ID as hexadecimal string (expected by intel_hal_open_device)
+    snprintf(device_id_str, sizeof(device_id_str), "0x%04x", devices[0].device_id);
+    
+    printf("Opening Intel device: %s (%s)\n", device_id_str, devices[0].device_name);
+    
+    // Open Intel device using proper device ID format
+    hal_result = intel_hal_open_device(device_id_str, &g_tsn_context.intel_device);
     if (hal_result != INTEL_HAL_SUCCESS) {
         printf("Failed to open Intel device: %d (%s)\n", hal_result, intel_hal_get_last_error());
         intel_hal_cleanup();
@@ -78,6 +97,134 @@ int intel_tsn_init(const char* interface_name)
         printf("Device: %s (Simulation)\n", g_tsn_context.device_info.device_name);
     }
     printf("Capabilities: 0x%08X\n", g_tsn_context.capabilities);
+    
+    // Log TSN capabilities
+    if (g_tsn_context.capabilities & INTEL_CAP_TSN_TAS) {
+        printf("  - Time-Aware Shaper (TAS) supported\n");
+    }
+    if (g_tsn_context.capabilities & INTEL_CAP_TSN_FP) {
+        printf("  - Frame Preemption supported\n");
+    }
+    if (g_tsn_context.capabilities & INTEL_CAP_BASIC_1588) {
+        printf("  - Hardware timestamping supported\n");
+    }
+    
+    return 0;
+}
+
+/**
+ * Initialize Intel TSN integration with a specific device ID
+ */
+int intel_tsn_init_with_device(const char *interface_name, uint16_t target_device_id)
+{
+    intel_hal_result_t hal_result;
+    intel_device_info_t devices[16];
+    uint32_t device_count = 16;
+    char device_id_str[32];
+    int target_index = -1;
+    
+    if (g_tsn_context.initialized) {
+        printf("Intel TSN already initialized\n");
+        return 0;
+    }
+    
+    printf("Initializing Intel TSN integration for device 0x%04x on interface: %s\n", target_device_id, interface_name);
+    
+    // Initialize HAL
+    hal_result = intel_hal_init();
+    if (hal_result != INTEL_HAL_SUCCESS) {
+        printf("Failed to initialize Intel HAL: %d (%s)\n", hal_result, intel_hal_get_last_error());
+        return -EIO;
+    }
+    
+    // Enumerate devices
+    hal_result = intel_hal_enumerate_devices(devices, &device_count);
+    if (hal_result != INTEL_HAL_SUCCESS || device_count == 0) {
+        printf("No Intel devices found on system: %d\n", hal_result);
+        intel_hal_cleanup();
+        return -ENODEV;
+    }
+    
+    // Find the target device
+    for (uint32_t i = 0; i < device_count; i++) {
+        if (devices[i].device_id == target_device_id) {
+            target_index = i;
+            break;
+        }
+    }
+    
+    if (target_index == -1) {
+        printf("Target device 0x%04x not found. Available devices:\n", target_device_id);
+        for (uint32_t i = 0; i < device_count; i++) {
+            printf("  - %s (0x%04x)\n", devices[i].device_name, devices[i].device_id);
+        }
+        intel_hal_cleanup();
+        return -ENODEV;
+    }
+    
+    printf("Found target device: %s (0x%04x)\n", devices[target_index].device_name, target_device_id);
+    
+    // Format device ID as hexadecimal string (expected by intel_hal_open_device)
+    snprintf(device_id_str, sizeof(device_id_str), "0x%04x", target_device_id);
+    
+    printf("Opening Intel device: %s (%s)\n", device_id_str, devices[target_index].device_name);
+    
+    // Open Intel device using proper device ID format
+    hal_result = intel_hal_open_device(device_id_str, &g_tsn_context.intel_device);
+    if (hal_result != INTEL_HAL_SUCCESS) {
+        printf("Failed to open Intel device: %d (%s)\n", hal_result, intel_hal_get_last_error());
+        intel_hal_cleanup();
+        return -ENODEV;
+    }
+    
+    // Get device information
+    hal_result = intel_hal_get_device_info(g_tsn_context.intel_device, &g_tsn_context.device_info);
+    if (hal_result != INTEL_HAL_SUCCESS) {
+        printf("Failed to get device info: %d (%s)\n", hal_result, intel_hal_get_last_error());
+        intel_hal_close_device(g_tsn_context.intel_device);
+        intel_hal_cleanup();
+        return -EIO;
+    }
+    
+    // Get device capabilities
+    hal_result = intel_hal_get_capabilities(g_tsn_context.intel_device, &g_tsn_context.capabilities);
+    if (hal_result != INTEL_HAL_SUCCESS) {
+        printf("Failed to get device capabilities: %d (%s)\n", hal_result, intel_hal_get_last_error());
+        intel_hal_close_device(g_tsn_context.intel_device);
+        intel_hal_cleanup();
+        return -EIO;
+    }
+    
+    g_tsn_context.initialized = true;
+    
+    printf("TSN integration initialized successfully\n");
+    if (g_tsn_context.intel_device) {
+        printf("Device: %s (Family: %u)\n", g_tsn_context.device_info.device_name, g_tsn_context.device_info.family);
+    } else {
+        printf("Device: %s (Simulation)\n", g_tsn_context.device_info.device_name);
+    }
+    printf("Capabilities: 0x%08X\n", g_tsn_context.capabilities);
+    
+    // Log device capabilities in detail
+    printf("Device Capabilities for %s:\n", g_tsn_context.device_info.device_name);
+    
+    // Log specific capability flags (using known Intel capability bits)
+    if (g_tsn_context.capabilities & 0x1) printf("  ✅ Basic IEEE 1588\n");
+    if (g_tsn_context.capabilities & 0x2) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x4) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x8) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x10) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x20) printf("  ✅ Memory-mapped I/O\n");
+    if (g_tsn_context.capabilities & 0x40) printf("  ✅ Direct Memory Access\n");
+    if (g_tsn_context.capabilities & 0x80) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x100) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x200) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x400) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x800) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x1000) printf("  ✅ Native OS Integration\n");
+    if (g_tsn_context.capabilities & 0x2000) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x4000) printf("  ✅ Unknown Capability\n");
+    if (g_tsn_context.capabilities & 0x8000) printf("  ✅ Unknown Capability\n");
     
     // Log TSN capabilities
     if (g_tsn_context.capabilities & INTEL_CAP_TSN_TAS) {

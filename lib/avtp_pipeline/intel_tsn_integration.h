@@ -60,6 +60,14 @@ typedef struct {
 int intel_tsn_init(const char* interface_name);
 
 /**
+ * Initialize Intel TSN integration with a specific Intel device ID
+ * @param interface_name Network interface name
+ * @param target_device_id Intel device ID (e.g., 0x1533 for I210, 0x125c for I226-V)
+ * @return 0 on success, negative on error
+ */
+int intel_tsn_init_with_device(const char* interface_name, uint16_t target_device_id);
+
+/**
  * Get TSN status and capabilities
  * @param status Pointer to status structure to fill
  * @return 0 on success, negative on error  

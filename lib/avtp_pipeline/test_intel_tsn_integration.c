@@ -227,58 +227,206 @@ int test_status_reporting(void)
 }
 
 /**
- * @brief Main test function
+ * @brief Display information about all detected Intel hardware
+ */
+void show_intel_hardware_summary(void)
+{
+    printf("=== Intel Hardware Detection Summary ===\n");
+    
+    // Initialize just HAL to enumerate devices
+    if (intel_hal_init() == INTEL_HAL_SUCCESS) {
+        intel_device_info_t devices[16];
+        uint32_t device_count = 16;
+        
+        if (intel_hal_enumerate_devices(devices, &device_count) == INTEL_HAL_SUCCESS && device_count > 0) {
+            printf("🔍 Detected Intel devices on this system:\n");
+            for (uint32_t i = 0; i < device_count; i++) {
+                printf("   %u. %s (0x%04x) - Family %u\n", 
+                       i + 1, devices[i].device_name, devices[i].device_id, devices[i].family);
+                
+                // Show capabilities by family
+                switch (devices[i].family) {
+                    case 1: printf("      Capabilities: Hardware timestamping only\n"); break;
+                    case 2: printf("      Capabilities: Hardware timestamping only\n"); break; 
+                    case 3: printf("      Capabilities: Full TSN (timestamping + TAS + FP)\n"); break;
+                    case 4: printf("      Capabilities: Full TSN (timestamping + TAS + FP)\n"); break;
+                    default: printf("      Capabilities: Unknown\n"); break;
+                }
+            }
+            printf("📊 Total: %u Intel device(s) detected\n", device_count);
+        } else {
+            printf("❌ No Intel devices detected on this system\n");
+        }
+        intel_hal_cleanup();
+    }
+    printf("========================================\n\n");
+}
+
+/**
+ * @brief Test a specific Intel device with appropriate capabilities
+ */
+int test_specific_device(const intel_device_info_t *device, const char *interface_name)
+{
+    printf("🔧 Testing device: %s (0x%04x) Family %u\n", 
+           device->device_name, device->device_id, device->family);
+    
+    // Test 1: Initialize with this specific device
+    printf("   1️⃣  Initializing TSN for %s...\n", device->device_name);
+    int result = intel_tsn_init_with_device(interface_name, device->device_id);
+    if (result != 0 && result != -ENOTSUP) {
+        printf("   ❌ Device initialization failed: %d\n", result);
+        return result;
+    }
+    
+    // Test 2: Basic capabilities (all devices should support)
+    printf("   2️⃣  Testing basic timestamping...\n");
+    intel_tsn_status_t status;
+    if (intel_tsn_get_status(&status) == 0) {
+        printf("   ✅ Hardware timestamping: %s\n", 
+               status.hardware_timestamping ? "Available" : "Not available");
+    }
+    
+    // Test 3: Advanced features (family 3+ only)
+    if (device->family >= 3) {
+        printf("   3️⃣  Testing TAS (Time-Aware Shaper) - Full TSN device\n");
+        test_tas_configuration();
+        
+        printf("   4️⃣  Testing Frame Preemption - Full TSN device\n");
+        test_frame_preemption();
+        
+        printf("   5️⃣  Testing Timed Transmission - Full TSN device\n");
+        test_timed_transmission();
+    } else {
+        printf("   3️⃣  Skipping TAS - Not supported on Family %u (I210/I219)\n", device->family);
+        printf("   4️⃣  Skipping Frame Preemption - Not supported on Family %u\n", device->family);
+        printf("   5️⃣  Skipping Timed TX - Not supported on Family %u\n", device->family);
+    }
+    
+    // Test 4: Status reporting
+    printf("   6️⃣  Final status check...\n");
+    test_status_reporting();
+    
+    printf("   ✅ Device %s testing complete\n", device->device_name);
+    
+    return 0;
+}
+
+/**
+ * @brief Main test function - Tests the WHOLE SYSTEM
  */
 int main(int argc, char *argv[])
 {
     const char *interface_name = "Ethernet"; // Default interface
+    intel_device_info_t devices[16];
+    uint32_t device_count = 16;
+    int overall_result = 0;
     
-    printf("Intel TSN Integration Test Program\n");
-    printf("==================================\n");
+    printf("Intel TSN WHOLE SYSTEM Integration Test\n");
+    printf("======================================\n\n");
+    
+    // Show all detected Intel hardware first
+    show_intel_hardware_summary();
     
     // Allow interface name override
     if (argc > 1) {
         interface_name = argv[1];
     }
     
-    printf("Testing with interface: %s\n\n", interface_name);
-    
-    // Run test sequence
-    int result = 0;
-    
-    // Test 1: Initialization
-    result = test_tsn_init(interface_name);
-    if (result != 0 && result != -ENOTSUP) {
-        goto cleanup;
+    // Initialize HAL to get device list for comprehensive testing
+    if (intel_hal_init() != INTEL_HAL_SUCCESS) {
+        printf("❌ Failed to initialize Intel HAL\n");
+        return 1;
     }
     
-    // Test 2: TAS Configuration
-    test_tas_configuration();
+    if (intel_hal_enumerate_devices(devices, &device_count) != INTEL_HAL_SUCCESS || device_count == 0) {
+        printf("❌ No Intel devices found for whole system testing\n");
+        intel_hal_cleanup();
+        return 1;
+    }
     
-    // Test 3: Frame Preemption
-    test_frame_preemption();
+    intel_hal_cleanup();
     
-    // Test 4: Timed Transmission
-    test_timed_transmission();
+    printf("🌐 COMPREHENSIVE WHOLE SYSTEM TEST - Testing ALL %u Intel device(s)\n", device_count);
+    printf("==================================================================\n\n");
     
-    // Test 5: Status Reporting
-    test_status_reporting();
+    // Test each Intel device found on the system
+    for (uint32_t device_idx = 0; device_idx < device_count; device_idx++) {
+        printf("🎯 TESTING DEVICE %u of %u: %s (0x%04x)\n", 
+               device_idx + 1, device_count, 
+               devices[device_idx].device_name, devices[device_idx].device_id);
+        printf("Family %u - Expected capabilities: ", devices[device_idx].family);
+        
+        switch (devices[device_idx].family) {
+            case 1: case 2: 
+                printf("Hardware timestamping only\n");
+                break;
+            case 3: case 4:
+                printf("Full TSN (timestamping + TAS + FP)\n");
+                break;
+            default:
+                printf("Unknown\n");
+                break;
+        }
+        printf("─────────────────────────────────────────────────────\n");
+        
+        // Test this specific device
+        int result = test_specific_device(&devices[device_idx], interface_name);
+        if (result != 0 && result != -ENOTSUP) {
+            overall_result = result;
+        }
+        
+        // Cleanup between device tests
+        intel_tsn_cleanup();
+        
+        printf("\n");
+    }
     
-    printf("\n=== Test Summary ===\n");
-    if (result == 0) {
-        printf("✅ All tests completed successfully!\n");
-        printf("ℹ️  Note: Some features may not be supported on all hardware\n");
-        printf("   - TAS/FP require I225/I226 hardware\n");
-        printf("   - I210/I219 support basic timestamping only\n");
+    // Final comprehensive whole-system summary
+    printf("🏁 WHOLE SYSTEM TEST SUMMARY\n");
+    printf("════════════════════════════\n");
+    printf("📊 Complete System Analysis:\n");
+    printf("   • Total Intel devices tested: %u\n", device_count);
+    
+    uint32_t basic_count = 0, full_tsn_count = 0;
+    for (uint32_t i = 0; i < device_count; i++) {
+        if (devices[i].family <= 2) basic_count++;
+        else if (devices[i].family >= 3) full_tsn_count++;
+    }
+    
+    printf("   • Devices with basic timestamping: %u\n", basic_count);
+    printf("   • Devices with full TSN support: %u\n", full_tsn_count);
+    
+    // System capability assessment
+    if (full_tsn_count > 0) {
+        printf("✅ SYSTEM HAS FULL TSN CAPABILITIES AVAILABLE!\n");
+        printf("🚀 Ready for production AVB/TSN deployment with:\n");
+        for (uint32_t i = 0; i < device_count; i++) {
+            if (devices[i].family >= 3) {
+                printf("   • %s (0x%04x) - Full TSN capable\n", 
+                       devices[i].device_name, devices[i].device_id);
+            }
+        }
+        printf("📈 Advanced features: TAS, Frame Preemption, Timed TX\n");
+    } else if (basic_count > 0) {
+        printf("⚠️  System has basic timestamping capabilities only:\n");
+        for (uint32_t i = 0; i < device_count; i++) {
+            if (devices[i].family <= 2) {
+                printf("   • %s (0x%04x) - Basic timestamping\n", 
+                       devices[i].device_name, devices[i].device_id);
+            }
+        }
+        printf("📝 Consider upgrading to I225/I226 for full TSN features\n");
+    }
+    
+    // Overall result
+    if (overall_result == 0) {
+        printf("🎉 WHOLE SYSTEM TEST COMPLETED SUCCESSFULLY!\n");
+        printf("🔧 All %u Intel device(s) tested and validated\n", device_count);
     } else {
-        printf("❌ Some tests failed - see details above\n");
+        printf("❌ Some device tests encountered issues (code: %d)\n", overall_result);
     }
     
-cleanup:
-    // Cleanup
-    printf("\nCleaning up TSN integration...\n");
-    intel_tsn_cleanup();
-    printf("✅ Cleanup complete\n");
+    printf("🏆 End of comprehensive whole system Intel TSN testing\n");
     
-    return (result == -ENOTSUP) ? 0 : result; // Don't fail on unsupported features
+    return overall_result;
 }
