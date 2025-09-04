@@ -13,6 +13,9 @@
 
 ******************************************************************************/
 
+/* Ensure proper header inclusion order to prevent Winsock conflicts */
+#include "intel_tsn_integration.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,8 +38,6 @@ static int clock_gettime(int clock_id, struct timespec *tp) {
 #else
 #include <unistd.h>
 #endif
-
-#include "intel_tsn_integration.h"
 
 /**
  * @brief Test TSN initialization and capability detection
@@ -64,15 +65,18 @@ int test_tsn_init(const char *interface_name)
         return result;
     }
     
-    printf("\n--- TSN Capabilities ---\n");
-    printf("Initialized: %s\n", status.initialized ? "Yes" : "No");
+    printf("\n--- TSN Status ---\n");
+    printf("Interface: %s\n", status.interface_name);
+    printf("Device ID: %s\n", status.device_id);
+    printf("Device Family: %u\n", status.device_family);
+    printf("Driver Version: %s\n", status.driver_version);
     printf("TAS Capable: %s\n", status.tas_capable ? "Yes" : "No");
     printf("FP Capable: %s\n", status.fp_capable ? "Yes" : "No");
     printf("Hardware Timestamping: %s\n", status.hardware_timestamping ? "Yes" : "No");
     printf("TAS Enabled: %s\n", status.tas_enabled ? "Yes" : "No");
     printf("FP Enabled: %s\n", status.fp_enabled ? "Yes" : "No");
     printf("Timed TX Enabled: %s\n", status.timed_tx_enabled ? "Yes" : "No");
-    printf("Reserved Bandwidth: %u bps\n", status.reserved_bandwidth_bps);
+    printf("Reserved Bandwidth: %llu bps\n", status.reserved_bandwidth_bps);
     
     return 0;
 }
@@ -168,8 +172,8 @@ int test_timed_transmission(void)
     printf("Current time: %llu ns\n", (unsigned long long)current_time_ns);
     printf("Launch time:  %llu ns\n", (unsigned long long)launch_time_ns);
     
-    result = intel_tsn_transmit_timed_packet(test_packet, sizeof(test_packet),
-                                           INTEL_AVB_CLASS_A, launch_time_ns);
+    result = intel_tsn_transmit_timed_packet(INTEL_AVB_CLASS_A, test_packet, sizeof(test_packet),
+                                           launch_time_ns);
     if (result != 0) {
         printf("❌ Timed packet transmission failed: %d\n", result);
         if (result == -EINVAL) {
@@ -182,8 +186,8 @@ int test_timed_transmission(void)
     // Test Class B packet
     launch_time_ns = current_time_ns + 2000000; // +2ms
     printf("\nTransmitting timed packet (Class B, +2ms)...\n");
-    result = intel_tsn_transmit_timed_packet(test_packet, sizeof(test_packet),
-                                           INTEL_AVB_CLASS_B, launch_time_ns);
+    result = intel_tsn_transmit_timed_packet(INTEL_AVB_CLASS_B, test_packet, sizeof(test_packet),
+                                           launch_time_ns);
     if (result != 0) {
         printf("❌ Timed packet transmission (Class B) failed: %d\n", result);
     } else {
@@ -210,11 +214,11 @@ int test_status_reporting(void)
     }
     
     printf("--- Final TSN Status ---\n");
-    printf("Initialized: %s\n", status.initialized ? "Yes" : "No");
+    printf("Interface: %s\n", status.interface_name);
     printf("TAS Enabled: %s\n", status.tas_enabled ? "Yes" : "No");
     printf("FP Enabled: %s\n", status.fp_enabled ? "Yes" : "No");
     printf("Timed TX Enabled: %s\n", status.timed_tx_enabled ? "Yes" : "No");
-    printf("Reserved Bandwidth: %u bps (%.1f Mbps)\n", 
+    printf("Reserved Bandwidth: %llu bps (%.1f Mbps)\n", 
            status.reserved_bandwidth_bps, status.reserved_bandwidth_bps / 1000000.0);
     
     printf("✅ Status reporting successful\n");

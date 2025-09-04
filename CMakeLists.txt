@@ -573,6 +573,8 @@ if(TARGET intel-ethernet-hal-static)
     target_include_directories(test_intel_tsn_integration
         PRIVATE
         ${CMAKE_SOURCE_DIR}/thirdparty/intel-ethernet-hal/include
+        ${CMAKE_SOURCE_DIR}/lib/intel_avb/lib
+        ${CMAKE_SOURCE_DIR}/lib/intel_avb/include
     )
 
     set_target_properties(test_intel_tsn_integration PROPERTIES
