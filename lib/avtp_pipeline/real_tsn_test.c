@@ -9,21 +9,35 @@
   
 ******************************************************************************/
 
+/* Ensure proper Windows header management before including Intel HAL */
+#ifdef _WIN32
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#define _WINSOCKAPI_  // Prevent winsock.h inclusion
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <iphlpapi.h>
+#endif
+
 #include "../../thirdparty/intel-ethernet-hal/include/intel_ethernet_hal.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Windows compatibility
+// Additional Windows compatibility
 #ifdef _WIN32
 #include <time.h>
-#include <windows.h>
+#endif
 
 // Use Windows-provided timespec if available
 #ifndef HAVE_STRUCT_TIMESPEC
 #define HAVE_STRUCT_TIMESPEC
 #endif
 
+#ifdef _WIN32
 static int clock_gettime(int clk_id, struct timespec *tp) {
     LARGE_INTEGER frequency, counter;
     QueryPerformanceFrequency(&frequency);
@@ -128,9 +142,12 @@ int test_time_aware_shaper(void)
         found_tas_device = true;
         TEST_INFO("Testing TAS on device: %s", devices[i].device_name);
         
-        // Open device
+        // Open device using device ID (not name)
+        char device_id_str[16];
+        snprintf(device_id_str, sizeof(device_id_str), "0x%04x", devices[i].device_id);
+        
         intel_device_t *device = NULL;
-        result = intel_hal_open_device(devices[i].device_name, &device);
+        result = intel_hal_open_device(device_id_str, &device);
         if (result != INTEL_HAL_SUCCESS || !device) {
             TEST_FAIL("Device Open", "Cannot open TAS-capable device");
             continue;
@@ -217,9 +234,12 @@ int test_frame_preemption(void)
         found_fp_device = true;
         TEST_INFO("Testing Frame Preemption on device: %s", devices[i].device_name);
         
-        // Open device
+        // Open device using device ID (not name)
+        char device_id_str[16];
+        snprintf(device_id_str, sizeof(device_id_str), "0x%04x", devices[i].device_id);
+        
         intel_device_t *device = NULL;
-        result = intel_hal_open_device(devices[i].device_name, &device);
+        result = intel_hal_open_device(device_id_str, &device);
         if (result != INTEL_HAL_SUCCESS || !device) {
             TEST_FAIL("Device Open", "Cannot open Frame Preemption-capable device");
             continue;
@@ -299,9 +319,12 @@ int test_timed_transmission(void)
         TEST_INFO("Testing Timed Transmission on device: %s (%s timing)", 
                   devices[i].device_name, has_enhanced_timing ? "Enhanced" : "Basic");
         
-        // Open device
+        // Open device using device ID (not name)
+        char device_id_str[16];
+        snprintf(device_id_str, sizeof(device_id_str), "0x%04x", devices[i].device_id);
+        
         intel_device_t *device = NULL;
-        result = intel_hal_open_device(devices[i].device_name, &device);
+        result = intel_hal_open_device(device_id_str, &device);
         if (result != INTEL_HAL_SUCCESS || !device) {
             TEST_FAIL("Device Open", "Cannot open timing-capable device");
             continue;

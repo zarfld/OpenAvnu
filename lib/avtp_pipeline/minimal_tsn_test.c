@@ -36,8 +36,7 @@ struct intel_hal_device {
 // Intel HAL function declarations (these should exist in our library)
 extern intel_hal_ret_t intel_hal_init(void);
 extern void intel_hal_cleanup(void);
-extern uint32_t intel_hal_get_device_count(void);
-extern intel_hal_device_t* intel_hal_get_device(uint32_t index);
+extern intel_hal_ret_t intel_hal_enumerate_devices(intel_hal_device_t **devices, uint32_t *device_count);
 extern intel_hal_ret_t intel_hal_setup_time_aware_shaper(intel_hal_device_t *device, void *config);
 extern intel_hal_ret_t intel_hal_setup_frame_preemption(intel_hal_device_t *device, void *config);
 extern intel_hal_ret_t intel_hal_xmit_timed_packet(intel_hal_device_t *device, void *params);
@@ -65,8 +64,17 @@ int main(void) {
     
     // Test 2: Device Detection
     printf("\nTEST 2: Device Detection\n");
-    uint32_t device_count = intel_hal_get_device_count();
-    printf("  Found %u Intel Ethernet device(s)\n", device_count);
+    intel_hal_device_t *devices = 0;
+    uint32_t device_count = 0;
+    ret = intel_hal_enumerate_devices(&devices, &device_count);
+    if (ret == INTEL_HAL_SUCCESS) {
+        printf("  ✅ Device enumeration successful\n");
+        printf("  Found %u Intel Ethernet device(s)\n", device_count);
+    } else {
+        printf("  ❌ Device enumeration failed: %d\n", ret);
+        intel_hal_cleanup();
+        return 1;
+    }
     
     if (device_count == 0) {
         printf("  ❌ No devices found - cannot proceed with TSN tests\n");
@@ -78,7 +86,7 @@ int main(void) {
     printf("\nTEST 3: TSN Capability Detection\n");
     int tsn_devices = 0;
     for (uint32_t i = 0; i < device_count; i++) {
-        intel_hal_device_t *device = intel_hal_get_device(i);
+        intel_hal_device_t *device = &devices[i];
         if (device) {
             printf("  Device %u: %s\n", i, device->name);
             printf("    Family: %s\n", 
@@ -118,7 +126,7 @@ int main(void) {
     
     // Find first TSN device
     for (uint32_t i = 0; i < device_count; i++) {
-        intel_hal_device_t *device = intel_hal_get_device(i);
+        intel_hal_device_t *device = &devices[i];
         if (device && (device->capabilities & INTEL_CAP_TSN_TIME_AWARE_SHAPER)) {
             tsn_device = device;
             break;
