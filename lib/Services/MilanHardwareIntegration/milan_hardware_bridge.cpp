@@ -11,21 +11,22 @@
 #include "../../../Standards/Integration/ieee_provider_implementations.cpp"
 
 // Hardware Layer includes (ONLY in implementation file)
+// CORRECT CHAIN: intel-ethernet-hal → intel_avb → NDISIntelFilterDriver
+#include "../../../thirdparty/intel-ethernet-hal/include/intel_ethernet_hal.h"
+#include "../../intel_avb/include/avb_ioctl.h"
+
+// Hardware Layer includes (ONLY in implementation file)
+// CORRECT CHAIN: intel-ethernet-hal → intel_avb → NDISIntelFilterDriver
+#include "../../../thirdparty/intel-ethernet-hal/include/intel_ethernet_hal.h"
+#include "../../intel_avb/include/avb_ioctl.h"
+
 #ifdef _WIN32
-    #include "../../common/hal/network_hal.h"
-    // Windows-specific Intel HAL integration
+    // Windows-specific Intel HAL integration via NDIS Filter Driver
     #pragma comment(lib, "ws2_32.lib")
     #pragma comment(lib, "iphlpapi.lib")
 #else
-    #include "../../common/hal/network_hal.h"
     // Linux Intel HAL integration
-#endif
-
-// PCAP integration for packet transmission
-#ifdef _WIN32
-    #include <pcap/pcap.h>
-#else
-    #include <pcap.h>
+    #include <linux/ptp_clock.h>
 #endif
 
 #include <iostream>
@@ -40,7 +41,7 @@ using namespace OpenAvnu::Integration::Milan_IEEE;
 // ============================================================================
 
 IntelHardwareIntegrationService::IntelHardwareIntegrationService()
-    : intel_context_(nullptr)
+    : intel_hal_device_(nullptr)
     , hardware_initialized_(false)
     , active_interface_("")
 {
@@ -54,69 +55,79 @@ IntelHardwareIntegrationService::~IntelHardwareIntegrationService() {
 }
 
 bool IntelHardwareIntegrationService::initialize_intel_hardware() {
-    std::cout << "INFO: Initializing Intel hardware integration..." << std::endl;
+    std::cout << "INFO: Initializing Intel hardware via correct chain..." << std::endl;
+    std::cout << "INFO: Chain: intel-ethernet-hal → intel_avb → NDISIntelFilterDriver" << std::endl;
     
-    // Initialize network HAL (existing OpenAvnu infrastructure)
-    if (network_hal_initialize() != 0) {
-        std::cerr << "ERROR: Failed to initialize network HAL" << std::endl;
+    // Step 1: Initialize Intel Ethernet HAL (no parameters needed)
+    intel_hal_result_t result = intel_hal_init();
+    if (result != INTEL_HAL_SUCCESS) {
+        std::cerr << "ERROR: Failed to initialize Intel Ethernet HAL: " << result << std::endl;
         return false;
     }
     
-    // Detect Intel NICs
+    // Step 2: Detect Intel NICs via HAL
     if (!detect_intel_nics()) {
-        std::cerr << "ERROR: No Intel NICs detected" << std::endl;
+        std::cerr << "ERROR: No Intel NICs detected via HAL" << std::endl;
         return false;
     }
     
-    // Setup hardware capabilities callbacks
+    // Step 3: Setup hardware capabilities callbacks
     setup_hardware_capabilities();
     
     hardware_initialized_ = true;
-    std::cout << "PASS: Intel hardware integration initialized" << std::endl;
+    std::cout << "PASS: Intel hardware integration initialized via correct chain" << std::endl;
     return true;
 }
 
 bool IntelHardwareIntegrationService::detect_intel_nics() {
-    std::cout << "INFO: Detecting Intel NICs..." << std::endl;
+    std::cout << "INFO: Detecting Intel NICs via Intel Ethernet HAL..." << std::endl;
     
-    // Use PCAP to enumerate network interfaces
-    pcap_if_t* alldevs;
-    char errbuf[PCAP_ERRBUF_SIZE];
+    // Step 1: Enumerate Intel devices via HAL
+    intel_device_info_t devices[8];
+    uint32_t device_count = 8;
     
-    if (pcap_findalldevs(&alldevs, errbuf) == -1) {
-        std::cerr << "ERROR: Failed to enumerate network devices: " << errbuf << std::endl;
+    intel_hal_result_t result = intel_hal_enumerate_devices(devices, &device_count);
+    if (result != INTEL_HAL_SUCCESS) {
+        std::cerr << "ERROR: Failed to enumerate Intel devices: " << result << std::endl;
         return false;
     }
     
+    std::cout << "INFO: Found " << device_count << " Intel devices" << std::endl;
+    
+    // Step 2: Find supported Intel NICs (I219, I225, I226)
     bool intel_found = false;
-    for (pcap_if_t* dev = alldevs; dev != nullptr; dev = dev->next) {
-        std::string dev_name = dev->name;
-        std::string dev_desc = dev->description ? dev->description : "No description";
+    for (uint32_t i = 0; i < device_count; i++) {
+        const auto& dev = devices[i];
         
-        // Look for Intel network adapters
-        if (dev_desc.find("Intel") != std::string::npos) {
-            std::cout << "FOUND: Intel NIC - " << dev_name << " (" << dev_desc << ")" << std::endl;
+        std::cout << "FOUND: Intel Device - ID: 0x" << std::hex << dev.device_id 
+                 << ", Family: " << dev.family << std::dec << std::endl;
+        
+        // Check for supported families
+        if (dev.family == INTEL_FAMILY_I219 ||
+            dev.family == INTEL_FAMILY_I225 ||
+            dev.family == INTEL_FAMILY_I226) {
             
-            // Check for supported Intel NICs (I219, I225, I226)
-            if (dev_desc.find("I219") != std::string::npos ||
-                dev_desc.find("I225") != std::string::npos ||
-                dev_desc.find("I226") != std::string::npos) {
-                
-                active_interface_ = dev_name;
+            // Open the device for hardware access (using device_id as string)
+            char device_id_str[16];
+            snprintf(device_id_str, sizeof(device_id_str), "0x%04X", dev.device_id);
+            
+            result = intel_hal_open_device(device_id_str, &intel_hal_device_);
+            if (result == INTEL_HAL_SUCCESS) {
+                active_interface_ = std::string("Intel_") + std::to_string(dev.device_id);
                 intel_found = true;
                 std::cout << "PASS: Using Intel NIC: " << active_interface_ << std::endl;
                 break;
+            } else {
+                std::cerr << "WARN: Failed to open Intel device 0x" << std::hex << dev.device_id 
+                         << ": " << std::dec << result << std::endl;
             }
         }
     }
     
-    pcap_freealldevs(alldevs);
-    
     if (!intel_found) {
         std::cout << "WARN: No supported Intel NICs found (I219/I225/I226)" << std::endl;
-        std::cout << "INFO: Using first available interface for testing" << std::endl;
-        // For testing on different hardware, use first available interface
-        return true;
+        std::cout << "INFO: Hardware integration will operate in test mode" << std::endl;
+        return true;  // Allow test mode operation
     }
     
     return intel_found;

@@ -34,8 +34,9 @@ namespace Milan_IEEE {
 }
 
 // Forward declarations to avoid including hardware headers in this header
-struct intel_hal_context;
-typedef struct intel_hal_context intel_hal_context_t;
+// CORRECT CHAIN: intel-ethernet-hal → intel_avb → NDISIntelFilterDriver
+struct intel_hal_device;
+typedef struct intel_hal_device intel_hal_device_t;
 
 namespace OpenAvnu {
 namespace Services {
@@ -71,7 +72,7 @@ struct HardwareCapabilities {
  */
 class IntelHardwareIntegrationService {
 private:
-    intel_hal_context_t* intel_context_;
+    intel_hal_device_t* intel_hal_device_;
     bool hardware_initialized_;
     std::string active_interface_;
     HardwareCapabilities capabilities_;
@@ -127,11 +128,11 @@ private:
  */
 class GPTPHardwareService {
 private:
-    intel_hal_context_t* intel_context_;
+    intel_hal_device_t* intel_hal_device_;
     OpenAvnu::Integration::Milan_IEEE::IEEE802_1AS_2021_Provider* standards_provider_;
     
 public:
-    explicit GPTPHardwareService(intel_hal_context_t* context);
+    explicit GPTPHardwareService(intel_hal_device_t* device);
     
     bool initialize_hardware_sync();
     bool configure_milan_timing_requirements();
@@ -151,11 +152,11 @@ private:
  */
 class AVDECCHardwareService {
 private:
-    intel_hal_context_t* intel_context_;
+    intel_hal_device_t* intel_hal_device_;
     OpenAvnu::Integration::Milan_IEEE::IEEE1722_1_2021_Provider* standards_provider_;
     
 public:
-    explicit AVDECCHardwareService(intel_hal_context_t* context);
+    explicit AVDECCHardwareService(intel_hal_device_t* device);
     
     bool initialize_hardware_discovery();
     bool start_entity_advertisement();
@@ -173,11 +174,11 @@ private:
  */
 class AVTPHardwareService {
 private:
-    intel_hal_context_t* intel_context_;
+    intel_hal_device_t* intel_hal_device_;
     OpenAvnu::Integration::Milan_IEEE::IEEE1722_2016_Provider* standards_provider_;
     
 public:
-    explicit AVTPHardwareService(intel_hal_context_t* context);
+    explicit AVTPHardwareService(intel_hal_device_t* device);
     
     bool initialize_hardware_streaming();
     bool configure_milan_audio_hardware();
