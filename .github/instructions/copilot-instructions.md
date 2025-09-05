@@ -40,6 +40,30 @@ OpenAvnu is a comprehensive Audio Video Bridging (AVB)/Time-Sensitive Networking
 
 **Architecture**: Multi-layered system with hardware abstraction (Intel NICs), protocol stacks (gPTP/AVTP/AVDECC), daemons for system services, and example applications.
 
+## CRITICAL: IEEE Standards Reference Documents
+
+**IMPORTANT**: The following authoritative specification documents are available via MCP-Server "markitdown_standards" for compliance verification:
+
+### IEEE Protocol Standards:
+- `file:///workdir/IEEE 1722.1-2021-en.pdf` - AVDECC Device Control (Latest)
+- `file:///workdir/IEEE 1722.1-2013-en.pdf` - AVDECC Device Control (Legacy) 
+- `file:///workdir/IEEE 1722-2016-en.pdf` - Audio Video Transport Protocol (AVTP)
+- `file:///workdir/ISO-IEC-IEEE 8802-1Q-2020-en.pdf` - VLAN/QoS Standards
+- `file:///workdir/ISO-IEC-IEEE 8802-1BA-2016-en.pdf` - Audio Video Bridging (AVB) Profiles
+
+### AVnu Alliance Milan Standards:
+- `file:///workdir/Milan_Specification_Consolidated_v1.2_Final_Approved-20231130.pdf` - Milan v1.2 (Current)
+- `file:///workdir/Milan-Discovery-Connection-Control-Talkers-And-Listener-Specification-1.1a_20190122.pdf` - Milan Discovery/Control
+
+**LICENSE NOTICE**: These documents are referenced for compliance only. DO NOT copy content directly into repository - license restrictions apply. Use only for implementation guidance and verification.
+
+**Usage**: When implementing standards-related code, reference these documents via MCP-Server to ensure:
+- Protocol message format compliance
+- State machine behavior correctness  
+- Timing requirement adherence
+- Milan professional interoperability
+- IEEE specification conformance
+
 ## CRITICAL: Layered Architecture Principles
 
 ### Standards Layer (`lib/Standards/`) - MUST BE HARDWARE AGNOSTIC
