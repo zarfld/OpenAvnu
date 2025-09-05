@@ -77,21 +77,26 @@ OpenAvnu is a comprehensive Audio Video Bridging (AVB)/Time-Sensitive Networking
 ### Service Layer (e.g., gPTP daemon) - BRIDGES STANDARDS TO HARDWARE
 - **Uses Standards** for protocol logic implementation
 - **Connects to HAL** for hardware access
-- **Bridges Standards interfaces to HAL interfaces**
+### Service Layer (e.g., gPTP daemon) - BRIDGES STANDARDS TO HARDWARE
+- **Uses Standards** for protocol logic implementation
+- **Connects to Intel HAL** for hardware access via intel-ethernet-hal submodule
+- **Bridges Standards interfaces to Intel Hardware interfaces**
 - **Responsibility**: Routing timestamping requests, connecting protocol needs to hardware capabilities
 
-### HAL Layer (`lib/common/hal/`) - HARDWARE ACCESS ONLY
-- **Connects Services to hardware** - NOT Standards to HAL
-- **Standards should NEVER directly touch HAL**
-- **Responsibility**: Hardware abstraction, timestamping, register access, device control
+### Intel Hardware Layer - HARDWARE ACCESS ONLY
+- **CRITICAL**: Use intel-ethernet-hal submodule (thirdparty/intel-ethernet-hal) as PRIMARY hardware interface
+- **NOT lib/common/hal/**: This is generic abstraction, USE Intel-specific submodules instead
+- **Standards should NEVER directly touch Intel Hardware Layer**
+- **Responsibility**: Intel NIC hardware abstraction, timestamping, register access, device control
 
-### Intel Hardware Access Chain (CRITICAL ORDER):
+### Intel Hardware Access Chain (CRITICAL ORDER - MANDATORY):
 ```
-intel-ethernet-hal → intel_avb → driver → hardware
+intel-ethernet-hal → intel_avb → NDISIntelFilterDriver → hardware
 ```
-- **intel-ethernet-hal**: Primary Intel abstraction layer
-- **intel_avb**: Hardware access library (used BY intel-ethernet-hal)
-- **Intel register access**: ONLY through intel_avb and driver
+- **intel-ethernet-hal** (thirdparty/intel-ethernet-hal): PRIMARY Intel abstraction layer - USE THIS
+- **intel_avb** (lib/intel_avb): Hardware access library with IOCTL interface to NDIS driver
+- **NDISIntelFilterDriver**: Kernel-mode filter driver for actual hardware access
+- **Intel register access**: ONLY through this complete chain
 - **Functions like intel_hal_get_tx_timestamp()**: ONLY called within Intel HAL layer
 
 ### ARCHITECTURAL VIOLATIONS TO AVOID:
@@ -99,12 +104,51 @@ intel-ethernet-hal → intel_avb → driver → hardware
 2. **Wrong abstraction direction**: HAL using Standards instead of Services using both
 3. **Redundant abstractions**: Duplicating existing intel-ethernet-hal functionality
 4. **Direct vendor coupling**: Standards including vendor-specific headers
+5. **⚠️ CRITICAL: Using lib/common/hal/ for Intel hardware** - USE intel-ethernet-hal submodule instead!
 
 ### BEFORE MAKING CHANGES:
 1. **Understand call sites**: Find all places calling a function before moving it
-2. **Respect existing APIs**: Use intel-ethernet-hal and intel_avb as-is
+2. **Respect existing APIs**: Use intel-ethernet-hal and intel_avb as-is - DO NOT use lib/common/hal/ for Intel hardware
 3. **Create proper interfaces**: Abstract hardware access through dependency injection
-4. **Move hardware code**: From Standards to appropriate HAL layer
+4. **Move hardware code**: From Standards to Intel Hardware Layer (intel-ethernet-hal submodule)
+5. **⚠️ NEVER use lib/common/hal/ for Intel NICs**: Always use thirdparty/intel-ethernet-hal submodule
+
+## ⚠️ CRITICAL: Common Architectural Mistakes to Avoid
+
+### ❌ **WRONG: Using lib/common/hal/ for Intel Hardware**
+```cpp
+// WRONG - Generic abstraction that bypasses Intel submodules
+#include "../../common/hal/network_hal.h"
+if (network_hal_initialize() != 0) { /* ... */ }
+```
+
+### ✅ **CORRECT: Using Intel-Ethernet-HAL Submodule**
+```cpp
+// CORRECT - Direct Intel HAL integration
+#include "../../../thirdparty/intel-ethernet-hal/include/intel_ethernet_hal.h"
+#include "../../intel_avb/include/avb_ioctl.h"
+
+intel_hal_result_t result = intel_hal_init();
+intel_hal_enumerate_devices(devices, &count);
+intel_hal_open_device(device_id, &device);
+```
+
+### ❌ **WRONG: Standards Layer Hardware Contamination**
+```cpp
+// WRONG - Standards directly including hardware headers
+#include "intel_ethernet_hal.h"  // ❌ NO! Standards must be hardware agnostic
+```
+
+### ✅ **CORRECT: Service Layer Hardware Bridge**
+```cpp
+// CORRECT - Only Service Layer touches hardware
+// Standards Layer: Pure protocol logic with dependency injection
+// Service Layer: Bridges Standards to Intel Hardware via function pointers
+```
+
+### **Key Rule**: 
+**Intel Hardware Integration Chain**: `intel-ethernet-hal → intel_avb → NDISIntelFilterDriver → hardware`  
+**NEVER**: `lib/common/hal/` for Intel hardware - this bypasses the proper chain!
 
 ## Critical Build System Knowledge
 
