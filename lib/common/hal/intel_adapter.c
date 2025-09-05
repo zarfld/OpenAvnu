@@ -2,6 +2,17 @@
  * @file intel_adapter.c
  * @brief Intel Network Adapter Implementation for Generic HAL
  * 
+ * TODO: CRITICAL ARCHITECTURAL VIOLATION - REDUNDANT ABSTRACTION LAYER
+ * TODO: This entire file duplicates functionality already in intel-ethernet-hal
+ * TODO: DELETE THIS FILE - use intel-ethernet-hal directly instead
+ * TODO: Create thin bridge to intel-ethernet-hal rather than reimplementing
+ * 
+ * VIOLATIONS IDENTIFIED:
+ * - Duplicate capability mapping (intel-ethernet-hal already does this)
+ * - Duplicate device enumeration (intel_avb already provides this)  
+ * - Duplicate timestamp operations (already exists in intel-ethernet-hal)
+ * - Unnecessary abstraction layer over existing Intel APIs
+ * 
  * Intel-specific adapter implementation using intel_avb library.
  * Provides hardware timestamping, TSN features, and register access
  * for Intel I210/I219/I225/I226 network adapters.

@@ -40,6 +40,48 @@ OpenAvnu is a comprehensive Audio Video Bridging (AVB)/Time-Sensitive Networking
 
 **Architecture**: Multi-layered system with hardware abstraction (Intel NICs), protocol stacks (gPTP/AVTP/AVDECC), daemons for system services, and example applications.
 
+## CRITICAL: Layered Architecture Principles
+
+### Standards Layer (`lib/Standards/`) - MUST BE HARDWARE AGNOSTIC
+- **ONLY pure protocol implementations** (IEEE, AVNu, AES, etc.)
+- **OS and hardware agnostic** - compilable without any specific hardware drivers
+- **Mockable/testable** without hardware present
+- **NEVER includes vendor-specific headers** (intel-ethernet-hal, intel_avb, etc.)
+- **Uses dependency injection** - receives hardware abstraction via interfaces/function pointers
+- **Responsibility**: Protocol logic, state machines, packet formats, timing calculations, standard-defined structures
+
+### Service Layer (e.g., gPTP daemon) - BRIDGES STANDARDS TO HARDWARE
+- **Uses Standards** for protocol logic implementation
+- **Connects to HAL** for hardware access
+- **Bridges Standards interfaces to HAL interfaces**
+- **Responsibility**: Routing timestamping requests, connecting protocol needs to hardware capabilities
+
+### HAL Layer (`lib/common/hal/`) - HARDWARE ACCESS ONLY
+- **Connects Services to hardware** - NOT Standards to HAL
+- **Standards should NEVER directly touch HAL**
+- **Responsibility**: Hardware abstraction, timestamping, register access, device control
+
+### Intel Hardware Access Chain (CRITICAL ORDER):
+```
+intel-ethernet-hal → intel_avb → driver → hardware
+```
+- **intel-ethernet-hal**: Primary Intel abstraction layer
+- **intel_avb**: Hardware access library (used BY intel-ethernet-hal)
+- **Intel register access**: ONLY through intel_avb and driver
+- **Functions like intel_hal_get_tx_timestamp()**: ONLY called within Intel HAL layer
+
+### ARCHITECTURAL VIOLATIONS TO AVOID:
+1. **Standards contamination**: Direct hardware calls in Standards layer
+2. **Wrong abstraction direction**: HAL using Standards instead of Services using both
+3. **Redundant abstractions**: Duplicating existing intel-ethernet-hal functionality
+4. **Direct vendor coupling**: Standards including vendor-specific headers
+
+### BEFORE MAKING CHANGES:
+1. **Understand call sites**: Find all places calling a function before moving it
+2. **Respect existing APIs**: Use intel-ethernet-hal and intel_avb as-is
+3. **Create proper interfaces**: Abstract hardware access through dependency injection
+4. **Move hardware code**: From Standards to appropriate HAL layer
+
 ## Critical Build System Knowledge
 
 ### CMake-Centric Build Process
