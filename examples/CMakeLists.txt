@@ -197,3 +197,37 @@ if(PCAP_FOUND)
 else()
     message(STATUS "⏭️  Skipping Complete AVB Entity (requires PCAP + Intel HAL)")
 endif()
+
+# ====================================================================================
+# Milan v1.2 AVDECC Entity Example
+# ====================================================================================
+
+if(TARGET avnu_milan_1_2_2023)
+    message(STATUS "🎵 Building Milan v1.2 AVDECC Entity Example")
+    
+    add_executable(milan_avdecc_entity_example milan_avdecc_entity_example.cpp)
+    
+    target_link_libraries(milan_avdecc_entity_example 
+        PRIVATE avnu_milan_1_2_2023
+    )
+    
+    target_include_directories(milan_avdecc_entity_example PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../lib/Standards/AVnu/Milan/1.2-2023
+    )
+    
+    if(WIN32)
+        target_link_libraries(milan_avdecc_entity_example PRIVATE 
+            ws2_32
+        )
+        target_compile_definitions(milan_avdecc_entity_example PRIVATE 
+            _CRT_SECURE_NO_WARNINGS
+            WIN32_LEAN_AND_MEAN
+            NOMINMAX
+        )
+    endif()
+    
+    message(STATUS "   📍 Milan Entity: milan_avdecc_entity_example.exe")
+    message(STATUS "   ✅ Professional tool compatible Milan v1.2 entity for Hive-AVDECC testing")
+else()
+    message(STATUS "⏭️  Skipping Milan AVDECC Entity Example (avnu_milan_1_2_2023 not available)")
+endif()

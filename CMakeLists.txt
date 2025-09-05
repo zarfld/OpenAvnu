@@ -689,3 +689,18 @@ set_target_properties(test_tsn_fixed PROPERTIES
 add_dependencies(test_tsn_fixed intel-ethernet-hal-static)
 
 message(STATUS "✅ TSN Fixed Test target added - tests our fixed TSN functions")
+
+# Test executable for Milan Hardware Integration
+add_executable(test_milan_hardware_integration test_milan_hardware_integration.cpp)
+
+# Handle Windows-specific linking
+if(WIN32)
+    target_link_libraries(test_milan_hardware_integration ws2_32 iphlpapi)
+endif()
+
+# Enable building if requested
+option(BUILD_MILAN_HARDWARE_TEST "Build Milan Hardware Integration Test" ON)
+
+if(BUILD_MILAN_HARDWARE_TEST)
+    message(STATUS "✅ Milan Hardware Integration Test target added - validates hardware integration")
+endif()

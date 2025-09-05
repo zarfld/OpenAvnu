@@ -1,0 +1,33 @@
+# Test IEEE 1722-2016 AVTP Provider
+cmake_minimum_required(VERSION 3.10)
+
+# Add test executable for IEEE 1722-2016 AVTP provider
+add_executable(test_ieee_1722_2016_avtp_provider
+    test_ieee_1722_2016_avtp_provider.cpp
+)
+
+# Set C++14 standard
+target_compile_features(test_ieee_1722_2016_avtp_provider PRIVATE cxx_std_14)
+
+# Add include directories
+target_include_directories(test_ieee_1722_2016_avtp_provider PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/Standards/IEEE/802.1/AS/2021/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/Standards/IEEE/1722.1/2021/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/Standards/IEEE/1722/2016/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/Standards/Integration
+)
+
+# Windows-specific compiler definitions
+if(WIN32)
+    target_compile_definitions(test_ieee_1722_2016_avtp_provider PRIVATE
+        NOMINMAX
+        WIN32_LEAN_AND_MEAN
+        _CRT_SECURE_NO_WARNINGS
+    )
+endif()
+
+# Add this target to the ALL target so it builds with the main project
+set_target_properties(test_ieee_1722_2016_avtp_provider PROPERTIES
+    FOLDER "Testing/IEEE_Providers"
+)
