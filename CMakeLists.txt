@@ -686,7 +686,10 @@ set_target_properties(test_tsn_fixed PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
 )
 
-add_dependencies(test_tsn_fixed intel-ethernet-hal-static)
+# Only add Intel HAL dependency if Intel HAL is enabled
+if(OPENAVNU_BUILD_INTEL_HAL AND TARGET intel-ethernet-hal-static)
+    add_dependencies(test_tsn_fixed intel-ethernet-hal-static)
+endif()
 
 message(STATUS "✅ TSN Fixed Test target added - tests our fixed TSN functions")
 

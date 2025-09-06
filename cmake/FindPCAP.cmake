@@ -64,24 +64,124 @@ if(WIN32)
     endif()
   endif()
 
-  # Set up Windows include and library directories
-  set(PCAP_INCLUDE_DIRS "${PCAP_ROOT_DIR}/Include")
+  # Set up Windows include directories with fallback options
+  set(PCAP_POSSIBLE_INCLUDE_DIRS
+    "${PCAP_ROOT_DIR}/Include"
+    "${PCAP_ROOT_DIR}/include"
+    "${PCAP_ROOT_DIR}/inc"
+    "${PCAP_ROOT_DIR}"
+  )
   
-  # Architecture-specific library paths
+  set(PCAP_INCLUDE_DIRS)
+  foreach(INC_DIR ${PCAP_POSSIBLE_INCLUDE_DIRS})
+    if(EXISTS "${INC_DIR}")
+      # Check if this directory actually contains pcap headers
+      if(EXISTS "${INC_DIR}/pcap.h" OR EXISTS "${INC_DIR}/pcap/pcap.h")
+        set(PCAP_INCLUDE_DIRS "${INC_DIR}")
+        message(STATUS "📁 Using PCAP include directory: ${PCAP_INCLUDE_DIRS}")
+        break()
+      endif()
+    endif()
+  endforeach()
+  
+  # Fallback if no headers found
+  if(NOT PCAP_INCLUDE_DIRS)
+    set(PCAP_INCLUDE_DIRS "${PCAP_ROOT_DIR}/Include")
+    message(WARNING 
+      "⚠️  No pcap.h found in standard locations, using default: ${PCAP_INCLUDE_DIRS}\n"
+      "Searched paths:\n"
+      "  ${PCAP_POSSIBLE_INCLUDE_DIRS}"
+    )
+  endif()
+  
+  # Architecture-specific library paths with fallback options
+  set(PCAP_POSSIBLE_LIB_DIRS)
+  
   if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(PCAP_LIBRARY_DIRS "${PCAP_ROOT_DIR}/Lib/x64")
+    # 64-bit architecture - try multiple possible paths
+    list(APPEND PCAP_POSSIBLE_LIB_DIRS 
+      "${PCAP_ROOT_DIR}/Lib/x64"
+      "${PCAP_ROOT_DIR}/Lib"
+      "${PCAP_ROOT_DIR}/lib/x64" 
+      "${PCAP_ROOT_DIR}/lib"
+      "${PCAP_ROOT_DIR}/libs/x64"
+      "${PCAP_ROOT_DIR}/libs"
+    )
   elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-    set(PCAP_LIBRARY_DIRS "${PCAP_ROOT_DIR}/Lib")
+    # 32-bit architecture - try multiple possible paths
+    list(APPEND PCAP_POSSIBLE_LIB_DIRS
+      "${PCAP_ROOT_DIR}/Lib"
+      "${PCAP_ROOT_DIR}/Lib/x86"
+      "${PCAP_ROOT_DIR}/lib"
+      "${PCAP_ROOT_DIR}/lib/x86"
+      "${PCAP_ROOT_DIR}/libs"
+      "${PCAP_ROOT_DIR}/libs/x86"
+    )
   else()
     message(FATAL_ERROR "Unsupported architecture for PCAP on Windows")
   endif()
   
-  # Verify library directory exists
-  if(NOT EXISTS "${PCAP_LIBRARY_DIRS}")
-    message(FATAL_ERROR "PCAP library directory not found: ${PCAP_LIBRARY_DIRS}")
+  # Find the first existing library directory
+  set(PCAP_LIBRARY_DIRS)
+  foreach(LIB_DIR ${PCAP_POSSIBLE_LIB_DIRS})
+    if(EXISTS "${LIB_DIR}")
+      set(PCAP_LIBRARY_DIRS "${LIB_DIR}")
+      message(STATUS "📁 Using PCAP library directory: ${PCAP_LIBRARY_DIRS}")
+      break()
+    endif()
+  endforeach()
+  
+  # Verify we found a valid library directory
+  if(NOT PCAP_LIBRARY_DIRS)
+    message(STATUS "⚠️  No standard library directory found, trying fallback...")
+    # Fallback: use root directory if it contains .lib files directly
+    file(GLOB PCAP_LIB_FILES "${PCAP_ROOT_DIR}/*.lib")
+    if(PCAP_LIB_FILES)
+      set(PCAP_LIBRARY_DIRS "${PCAP_ROOT_DIR}")
+      message(STATUS "📁 Using fallback PCAP library directory: ${PCAP_LIBRARY_DIRS}")
+    else()
+      message(WARNING 
+        "⚠️  PCAP library directory structure not recognized!\n"
+        "Searched paths:\n"
+        "  ${PCAP_POSSIBLE_LIB_DIRS}\n"
+        "Falling back to root directory: ${PCAP_ROOT_DIR}"
+      )
+      set(PCAP_LIBRARY_DIRS "${PCAP_ROOT_DIR}")
+    endif()
   endif()
   
-  set(PCAP_LIBRARIES ${PCAP_LIBRARY_NAME})
+  # Try to find the actual library file with fallback names
+  set(PCAP_POSSIBLE_LIBRARY_NAMES
+    wpcap
+    pcap
+    npcap
+    libwpcap
+    libpcap
+    libnpcap
+  )
+  
+  set(PCAP_LIBRARIES)
+  foreach(LIB_NAME ${PCAP_POSSIBLE_LIBRARY_NAMES})
+    find_library(PCAP_LIBRARY_${LIB_NAME}
+      NAMES ${LIB_NAME}
+      PATHS ${PCAP_LIBRARY_DIRS}
+      NO_DEFAULT_PATH
+    )
+    if(PCAP_LIBRARY_${LIB_NAME})
+      set(PCAP_LIBRARIES "${PCAP_LIBRARY_${LIB_NAME}}")
+      message(STATUS "📚 Found PCAP library: ${PCAP_LIBRARIES}")
+      break()
+    endif()
+  endforeach()
+  
+  # Fallback to traditional method if no library found
+  if(NOT PCAP_LIBRARIES)
+    set(PCAP_LIBRARIES "${PCAP_LIBRARY_DIRS}/wpcap.lib")
+    message(WARNING 
+      "⚠️  No PCAP library found via find_library, using default: ${PCAP_LIBRARIES}\n"
+      "Searched for: ${PCAP_POSSIBLE_LIBRARY_NAMES} in ${PCAP_LIBRARY_DIRS}"
+    )
+  endif()
   
   # Additional Windows libraries typically needed with PCAP
   list(APPEND PCAP_LIBRARIES "Iphlpapi" "Ws2_32")
