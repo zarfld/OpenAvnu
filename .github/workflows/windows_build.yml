@@ -216,15 +216,15 @@ jobs:
           try {
             $cmakeHelp = cmake --help 2>&1
             if ($LASTEXITCODE -eq 0) {
-              Write-Host "✅ CMake basic command works"
+              Write-Host "[OK] CMake basic command works"
               $cmakeVersion = cmake --version 2>&1
               Write-Host "CMake version: $cmakeVersion"
             } else {
-              Write-Host "❌ CMake basic command failed"
+              Write-Host "[FAIL] CMake basic command failed"
               Write-Host "Output: $cmakeHelp"
             }
           } catch {
-            Write-Host "❌ CMake command threw exception: $_"
+            Write-Host "[ERROR] CMake command threw exception: $_"
           }
           
           # Test Visual Studio detection
@@ -232,19 +232,19 @@ jobs:
           Write-Host "Testing Visual Studio detection..."
           $vsWhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
           if (Test-Path $vsWhere) {
-            Write-Host "✅ vswhere.exe found"
+            Write-Host "[OK] vswhere.exe found"
             try {
               $vsInstances = & $vsWhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
               if ($vsInstances) {
-                Write-Host "✅ Visual Studio with C++ tools found: $vsInstances"
+                Write-Host "[OK] Visual Studio with C++ tools found: $vsInstances"
               } else {
-                Write-Host "❌ No Visual Studio with C++ tools found"
+                Write-Host "[FAIL] No Visual Studio with C++ tools found"
               }
             } catch {
-              Write-Host "❌ vswhere execution failed: $_"
+              Write-Host "[ERROR] vswhere execution failed: $_"
             }
           } else {
-            Write-Host "❌ vswhere.exe not found"
+            Write-Host "[FAIL] vswhere.exe not found"
           }
           
           # Test environment variables
@@ -269,15 +269,15 @@ jobs:
             
             Write-Host "Generation test result: $genResult"
             if ($genResult -eq 0) {
-              Write-Host "✅ Basic CMake generation works"
+              Write-Host "[OK] Basic CMake generation works"
             } else {
-              Write-Host "❌ Basic CMake generation failed"
+              Write-Host "[FAIL] Basic CMake generation failed"
               Write-Host "Output: $genOutput"
             }
             
             Remove-Item -Recurse -Force "test_cmake_gen" -ErrorAction SilentlyContinue
           } catch {
-            Write-Host "❌ CMake generation test threw exception: $_"
+            Write-Host "[ERROR] CMake generation test threw exception: $_"
           }
           
           Write-Host ""
@@ -293,9 +293,9 @@ jobs:
           
           # Verify we have CMakeLists.txt
           if (Test-Path "CMakeLists.txt") {
-            Write-Host "✅ CMakeLists.txt found"
+            Write-Host "[OK] CMakeLists.txt found"
           } else {
-            Write-Host "❌ CMakeLists.txt not found!"
+            Write-Host "[FAIL] CMakeLists.txt not found!"
             exit 1
           }
           
@@ -319,7 +319,7 @@ jobs:
             Write-Host "Basic CMake result: $basicResult"
             
             if ($basicResult -eq 0) {
-              Write-Host "✅ Basic CMake configuration successful!"
+              Write-Host "[OK] Basic CMake configuration successful!"
               Write-Host "Now attempting full configuration with OpenAvnu options..."
               
               # Full configuration with all options
@@ -345,21 +345,21 @@ jobs:
               Write-Host "Full CMake result: $fullResult"
               
               if ($fullResult -eq 0) {
-                Write-Host "✅ SUCCESS: Full OpenAvnu configuration completed!"
+                Write-Host "[SUCCESS] Full OpenAvnu configuration completed!"
               } else {
-                Write-Host "❌ Full configuration failed, showing output:"
+                Write-Host "[FAIL] Full configuration failed, showing output:"
                 $fullOutput | ForEach-Object { Write-Host "FULL: $_" }
                 exit 1
               }
               
             } else {
-              Write-Host "❌ Basic CMake configuration failed, showing output:"
+              Write-Host "[FAIL] Basic CMake configuration failed, showing output:"
               $basicOutput | ForEach-Object { Write-Host "BASIC: $_" }
               exit 1
             }
             
           } catch {
-            Write-Host "❌ CMake execution threw exception: $_"
+            Write-Host "[ERROR] CMake execution threw exception: $_"
             exit 1
           }
           
