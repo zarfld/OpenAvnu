@@ -210,8 +210,8 @@ jobs:
           Write-Host "Checking CMakeLists.txt for Unicode characters..."
           $cmakeContent = Get-Content "CMakeLists.txt" -Raw -Encoding UTF8
           
-          # Replace any problematic Unicode characters
-          $fixedContent = $cmakeContent -replace "⚠️", "WARNING:" -replace "🔧", "[FIX]" -replace "✅", "[OK]" -replace "❌", "[ERROR]"
+          # Replace any problematic Unicode characters using Unicode escape sequences
+          $fixedContent = $cmakeContent -replace "\u26A0\uFE0F", "WARNING:" -replace "\u1F527", "[FIX]" -replace "\u2705", "[OK]" -replace "\u274C", "[ERROR]"
           
           if ($cmakeContent -ne $fixedContent) {
             Write-Host "[FIX] Fixed Unicode characters in CMakeLists.txt for CI compatibility"
@@ -225,7 +225,7 @@ jobs:
           Get-ChildItem -Recurse -Filter "CMakeLists.txt" | ForEach-Object {
             $content = Get-Content $_.FullName -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
             if ($content) {
-              $fixed = $content -replace "⚠️", "WARNING:" -replace "🔧", "[FIX]" -replace "✅", "[OK]" -replace "❌", "[ERROR]"
+              $fixed = $content -replace "\u26A0\uFE0F", "WARNING:" -replace "\u1F527", "[FIX]" -replace "\u2705", "[OK]" -replace "\u274C", "[ERROR]"
               if ($content -ne $fixed) {
                 Write-Host "[FIX] Fixed Unicode in $($_.FullName)"
                 $fixed | Out-File $_.FullName -Encoding UTF8 -NoNewline
