@@ -245,61 +245,60 @@ jobs:
           
           cd build
           
-          # Use exact configuration that works locally with timeout protection
-          Write-Host "Running FULL OpenAvnu CMake configuration with 120-second timeout..."
-          $job = Start-Job -ScriptBlock {
-            cmake .. -G "Visual Studio 17 2022" -A x64 `
-              -DOPENAVNU_BUILD_INTEL_HAL=ON `
-              -DOPENAVNU_BUILD_GPTP=ON `
-              -DOPENAVNU_BUILD_LA_AVDECC=ON `
-              -DOPENAVNU_BUILD_MAAP=ON `
-              -DOPENAVNU_BUILD_MRPD=ON `
-              -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-              -DOPENAVNU_BUILD_TESTING=ON
-          }
+          # Direct CMake configuration without job control complexity
+          Write-Host "Running FULL OpenAvnu CMake configuration..."
           
-          $completed = Wait-Job $job -Timeout 120
-          if ($completed) {
-            $result = Receive-Job $job
-            if ($job.State -eq 'Completed') {
-              $exitCode = 0
-            } else {
-              $exitCode = 1
-            }
-            Write-Host "CMake completed within timeout"
-            $result | ForEach-Object { Write-Host "CMAKE: $_" }
-          } else {
-            Write-Host "❌ CMake timed out after 120 seconds"
-            Write-Host "Attempting to capture partial output..."
-            $result = Receive-Job $job
-            $result | ForEach-Object { Write-Host "CMAKE_PARTIAL: $_" }
-            Stop-Job $job
-            Remove-Job $job
-            
-            Write-Host "🔄 FALLBACK: Trying with Unicode-safe environment..."
-            $env:PYTHONUTF8 = "1"
-            [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-            
-            cmake .. -G "Visual Studio 17 2022" -A x64 `
-              -DOPENAVNU_BUILD_INTEL_HAL=ON `
-              -DOPENAVNU_BUILD_GPTP=ON `
-              -DOPENAVNU_BUILD_LA_AVDECC=ON `
-              -DOPENAVNU_BUILD_MAAP=ON `
-              -DOPENAVNU_BUILD_MRPD=ON `
-              -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-              -DOPENAVNU_BUILD_TESTING=ON
-              
-            if ($LASTEXITCODE -ne 0) {
-              Write-Host "❌ Full configuration failed in CI environment"
-              Write-Host "ERROR: This proves the CI environment has issues with the complete OpenAvnu build"
-              exit 1
-            }
-          }
+          # Set proper environment for reliable CI execution
+          $env:CMAKE_BUILD_PARALLEL_LEVEL = "4"
+          $env:VCPKG_DISABLE_METRICS = "1"
           
-          Remove-Job $job -Force -ErrorAction SilentlyContinue
+          Write-Host "CMake command: cmake .. -G `"Visual Studio 17 2022`" -A x64 -DOPENAVNU_BUILD_INTEL_HAL=ON -DOPENAVNU_BUILD_GPTP=ON -DOPENAVNU_BUILD_LA_AVDECC=ON -DOPENAVNU_BUILD_MAAP=ON -DOPENAVNU_BUILD_MRPD=ON -DOPENAVNU_BUILD_AVTP_PIPELINE=ON -DOPENAVNU_BUILD_TESTING=ON"
+          
+          # Execute CMake configuration with full OpenAvnu features
+          cmake .. -G "Visual Studio 17 2022" -A x64 `
+            -DOPENAVNU_BUILD_INTEL_HAL=ON `
+            -DOPENAVNU_BUILD_GPTP=ON `
+            -DOPENAVNU_BUILD_LA_AVDECC=ON `
+            -DOPENAVNU_BUILD_MAAP=ON `
+            -DOPENAVNU_BUILD_MRPD=ON `
+            -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
+            -DOPENAVNU_BUILD_TESTING=ON
+          
+          $configExitCode = $LASTEXITCODE
+          Write-Host "Configuration exit code: $configExitCode"
+          
+          if ($configExitCode -ne 0) {
+            Write-Host "❌ CMake configuration failed with exit code $configExitCode"
+            Write-Host "Checking for specific configuration issues..."
+            
+            Write-Host "=== CMake Error Details ==="
+            if (Test-Path "CMakeFiles/CMakeError.log") {
+              Write-Host "CMakeError.log contents:"
+              Get-Content "CMakeFiles/CMakeError.log" | ForEach-Object { Write-Host "ERROR: $_" }
+            }
+            
+            if (Test-Path "CMakeFiles/CMakeOutput.log") {
+              Write-Host "CMakeOutput.log contents:"
+              Get-Content "CMakeFiles/CMakeOutput.log" | Select-Object -Last 50 | ForEach-Object { Write-Host "OUTPUT: $_" }
+            }
+            
+            Write-Host "=== Environment Check ==="
+            Write-Host "CMake version: $(cmake --version)"
+            Write-Host "Generator available: $(cmake --help | Select-String 'Visual Studio')"
+            
+            exit 1
+          }
           
           Write-Host "✅ FULL OpenAvnu configuration succeeded!"
-          Write-Host "Features enabled: Intel HAL ✅, gPTP ✅, LA_AVDECC ✅, MAAP ✅, MRPD ✅, AVTP Pipeline ✅"
+          Write-Host "Features configured: Intel HAL ✅, gPTP ✅, LA_AVDECC ✅, MAAP ✅, MRPD ✅, AVTP Pipeline ✅"
+          
+          # Verify solution file was created
+          if (Test-Path "OpenAvnu.sln") {
+            Write-Host "✅ OpenAvnu.sln solution file created successfully"
+          } else {
+            Write-Host "❌ Solution file not created - configuration incomplete"
+            exit 1
+          }
         shell: powershell
 
       - name: Build project (full OpenAvnu feature set)
@@ -310,46 +309,57 @@ jobs:
           Write-Host "Starting parallel build with full OpenAvnu components..."
           Write-Host "Build command: cmake --build . --config Release --parallel 4"
           
-          # Capture detailed build output
-          try {
-            cmake --build . --config Release --parallel 4 2>&1 | Tee-Object -Variable buildOutput
-            $buildExitCode = $LASTEXITCODE
+          # Execute build with proper error handling and output capture
+          cmake --build . --config Release --parallel 4
+          $buildExitCode = $LASTEXITCODE
+          
+          Write-Host "Build exit code: $buildExitCode"
+          
+          if ($buildExitCode -ne 0) {
+            Write-Host "❌ Build failed with exit code $buildExitCode"
             
-            Write-Host "Build exit code: $buildExitCode"
+            Write-Host "=== BUILD ANALYSIS ==="
+            Write-Host "Checking for generated solution and project files..."
             
-            if ($buildExitCode -ne 0) {
-              Write-Host "❌ Build failed with exit code $buildExitCode"
-              Write-Host "=== BUILD OUTPUT ANALYSIS ==="
-              $buildOutput | ForEach-Object { Write-Host "BUILD: $_" }
-              Write-Host "=== END BUILD OUTPUT ==="
-              
-              Write-Host "Attempting to build core components separately for diagnosis..."
-              
-              Write-Host "Available targets:"
-              cmake --build . --target help 2>&1 | Select-Object -First 20 | ForEach-Object { Write-Host "TARGET: $_" }
-              
-              Write-Host "Checking generated files:"
-              if (Test-Path "CMakeCache.txt") {
-                Write-Host "✅ CMakeCache.txt exists"
-                Get-Content "CMakeCache.txt" | Select-String "OPENAVNU" | ForEach-Object { Write-Host "CMAKE_VAR: $_" }
-              }
-              
-              if (Test-Path "OpenAvnu.sln") {
-                Write-Host "✅ Solution file generated"
-              } else {
-                Write-Host "❌ No solution file - configuration issue"
-              }
-              
-              exit 1
+            if (Test-Path "OpenAvnu.sln") {
+              Write-Host "✅ Solution file exists"
+              Write-Host "Projects in solution:"
+              Select-String -Path "OpenAvnu.sln" -Pattern "Project\(" | Select-Object -First 10 | ForEach-Object { Write-Host "PROJECT: $_" }
+            } else {
+              Write-Host "❌ No solution file - configuration failed"
             }
             
-            Write-Host "✅ Full OpenAvnu build completed successfully!"
-            Write-Host "Built components: Intel HAL, gPTP, LA_AVDECC, MAAP, MRPD, AVTP Pipeline"
-          } catch {
-            Write-Host "❌ Build failed with exception: $($_.Exception.Message)"
-            Write-Host "Exception details: $($_.Exception)"
+            Write-Host "Available build targets:"
+            cmake --build . --target help 2>&1 | Select-Object -First 20 | ForEach-Object { Write-Host "TARGET: $_" }
+            
+            Write-Host "CMake cache variables:"
+            if (Test-Path "CMakeCache.txt") {
+              Get-Content "CMakeCache.txt" | Select-String "OPENAVNU" | ForEach-Object { Write-Host "CMAKE_VAR: $_" }
+            }
+            
+            Write-Host "Generated directories:"
+            Get-ChildItem -Directory | ForEach-Object { Write-Host "DIR: $($_.Name)" }
+            
+            Write-Host "=== ATTEMPTING COMPONENT-SPECIFIC BUILDS ==="
+            Write-Host "Trying to build individual components to identify failure..."
+            
+            # Try building specific targets to isolate the issue
+            $components = @("ALL_BUILD", "intel_hal", "gptp2", "maap_daemon", "mrpd")
+            foreach ($component in $components) {
+              Write-Host "Attempting to build: $component"
+              cmake --build . --config Release --target $component
+              if ($LASTEXITCODE -eq 0) {
+                Write-Host "✅ $component built successfully"
+              } else {
+                Write-Host "❌ $component failed to build"
+              }
+            }
+            
             exit 1
           }
+          
+          Write-Host "✅ Full OpenAvnu build completed successfully!"
+          Write-Host "Built components: Intel HAL, gPTP, LA_AVDECC, MAAP, MRPD, AVTP Pipeline"
         shell: powershell
 
       - name: Verify build artifacts
