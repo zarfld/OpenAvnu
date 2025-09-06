@@ -275,16 +275,34 @@ jobs:
             if (Test-Path "CMakeFiles/CMakeError.log") {
               Write-Host "CMakeError.log contents:"
               Get-Content "CMakeFiles/CMakeError.log" | ForEach-Object { Write-Host "ERROR: $_" }
+            } else {
+              Write-Host "No CMakeError.log found"
             }
             
             if (Test-Path "CMakeFiles/CMakeOutput.log") {
-              Write-Host "CMakeOutput.log contents:"
-              Get-Content "CMakeFiles/CMakeOutput.log" | Select-Object -Last 50 | ForEach-Object { Write-Host "OUTPUT: $_" }
+              Write-Host "CMakeOutput.log contents (last 100 lines):"
+              Get-Content "CMakeFiles/CMakeOutput.log" | Select-Object -Last 100 | ForEach-Object { Write-Host "OUTPUT: $_" }
+            } else {
+              Write-Host "No CMakeOutput.log found"
             }
+            
+            Write-Host "=== CMake Configuration Files Check ==="
+            Write-Host "Available CMake files:"
+            Get-ChildItem "CMakeFiles" -Recurse -Filter "*.log" | ForEach-Object { 
+              Write-Host "LOG FILE: $($_.FullName)"
+              Write-Host "--- Content (last 20 lines) ---"
+              Get-Content $_.FullName | Select-Object -Last 20 | ForEach-Object { Write-Host "  $_" }
+              Write-Host "--- End Content ---"
+            }
+            
+            Write-Host "=== Submodule Status Check ==="
+            git submodule status
             
             Write-Host "=== Environment Check ==="
             Write-Host "CMake version: $(cmake --version)"
             Write-Host "Generator available: $(cmake --help | Select-String 'Visual Studio')"
+            Write-Host "Current directory: $(Get-Location)"
+            Write-Host "CMakeLists.txt exists: $(Test-Path '../CMakeLists.txt')"
             
             exit 1
           }
