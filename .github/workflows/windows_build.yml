@@ -176,27 +176,36 @@ jobs:
             # Test CMake with a 3.29+ feature to verify it works
             Write-Host "Testing CMake 3.29+ compatibility with simple project..."
             
-            # Create a simple test CMakeLists.txt that requires 3.29
-            New-Item -ItemType Directory -Path "cmake_test_temp" -Force | Out-Null
-            'cmake_minimum_required(VERSION 3.29)' | Out-File -FilePath "cmake_test_temp/CMakeLists.txt" -Force
-            'project(CMakeTest)' | Add-Content -Path "cmake_test_temp/CMakeLists.txt"
-            'message(STATUS "CMake 3.29+ test successful")' | Add-Content -Path "cmake_test_temp/CMakeLists.txt"
-            
-            Write-Host "Attempting CMake test configuration..."
-            cmake -S cmake_test_temp -B cmake_test_temp/build -G "Visual Studio 17 2022" -A x64 2>&1 | Tee-Object -Variable cmakeTestOutput
-            $testResult = $LASTEXITCODE
-            
-            Write-Host "CMake test output:"
-            $cmakeTestOutput | ForEach-Object { Write-Host "  $_" }
-            
-            Remove-Item -Recurse -Force "cmake_test_temp" -ErrorAction SilentlyContinue
-            
-            if ($testResult -eq 0) {
-              Write-Host "SUCCESS: CMake 3.29+ compatibility verified"
-            } else {
-              Write-Host "WARNING: CMake 3.29+ test failed, but continuing anyway..."
-              Write-Host "This might indicate Visual Studio components missing, but CMake version should be OK"
-              Write-Host "Main configuration will provide more detailed error information if needed"
+            try {
+              # Create a simple test CMakeLists.txt that requires 3.29
+              New-Item -ItemType Directory -Path "cmake_test_temp" -Force | Out-Null
+              
+              # Create the CMakeLists.txt file properly using separate commands
+              'cmake_minimum_required(VERSION 3.29)' | Out-File -FilePath "cmake_test_temp/CMakeLists.txt" -Encoding UTF8 -Force
+              'project(CMakeTest)' | Out-File -FilePath "cmake_test_temp/CMakeLists.txt" -Encoding UTF8 -Append
+              'message(STATUS "CMake 3.29+ test successful")' | Out-File -FilePath "cmake_test_temp/CMakeLists.txt" -Encoding UTF8 -Append
+              
+              Write-Host "Created test CMakeLists.txt:"
+              Get-Content "cmake_test_temp/CMakeLists.txt" | ForEach-Object { Write-Host "  $_" }
+              
+              Write-Host "Attempting CMake test configuration..."
+              cmake -S cmake_test_temp -B cmake_test_temp/build -G "Visual Studio 17 2022" -A x64 2>&1 | Tee-Object -Variable cmakeTestOutput
+              $testResult = $LASTEXITCODE
+              
+              Write-Host "CMake test output:"
+              $cmakeTestOutput | ForEach-Object { Write-Host "  $_" }
+              
+              Remove-Item -Recurse -Force "cmake_test_temp" -ErrorAction SilentlyContinue
+              
+              if ($testResult -eq 0) {
+                Write-Host "SUCCESS: CMake 3.29+ compatibility verified"
+              } else {
+                Write-Host "WARNING: CMake 3.29+ test failed, but continuing anyway..."
+                Write-Host "This might indicate Visual Studio components missing, but main build should work"
+              }
+            } catch {
+              Write-Host "WARNING: CMake test threw exception: $_"
+              Write-Host "Continuing with main configuration..."
             }
           }
         shell: powershell
