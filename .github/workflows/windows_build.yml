@@ -195,7 +195,7 @@ jobs:
 
       - name: Fix Unicode issues in CMake files (CI environment fix)
         run: |
-          Write-Host "🔧 FIXING CI ENVIRONMENT UNICODE ISSUES"
+          Write-Host "[FIX] FIXING CI ENVIRONMENT UNICODE ISSUES"
           Write-Host "The proven local config works - fixing CI-specific Unicode handling..."
           
           # Set Unicode environment for CI
@@ -204,7 +204,7 @@ jobs:
           $env:LANG = "en_US.UTF-8"
           $env:LC_ALL = "en_US.UTF-8"
           
-          Write-Host "✅ Unicode environment configured for CI"
+          Write-Host "[OK] Unicode environment configured for CI"
           
           # Check for and fix Unicode characters in CMake files that cause CI issues
           Write-Host "Checking CMakeLists.txt for Unicode characters..."
@@ -214,10 +214,10 @@ jobs:
           $fixedContent = $cmakeContent -replace "⚠️", "WARNING:" -replace "🔧", "[FIX]" -replace "✅", "[OK]" -replace "❌", "[ERROR]"
           
           if ($cmakeContent -ne $fixedContent) {
-            Write-Host "🔧 Fixed Unicode characters in CMakeLists.txt for CI compatibility"
+            Write-Host "[FIX] Fixed Unicode characters in CMakeLists.txt for CI compatibility"
             $fixedContent | Out-File "CMakeLists.txt" -Encoding UTF8 -NoNewline
           } else {
-            Write-Host "✅ No Unicode fixes needed in CMakeLists.txt"
+            Write-Host "[OK] No Unicode fixes needed in CMakeLists.txt"
           }
           
           # Fix any Unicode in submodule CMake files
@@ -227,18 +227,18 @@ jobs:
             if ($content) {
               $fixed = $content -replace "⚠️", "WARNING:" -replace "🔧", "[FIX]" -replace "✅", "[OK]" -replace "❌", "[ERROR]"
               if ($content -ne $fixed) {
-                Write-Host "🔧 Fixed Unicode in $($_.FullName)"
+                Write-Host "[FIX] Fixed Unicode in $($_.FullName)"
                 $fixed | Out-File $_.FullName -Encoding UTF8 -NoNewline
               }
             }
           }
           
-          Write-Host "✅ Unicode compatibility fixes applied for CI environment"
+          Write-Host "[OK] Unicode compatibility fixes applied for CI environment"
         shell: powershell
 
       - name: Configure project with full OpenAvnu features (WORKING CONFIG)
         run: |
-          Write-Host "🎯 FULL OPENAVNU CONFIGURATION"
+          Write-Host "[TARGET] FULL OPENAVNU CONFIGURATION"
           Write-Host "Using exact local configuration that works perfectly in 13 seconds"
           Write-Host "ALL OpenAvnu features enabled: Intel HAL, gPTP, LA_AVDECC, MAAP, MRPD, AVTP Pipeline"
           Write-Host ""
@@ -268,7 +268,7 @@ jobs:
           Write-Host "Configuration exit code: $configExitCode"
           
           if ($configExitCode -ne 0) {
-            Write-Host "❌ CMake configuration failed with exit code $configExitCode"
+            Write-Host "[ERROR] CMake configuration failed with exit code $configExitCode"
             Write-Host "Checking for specific configuration issues..."
             
             Write-Host "=== CMake Error Details ==="
@@ -289,14 +289,14 @@ jobs:
             exit 1
           }
           
-          Write-Host "✅ FULL OpenAvnu configuration succeeded!"
-          Write-Host "Features configured: Intel HAL ✅, gPTP ✅, LA_AVDECC ✅, MAAP ✅, MRPD ✅, AVTP Pipeline ✅"
+          Write-Host "[OK] FULL OpenAvnu configuration succeeded!"
+          Write-Host "Features configured: Intel HAL [OK], gPTP [OK], LA_AVDECC [OK], MAAP [OK], MRPD [OK], AVTP Pipeline [OK]"
           
           # Verify solution file was created
           if (Test-Path "open-avb.sln") {
-            Write-Host "✅ open-avb.sln solution file created successfully"
+            Write-Host "[OK] open-avb.sln solution file created successfully"
           } else {
-            Write-Host "❌ Solution file not created - configuration incomplete"
+            Write-Host "[ERROR] Solution file not created - configuration incomplete"
             Write-Host "Looking for any .sln files:"
             Get-ChildItem "*.sln" | ForEach-Object { Write-Host "FOUND: $($_.Name)" }
             exit 1
@@ -318,17 +318,17 @@ jobs:
           Write-Host "Build exit code: $buildExitCode"
           
           if ($buildExitCode -ne 0) {
-            Write-Host "❌ Build failed with exit code $buildExitCode"
+            Write-Host "[ERROR] Build failed with exit code $buildExitCode"
             
             Write-Host "=== BUILD ANALYSIS ==="
             Write-Host "Checking for generated solution and project files..."
             
             if (Test-Path "open-avb.sln") {
-              Write-Host "✅ Solution file exists"
+              Write-Host "[OK] Solution file exists"
               Write-Host "Projects in solution:"
               Select-String -Path "open-avb.sln" -Pattern "Project\(" | Select-Object -First 10 | ForEach-Object { Write-Host "PROJECT: $_" }
             } else {
-              Write-Host "❌ No solution file - configuration failed"
+              Write-Host "[ERROR] No solution file - configuration failed"
               Write-Host "Looking for any .sln files:"
               Get-ChildItem "*.sln" | ForEach-Object { Write-Host "FOUND: $($_.Name)" }
             }
@@ -353,16 +353,16 @@ jobs:
               Write-Host "Attempting to build: $component"
               cmake --build . --config Release --target $component
               if ($LASTEXITCODE -eq 0) {
-                Write-Host "✅ $component built successfully"
+                Write-Host "[OK] $component built successfully"
               } else {
-                Write-Host "❌ $component failed to build"
+                Write-Host "[ERROR] $component failed to build"
               }
             }
             
             exit 1
           }
           
-          Write-Host "✅ Full OpenAvnu build completed successfully!"
+          Write-Host "[OK] Full OpenAvnu build completed successfully!"
           Write-Host "Built components: Intel HAL, gPTP, LA_AVDECC, MAAP, MRPD, AVTP Pipeline"
         shell: powershell
 
@@ -371,9 +371,9 @@ jobs:
           Write-Host "Checking OpenAvnu build artifacts..."
           
           if (Test-Path "build\open-avb.sln") {
-            Write-Host "✅ open-avb solution file created"
+            Write-Host "[OK] open-avb solution file created"
           } else {
-            Write-Host "❌ No solution file found"
+            Write-Host "[ERROR] No solution file found"
             Write-Host "Available .sln files:"
             Get-ChildItem "build\*.sln" | ForEach-Object { Write-Host "  SLN: $($_.Name)" }
           }
