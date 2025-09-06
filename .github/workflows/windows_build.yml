@@ -293,10 +293,12 @@ jobs:
           Write-Host "Features configured: Intel HAL ✅, gPTP ✅, LA_AVDECC ✅, MAAP ✅, MRPD ✅, AVTP Pipeline ✅"
           
           # Verify solution file was created
-          if (Test-Path "OpenAvnu.sln") {
-            Write-Host "✅ OpenAvnu.sln solution file created successfully"
+          if (Test-Path "open-avb.sln") {
+            Write-Host "✅ open-avb.sln solution file created successfully"
           } else {
             Write-Host "❌ Solution file not created - configuration incomplete"
+            Write-Host "Looking for any .sln files:"
+            Get-ChildItem "*.sln" | ForEach-Object { Write-Host "FOUND: $($_.Name)" }
             exit 1
           }
         shell: powershell
@@ -321,12 +323,14 @@ jobs:
             Write-Host "=== BUILD ANALYSIS ==="
             Write-Host "Checking for generated solution and project files..."
             
-            if (Test-Path "OpenAvnu.sln") {
+            if (Test-Path "open-avb.sln") {
               Write-Host "✅ Solution file exists"
               Write-Host "Projects in solution:"
-              Select-String -Path "OpenAvnu.sln" -Pattern "Project\(" | Select-Object -First 10 | ForEach-Object { Write-Host "PROJECT: $_" }
+              Select-String -Path "open-avb.sln" -Pattern "Project\(" | Select-Object -First 10 | ForEach-Object { Write-Host "PROJECT: $_" }
             } else {
               Write-Host "❌ No solution file - configuration failed"
+              Write-Host "Looking for any .sln files:"
+              Get-ChildItem "*.sln" | ForEach-Object { Write-Host "FOUND: $($_.Name)" }
             }
             
             Write-Host "Available build targets:"
@@ -366,8 +370,12 @@ jobs:
         run: |
           Write-Host "Checking OpenAvnu build artifacts..."
           
-          if (Test-Path "build\OpenAvnu.sln") {
-            Write-Host "✅ OpenAvnu solution file created"
+          if (Test-Path "build\open-avb.sln") {
+            Write-Host "✅ open-avb solution file created"
+          } else {
+            Write-Host "❌ No solution file found"
+            Write-Host "Available .sln files:"
+            Get-ChildItem "build\*.sln" | ForEach-Object { Write-Host "  SLN: $($_.Name)" }
           }
           
           Write-Host "Built OpenAvnu executables and libraries:"
