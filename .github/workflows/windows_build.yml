@@ -286,12 +286,58 @@ jobs:
           Write-Host ""
           Write-Host "=== STARTING CMAKE CONFIGURATION ==="
           
+          # First, test if CMake can handle the basic project at all
+          Write-Host "Testing basic CMake configuration..."
+          
           try {
+            # Test 1: Basic CMake configuration with no options
+            Write-Host "Test 1: Basic CMake configuration (no OpenAvnu options)"
+            cmake -S . -B build_test -G "Visual Studio 17 2022" -A x64 2>&1 | Tee-Object -FilePath "cmake_basic_test.log"
+            $basicResult = $LASTEXITCODE
+            Write-Host "Basic CMake result: $basicResult"
+            
+            if ($basicResult -eq 0) {
+              Write-Host "✅ Basic CMake configuration works!"
+              Remove-Item -Recurse -Force "build_test" -ErrorAction SilentlyContinue
+            } else {
+              Write-Host "❌ Basic CMake configuration failed"
+              Write-Host "=== Basic CMake Output ==="
+              if (Test-Path "cmake_basic_test.log") {
+                Get-Content "cmake_basic_test.log" | ForEach-Object { Write-Host "BASIC: $_" }
+              }
+              Write-Host ""
+              Write-Host "If basic CMake fails, the issue is with the project structure or environment"
+              Write-Host "This indicates a fundamental problem, not feature-specific issues"
+            }
+            
+          } catch {
+            Write-Host "❌ Exception during basic CMake test: $_"
+          }
+          
+            Write-Host ""
+            Write-Host "=== CONTINUING WITH OPENAVNU CONFIGURATION ==="
+            
+            # Check project structure before attempting configuration
+            Write-Host "Project structure verification:"
+            Write-Host "CMakeLists.txt exists: $(Test-Path 'CMakeLists.txt')"
+            if (Test-Path 'CMakeLists.txt') {
+              Write-Host "CMakeLists.txt size: $((Get-Item 'CMakeLists.txt').Length) bytes"
+              Write-Host "First few lines of CMakeLists.txt:"
+              Get-Content 'CMakeLists.txt' | Select-Object -First 10 | ForEach-Object { Write-Host "  $_" }
+            }
+            
+            Write-Host "Key directories:"
+            @('lib', 'daemons', 'examples', 'thirdparty') | ForEach-Object {
+              Write-Host "  $_ exists: $(Test-Path $_)"
+            }
+            
             # Use direct PowerShell execution to avoid argument parsing issues
             Write-Host "Executing CMake configuration..."
             
             $env:CMAKE_GENERATOR = "Visual Studio 17 2022"
             $env:CMAKE_GENERATOR_PLATFORM = "x64"
+            
+          try {
             
             # Start with a minimal configuration to ensure basic build works
             Write-Host "Attempting minimal configuration first..."
