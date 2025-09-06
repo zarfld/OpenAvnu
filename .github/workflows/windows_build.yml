@@ -261,7 +261,11 @@ jobs:
           $completed = Wait-Job $job -Timeout 120
           if ($completed) {
             $result = Receive-Job $job
-            $exitCode = $job.State -eq 'Completed' ? 0 : 1
+            if ($job.State -eq 'Completed') {
+              $exitCode = 0
+            } else {
+              $exitCode = 1
+            }
             Write-Host "CMake completed within timeout"
             $result | ForEach-Object { Write-Host "CMAKE: $_" }
           } else {
