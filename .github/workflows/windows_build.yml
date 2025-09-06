@@ -172,6 +172,27 @@ jobs:
             } else {
               Write-Host "CMake version is sufficient for LA_AVDECC"
             }
+            
+            # Test CMake with a 3.29+ feature to verify it works
+            Write-Host "Testing CMake 3.29+ compatibility with simple project..."
+            
+            # Create a simple test CMakeLists.txt that requires 3.29
+            New-Item -ItemType Directory -Path "cmake_test_temp" -Force | Out-Null
+            'cmake_minimum_required(VERSION 3.29)' | Out-File -FilePath "cmake_test_temp/CMakeLists.txt" -Force
+            'project(CMakeTest)' | Add-Content -Path "cmake_test_temp/CMakeLists.txt"
+            'message(STATUS "CMake 3.29+ test successful")' | Add-Content -Path "cmake_test_temp/CMakeLists.txt"
+            
+            cmake -S cmake_test_temp -B cmake_test_temp/build -G "Visual Studio 17 2022" -A x64
+            $testResult = $LASTEXITCODE
+            
+            Remove-Item -Recurse -Force "cmake_test_temp" -ErrorAction SilentlyContinue
+            
+            if ($testResult -eq 0) {
+              Write-Host "SUCCESS: CMake 3.29+ compatibility verified"
+            } else {
+              Write-Host "ERROR: CMake 3.29+ test failed, LA_AVDECC will likely fail"
+              exit 1
+            }
           }
         shell: powershell
 
@@ -182,7 +203,16 @@ jobs:
           Write-Host "NPCAP_SDK_DIR: $env:NPCAP_SDK_DIR"
           Write-Host "WPCAP_DIR: $env:WPCAP_DIR"
           Write-Host ""
+          
+          # Verify CMake version first
+          $cmakeVersionOutput = cmake --version
+          Write-Host "CMake version being used: $cmakeVersionOutput"
+          
           Write-Host "Running CMake with FULL OpenAvnu feature set (LA_AVDECC compatibility fixed)..."
+          Write-Host "Command: cmake -S . -B build -G 'Visual Studio 17 2022' -A x64 [full options]"
+          
+          # Enable verbose CMake output and capture all output
+          $env:VERBOSE = 1
           
           cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
             -DOPENAVNU_BUILD_UNIFIED_TESTING=ON `
@@ -196,20 +226,44 @@ jobs:
             -DOPENAVNU_BUILD_MRPD=ON `
             -DOPENAVNU_BUILD_SHAPER=ON `
             -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_BUILD_TYPE=Release `
+            --debug-output
           
-          if ($LASTEXITCODE -ne 0) {
-            Write-Host "ERROR: CMake configuration failed with exit code $LASTEXITCODE"
+          $cmakeExitCode = $LASTEXITCODE
+          Write-Host ""
+          Write-Host "CMake completed with exit code: $cmakeExitCode"
+          
+          if ($cmakeExitCode -ne 0) {
+            Write-Host "ERROR: CMake configuration failed!"
+            Write-Host ""
             
+            # Show detailed error information
+            Write-Host "=== DIRECTORY STRUCTURE CHECK ==="
+            if (Test-Path "build") {
+              Write-Host "Build directory exists, checking contents:"
+              Get-ChildItem "build" | Select-Object -First 10 | Format-Table Name, Length
+            } else {
+              Write-Host "Build directory was not created!"
+            }
+            
+            Write-Host "=== CMAKE LOG FILES ==="
             if (Test-Path "build/CMakeFiles/CMakeError.log") {
-              Write-Host "=== CMakeError.log ==="
-              Get-Content "build/CMakeFiles/CMakeError.log"
+              Write-Host "--- CMakeError.log ---"
+              Get-Content "build/CMakeFiles/CMakeError.log" | ForEach-Object { Write-Host $_ }
+            } else {
+              Write-Host "No CMakeError.log found"
             }
             
             if (Test-Path "build/CMakeFiles/CMakeOutput.log") {
-              Write-Host "=== CMakeOutput.log (last 50 lines) ==="
-              Get-Content "build/CMakeFiles/CMakeOutput.log" | Select-Object -Last 50
+              Write-Host "--- CMakeOutput.log (last 100 lines) ---"
+              Get-Content "build/CMakeFiles/CMakeOutput.log" | Select-Object -Last 100 | ForEach-Object { Write-Host $_ }
+            } else {
+              Write-Host "No CMakeOutput.log found"
             }
+            
+            Write-Host "=== SUBMODULE STATUS ==="
+            git submodule status
+            
             exit 1
           }
           
