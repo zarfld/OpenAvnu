@@ -264,39 +264,35 @@ jobs:
           [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
           
           try {
-            $process = Start-Process -FilePath "cmake" -ArgumentList @(
-              "-S", ".",
-              "-B", "build", 
-              "-G", "Visual Studio 17 2022",
-              "-A", "x64",
-              "-DOPENAVNU_BUILD_INTEL_HAL=ON",
-              "-DOPENAVNU_BUILD_LA_AVDECC=ON",
-              "-DOPENAVNU_BUILD_GPTP=ON",
-              "-DOPENAVNU_BUILD_MAAP=ON",
-              "-DOPENAVNU_BUILD_MRPD=ON",
-              "-DOPENAVNU_BUILD_EXAMPLES=ON",
-              "-DOPENAVNU_BUILD_UNIFIED_TESTING=ON",
-              "-DOPENAVNU_BUILD_LEGACY_TESTS=ON",
-              "-DOPENAVNU_BUILD_AVDECC_ENTITIES=ON",
-              "-DOPENAVNU_BUILD_SHAPER=ON",
-              "-DOPENAVNU_BUILD_AVTP_PIPELINE=ON",
-              "-DCMAKE_BUILD_TYPE=Release"
-            ) -NoNewWindow -Wait -PassThru -RedirectStandardOutput "cmake_output.log" -RedirectStandardError "cmake_error.log"
+            # Use direct PowerShell execution to avoid argument parsing issues
+            Write-Host "Executing CMake configuration..."
             
-            $cmakeResult = $process.ExitCode
+            $env:CMAKE_GENERATOR = "Visual Studio 17 2022"
+            $env:CMAKE_GENERATOR_PLATFORM = "x64"
+            
+            cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
+              -DOPENAVNU_BUILD_INTEL_HAL=ON `
+              -DOPENAVNU_BUILD_LA_AVDECC=ON `
+              -DOPENAVNU_BUILD_GPTP=ON `
+              -DOPENAVNU_BUILD_MAAP=ON `
+              -DOPENAVNU_BUILD_MRPD=ON `
+              -DOPENAVNU_BUILD_EXAMPLES=ON `
+              -DOPENAVNU_BUILD_UNIFIED_TESTING=ON `
+              -DOPENAVNU_BUILD_LEGACY_TESTS=ON `
+              -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON `
+              -DOPENAVNU_BUILD_SHAPER=ON `
+              -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
+              -DCMAKE_BUILD_TYPE=Release *>&1 | Tee-Object -FilePath "cmake_full_output.log"
+            
+            $cmakeResult = $LASTEXITCODE
             
             Write-Host ""
             Write-Host "CMAKE RESULT: $cmakeResult"
             
-            # Display output regardless of result
-            if (Test-Path "cmake_output.log") {
-              Write-Host "=== CMAKE OUTPUT ==="
-              Get-Content "cmake_output.log" | ForEach-Object { Write-Host "OUT: $_" }
-            }
-            
-            if (Test-Path "cmake_error.log") {
-              Write-Host "=== CMAKE STDERR ==="
-              Get-Content "cmake_error.log" | ForEach-Object { Write-Host "ERR: $_" }
+            # Display captured output
+            if (Test-Path "cmake_full_output.log") {
+              Write-Host "=== CMAKE FULL OUTPUT ==="
+              Get-Content "cmake_full_output.log" | ForEach-Object { Write-Host "CMAKE: $_" }
             }
             
           } catch {
@@ -336,14 +332,9 @@ jobs:
             Write-Host "The exact same configuration works locally, so this is a CI environment issue"
             Write-Host ""
             
-            Write-Host "=== CMAKE OUTPUT LOG ==="
-            if (Test-Path "cmake_output.log") {
-              Get-Content "cmake_output.log" | ForEach-Object { Write-Host "OUT: $_" }
-            }
-            
-            Write-Host "=== CMAKE ERROR LOG ==="
-            if (Test-Path "cmake_error.log") {
-              Get-Content "cmake_error.log" | ForEach-Object { Write-Host "ERR: $_" }
+            Write-Host "=== CMAKE FULL OUTPUT ==="
+            if (Test-Path "cmake_full_output.log") {
+              Get-Content "cmake_full_output.log" | ForEach-Object { Write-Host "CMAKE: $_" }
             }
             
             Write-Host ""
