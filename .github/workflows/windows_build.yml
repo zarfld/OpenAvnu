@@ -83,6 +83,13 @@ jobs:
 
       - name: Configure project with minimal CI configuration
         run: |
+          Write-Host "🔧 Starting CMake configuration..."
+          Write-Host "Environment Variables:"
+          Write-Host "NPCAP_SDK_DIR: $env:NPCAP_SDK_DIR"
+          Write-Host "WPCAP_DIR: $env:WPCAP_DIR"
+          Write-Host ""
+          Write-Host "🎯 Running CMake with CI-optimized settings..."
+          
           cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
             -DOPENAVNU_BUILD_UNIFIED_TESTING=OFF `
             -DOPENAVNU_BUILD_LEGACY_TESTS=OFF `
@@ -90,29 +97,45 @@ jobs:
             -DOPENAVNU_BUILD_EXAMPLES=ON `
             -DOPENAVNU_BUILD_LA_AVDECC=ON `
             -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON
+          
+          Write-Host "✅ CMake configuration completed"
         shell: powershell
 
       - name: Build project (core components only)
         run: |
+          Write-Host "🔨 Starting build process..."
+          Write-Host "Building avdecc_entity_responsive..."
           cmake --build build --config Release --target avdecc_entity_responsive
+          
+          Write-Host "Building avdecc_entity_hive_compatible..."
           cmake --build build --config Release --target avdecc_entity_hive_compatible
+          
+          Write-Host "✅ Build completed"
         shell: powershell
 
       - name: Verify build artifacts
         run: |
           echo "Checking build artifacts..."
-          if (Test-Path "build\lib\avdecc-entities\production\responsive\Release\avdecc_entity_responsive.exe") {
+          if (Test-Path "build\lib\avdecc-entities\Release\avdecc_entity_responsive.exe") {
             echo "✅ Primary AVDECC entity built successfully"
-            dir "build\lib\avdecc-entities\production\responsive\Release\avdecc_entity_responsive.exe"
+            dir "build\lib\avdecc-entities\Release\avdecc_entity_responsive.exe"
           } else {
             echo "❌ Primary AVDECC entity not found"
+            echo "Available files in avdecc-entities:"
+            if (Test-Path "build\lib\avdecc-entities") {
+              Get-ChildItem "build\lib\avdecc-entities" -Recurse -Name
+            }
           }
           
-          if (Test-Path "build\lib\avdecc-entities\production\hive-compatible\Release\avdecc_entity_hive_compatible.exe") {
+          if (Test-Path "build\lib\avdecc-entities\Release\avdecc_entity_hive_compatible.exe") {
             echo "✅ Hive-compatible AVDECC entity built successfully"
-            dir "build\lib\avdecc-entities\production\hive-compatible\Release\avdecc_entity_hive_compatible.exe"
+            dir "build\lib\avdecc-entities\Release\avdecc_entity_hive_compatible.exe"
           } else {
             echo "❌ Hive-compatible AVDECC entity not found"
+            echo "Available files in avdecc-entities:"
+            if (Test-Path "build\lib\avdecc-entities") {
+              Get-ChildItem "build\lib\avdecc-entities" -Recurse -Name
+            }
           }
         shell: powershell
 
