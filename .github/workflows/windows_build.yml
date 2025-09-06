@@ -43,15 +43,36 @@ jobs:
           }
           
           Write-Host "Verifying critical submodules..."
-          Write-Host "Checking for avdecc-lib..."
+          Write-Host "=== Submodule Status ==="
+          git submodule status
+          
+          Write-Host "=== Checking for avdecc-lib ==="
           if (Test-Path "avdecc-lib") {
             Write-Host "SUCCESS: avdecc-lib found"
+            Write-Host "avdecc-lib contents:"
             Get-ChildItem "avdecc-lib" | Select-Object -First 5 | Format-Table Name, Length
           } else {
             Write-Host "ERROR: avdecc-lib submodule missing"
             Write-Host "Available directories:"
             Get-ChildItem -Directory | Select-Object Name
             exit 1
+          }
+          
+          Write-Host "=== Checking for lib/la_avdecc ==="
+          if (Test-Path "lib/la_avdecc") {
+            Write-Host "SUCCESS: lib/la_avdecc found"
+            Write-Host "la_avdecc contents:"
+            Get-ChildItem "lib/la_avdecc" | Select-Object -First 5 | Format-Table Name, Length
+          } else {
+            Write-Host "ERROR: lib/la_avdecc submodule missing"
+            exit 1
+          }
+          
+          Write-Host "=== Checking for thirdparty/intel-ethernet-hal ==="
+          if (Test-Path "thirdparty/intel-ethernet-hal") {
+            Write-Host "SUCCESS: thirdparty/intel-ethernet-hal found"
+          } else {
+            Write-Host "WARNING: thirdparty/intel-ethernet-hal missing"
           }
           
           Write-Host "Submodule initialization completed"
@@ -125,6 +146,7 @@ jobs:
           Write-Host ""
           Write-Host "Running CMake with full OpenAvnu feature set..."
           
+          # Capture both stdout and stderr
           cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
             -DOPENAVNU_BUILD_UNIFIED_TESTING=ON `
             -DOPENAVNU_BUILD_LEGACY_TESTS=ON `
@@ -137,19 +159,38 @@ jobs:
             -DOPENAVNU_BUILD_MRPD=ON `
             -DOPENAVNU_BUILD_SHAPER=ON `
             -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_BUILD_TYPE=Release 2>&1 | Tee-Object -Variable cmakeOutput
           
-          if ($LASTEXITCODE -ne 0) {
-            Write-Host "ERROR: CMake configuration failed with exit code $LASTEXITCODE"
-            Write-Host "Check CMakeFiles/CMakeError.log and CMakeFiles/CMakeOutput.log for details"
+          $cmakeExitCode = $LASTEXITCODE
+          Write-Host "CMake Exit Code: $cmakeExitCode"
+          
+          if ($cmakeExitCode -ne 0) {
+            Write-Host "ERROR: CMake configuration failed with exit code $cmakeExitCode"
+            Write-Host ""
+            Write-Host "=== FULL CMAKE OUTPUT ==="
+            $cmakeOutput | ForEach-Object { Write-Host $_ }
+            Write-Host ""
+            
+            Write-Host "=== CHECKING CMAKE LOG FILES ==="
             if (Test-Path "build/CMakeFiles/CMakeError.log") {
               Write-Host "=== CMakeError.log ==="
               Get-Content "build/CMakeFiles/CMakeError.log"
+            } else {
+              Write-Host "No CMakeError.log found"
             }
+            
             if (Test-Path "build/CMakeFiles/CMakeOutput.log") {
-              Write-Host "=== CMakeOutput.log (last 50 lines) ==="
-              Get-Content "build/CMakeFiles/CMakeOutput.log" | Select-Object -Last 50
+              Write-Host "=== CMakeOutput.log (last 100 lines) ==="
+              Get-Content "build/CMakeFiles/CMakeOutput.log" | Select-Object -Last 100
+            } else {
+              Write-Host "No CMakeOutput.log found"
             }
+            
+            Write-Host "=== DIRECTORY STRUCTURE ==="
+            if (Test-Path "build") {
+              Get-ChildItem "build" -Recurse | Select-Object -First 20 | Format-Table Name, FullName
+            }
+            
             exit 1
           }
           Write-Host "CMake configuration completed successfully"
