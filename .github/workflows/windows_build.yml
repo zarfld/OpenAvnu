@@ -270,29 +270,64 @@ jobs:
             $env:CMAKE_GENERATOR = "Visual Studio 17 2022"
             $env:CMAKE_GENERATOR_PLATFORM = "x64"
             
-            cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
-              -DOPENAVNU_BUILD_INTEL_HAL=ON `
-              -DOPENAVNU_BUILD_LA_AVDECC=ON `
-              -DOPENAVNU_BUILD_GPTP=ON `
-              -DOPENAVNU_BUILD_MAAP=ON `
-              -DOPENAVNU_BUILD_MRPD=ON `
-              -DOPENAVNU_BUILD_EXAMPLES=ON `
-              -DOPENAVNU_BUILD_UNIFIED_TESTING=ON `
-              -DOPENAVNU_BUILD_LEGACY_TESTS=ON `
-              -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON `
-              -DOPENAVNU_BUILD_SHAPER=ON `
-              -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-              -DCMAKE_BUILD_TYPE=Release *>&1 | Tee-Object -FilePath "cmake_full_output.log"
+            # Execute CMake with proper error handling
+            $cmakeCommand = "cmake -S . -B build -G `"Visual Studio 17 2022`" -A x64 " +
+                          "-DOPENAVNU_BUILD_INTEL_HAL=ON " +
+                          "-DOPENAVNU_BUILD_LA_AVDECC=ON " +
+                          "-DOPENAVNU_BUILD_GPTP=ON " +
+                          "-DOPENAVNU_BUILD_MAAP=ON " +
+                          "-DOPENAVNU_BUILD_MRPD=ON " +
+                          "-DOPENAVNU_BUILD_EXAMPLES=ON " +
+                          "-DOPENAVNU_BUILD_UNIFIED_TESTING=ON " +
+                          "-DOPENAVNU_BUILD_LEGACY_TESTS=ON " +
+                          "-DOPENAVNU_BUILD_AVDECC_ENTITIES=ON " +
+                          "-DOPENAVNU_BUILD_SHAPER=ON " +
+                          "-DOPENAVNU_BUILD_AVTP_PIPELINE=ON " +
+                          "-DCMAKE_BUILD_TYPE=Release"
+            
+            Write-Host "Executing: $cmakeCommand"
+            Invoke-Expression $cmakeCommand 2>&1 | Tee-Object -FilePath "cmake_full_output.log"
             
             $cmakeResult = $LASTEXITCODE
             
             Write-Host ""
             Write-Host "CMAKE RESULT: $cmakeResult"
             
-            # Display captured output
+            # Always show the full output to understand what's happening
             if (Test-Path "cmake_full_output.log") {
               Write-Host "=== CMAKE FULL OUTPUT ==="
-              Get-Content "cmake_full_output.log" | ForEach-Object { Write-Host "CMAKE: $_" }
+              $output = Get-Content "cmake_full_output.log"
+              $output | ForEach-Object { Write-Host "CMAKE: $_" }
+              
+              # Analyze the output for specific issues
+              Write-Host ""
+              Write-Host "=== CONFIGURATION ANALYSIS ==="
+              
+              $hasError = $output | Where-Object { $_ -match "CMake Error" }
+              $hasWarning = $output | Where-Object { $_ -match "CMake Warning" }
+              $hasGenerated = $output | Where-Object { $_ -match "Build files have been written" -or $_ -match "Generating done" }
+              
+              if ($hasError) {
+                Write-Host "❌ ERRORS FOUND:"
+                $hasError | ForEach-Object { Write-Host "  ERROR: $_" }
+              }
+              
+              if ($hasWarning) {
+                Write-Host "⚠️ WARNINGS FOUND:"
+                $hasWarning | ForEach-Object { Write-Host "  WARNING: $_" }
+              }
+              
+              if ($hasGenerated) {
+                Write-Host "✅ BUILD FILES GENERATED:"
+                $hasGenerated | ForEach-Object { Write-Host "  SUCCESS: $_" }
+              }
+              
+              # Check for solution file
+              if (Test-Path "build\OpenAvnu.sln") {
+                Write-Host "✅ Visual Studio solution file created successfully"
+              } else {
+                Write-Host "❌ Visual Studio solution file NOT created"
+              }
             }
             
           } catch {
@@ -300,14 +335,17 @@ jobs:
             $cmakeResult = 1
           }
           
-          # Continue to build even if there were warnings (but not hard errors)
-          # Check if build directory was created successfully
-          if ($cmakeResult -eq 0 -or (Test-Path "build/OpenAvnu.sln")) {
+          # Continue to build if configuration succeeded or if build files were created
+          $canBuild = ($cmakeResult -eq 0) -or (Test-Path "build\OpenAvnu.sln") -or (Test-Path "build\ALL_BUILD.vcxproj")
+          
+          if ($canBuild) {
             Write-Host "✅ Configuration completed successfully, attempting build..."
+            Write-Host "Build files available - proceeding with compilation..."
             
             try {
               # Build the project using Visual Studio
-              cmake --build build --config Release --parallel 4 2>&1 | Tee-Object -Variable buildOutput
+              Write-Host "Starting build process..."
+              cmake --build build --config Release --parallel 4 --verbose 2>&1 | Tee-Object -Variable buildOutput
               $buildResult = $LASTEXITCODE
               
               Write-Host ""
@@ -316,14 +354,44 @@ jobs:
               if ($buildResult -eq 0) {
                 Write-Host "✅ BUILD SUCCESSFUL!"
                 Write-Host "OpenAvnu has been built successfully with full feature set"
+                
+                # List built executables
+                Write-Host ""
+                Write-Host "=== BUILT EXECUTABLES ==="
+                if (Test-Path "build\**\Release\*.exe") {
+                  Get-ChildItem "build" -Recurse -Filter "*.exe" | Where-Object { $_.Directory.Name -eq "Release" } | ForEach-Object {
+                    Write-Host "  ✅ $($_.Name) - $($_.FullName)"
+                  }
+                }
+                
               } else {
                 Write-Host "❌ Build failed"
-                Write-Host "Last 50 lines of build output:"
-                $buildOutput | Select-Object -Last 50 | ForEach-Object { Write-Host "BUILD: $_" }
+                Write-Host "Build exit code: $buildResult"
+                Write-Host ""
+                Write-Host "=== BUILD ERROR ANALYSIS ==="
+                
+                # Show errors from build output
+                $buildErrors = $buildOutput | Where-Object { $_ -match "error" -and $_ -notmatch "0 Error" }
+                if ($buildErrors) {
+                  Write-Host "BUILD ERRORS:"
+                  $buildErrors | Select-Object -First 10 | ForEach-Object { Write-Host "  ERROR: $_" }
+                }
+                
+                # Show warnings
+                $buildWarnings = $buildOutput | Where-Object { $_ -match "warning" -and $_ -notmatch "0 Warning" }
+                if ($buildWarnings) {
+                  Write-Host "BUILD WARNINGS:"
+                  $buildWarnings | Select-Object -First 5 | ForEach-Object { Write-Host "  WARNING: $_" }
+                }
+                
+                Write-Host ""
+                Write-Host "Last 20 lines of build output:"
+                $buildOutput | Select-Object -Last 20 | ForEach-Object { Write-Host "BUILD: $_" }
                 exit 1
               }
             } catch {
               Write-Host "Exception during build: $_"
+              Write-Host "Build process threw an exception - this may indicate environment issues"
               exit 1
             }
             
