@@ -120,7 +120,7 @@ if(OPENAVNU_BUILD_INTEL_HAL)
         endif()
         
     else()
-        message(WARNING "⚠️  Intel HAL not found - advanced features unavailable")
+        message(WARNING "Intel HAL not found - advanced features unavailable")
         set(OPENAVNU_INTEL_HAL_FOUND FALSE)
         set(OPENAVNU_INTEL_TIMESTAMPING_AVAILABLE FALSE)
         set(OPENAVNU_INTEL_TSN_TAS_AVAILABLE FALSE)
