@@ -201,105 +201,169 @@ jobs:
           }
         shell: powershell
 
-      - name: Configure project with fixed LA_AVDECC compatibility
+      - name: Pre-flight system validation
         run: |
-          Write-Host "Starting CMake configuration with LA_AVDECC fix..."
-          Write-Host "Environment Variables:"
-          Write-Host "NPCAP_SDK_DIR: $env:NPCAP_SDK_DIR"
-          Write-Host "WPCAP_DIR: $env:WPCAP_DIR"
+          Write-Host "=== PRE-FLIGHT SYSTEM VALIDATION ==="
           Write-Host ""
           
-          # Verify CMake version first
-          $cmakeVersionOutput = cmake --version
-          Write-Host "CMake version being used: $cmakeVersionOutput"
+          # Test basic PowerShell functionality
+          Write-Host "PowerShell version: $($PSVersionTable.PSVersion)"
+          Write-Host "Execution policy: $(Get-ExecutionPolicy)"
           
-          # Verify Visual Studio is available
-          Write-Host "Checking Visual Studio availability..."
-          $vsWhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-          if (Test-Path $vsWhere) {
-            $vsInstances = & $vsWhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
-            Write-Host "Visual Studio installation path: $vsInstances"
-          } else {
-            Write-Host "vswhere.exe not found, checking for MSBuild..."
-            $msbuildPath = Get-Command msbuild.exe -ErrorAction SilentlyContinue
-            if ($msbuildPath) {
-              Write-Host "MSBuild found at: $($msbuildPath.Source)"
+          # Test CMake basic functionality
+          Write-Host ""
+          Write-Host "Testing CMake basic functionality..."
+          try {
+            $cmakeHelp = cmake --help 2>&1
+            if ($LASTEXITCODE -eq 0) {
+              Write-Host "✅ CMake basic command works"
+              $cmakeVersion = cmake --version 2>&1
+              Write-Host "CMake version: $cmakeVersion"
             } else {
-              Write-Host "WARNING: MSBuild not found in PATH"
+              Write-Host "❌ CMake basic command failed"
+              Write-Host "Output: $cmakeHelp"
             }
+          } catch {
+            Write-Host "❌ CMake command threw exception: $_"
           }
           
-          Write-Host "Running CMake with FULL OpenAvnu feature set (LA_AVDECC compatibility fixed)..."
-          Write-Host "Command: cmake -S . -B build -G 'Visual Studio 17 2022' -A x64 [full options]"
+          # Test Visual Studio detection
+          Write-Host ""
+          Write-Host "Testing Visual Studio detection..."
+          $vsWhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (Test-Path $vsWhere) {
+            Write-Host "✅ vswhere.exe found"
+            try {
+              $vsInstances = & $vsWhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+              if ($vsInstances) {
+                Write-Host "✅ Visual Studio with C++ tools found: $vsInstances"
+              } else {
+                Write-Host "❌ No Visual Studio with C++ tools found"
+              }
+            } catch {
+              Write-Host "❌ vswhere execution failed: $_"
+            }
+          } else {
+            Write-Host "❌ vswhere.exe not found"
+          }
           
-          # Enable verbose CMake output and capture all output
-          $env:VERBOSE = 1
+          # Test environment variables
+          Write-Host ""
+          Write-Host "Environment variables:"
+          Write-Host "NPCAP_SDK_DIR: '$env:NPCAP_SDK_DIR'"
+          Write-Host "WPCAP_DIR: '$env:WPCAP_DIR'"
+          Write-Host "PATH (CMake entries): $(($env:PATH -split ';' | Where-Object { $_ -like '*cmake*' }) -join '; ')"
           
-          Write-Host "About to execute CMake configuration..."
-          $cmakeStartTime = Get-Date
-          
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
-            -DOPENAVNU_BUILD_UNIFIED_TESTING=ON `
-            -DOPENAVNU_BUILD_LEGACY_TESTS=ON `
-            -DOPENAVNU_BUILD_INTEL_HAL=ON `
-            -DOPENAVNU_BUILD_EXAMPLES=ON `
-            -DOPENAVNU_BUILD_LA_AVDECC=ON `
-            -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON `
-            -DOPENAVNU_BUILD_GPTP=ON `
-            -DOPENAVNU_BUILD_MAAP=ON `
-            -DOPENAVNU_BUILD_MRPD=ON `
-            -DOPENAVNU_BUILD_SHAPER=ON `
-            -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-            -DCMAKE_BUILD_TYPE=Release `
-            --debug-output 2>&1 | Tee-Object -Variable cmakeOutput
-          
-          $cmakeEndTime = Get-Date
-          $cmakeExitCode = $LASTEXITCODE
-          $cmakeDuration = ($cmakeEndTime - $cmakeStartTime).TotalSeconds
+          # Test basic CMake generation
+          Write-Host ""
+          Write-Host "Testing basic CMake generation capability..."
+          try {
+            New-Item -ItemType Directory -Path "test_cmake_gen" -Force | Out-Null
+            'cmake_minimum_required(VERSION 3.20)' | Out-File -FilePath "test_cmake_gen/CMakeLists.txt" -Force
+            'project(TestGen)' | Add-Content -Path "test_cmake_gen/CMakeLists.txt"
+            'message(STATUS "Basic test successful")' | Add-Content -Path "test_cmake_gen/CMakeLists.txt"
+            
+            Write-Host "Attempting basic CMake generation test..."
+            $genOutput = cmake -S test_cmake_gen -B test_cmake_gen/build -G "Visual Studio 17 2022" -A x64 2>&1
+            $genResult = $LASTEXITCODE
+            
+            Write-Host "Generation test result: $genResult"
+            if ($genResult -eq 0) {
+              Write-Host "✅ Basic CMake generation works"
+            } else {
+              Write-Host "❌ Basic CMake generation failed"
+              Write-Host "Output: $genOutput"
+            }
+            
+            Remove-Item -Recurse -Force "test_cmake_gen" -ErrorAction SilentlyContinue
+          } catch {
+            Write-Host "❌ CMake generation test threw exception: $_"
+          }
           
           Write-Host ""
-          Write-Host "CMake completed with exit code: $cmakeExitCode"
-          Write-Host "CMake execution took: $cmakeDuration seconds"
-          Write-Host ""
+          Write-Host "=== PRE-FLIGHT VALIDATION COMPLETE ==="
+        shell: powershell
+
+      - name: Configure project with fixed LA_AVDECC compatibility
+        run: |
+          Write-Host "=== STARTING CMAKE CONFIGURATION ==="
+          Write-Host "Current directory: $(Get-Location)"
+          Write-Host "Directory contents:"
+          Get-ChildItem | Select-Object -First 10 | Format-Table Name, Length
           
-          if ($cmakeExitCode -ne 0) {
-            Write-Host "ERROR: CMake configuration failed!"
-            Write-Host ""
-            
-            Write-Host "=== LAST 50 LINES OF CMAKE OUTPUT ==="
-            $cmakeOutput | Select-Object -Last 50 | ForEach-Object { Write-Host "CMAKE: $_" }
-            
-            # Show detailed error information
-            Write-Host "=== DIRECTORY STRUCTURE CHECK ==="
-            if (Test-Path "build") {
-              Write-Host "Build directory exists, checking contents:"
-              Get-ChildItem "build" | Select-Object -First 10 | Format-Table Name, Length
-            } else {
-              Write-Host "Build directory was not created!"
-            }
-            
-            Write-Host "=== CMAKE LOG FILES ==="
-            if (Test-Path "build/CMakeFiles/CMakeError.log") {
-              Write-Host "--- CMakeError.log ---"
-              Get-Content "build/CMakeFiles/CMakeError.log" | ForEach-Object { Write-Host $_ }
-            } else {
-              Write-Host "No CMakeError.log found"
-            }
-            
-            if (Test-Path "build/CMakeFiles/CMakeOutput.log") {
-              Write-Host "--- CMakeOutput.log (last 100 lines) ---"
-              Get-Content "build/CMakeFiles/CMakeOutput.log" | Select-Object -Last 100 | ForEach-Object { Write-Host $_ }
-            } else {
-              Write-Host "No CMakeOutput.log found"
-            }
-            
-            Write-Host "=== SUBMODULE STATUS ==="
-            git submodule status
-            
+          # Verify we have CMakeLists.txt
+          if (Test-Path "CMakeLists.txt") {
+            Write-Host "✅ CMakeLists.txt found"
+          } else {
+            Write-Host "❌ CMakeLists.txt not found!"
             exit 1
           }
           
-          Write-Host "SUCCESS: Full OpenAvnu configuration completed with LA_AVDECC compatibility fix"
+          # Simple CMake configuration attempt first
+          Write-Host ""
+          Write-Host "Attempting basic CMake configuration..."
+          
+          $cmakeArgs = @(
+            "-S", "."
+            "-B", "build"
+            "-G", "Visual Studio 17 2022"
+            "-A", "x64"
+          )
+          
+          Write-Host "CMake command: cmake $($cmakeArgs -join ' ')"
+          
+          try {
+            $basicOutput = & cmake @cmakeArgs 2>&1
+            $basicResult = $LASTEXITCODE
+            
+            Write-Host "Basic CMake result: $basicResult"
+            
+            if ($basicResult -eq 0) {
+              Write-Host "✅ Basic CMake configuration successful!"
+              Write-Host "Now attempting full configuration with OpenAvnu options..."
+              
+              # Full configuration with all options
+              $fullArgs = $cmakeArgs + @(
+                "-DOPENAVNU_BUILD_UNIFIED_TESTING=ON",
+                "-DOPENAVNU_BUILD_LEGACY_TESTS=ON",
+                "-DOPENAVNU_BUILD_INTEL_HAL=ON",
+                "-DOPENAVNU_BUILD_EXAMPLES=ON",
+                "-DOPENAVNU_BUILD_LA_AVDECC=ON",
+                "-DOPENAVNU_BUILD_AVDECC_ENTITIES=ON",
+                "-DOPENAVNU_BUILD_GPTP=ON",
+                "-DOPENAVNU_BUILD_MAAP=ON",
+                "-DOPENAVNU_BUILD_MRPD=ON",
+                "-DOPENAVNU_BUILD_SHAPER=ON",
+                "-DOPENAVNU_BUILD_AVTP_PIPELINE=ON",
+                "-DCMAKE_BUILD_TYPE=Release"
+              )
+              
+              Write-Host "Full CMake command: cmake $($fullArgs -join ' ')"
+              $fullOutput = & cmake @fullArgs 2>&1
+              $fullResult = $LASTEXITCODE
+              
+              Write-Host "Full CMake result: $fullResult"
+              
+              if ($fullResult -eq 0) {
+                Write-Host "✅ SUCCESS: Full OpenAvnu configuration completed!"
+              } else {
+                Write-Host "❌ Full configuration failed, showing output:"
+                $fullOutput | ForEach-Object { Write-Host "FULL: $_" }
+                exit 1
+              }
+              
+            } else {
+              Write-Host "❌ Basic CMake configuration failed, showing output:"
+              $basicOutput | ForEach-Object { Write-Host "BASIC: $_" }
+              exit 1
+            }
+            
+          } catch {
+            Write-Host "❌ CMake execution threw exception: $_"
+            exit 1
+          }
+          
+          Write-Host "=== CMAKE CONFIGURATION COMPLETE ==="
         shell: powershell
 
       - name: Build project (full OpenAvnu feature set)
