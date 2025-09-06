@@ -36,59 +36,59 @@ jobs:
       - name: Download and install Npcap SDK (modern WinPcap replacement)
         run: |
           # Download Npcap SDK (modern replacement for deprecated WinPcap)
-          Write-Host "📦 Downloading Npcap SDK 1.13..."
+          Write-Host "Downloading Npcap SDK 1.13..."
           Invoke-WebRequest -Uri "https://npcap.com/dist/npcap-sdk-1.13.zip" -OutFile "npcap-sdk.zip"
           
-          Write-Host "📁 Extracting Npcap SDK..."
+          Write-Host "Extracting Npcap SDK..."
           Expand-Archive npcap-sdk.zip -DestinationPath "C:\npcap-temp"
           
           # The archive may contain a nested directory structure - find and move the actual SDK
           $extractedDirs = Get-ChildItem "C:\npcap-temp" -Directory
           if ($extractedDirs.Count -eq 1) {
             # Single directory extracted - this is likely the SDK root
-            Write-Host "📂 Found SDK in nested directory: $($extractedDirs[0].Name)"
+            Write-Host "Found SDK in nested directory: $($extractedDirs[0].Name)"
             Move-Item $extractedDirs[0].FullName "C:\npcap-sdk"
             Remove-Item "C:\npcap-temp" -Force -Recurse
           } else {
             # Multiple items or files - the temp directory IS the SDK
-            Write-Host "📂 SDK extracted to root directory"
+            Write-Host "SDK extracted to root directory"
             Move-Item "C:\npcap-temp" "C:\npcap-sdk"
           }
           
-          Write-Host "✅ Npcap SDK installation complete"
+          Write-Host "Npcap SDK installation complete"
         shell: powershell
 
       - name: Verify Npcap SDK structure and environment
         run: |
-          Write-Host "🔍 Environment Variables:"
+          Write-Host "Environment Variables:"
           Write-Host "NPCAP_SDK_DIR: $env:NPCAP_SDK_DIR"
           Write-Host "WPCAP_DIR: $env:WPCAP_DIR"
           Write-Host ""
-          Write-Host "🔍 Npcap SDK Structure:"
+          Write-Host "Npcap SDK Structure:"
           if (Test-Path "C:\npcap-sdk") {
             Get-ChildItem "C:\npcap-sdk" | Format-Table Name, Length, LastWriteTime
             if (Test-Path "C:\npcap-sdk\Include") {
-              Write-Host "📁 Include directory contents:"
+              Write-Host "Include directory contents:"
               Get-ChildItem "C:\npcap-sdk\Include" | Select-Object Name
             }
             if (Test-Path "C:\npcap-sdk\Lib") {
-              Write-Host "📁 Lib directory contents:"
+              Write-Host "Lib directory contents:"
               Get-ChildItem "C:\npcap-sdk\Lib" -Recurse | Select-Object FullName
             }
           } else {
-            Write-Host "❌ Npcap SDK directory not found!"
+            Write-Host "ERROR: Npcap SDK directory not found!"
             exit 1
           }
         shell: powershell
 
       - name: Configure project with minimal CI configuration
         run: |
-          Write-Host "🔧 Starting CMake configuration..."
+          Write-Host "Starting CMake configuration..."
           Write-Host "Environment Variables:"
           Write-Host "NPCAP_SDK_DIR: $env:NPCAP_SDK_DIR"
           Write-Host "WPCAP_DIR: $env:WPCAP_DIR"
           Write-Host ""
-          Write-Host "🎯 Running CMake with CI-optimized settings..."
+          Write-Host "Running CMake with CI-optimized settings..."
           
           cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
             -DOPENAVNU_BUILD_UNIFIED_TESTING=OFF `
@@ -98,29 +98,29 @@ jobs:
             -DOPENAVNU_BUILD_LA_AVDECC=ON `
             -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON
           
-          Write-Host "✅ CMake configuration completed"
+          Write-Host "CMake configuration completed"
         shell: powershell
 
       - name: Build project (core components only)
         run: |
-          Write-Host "🔨 Starting build process..."
+          Write-Host "Starting build process..."
           Write-Host "Building avdecc_entity_responsive..."
           cmake --build build --config Release --target avdecc_entity_responsive
           
           Write-Host "Building avdecc_entity_hive_compatible..."
           cmake --build build --config Release --target avdecc_entity_hive_compatible
           
-          Write-Host "✅ Build completed"
+          Write-Host "Build completed"
         shell: powershell
 
       - name: Verify build artifacts
         run: |
           echo "Checking build artifacts..."
           if (Test-Path "build\lib\avdecc-entities\Release\avdecc_entity_responsive.exe") {
-            echo "✅ Primary AVDECC entity built successfully"
+            echo "SUCCESS: Primary AVDECC entity built successfully"
             dir "build\lib\avdecc-entities\Release\avdecc_entity_responsive.exe"
           } else {
-            echo "❌ Primary AVDECC entity not found"
+            echo "ERROR: Primary AVDECC entity not found"
             echo "Available files in avdecc-entities:"
             if (Test-Path "build\lib\avdecc-entities") {
               Get-ChildItem "build\lib\avdecc-entities" -Recurse -Name
@@ -128,10 +128,10 @@ jobs:
           }
           
           if (Test-Path "build\lib\avdecc-entities\Release\avdecc_entity_hive_compatible.exe") {
-            echo "✅ Hive-compatible AVDECC entity built successfully"
+            echo "SUCCESS: Hive-compatible AVDECC entity built successfully"
             dir "build\lib\avdecc-entities\Release\avdecc_entity_hive_compatible.exe"
           } else {
-            echo "❌ Hive-compatible AVDECC entity not found"
+            echo "ERROR: Hive-compatible AVDECC entity not found"
             echo "Available files in avdecc-entities:"
             if (Test-Path "build\lib\avdecc-entities") {
               Get-ChildItem "build\lib\avdecc-entities" -Recurse -Name
@@ -141,7 +141,7 @@ jobs:
 
       - name: Run basic smoke tests
         run: |
-          echo "🧪 Running basic functionality tests..."
-          echo "⏭️  Skipped hardware-dependent tests in CI environment"
-          echo "✅ Build verification completed successfully"
+          echo "Running basic functionality tests..."
+          echo "Skipped hardware-dependent tests in CI environment"
+          echo "Build verification completed successfully"
         shell: powershell
