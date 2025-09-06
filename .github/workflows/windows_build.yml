@@ -23,15 +23,39 @@ jobs:
         with:
           submodules: false
 
-      - name: Fix submodule URLs
+      - name: Fix submodule URLs and initialize
         run: |
+          Write-Host "Configuring submodule URLs..."
           git config --file .gitmodules submodule.avdecc-lib.url https://github.com/AVnu/avdecc-lib.git
           git config --file .gitmodules submodule.lib/atl_avb.url https://github.com/zarfld/atl_avb.git
           git config --file .gitmodules submodule.lib/igb_avb.url https://github.com/AVnu/igb_avb.git
           git config --file .gitmodules submodule.thirdparty/cpputest.url https://github.com/cpputest/cpputest.git
+          
+          Write-Host "Syncing submodule configurations..."
           git submodule sync
+          
+          Write-Host "Initializing and updating submodules..."
           git submodule update --init --recursive
-        shell: bash
+          
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "ERROR: Submodule initialization failed"
+            exit 1
+          }
+          
+          Write-Host "Verifying critical submodules..."
+          Write-Host "Checking for avdecc-lib..."
+          if (Test-Path "avdecc-lib") {
+            Write-Host "SUCCESS: avdecc-lib found"
+            Get-ChildItem "avdecc-lib" | Select-Object -First 5 | Format-Table Name, Length
+          } else {
+            Write-Host "ERROR: avdecc-lib submodule missing"
+            Write-Host "Available directories:"
+            Get-ChildItem -Directory | Select-Object Name
+            exit 1
+          }
+          
+          Write-Host "Submodule initialization completed"
+        shell: powershell
 
       - name: Download and install Npcap SDK (modern WinPcap replacement)
         run: |
@@ -81,6 +105,17 @@ jobs:
           }
         shell: powershell
 
+      - name: Create build directory
+        run: |
+          Write-Host "Creating build directory..."
+          if (!(Test-Path "build")) {
+            New-Item -ItemType Directory -Path "build"
+            Write-Host "Build directory created"
+          } else {
+            Write-Host "Build directory already exists"
+          }
+        shell: powershell
+
       - name: Configure project with minimal CI configuration
         run: |
           Write-Host "Starting CMake configuration..."
@@ -98,7 +133,20 @@ jobs:
             -DOPENAVNU_BUILD_LA_AVDECC=ON `
             -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON
           
-          Write-Host "CMake configuration completed"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "ERROR: CMake configuration failed with exit code $LASTEXITCODE"
+            Write-Host "Check CMakeFiles/CMakeError.log and CMakeFiles/CMakeOutput.log for details"
+            if (Test-Path "build/CMakeFiles/CMakeError.log") {
+              Write-Host "=== CMakeError.log ==="
+              Get-Content "build/CMakeFiles/CMakeError.log"
+            }
+            if (Test-Path "build/CMakeFiles/CMakeOutput.log") {
+              Write-Host "=== CMakeOutput.log (last 50 lines) ==="
+              Get-Content "build/CMakeFiles/CMakeOutput.log" | Select-Object -Last 50
+            }
+            exit 1
+          }
+          Write-Host "CMake configuration completed successfully"
         shell: powershell
 
       - name: Build project (core components only)
