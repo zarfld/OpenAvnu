@@ -308,29 +308,48 @@ jobs:
           cd build
           
           Write-Host "Starting parallel build with full OpenAvnu components..."
-          cmake --build . --config Release --parallel 4
+          Write-Host "Build command: cmake --build . --config Release --parallel 4"
           
-          if ($LASTEXITCODE -ne 0) {
-            Write-Host "❌ Build failed - checking specific component issues..."
+          # Capture detailed build output
+          try {
+            cmake --build . --config Release --parallel 4 2>&1 | Tee-Object -Variable buildOutput
+            $buildExitCode = $LASTEXITCODE
             
-            Write-Host "Attempting to build core components separately..."
-            Write-Host "Building Intel HAL..."
-            cmake --build . --config Release --target intel_hal
+            Write-Host "Build exit code: $buildExitCode"
             
-            Write-Host "Building gPTP..."
-            cmake --build . --config Release --target gptp2
+            if ($buildExitCode -ne 0) {
+              Write-Host "❌ Build failed with exit code $buildExitCode"
+              Write-Host "=== BUILD OUTPUT ANALYSIS ==="
+              $buildOutput | ForEach-Object { Write-Host "BUILD: $_" }
+              Write-Host "=== END BUILD OUTPUT ==="
+              
+              Write-Host "Attempting to build core components separately for diagnosis..."
+              
+              Write-Host "Available targets:"
+              cmake --build . --target help 2>&1 | Select-Object -First 20 | ForEach-Object { Write-Host "TARGET: $_" }
+              
+              Write-Host "Checking generated files:"
+              if (Test-Path "CMakeCache.txt") {
+                Write-Host "✅ CMakeCache.txt exists"
+                Get-Content "CMakeCache.txt" | Select-String "OPENAVNU" | ForEach-Object { Write-Host "CMAKE_VAR: $_" }
+              }
+              
+              if (Test-Path "OpenAvnu.sln") {
+                Write-Host "✅ Solution file generated"
+              } else {
+                Write-Host "❌ No solution file - configuration issue"
+              }
+              
+              exit 1
+            }
             
-            Write-Host "Building MAAP..."
-            cmake --build . --config Release --target maap_daemon
-            
-            Write-Host "Building MRPD..."
-            cmake --build . --config Release --target mrpd
-            
+            Write-Host "✅ Full OpenAvnu build completed successfully!"
+            Write-Host "Built components: Intel HAL, gPTP, LA_AVDECC, MAAP, MRPD, AVTP Pipeline"
+          } catch {
+            Write-Host "❌ Build failed with exception: $($_.Exception.Message)"
+            Write-Host "Exception details: $($_.Exception)"
             exit 1
           }
-          
-          Write-Host "✅ Full OpenAvnu build completed successfully!"
-          Write-Host "Built components: Intel HAL, gPTP, LA_AVDECC, MAAP, MRPD, AVTP Pipeline"
         shell: powershell
 
       - name: Verify build artifacts
