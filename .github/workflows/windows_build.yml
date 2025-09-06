@@ -137,94 +137,95 @@ jobs:
           }
         shell: powershell
 
-      - name: Configure project with progressive CI configuration
+      - name: Check and upgrade CMake if needed
         run: |
-          Write-Host "Starting CMake configuration with progressive approach..."
+          Write-Host "Checking CMake version..."
+          $cmakeVersion = cmake --version
+          Write-Host "Current CMake version: $cmakeVersion"
+          
+          # Check if we have CMake 3.29+ (required by LA_AVDECC)
+          $versionOutput = cmake --version | Select-String "cmake version (\d+\.\d+)"
+          if ($versionOutput) {
+            $version = [Version]$versionOutput.Matches[0].Groups[1].Value
+            Write-Host "Parsed version: $version"
+            
+            $requiredVersion = [Version]"3.29"
+            if ($version -lt $requiredVersion) {
+              Write-Host "CMake version $version is too old for LA_AVDECC (requires 3.29+)"
+              Write-Host "Installing latest CMake..."
+              
+              # Download and install latest CMake
+              $cmakeUrl = "https://github.com/Kitware/CMake/releases/download/v3.30.3/cmake-3.30.3-windows-x86_64.msi"
+              Write-Host "Downloading CMake 3.30.3..."
+              Invoke-WebRequest -Uri $cmakeUrl -OutFile "cmake-installer.msi"
+              
+              Write-Host "Installing CMake..."
+              Start-Process msiexec.exe -ArgumentList "/i cmake-installer.msi /quiet /norestart" -Wait
+              
+              # Update PATH
+              $env:PATH = "C:\Program Files\CMake\bin;$env:PATH"
+              Write-Host "Updated PATH with new CMake"
+              
+              # Verify new version
+              $newVersion = cmake --version
+              Write-Host "New CMake version: $newVersion"
+            } else {
+              Write-Host "CMake version is sufficient for LA_AVDECC"
+            }
+          }
+        shell: powershell
+
+      - name: Configure project with fixed LA_AVDECC compatibility
+        run: |
+          Write-Host "Starting CMake configuration with LA_AVDECC fix..."
           Write-Host "Environment Variables:"
           Write-Host "NPCAP_SDK_DIR: $env:NPCAP_SDK_DIR"
           Write-Host "WPCAP_DIR: $env:WPCAP_DIR"
           Write-Host ""
+          Write-Host "Running CMake with FULL OpenAvnu feature set (LA_AVDECC compatibility fixed)..."
           
-          # Try minimal configuration first, then add features if successful
-          Write-Host "=== STEP 1: Testing minimal configuration ==="
-          cmake -S . -B build_minimal -G "Visual Studio 17 2022" -A x64 `
-            -DOPENAVNU_BUILD_UNIFIED_TESTING=OFF `
-            -DOPENAVNU_BUILD_LEGACY_TESTS=OFF `
-            -DOPENAVNU_BUILD_INTEL_HAL=OFF `
-            -DOPENAVNU_BUILD_EXAMPLES=OFF `
-            -DOPENAVNU_BUILD_LA_AVDECC=OFF `
+          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
+            -DOPENAVNU_BUILD_UNIFIED_TESTING=ON `
+            -DOPENAVNU_BUILD_LEGACY_TESTS=ON `
+            -DOPENAVNU_BUILD_INTEL_HAL=ON `
+            -DOPENAVNU_BUILD_EXAMPLES=ON `
+            -DOPENAVNU_BUILD_LA_AVDECC=ON `
             -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON `
-            -DOPENAVNU_BUILD_GPTP=OFF `
-            -DOPENAVNU_BUILD_MAAP=OFF `
-            -DOPENAVNU_BUILD_MRPD=OFF `
-            -DOPENAVNU_BUILD_SHAPER=OFF `
-            -DOPENAVNU_BUILD_AVTP_PIPELINE=OFF
-          
-          if ($LASTEXITCODE -eq 0) {
-            Write-Host "SUCCESS: Minimal configuration works"
-            
-            Write-Host "=== STEP 2: Adding LA_AVDECC ==="
-            cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
-              -DOPENAVNU_BUILD_UNIFIED_TESTING=OFF `
-              -DOPENAVNU_BUILD_LEGACY_TESTS=OFF `
-              -DOPENAVNU_BUILD_INTEL_HAL=OFF `
-              -DOPENAVNU_BUILD_EXAMPLES=ON `
-              -DOPENAVNU_BUILD_LA_AVDECC=ON `
-              -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON `
-              -DOPENAVNU_BUILD_GPTP=OFF `
-              -DOPENAVNU_BUILD_MAAP=OFF `
-              -DOPENAVNU_BUILD_MRPD=OFF `
-              -DOPENAVNU_BUILD_SHAPER=OFF `
-              -DOPENAVNU_BUILD_AVTP_PIPELINE=OFF
-          else
-            Write-Host "ERROR: Even minimal configuration failed!"
-            Write-Host "CMake Exit Code: $LASTEXITCODE"
-            
-            if (Test-Path "build_minimal/CMakeFiles/CMakeError.log") {
-              Write-Host "=== CMakeError.log ==="
-              Get-Content "build_minimal/CMakeFiles/CMakeError.log"
-            }
-            
-            if (Test-Path "build_minimal/CMakeFiles/CMakeOutput.log") {
-              Write-Host "=== CMakeOutput.log (last 50 lines) ==="
-              Get-Content "build_minimal/CMakeFiles/CMakeOutput.log" | Select-Object -Last 50
-            }
-            exit 1
-          }
+            -DOPENAVNU_BUILD_GPTP=ON `
+            -DOPENAVNU_BUILD_MAAP=ON `
+            -DOPENAVNU_BUILD_MRPD=ON `
+            -DOPENAVNU_BUILD_SHAPER=ON `
+            -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
+            -DCMAKE_BUILD_TYPE=Release
           
           if ($LASTEXITCODE -ne 0) {
-            Write-Host "ERROR: LA_AVDECC configuration failed with exit code $LASTEXITCODE"
+            Write-Host "ERROR: CMake configuration failed with exit code $LASTEXITCODE"
             
             if (Test-Path "build/CMakeFiles/CMakeError.log") {
               Write-Host "=== CMakeError.log ==="
               Get-Content "build/CMakeFiles/CMakeError.log"
             }
+            
+            if (Test-Path "build/CMakeFiles/CMakeOutput.log") {
+              Write-Host "=== CMakeOutput.log (last 50 lines) ==="
+              Get-Content "build/CMakeFiles/CMakeOutput.log" | Select-Object -Last 50
+            }
             exit 1
           }
           
-          Write-Host "SUCCESS: CMake configuration completed with LA_AVDECC"
+          Write-Host "SUCCESS: Full OpenAvnu configuration completed with LA_AVDECC compatibility fix"
         shell: powershell
 
-      - name: Build project (progressive feature set)
+      - name: Build project (full OpenAvnu feature set)
         run: |
-          Write-Host "Starting build process..."
-          Write-Host "Building AVDECC entities with working configuration..."
+          Write-Host "Starting comprehensive build process..."
+          Write-Host "Building all OpenAvnu components..."
           
-          # Build the components we successfully configured
-          cmake --build build --config Release --target avdecc_entity_responsive
+          # Build all components
+          cmake --build build --config Release
           
-          if ($LASTEXITCODE -eq 0) {
-            Write-Host "SUCCESS: avdecc_entity_responsive built"
-            
-            cmake --build build --config Release --target avdecc_entity_hive_compatible
-            
-            if ($LASTEXITCODE -eq 0) {
-              Write-Host "SUCCESS: avdecc_entity_hive_compatible built"
-            else
-              Write-Host "WARNING: avdecc_entity_hive_compatible failed, but continuing..."
-            }
-          else
-            Write-Host "ERROR: avdecc_entity_responsive build failed with exit code $LASTEXITCODE"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "ERROR: Build failed with exit code $LASTEXITCODE"
             exit 1
           }
           
