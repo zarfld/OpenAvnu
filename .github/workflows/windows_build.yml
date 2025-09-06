@@ -116,22 +116,28 @@ jobs:
           }
         shell: powershell
 
-      - name: Configure project with minimal CI configuration
+      - name: Configure project with comprehensive CI configuration
         run: |
           Write-Host "Starting CMake configuration..."
           Write-Host "Environment Variables:"
           Write-Host "NPCAP_SDK_DIR: $env:NPCAP_SDK_DIR"
           Write-Host "WPCAP_DIR: $env:WPCAP_DIR"
           Write-Host ""
-          Write-Host "Running CMake with CI-optimized settings..."
+          Write-Host "Running CMake with full OpenAvnu feature set..."
           
           cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
-            -DOPENAVNU_BUILD_UNIFIED_TESTING=OFF `
-            -DOPENAVNU_BUILD_LEGACY_TESTS=OFF `
-            -DOPENAVNU_BUILD_INTEL_HAL=OFF `
+            -DOPENAVNU_BUILD_UNIFIED_TESTING=ON `
+            -DOPENAVNU_BUILD_LEGACY_TESTS=ON `
+            -DOPENAVNU_BUILD_INTEL_HAL=ON `
             -DOPENAVNU_BUILD_EXAMPLES=ON `
             -DOPENAVNU_BUILD_LA_AVDECC=ON `
-            -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON
+            -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON `
+            -DOPENAVNU_BUILD_GPTP=ON `
+            -DOPENAVNU_BUILD_MAAP=ON `
+            -DOPENAVNU_BUILD_MRPD=ON `
+            -DOPENAVNU_BUILD_SHAPER=ON `
+            -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
+            -DCMAKE_BUILD_TYPE=Release
           
           if ($LASTEXITCODE -ne 0) {
             Write-Host "ERROR: CMake configuration failed with exit code $LASTEXITCODE"
@@ -149,21 +155,27 @@ jobs:
           Write-Host "CMake configuration completed successfully"
         shell: powershell
 
-      - name: Build project (core components only)
+      - name: Build project (full OpenAvnu feature set)
         run: |
-          Write-Host "Starting build process..."
-          Write-Host "Building avdecc_entity_responsive..."
-          cmake --build build --config Release --target avdecc_entity_responsive
+          Write-Host "Starting comprehensive build process..."
+          Write-Host "Building all OpenAvnu components..."
           
-          Write-Host "Building avdecc_entity_hive_compatible..."
-          cmake --build build --config Release --target avdecc_entity_hive_compatible
+          # Build all components
+          cmake --build build --config Release
           
-          Write-Host "Build completed"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "ERROR: Build failed with exit code $LASTEXITCODE"
+            exit 1
+          }
+          
+          Write-Host "Build completed successfully"
         shell: powershell
 
       - name: Verify build artifacts
         run: |
-          echo "Checking build artifacts..."
+          echo "Checking comprehensive build artifacts..."
+          
+          Write-Host "=== Checking AVDECC Entities ==="
           if (Test-Path "build\lib\avdecc-entities\Release\avdecc_entity_responsive.exe") {
             echo "SUCCESS: Primary AVDECC entity built successfully"
             dir "build\lib\avdecc-entities\Release\avdecc_entity_responsive.exe"
@@ -185,11 +197,34 @@ jobs:
               Get-ChildItem "build\lib\avdecc-entities" -Recurse -Name
             }
           }
+          
+          Write-Host "=== Checking Other Components ==="
+          Write-Host "Built executables across entire project:"
+          Get-ChildItem "build" -Recurse -Filter "*.exe" | Select-Object FullName, Length
+          
+          Write-Host "Built libraries across entire project:"
+          Get-ChildItem "build" -Recurse -Filter "*.lib" | Select-Object FullName, Length | Select-Object -First 10
+          
+          echo "Comprehensive build verification completed"
         shell: powershell
 
-      - name: Run basic smoke tests
+      - name: Run comprehensive smoke tests
         run: |
-          echo "Running basic functionality tests..."
+          echo "Running comprehensive functionality tests..."
+          
+          Write-Host "=== Testing AVDECC Entities ==="
+          if (Test-Path "build\lib\avdecc-entities\Release\avdecc_entity_responsive.exe") {
+            Write-Host "Testing responsive entity (quick help test):"
+            & "build\lib\avdecc-entities\Release\avdecc_entity_responsive.exe" --help 2>&1 | Write-Host
+          }
+          
+          if (Test-Path "build\lib\avdecc-entities\Release\avdecc_entity_hive_compatible.exe") {
+            Write-Host "Testing hive-compatible entity (quick help test):"
+            & "build\lib\avdecc-entities\Release\avdecc_entity_hive_compatible.exe" --help 2>&1 | Write-Host
+          }
+          
+          Write-Host "=== Hardware-dependent tests ==="
           echo "Skipped hardware-dependent tests in CI environment"
-          echo "Build verification completed successfully"
+          
+          echo "Comprehensive build verification completed successfully"
         shell: powershell
