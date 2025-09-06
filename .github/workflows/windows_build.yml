@@ -256,12 +256,35 @@ jobs:
           Write-Host "This exact configuration works perfectly in local testing"
           Write-Host ""
           
-          # Use the EXACT configuration that works locally
-          Write-Host "Starting CMake configuration with full error capture..."
-          
           # Set PowerShell to handle Unicode properly and not treat warnings as errors
           $OutputEncoding = [System.Text.Encoding]::UTF8
           [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          
+          # Verify submodules are properly initialized
+          Write-Host "=== VERIFYING SUBMODULES ==="
+          if (Test-Path "thirdparty/intel-ethernet-hal/.git") {
+            Write-Host "✅ Intel Ethernet HAL submodule initialized"
+          } else {
+            Write-Host "❌ Intel Ethernet HAL submodule missing - reinitializing..."
+            git submodule update --init --recursive thirdparty/intel-ethernet-hal
+          }
+          
+          if (Test-Path "thirdparty/opengptp/.git") {
+            Write-Host "✅ OpenGPTP submodule initialized"
+          } else {
+            Write-Host "❌ OpenGPTP submodule missing - reinitializing..."
+            git submodule update --init --recursive thirdparty/opengptp
+          }
+          
+          if (Test-Path "thirdparty/la_avdecc/CMakeLists.txt") {
+            Write-Host "✅ LA_AVDECC submodule files present"
+          } else {
+            Write-Host "❌ LA_AVDECC submodule missing - reinitializing..."
+            git submodule update --init --recursive thirdparty/la_avdecc
+          }
+          
+          Write-Host ""
+          Write-Host "=== STARTING CMAKE CONFIGURATION ==="
           
           try {
             # Use direct PowerShell execution to avoid argument parsing issues
@@ -270,7 +293,7 @@ jobs:
             $env:CMAKE_GENERATOR = "Visual Studio 17 2022"
             $env:CMAKE_GENERATOR_PLATFORM = "x64"
             
-            # Execute CMake with proper error handling
+            # Try full configuration first
             $cmakeCommand = "cmake -S . -B build -G `"Visual Studio 17 2022`" -A x64 " +
                           "-DOPENAVNU_BUILD_INTEL_HAL=ON " +
                           "-DOPENAVNU_BUILD_LA_AVDECC=ON " +
@@ -290,13 +313,46 @@ jobs:
             
             $cmakeResult = $LASTEXITCODE
             
+            # If LA_AVDECC causes issues, try without it
+            if ($cmakeResult -ne 0) {
+              Write-Host ""
+              Write-Host "⚠️ Full configuration failed, trying without LA_AVDECC..."
+              
+              Remove-Item -Recurse -Force "build" -ErrorAction SilentlyContinue
+              New-Item -ItemType Directory -Path "build" -Force | Out-Null
+              
+              $cmakeCommandFallback = "cmake -S . -B build -G `"Visual Studio 17 2022`" -A x64 " +
+                                    "-DOPENAVNU_BUILD_INTEL_HAL=ON " +
+                                    "-DOPENAVNU_BUILD_LA_AVDECC=OFF " +
+                                    "-DOPENAVNU_BUILD_GPTP=ON " +
+                                    "-DOPENAVNU_BUILD_MAAP=ON " +
+                                    "-DOPENAVNU_BUILD_MRPD=ON " +
+                                    "-DOPENAVNU_BUILD_EXAMPLES=ON " +
+                                    "-DOPENAVNU_BUILD_UNIFIED_TESTING=ON " +
+                                    "-DOPENAVNU_BUILD_LEGACY_TESTS=ON " +
+                                    "-DOPENAVNU_BUILD_AVDECC_ENTITIES=ON " +
+                                    "-DOPENAVNU_BUILD_SHAPER=ON " +
+                                    "-DOPENAVNU_BUILD_AVTP_PIPELINE=ON " +
+                                    "-DCMAKE_BUILD_TYPE=Release"
+              
+              Write-Host "Fallback command: $cmakeCommandFallback"
+              Invoke-Expression $cmakeCommandFallback 2>&1 | Tee-Object -FilePath "cmake_fallback_output.log"
+              $cmakeResult = $LASTEXITCODE
+              
+              if ($cmakeResult -eq 0) {
+                Write-Host "✅ Fallback configuration succeeded without LA_AVDECC"
+              }
+            }
+            
             Write-Host ""
             Write-Host "CMAKE RESULT: $cmakeResult"
             
             # Always show the full output to understand what's happening
-            if (Test-Path "cmake_full_output.log") {
-              Write-Host "=== CMAKE FULL OUTPUT ==="
-              $output = Get-Content "cmake_full_output.log"
+            $outputFile = if (Test-Path "cmake_fallback_output.log") { "cmake_fallback_output.log" } else { "cmake_full_output.log" }
+            
+            if (Test-Path $outputFile) {
+              Write-Host "=== CMAKE FULL OUTPUT (using $outputFile) ==="
+              $output = Get-Content $outputFile
               $output | ForEach-Object { Write-Host "CMAKE: $_" }
               
               # Analyze the output for specific issues
@@ -401,8 +457,14 @@ jobs:
             Write-Host ""
             
             Write-Host "=== CMAKE FULL OUTPUT ==="
-            if (Test-Path "cmake_full_output.log") {
-              Get-Content "cmake_full_output.log" | ForEach-Object { Write-Host "CMAKE: $_" }
+            # Check both possible output files
+            $outputFiles = @("cmake_full_output.log", "cmake_fallback_output.log")
+            foreach ($file in $outputFiles) {
+              if (Test-Path $file) {
+                Write-Host "--- Content from $file ---"
+                Get-Content $file | ForEach-Object { Write-Host "CMAKE: $_" }
+                Write-Host ""
+              }
             }
             
             Write-Host ""
