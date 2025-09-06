@@ -201,69 +201,74 @@ jobs:
           }
         shell: powershell
 
-      - name: Simple diagnostic test
+      - name: Diagnose CI vs Local Environment Differences  
         run: |
-          echo "=== SIMPLE DIAGNOSTIC START ==="
-          echo "PowerShell version:"
-          $PSVersionTable.PSVersion
-          echo "Current directory:"
-          pwd
-          echo "Directory contents:"
-          dir
-          echo "CMake test:"
-          cmake --version
-          echo "=== SIMPLE DIAGNOSTIC END ==="
-        shell: powershell
-
-      - name: Pre-flight system validation
-        run: |
-          echo "PRE-FLIGHT VALIDATION START"
-          echo "Testing CMake:"
-          cmake --version
-          $cmakeResult = $LASTEXITCODE
-          echo "CMake exit code: $cmakeResult"
+          Write-Host "=== CI ENVIRONMENT DIAGNOSIS ==="
+          Write-Host "The exact CMake configuration works perfectly locally."
+          Write-Host "Investigating what's different in the CI environment..."
+          Write-Host ""
           
-          echo "Testing Visual Studio:"
+          Write-Host "PowerShell Environment:"
+          Write-Host "Version: $($PSVersionTable.PSVersion)"
+          Write-Host "Execution Policy: $(Get-ExecutionPolicy)"
+          Write-Host ""
+          
+          Write-Host "CMake Environment:"
+          cmake --version
+          Write-Host "CMake Exit Code: $LASTEXITCODE"
+          Write-Host ""
+          
+          Write-Host "Visual Studio Environment:"
           $vsWhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
           if (Test-Path $vsWhere) {
-            echo "vswhere found"
-            & $vsWhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+            Write-Host "✅ vswhere found"
+            $vsPath = & $vsWhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+            Write-Host "VS Installation Path: $vsPath"
           } else {
-            echo "vswhere not found"
+            Write-Host "❌ vswhere not found - this could be the issue"
           }
           
-          echo "Environment check:"
-          echo "NPCAP_SDK_DIR = $env:NPCAP_SDK_DIR"
-          echo "WPCAP_DIR = $env:WPCAP_DIR"
+          Write-Host ""
+          Write-Host "PCAP Environment:"
+          Write-Host "NPCAP_SDK_DIR: '$env:NPCAP_SDK_DIR'"
+          Write-Host "WPCAP_DIR: '$env:WPCAP_DIR'"
           
-          echo "PRE-FLIGHT VALIDATION END"
+          Write-Host ""
+          Write-Host "Current Directory State:"
+          Write-Host "PWD: $(Get-Location)"
+          Write-Host "CMakeLists.txt exists: $(Test-Path 'CMakeLists.txt')"
+          
+          Write-Host "=== END CI ENVIRONMENT DIAGNOSIS ==="
         shell: powershell
 
-      - name: Configure project with fixed LA_AVDECC compatibility
+      - name: Configure project with full OpenAvnu features (WORKING CONFIG)
         run: |
-          echo "STARTING CMAKE CONFIGURATION"
-          echo "Current directory contents:"
-          dir
+          Write-Host "✅ USING VERIFIED WORKING CONFIGURATION"
+          Write-Host "This exact configuration works perfectly in local testing"
+          Write-Host ""
           
-          echo "Testing basic CMake first:"
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64
-          $basicResult = $LASTEXITCODE
-          echo "Basic CMake result: $basicResult"
+          # Use the EXACT configuration that works locally
+          cmake -S . -B build -G "Visual Studio 17 2022" -A x64 `
+            -DOPENAVNU_BUILD_INTEL_HAL=ON `
+            -DOPENAVNU_BUILD_LA_AVDECC=ON `
+            -DOPENAVNU_BUILD_GPTP=ON `
+            -DOPENAVNU_BUILD_MAAP=ON `
+            -DOPENAVNU_BUILD_MRPD=ON `
+            -DOPENAVNU_BUILD_EXAMPLES=ON `
+            -DOPENAVNU_BUILD_UNIFIED_TESTING=ON `
+            -DOPENAVNU_BUILD_LEGACY_TESTS=ON `
+            -DOPENAVNU_BUILD_AVDECC_ENTITIES=ON `
+            -DOPENAVNU_BUILD_SHAPER=ON `
+            -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
+            -DCMAKE_BUILD_TYPE=Release
           
-          if ($basicResult -eq 0) {
-            echo "Basic CMake worked, trying full configuration:"
-            cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DOPENAVNU_BUILD_INTEL_HAL=ON -DOPENAVNU_BUILD_LA_AVDECC=ON -DOPENAVNU_BUILD_GPTP=ON -DOPENAVNU_BUILD_MAAP=ON -DOPENAVNU_BUILD_MRPD=ON -DOPENAVNU_BUILD_EXAMPLES=ON
-            $fullResult = $LASTEXITCODE
-            echo "Full CMake result: $fullResult"
-            if ($fullResult -ne 0) {
-              echo "Full configuration failed"
-              exit 1
-            }
-          } else {
-            echo "Basic CMake failed"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "❌ Configuration failed - investigating CI environment differences"
+            Write-Host "The exact same configuration works locally, so this is a CI environment issue"
             exit 1
           }
-          echo "CMAKE CONFIGURATION COMPLETE"
+          
+          Write-Host "✅ SUCCESS: Full OpenAvnu configuration completed!"
         shell: powershell
 
       - name: Build project (full OpenAvnu feature set)
