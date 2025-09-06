@@ -322,20 +322,22 @@ jobs:
             
           try {
             
-            # Start with the exact configuration that works locally
-            Write-Host "Using proven local configuration..."
+            # Try configuration without LA_AVDECC (most likely CI issue source)
+            Write-Host "Using configuration without LA_AVDECC to isolate CI issues..."
             $cmakeCommand = "cmake -S . -B build -G `"Visual Studio 17 2022`" -A x64 " +
-                          "-DCMAKE_BUILD_TYPE=Release"
+                          "-DCMAKE_BUILD_TYPE=Release " +
+                          "-DOPENAVNU_BUILD_LA_AVDECC=OFF"
             
-            Write-Host "Local config command: $cmakeCommand"
+            Write-Host "Configuration without LA_AVDECC command: $cmakeCommand"
             Invoke-Expression $cmakeCommand 2>&1 | Tee-Object -FilePath "cmake_local_config.log"
             $cmakeResult = $LASTEXITCODE
             
             if ($cmakeResult -ne 0) {
-              Write-Host "❌ Even the basic local configuration failed in CI"
-              Write-Host "This indicates a fundamental CI environment issue"
+              Write-Host "❌ Configuration without LA_AVDECC also failed in CI"
+              Write-Host "This indicates the issue is not LA_AVDECC-specific"
             } else {
-              Write-Host "✅ Local configuration succeeded in CI - all features enabled by default!"
+              Write-Host "✅ Configuration without LA_AVDECC succeeded in CI!"
+              Write-Host "This confirms LA_AVDECC was causing the CI failures"
             }
             
             Write-Host ""
