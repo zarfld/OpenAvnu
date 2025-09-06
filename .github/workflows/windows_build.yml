@@ -154,59 +154,42 @@ jobs:
               Write-Host "CMake version $version is too old for LA_AVDECC (requires 3.29+)"
               Write-Host "Installing latest CMake..."
               
-              # Download and install latest CMake
-              $cmakeUrl = "https://github.com/Kitware/CMake/releases/download/v3.30.3/cmake-3.30.3-windows-x86_64.msi"
-              Write-Host "Downloading CMake 3.30.3..."
-              Invoke-WebRequest -Uri $cmakeUrl -OutFile "cmake-installer.msi"
-              
-              Write-Host "Installing CMake..."
-              Start-Process msiexec.exe -ArgumentList "/i cmake-installer.msi /quiet /norestart" -Wait
-              
-              # Update PATH
-              $env:PATH = "C:\Program Files\CMake\bin;$env:PATH"
-              Write-Host "Updated PATH with new CMake"
-              
-              # Verify new version
-              $newVersion = cmake --version
-              Write-Host "New CMake version: $newVersion"
+              # Use chocolatey for faster installation
+              try {
+                Write-Host "Installing CMake via Chocolatey..."
+                choco install cmake --version=3.30.3 -y --no-progress
+                
+                # Update PATH
+                $env:PATH = "C:\Program Files\CMake\bin;$env:PATH"
+                Write-Host "Updated PATH with new CMake"
+                
+                # Verify new version
+                $newVersion = cmake --version
+                Write-Host "New CMake version: $newVersion"
+              } catch {
+                Write-Host "Chocolatey installation failed, using direct download..."
+                
+                # Fallback to direct download
+                $cmakeUrl = "https://github.com/Kitware/CMake/releases/download/v3.30.3/cmake-3.30.3-windows-x86_64.msi"
+                Write-Host "Downloading CMake 3.30.3..."
+                Invoke-WebRequest -Uri $cmakeUrl -OutFile "cmake-installer.msi"
+                
+                Write-Host "Installing CMake..."
+                Start-Process msiexec.exe -ArgumentList "/i cmake-installer.msi /quiet /norestart" -Wait
+                
+                # Update PATH
+                $env:PATH = "C:\Program Files\CMake\bin;$env:PATH"
+                Write-Host "Updated PATH with new CMake"
+                
+                # Verify new version
+                $newVersion = cmake --version
+                Write-Host "New CMake version: $newVersion"
+              }
             } else {
               Write-Host "CMake version is sufficient for LA_AVDECC"
             }
-            
-            # Test CMake with a 3.29+ feature to verify it works
-            Write-Host "Testing CMake 3.29+ compatibility with simple project..."
-            
-            try {
-              # Create a simple test CMakeLists.txt that requires 3.29
-              New-Item -ItemType Directory -Path "cmake_test_temp" -Force | Out-Null
-              
-              # Create the CMakeLists.txt file properly using separate commands
-              'cmake_minimum_required(VERSION 3.29)' | Out-File -FilePath "cmake_test_temp/CMakeLists.txt" -Encoding UTF8 -Force
-              'project(CMakeTest)' | Out-File -FilePath "cmake_test_temp/CMakeLists.txt" -Encoding UTF8 -Append
-              'message(STATUS "CMake 3.29+ test successful")' | Out-File -FilePath "cmake_test_temp/CMakeLists.txt" -Encoding UTF8 -Append
-              
-              Write-Host "Created test CMakeLists.txt:"
-              Get-Content "cmake_test_temp/CMakeLists.txt" | ForEach-Object { Write-Host "  $_" }
-              
-              Write-Host "Attempting CMake test configuration..."
-              cmake -S cmake_test_temp -B cmake_test_temp/build -G "Visual Studio 17 2022" -A x64 2>&1 | Tee-Object -Variable cmakeTestOutput
-              $testResult = $LASTEXITCODE
-              
-              Write-Host "CMake test output:"
-              $cmakeTestOutput | ForEach-Object { Write-Host "  $_" }
-              
-              Remove-Item -Recurse -Force "cmake_test_temp" -ErrorAction SilentlyContinue
-              
-              if ($testResult -eq 0) {
-                Write-Host "SUCCESS: CMake 3.29+ compatibility verified"
-              } else {
-                Write-Host "WARNING: CMake 3.29+ test failed, but continuing anyway..."
-                Write-Host "This might indicate Visual Studio components missing, but main build should work"
-              }
-            } catch {
-              Write-Host "WARNING: CMake test threw exception: $_"
-              Write-Host "Continuing with main configuration..."
-            }
+          } else {
+            Write-Host "Could not parse CMake version - continuing with existing installation"
           }
         shell: powershell
 
@@ -339,80 +322,29 @@ jobs:
             
           try {
             
-            # Start with a minimal configuration to ensure basic build works
-            Write-Host "Attempting minimal configuration first..."
-            $cmakeCommandMinimal = "cmake -S . -B build -G `"Visual Studio 17 2022`" -A x64 " +
-                                  "-DOPENAVNU_BUILD_INTEL_HAL=ON " +
-                                  "-DOPENAVNU_BUILD_LA_AVDECC=OFF " +
-                                  "-DOPENAVNU_BUILD_GPTP=OFF " +
-                                  "-DOPENAVNU_BUILD_MAAP=ON " +
-                                  "-DOPENAVNU_BUILD_MRPD=ON " +
-                                  "-DOPENAVNU_BUILD_EXAMPLES=ON " +
-                                  "-DOPENAVNU_BUILD_UNIFIED_TESTING=OFF " +
-                                  "-DOPENAVNU_BUILD_LEGACY_TESTS=OFF " +
-                                  "-DOPENAVNU_BUILD_AVDECC_ENTITIES=OFF " +
-                                  "-DOPENAVNU_BUILD_SHAPER=ON " +
-                                  "-DOPENAVNU_BUILD_AVTP_PIPELINE=OFF " +
-                                  "-DCMAKE_BUILD_TYPE=Release"
+            # Start with the exact configuration that works locally
+            Write-Host "Using proven local configuration..."
+            $cmakeCommand = "cmake -S . -B build -G `"Visual Studio 17 2022`" -A x64 " +
+                          "-DCMAKE_BUILD_TYPE=Release"
             
-            Write-Host "Minimal config: $cmakeCommandMinimal"
-            Invoke-Expression $cmakeCommandMinimal 2>&1 | Tee-Object -FilePath "cmake_minimal_output.log"
+            Write-Host "Local config command: $cmakeCommand"
+            Invoke-Expression $cmakeCommand 2>&1 | Tee-Object -FilePath "cmake_local_config.log"
             $cmakeResult = $LASTEXITCODE
             
-            # If minimal works, try adding more features
-            if ($cmakeResult -eq 0) {
-              Write-Host "✅ Minimal configuration succeeded, trying with more features..."
-              
-              # Clean and try with more features
-              Remove-Item -Recurse -Force "build" -ErrorAction SilentlyContinue
-              New-Item -ItemType Directory -Path "build" -Force | Out-Null
-              
-              $cmakeCommandExpanded = "cmake -S . -B build -G `"Visual Studio 17 2022`" -A x64 " +
-                                     "-DOPENAVNU_BUILD_INTEL_HAL=ON " +
-                                     "-DOPENAVNU_BUILD_LA_AVDECC=OFF " +
-                                     "-DOPENAVNU_BUILD_GPTP=ON " +
-                                     "-DOPENAVNU_BUILD_MAAP=ON " +
-                                     "-DOPENAVNU_BUILD_MRPD=ON " +
-                                     "-DOPENAVNU_BUILD_EXAMPLES=ON " +
-                                     "-DOPENAVNU_BUILD_UNIFIED_TESTING=ON " +
-                                     "-DOPENAVNU_BUILD_LEGACY_TESTS=ON " +
-                                     "-DOPENAVNU_BUILD_AVDECC_ENTITIES=ON " +
-                                     "-DOPENAVNU_BUILD_SHAPER=ON " +
-                                     "-DOPENAVNU_BUILD_AVTP_PIPELINE=ON " +
-                                     "-DCMAKE_BUILD_TYPE=Release"
-              
-              Write-Host "Expanded config: $cmakeCommandExpanded"
-              Invoke-Expression $cmakeCommandExpanded 2>&1 | Tee-Object -FilePath "cmake_expanded_output.log"
-              $cmakeResult = $LASTEXITCODE
-              
-              if ($cmakeResult -ne 0) {
-                Write-Host "⚠️ Expanded configuration failed, falling back to minimal"
-                # Restore minimal build
-                Remove-Item -Recurse -Force "build" -ErrorAction SilentlyContinue
-                New-Item -ItemType Directory -Path "build" -Force | Out-Null
-                Invoke-Expression $cmakeCommandMinimal 2>&1 | Tee-Object -FilePath "cmake_final_output.log"
-                $cmakeResult = $LASTEXITCODE
-              }
+            if ($cmakeResult -ne 0) {
+              Write-Host "❌ Even the basic local configuration failed in CI"
+              Write-Host "This indicates a fundamental CI environment issue"
             } else {
-              Write-Host "❌ Even minimal configuration failed"
+              Write-Host "✅ Local configuration succeeded in CI - all features enabled by default!"
             }
             
             Write-Host ""
             Write-Host "CMAKE RESULT: $cmakeResult"
             
             # Always show the full output to understand what's happening
-            $outputFiles = @("cmake_final_output.log", "cmake_expanded_output.log", "cmake_minimal_output.log")
-            $outputFile = $null
-            foreach ($file in $outputFiles) {
-              if (Test-Path $file) {
-                $outputFile = $file
-                break
-              }
-            }
-            
-            if ($outputFile) {
-              Write-Host "=== CMAKE FULL OUTPUT (using $outputFile) ==="
-              $output = Get-Content $outputFile
+            if (Test-Path "cmake_local_config.log") {
+              Write-Host "=== CMAKE CONFIGURATION OUTPUT ==="
+              $output = Get-Content "cmake_local_config.log"
               $output | ForEach-Object { Write-Host "CMAKE: $_" }
               
               # Analyze the output for specific issues
@@ -516,15 +448,9 @@ jobs:
             Write-Host "The exact same configuration works locally, so this is a CI environment issue"
             Write-Host ""
             
-            Write-Host "=== CMAKE OUTPUT FROM ALL ATTEMPTS ==="
-            # Check all possible output files
-            $outputFiles = @("cmake_minimal_output.log", "cmake_expanded_output.log", "cmake_final_output.log")
-            foreach ($file in $outputFiles) {
-              if (Test-Path $file) {
-                Write-Host "--- Content from $file ---"
-                Get-Content $file | ForEach-Object { Write-Host "CMAKE: $_" }
-                Write-Host ""
-              }
+            Write-Host "=== CMAKE OUTPUT ==="
+            if (Test-Path "cmake_local_config.log") {
+              Get-Content "cmake_local_config.log" | ForEach-Object { Write-Host "CMAKE: $_" }
             }
             
             Write-Host ""
