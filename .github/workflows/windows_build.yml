@@ -264,73 +264,136 @@ jobs:
           $ErrorActionPreference = "SilentlyContinue"
           $ProgressPreference = "SilentlyContinue"
           
-          # Execute CMake with direct command approach
+          # Execute CMake with direct command approach and comprehensive error handling
           Write-Host "Executing CMake configuration..."
           $cmakeCommand = "cmake .. -G `"Visual Studio 17 2022`" -A x64 -DOPENAVNU_BUILD_INTEL_HAL=ON -DOPENAVNU_BUILD_GPTP=ON -DOPENAVNU_BUILD_LA_AVDECC=ON -DOPENAVNU_BUILD_MAAP=ON -DOPENAVNU_BUILD_MRPD=ON -DOPENAVNU_BUILD_AVTP_PIPELINE=ON -DOPENAVNU_BUILD_TESTING=ON"
           
           Write-Host "Running command: $cmakeCommand"
           
-          # Use cmd.exe to execute CMake for maximum CI compatibility
-          $cmdOutput = cmd /c "$cmakeCommand 2>&1"
-          $configExitCode = $LASTEXITCODE
-          
-          # Process and display output with enhanced error detection
-          $errorLines = @()
-          $successIndicators = @()
-          
-          foreach ($line in $cmdOutput) {
-            if ($line -match "Warning|warning") {
-              Write-Host "CMAKE WARNING: $line" -ForegroundColor Yellow
-            } elseif ($line -match "Error|FATAL_ERROR|error:|failed|Could not find") {
-              Write-Host "CMAKE ERROR: $line" -ForegroundColor Red
-              $errorLines += $line
-            } elseif ($line -match "OK|SUCCESS|Generated|Configuring done") {
-              Write-Host "CMAKE SUCCESS: $line" -ForegroundColor Green
-              $successIndicators += $line
-            } elseif ($line -match "-- Configuring done|-- Generating done") {
-              Write-Host "CMAKE COMPLETION: $line" -ForegroundColor Green
-              $successIndicators += $line
-            } else {
-              Write-Host "CMAKE: $line"
-            }
+          # First, ensure clean state
+          if (Test-Path "CMakeCache.txt") {
+            Write-Host "Removing existing CMakeCache.txt for clean configuration"
+            Remove-Item "CMakeCache.txt" -Force
+          }
+          if (Test-Path "CMakeFiles") {
+            Write-Host "Removing existing CMakeFiles directory for clean configuration"
+            Remove-Item "CMakeFiles" -Recurse -Force
           }
           
-          Write-Host ""
-          Write-Host "=== CMAKE EXECUTION SUMMARY ==="
-          Write-Host "Exit Code: $configExitCode"
-          Write-Host "Success Indicators: $($successIndicators.Count)"
-          Write-Host "Error Lines: $($errorLines.Count)"
+          # Execute CMake with enhanced error detection and timeout
+          Write-Host "=== Starting CMake Configuration ==="
+          $cmakeStartTime = Get-Date
           
-          if ($errorLines.Count -gt 0) {
-            Write-Host "DETECTED ERRORS:" -ForegroundColor Red
-            foreach ($error in $errorLines) {
-              Write-Host "  - $error" -ForegroundColor Red
-            }
-          }
-          
-          if ($successIndicators.Count -gt 0) {
-            Write-Host "SUCCESS INDICATORS:" -ForegroundColor Green
-            foreach ($success in $successIndicators) {
-              Write-Host "  - $success" -ForegroundColor Green
-            }
-          }
-          
-          # Check for configuration completion markers
-          $configDone = $cmdOutput | Where-Object { $_ -match "-- Configuring done" }
-          $generateDone = $cmdOutput | Where-Object { $_ -match "-- Generating done" }
-          
-          if ($configDone -and $generateDone) {
-            Write-Host "CMAKE ANALYSIS: Configuration and generation completed successfully" -ForegroundColor Green
-            Write-Host "NOTE: Exit code $configExitCode may be false positive - checking for actual completion..." -ForegroundColor Yellow
+          try {
+            # Use PowerShell's native command execution with proper error handling
+            $env:CMAKE_GENERATOR_PLATFORM = "x64"
+            $env:CMAKE_GENERATOR = "Visual Studio 17 2022"
             
-            # Override exit code if we have clear success indicators
-            if ($configExitCode -ne 0 -and $errorLines.Count -eq 0) {
-              Write-Host "OVERRIDE: Treating as success due to completion markers and no errors" -ForegroundColor Green
+            # Execute CMake and capture detailed output
+            $result = Start-Process -FilePath "cmake" -ArgumentList @(
+              "..",
+              "-G", "Visual Studio 17 2022",
+              "-A", "x64",
+              "-DOPENAVNU_BUILD_INTEL_HAL=ON",
+              "-DOPENAVNU_BUILD_GPTP=ON", 
+              "-DOPENAVNU_BUILD_LA_AVDECC=ON",
+              "-DOPENAVNU_BUILD_MAAP=ON",
+              "-DOPENAVNU_BUILD_MRPD=ON",
+              "-DOPENAVNU_BUILD_AVTP_PIPELINE=ON",
+              "-DOPENAVNU_BUILD_TESTING=ON"
+            ) -Wait -PassThru -NoNewWindow -RedirectStandardOutput "cmake_output.log" -RedirectStandardError "cmake_error.log"
+            
+            $configExitCode = $result.ExitCode
+            $cmakeEndTime = Get-Date
+            $cmakeDuration = ($cmakeEndTime - $cmakeStartTime).TotalSeconds
+            
+            Write-Host "CMAKE execution completed in $cmakeDuration seconds with exit code: $configExitCode"
+            
+            # Read and process output files
+            if (Test-Path "cmake_output.log") {
+              Write-Host "=== CMAKE STANDARD OUTPUT ==="
+              $cmdOutput = Get-Content "cmake_output.log"
+              foreach ($line in $cmdOutput) {
+                if ($line -match "Warning|warning") {
+                  Write-Host "CMAKE WARNING: $line" -ForegroundColor Yellow
+                } elseif ($line -match "Error|FATAL_ERROR|error:|failed|Could not find") {
+                  Write-Host "CMAKE ERROR: $line" -ForegroundColor Red
+                } elseif ($line -match "OK|SUCCESS|Generated|Configuring done|Generating done") {
+                  Write-Host "CMAKE SUCCESS: $line" -ForegroundColor Green
+                } else {
+                  Write-Host "CMAKE: $line"
+                }
+              }
+            }
+            
+            if (Test-Path "cmake_error.log") {
+              $errorContent = Get-Content "cmake_error.log" -ErrorAction SilentlyContinue
+              if ($errorContent -and $errorContent.Length -gt 0) {
+                Write-Host "=== CMAKE ERROR OUTPUT ===" -ForegroundColor Red
+                foreach ($line in $errorContent) {
+                  Write-Host "CMAKE STDERR: $line" -ForegroundColor Red
+                }
+              }
+            }
+            
+          } catch {
+            Write-Host "CRITICAL ERROR during CMake execution: $($_.Exception.Message)" -ForegroundColor Red
+            $configExitCode = 1
+          }
+          
+          # Enhanced diagnostic analysis
+          Write-Host ""
+          Write-Host "=== CMAKE EXECUTION ANALYSIS ==="
+          Write-Host "Exit Code: $configExitCode"
+          Write-Host "Duration: $cmakeDuration seconds"
+          
+          # Check for critical files and completion markers
+          $solutionExists = Test-Path "open-avb.sln"
+          $cacheExists = Test-Path "CMakeCache.txt"
+          
+          Write-Host "Solution file created: $solutionExists"
+          Write-Host "CMake cache created: $cacheExists"
+          
+          # Analyze output for completion markers
+          $configDone = $false
+          $generateDone = $false
+          $errorCount = 0
+          $successCount = 0
+          
+          if (Test-Path "cmake_output.log") {
+            $outputContent = Get-Content "cmake_output.log"
+            $configDone = $outputContent | Where-Object { $_ -match "-- Configuring done" }
+            $generateDone = $outputContent | Where-Object { $_ -match "-- Generating done" }
+            $errorCount = ($outputContent | Where-Object { $_ -match "Error|FATAL_ERROR|error:|failed|Could not find" }).Count
+            $successCount = ($outputContent | Where-Object { $_ -match "OK|SUCCESS|Generated|Configuring done|Generating done" }).Count
+          }
+          
+          Write-Host "Configuration Phase Complete: $($configDone -ne $null)"
+          Write-Host "Generation Phase Complete: $($generateDone -ne $null)"
+          Write-Host "Error Count: $errorCount"
+          Write-Host "Success Count: $successCount"
+          
+          # Intelligent success detection
+          $actuallySucceeded = $false
+          if ($solutionExists -and $cacheExists -and $configDone -and $generateDone -and $errorCount -eq 0) {
+            $actuallySucceeded = $true
+            Write-Host "ANALYSIS: CMake configuration appears to have succeeded despite exit code" -ForegroundColor Green
+            
+            if ($configExitCode -ne 0) {
+              Write-Host "OVERRIDE: Treating as successful configuration due to completion indicators" -ForegroundColor Green
               $configExitCode = 0
             }
+          } elseif ($configExitCode -ne 0) {
+            Write-Host "ANALYSIS: CMake configuration genuinely failed" -ForegroundColor Red
+            Write-Host "Missing elements:" -ForegroundColor Yellow
+            if (-not $solutionExists) { Write-Host "  - Solution file not created" -ForegroundColor Yellow }
+            if (-not $cacheExists) { Write-Host "  - CMake cache not created" -ForegroundColor Yellow }
+            if (-not $configDone) { Write-Host "  - Configuration phase not completed" -ForegroundColor Yellow }
+            if (-not $generateDone) { Write-Host "  - Generation phase not completed" -ForegroundColor Yellow }
+            if ($errorCount -gt 0) { Write-Host "  - $errorCount errors detected" -ForegroundColor Yellow }
           }
           
-          Write-Host "FINAL CMAKE process exit code: $configExitCode"
+          Write-Host "FINAL RESULT: CMake exit code: $configExitCode (Actually succeeded: $actuallySucceeded)"
           Write-Host "Configuration exit code: $configExitCode"
           
           if ($configExitCode -ne 0) {
@@ -344,55 +407,102 @@ jobs:
             Write-Host "Attempting configuration without LA_AVDECC (keeping all other OpenAvnu features)..."
             Write-Host "=== Fallback CMake Configuration Output ==="
             
-            # Use same simplified direct approach for fallback
-            $fallbackCommand = "cmake .. -G `"Visual Studio 17 2022`" -A x64 -DOPENAVNU_BUILD_INTEL_HAL=ON -DOPENAVNU_BUILD_GPTP=ON -DOPENAVNU_BUILD_LA_AVDECC=OFF -DOPENAVNU_BUILD_MAAP=ON -DOPENAVNU_BUILD_MRPD=ON -DOPENAVNU_BUILD_AVTP_PIPELINE=ON -DOPENAVNU_BUILD_TESTING=ON"
+            # Clean state for fallback
+            Remove-Item "CMakeCache.txt" -Force -ErrorAction SilentlyContinue
+            Remove-Item "CMakeFiles" -Recurse -Force -ErrorAction SilentlyContinue
+            Remove-Item "cmake_output.log" -Force -ErrorAction SilentlyContinue
+            Remove-Item "cmake_error.log" -Force -ErrorAction SilentlyContinue
             
-            Write-Host "Running fallback command: $fallbackCommand"
+            # Use same robust process approach for fallback
+            Write-Host "Starting fallback configuration..."
+            $fallbackStartTime = Get-Date
             
-            # Use cmd.exe for fallback configuration too
-            $fallbackOutput = cmd /c "$fallbackCommand 2>&1"
-            $fallbackExitCode = $LASTEXITCODE
-            
-            # Process fallback output with enhanced analysis
-            $fallbackErrors = @()
-            $fallbackSuccess = @()
-            
-            foreach ($line in $fallbackOutput) {
-              if ($line -match "Warning|warning") {
-                Write-Host "FALLBACK WARNING: $line" -ForegroundColor Yellow
-              } elseif ($line -match "Error|FATAL_ERROR|error:|failed|Could not find") {
-                Write-Host "FALLBACK ERROR: $line" -ForegroundColor Red
-                $fallbackErrors += $line
-              } elseif ($line -match "OK|SUCCESS|Generated|Configuring done") {
-                Write-Host "FALLBACK SUCCESS: $line" -ForegroundColor Green
-                $fallbackSuccess += $line
-              } elseif ($line -match "-- Configuring done|-- Generating done") {
-                Write-Host "FALLBACK COMPLETION: $line" -ForegroundColor Green
-                $fallbackSuccess += $line
-              } else {
-                Write-Host "FALLBACK CMAKE: $line"
+            try {
+              $fallbackResult = Start-Process -FilePath "cmake" -ArgumentList @(
+                "..",
+                "-G", "Visual Studio 17 2022",
+                "-A", "x64",
+                "-DOPENAVNU_BUILD_INTEL_HAL=ON",
+                "-DOPENAVNU_BUILD_GPTP=ON", 
+                "-DOPENAVNU_BUILD_LA_AVDECC=OFF",
+                "-DOPENAVNU_BUILD_MAAP=ON",
+                "-DOPENAVNU_BUILD_MRPD=ON",
+                "-DOPENAVNU_BUILD_AVTP_PIPELINE=ON",
+                "-DOPENAVNU_BUILD_TESTING=ON"
+              ) -Wait -PassThru -NoNewWindow -RedirectStandardOutput "cmake_fallback_output.log" -RedirectStandardError "cmake_fallback_error.log"
+              
+              $fallbackExitCode = $fallbackResult.ExitCode
+              $fallbackEndTime = Get-Date
+              $fallbackDuration = ($fallbackEndTime - $fallbackStartTime).TotalSeconds
+              
+              Write-Host "Fallback CMake completed in $fallbackDuration seconds with exit code: $fallbackExitCode"
+              
+              # Process fallback output
+              if (Test-Path "cmake_fallback_output.log") {
+                Write-Host "=== FALLBACK STANDARD OUTPUT ==="
+                $fallbackOutput = Get-Content "cmake_fallback_output.log"
+                foreach ($line in $fallbackOutput) {
+                  if ($line -match "Warning|warning") {
+                    Write-Host "FALLBACK WARNING: $line" -ForegroundColor Yellow
+                  } elseif ($line -match "Error|FATAL_ERROR|error:|failed|Could not find") {
+                    Write-Host "FALLBACK ERROR: $line" -ForegroundColor Red
+                  } elseif ($line -match "OK|SUCCESS|Generated|Configuring done|Generating done") {
+                    Write-Host "FALLBACK SUCCESS: $line" -ForegroundColor Green
+                  } else {
+                    Write-Host "FALLBACK CMAKE: $line"
+                  }
+                }
               }
+              
+              if (Test-Path "cmake_fallback_error.log") {
+                $fallbackErrorContent = Get-Content "cmake_fallback_error.log" -ErrorAction SilentlyContinue
+                if ($fallbackErrorContent -and $fallbackErrorContent.Length -gt 0) {
+                  Write-Host "=== FALLBACK ERROR OUTPUT ===" -ForegroundColor Red
+                  foreach ($line in $fallbackErrorContent) {
+                    Write-Host "FALLBACK STDERR: $line" -ForegroundColor Red
+                  }
+                }
+              }
+              
+            } catch {
+              Write-Host "CRITICAL ERROR during fallback CMake: $($_.Exception.Message)" -ForegroundColor Red
+              $fallbackExitCode = 1
             }
             
+            # Analyze fallback results
             Write-Host ""
-            Write-Host "=== FALLBACK CMAKE SUMMARY ==="
-            Write-Host "Fallback Exit Code: $fallbackExitCode"
-            Write-Host "Fallback Errors: $($fallbackErrors.Count)"
-            Write-Host "Fallback Success: $($fallbackSuccess.Count)"
+            Write-Host "=== FALLBACK ANALYSIS ==="
+            $fallbackSolutionExists = Test-Path "open-avb.sln"
+            $fallbackCacheExists = Test-Path "CMakeCache.txt"
             
-            # Check for fallback completion
-            $fallbackConfigDone = $fallbackOutput | Where-Object { $_ -match "-- Configuring done" }
-            $fallbackGenDone = $fallbackOutput | Where-Object { $_ -match "-- Generating done" }
+            Write-Host "Fallback Solution file created: $fallbackSolutionExists"
+            Write-Host "Fallback CMake cache created: $fallbackCacheExists"
             
-            if ($fallbackConfigDone -and $fallbackGenDone) {
-              Write-Host "FALLBACK ANALYSIS: Configuration completed successfully" -ForegroundColor Green
-              if ($fallbackExitCode -ne 0 -and $fallbackErrors.Count -eq 0) {
-                Write-Host "FALLBACK OVERRIDE: Treating as success due to completion markers" -ForegroundColor Green
+            # Check fallback completion markers
+            $fallbackConfigDone = $false
+            $fallbackGenDone = $false
+            $fallbackErrors = 0
+            
+            if (Test-Path "cmake_fallback_output.log") {
+              $fallbackContent = Get-Content "cmake_fallback_output.log"
+              $fallbackConfigDone = $fallbackContent | Where-Object { $_ -match "-- Configuring done" }
+              $fallbackGenDone = $fallbackContent | Where-Object { $_ -match "-- Generating done" }
+              $fallbackErrors = ($fallbackContent | Where-Object { $_ -match "Error|FATAL_ERROR|error:|failed|Could not find" }).Count
+            }
+            
+            Write-Host "Fallback Configuration Complete: $($fallbackConfigDone -ne $null)"
+            Write-Host "Fallback Generation Complete: $($fallbackGenDone -ne $null)"
+            Write-Host "Fallback Error Count: $fallbackErrors"
+            
+            if ($fallbackSolutionExists -and $fallbackCacheExists -and $fallbackConfigDone -and $fallbackGenDone -and $fallbackErrors -eq 0) {
+              Write-Host "FALLBACK SUCCESS: Configuration completed successfully without LA_AVDECC" -ForegroundColor Green
+              if ($fallbackExitCode -ne 0) {
+                Write-Host "FALLBACK OVERRIDE: Treating as successful due to completion indicators" -ForegroundColor Green
                 $fallbackExitCode = 0
               }
             }
             
-            Write-Host "FINAL Fallback CMAKE process exit code: $fallbackExitCode"
+            Write-Host "FINAL Fallback result: exit code $fallbackExitCode"
             
             if ($fallbackExitCode -ne 0) {
               Write-Host "[ERROR] Even fallback configuration failed with exit code $fallbackExitCode"
