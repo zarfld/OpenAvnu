@@ -252,6 +252,9 @@ jobs:
           $env:CMAKE_BUILD_PARALLEL_LEVEL = "4"
           $env:VCPKG_DISABLE_METRICS = "1"
           
+          # Ensure PowerShell doesn't treat warnings as fatal errors
+          $ErrorActionPreference = "Continue"
+          
           Write-Host "CMake command: cmake .. -G `"Visual Studio 17 2022`" -A x64 -DOPENAVNU_BUILD_INTEL_HAL=ON -DOPENAVNU_BUILD_GPTP=ON -DOPENAVNU_BUILD_LA_AVDECC=ON -DOPENAVNU_BUILD_MAAP=ON -DOPENAVNU_BUILD_MRPD=ON -DOPENAVNU_BUILD_AVTP_PIPELINE=ON -DOPENAVNU_BUILD_TESTING=ON"
           
           # Execute CMake configuration with full OpenAvnu features - capture all output
@@ -265,8 +268,17 @@ jobs:
             -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
             -DOPENAVNU_BUILD_TESTING=ON 2>&1
           
-          # Display all CMake output immediately
-          $cmakeOutput | ForEach-Object { Write-Host "CMAKE: $_" }
+          # Display all CMake output immediately - separate warnings from errors
+          $cmakeOutput | ForEach-Object { 
+            $line = $_.ToString()
+            if ($line -match "CMake Warning") {
+              Write-Host "CMAKE WARNING: $line" -ForegroundColor Yellow
+            } elseif ($line -match "CMake Error|FATAL_ERROR") {
+              Write-Host "CMAKE ERROR: $line" -ForegroundColor Red
+            } else {
+              Write-Host "CMAKE: $line"
+            }
+          }
           
           $configExitCode = $LASTEXITCODE
           Write-Host "Configuration exit code: $configExitCode"
