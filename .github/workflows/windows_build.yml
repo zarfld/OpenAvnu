@@ -259,28 +259,33 @@ jobs:
           
           # Execute CMake configuration with full OpenAvnu features - capture all output
           Write-Host "=== CMake Configuration Output ==="
-          $cmakeOutput = & cmake .. -G "Visual Studio 17 2022" -A x64 `
-            -DOPENAVNU_BUILD_INTEL_HAL=ON `
-            -DOPENAVNU_BUILD_GPTP=ON `
-            -DOPENAVNU_BUILD_LA_AVDECC=ON `
-            -DOPENAVNU_BUILD_MAAP=ON `
-            -DOPENAVNU_BUILD_MRPD=ON `
-            -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-            -DOPENAVNU_BUILD_TESTING=ON 2>&1
-          
-          # Display all CMake output immediately - separate warnings from errors
-          $cmakeOutput | ForEach-Object { 
-            $line = $_.ToString()
-            if ($line -match "CMake Warning") {
-              Write-Host "CMAKE WARNING: $line" -ForegroundColor Yellow
-            } elseif ($line -match "CMake Error|FATAL_ERROR") {
-              Write-Host "CMAKE ERROR: $line" -ForegroundColor Red
-            } else {
-              Write-Host "CMAKE: $line"
+          try {
+            $cmakeOutput = & cmake .. -G "Visual Studio 17 2022" -A x64 `
+              -DOPENAVNU_BUILD_INTEL_HAL=ON `
+              -DOPENAVNU_BUILD_GPTP=ON `
+              -DOPENAVNU_BUILD_LA_AVDECC=ON `
+              -DOPENAVNU_BUILD_MAAP=ON `
+              -DOPENAVNU_BUILD_MRPD=ON `
+              -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
+              -DOPENAVNU_BUILD_TESTING=ON 2>&1
+            
+            $configExitCode = $LASTEXITCODE
+            
+            # Display all CMake output immediately - separate warnings from errors
+            $cmakeOutput | ForEach-Object { 
+              $line = $_.ToString()
+              if ($line -match "CMake Warning") {
+                Write-Host "CMAKE WARNING: $line" -ForegroundColor Yellow
+              } elseif ($line -match "CMake Error|FATAL_ERROR|error:|Error:") {
+                Write-Host "CMAKE ERROR: $line" -ForegroundColor Red
+              } else {
+                Write-Host "CMAKE: $line"
+              }
             }
+          } catch {
+            Write-Host "EXCEPTION during CMake execution: $($_.Exception.Message)" -ForegroundColor Red
+            $configExitCode = 1
           }
-          
-          $configExitCode = $LASTEXITCODE
           Write-Host "Configuration exit code: $configExitCode"
           
           if ($configExitCode -ne 0) {
