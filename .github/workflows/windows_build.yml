@@ -260,30 +260,45 @@ jobs:
           # Execute CMake configuration with full OpenAvnu features - capture all output
           Write-Host "=== CMake Configuration Output ==="
           try {
-            $cmakeOutput = & cmake .. -G "Visual Studio 17 2022" -A x64 `
-              -DOPENAVNU_BUILD_INTEL_HAL=ON `
-              -DOPENAVNU_BUILD_GPTP=ON `
-              -DOPENAVNU_BUILD_LA_AVDECC=ON `
-              -DOPENAVNU_BUILD_MAAP=ON `
-              -DOPENAVNU_BUILD_MRPD=ON `
-              -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-              -DOPENAVNU_BUILD_TESTING=ON 2>&1
+            # Run CMake and capture output line by line to avoid PowerShell buffer issues
+            $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+            $pinfo.FileName = "cmake"
+            $pinfo.Arguments = ".. -G `"Visual Studio 17 2022`" -A x64 -DOPENAVNU_BUILD_INTEL_HAL=ON -DOPENAVNU_BUILD_GPTP=ON -DOPENAVNU_BUILD_LA_AVDECC=ON -DOPENAVNU_BUILD_MAAP=ON -DOPENAVNU_BUILD_MRPD=ON -DOPENAVNU_BUILD_AVTP_PIPELINE=ON -DOPENAVNU_BUILD_TESTING=ON"
+            $pinfo.UseShellExecute = $false
+            $pinfo.RedirectStandardOutput = $true
+            $pinfo.RedirectStandardError = $true
+            $pinfo.WorkingDirectory = (Get-Location).Path
             
-            $configExitCode = $LASTEXITCODE
+            $process = New-Object System.Diagnostics.Process
+            $process.StartInfo = $pinfo
+            $process.Start() | Out-Null
             
-            # Display all CMake output immediately - separate warnings from errors
-            $cmakeOutput | ForEach-Object { 
-              $line = $_.ToString()
-              if ($line -match "CMake Warning") {
-                Write-Host "CMAKE WARNING: $line" -ForegroundColor Yellow
-              } elseif ($line -match "CMake Error|FATAL_ERROR|error:|Error:") {
-                Write-Host "CMAKE ERROR: $line" -ForegroundColor Red
-              } else {
-                Write-Host "CMAKE: $line"
-              }
+            # Read output in real-time
+            while (!$process.StandardOutput.EndOfStream) {
+                $line = $process.StandardOutput.ReadLine()
+                if ($line -match "Warning") {
+                    Write-Host "CMAKE WARNING: $line" -ForegroundColor Yellow
+                } elseif ($line -match "Error|FATAL_ERROR|error:|failed") {
+                    Write-Host "CMAKE ERROR: $line" -ForegroundColor Red
+                } else {
+                    Write-Host "CMAKE: $line"
+                }
             }
+            
+            # Read any remaining error output
+            while (!$process.StandardError.EndOfStream) {
+                $line = $process.StandardError.ReadLine()
+                Write-Host "CMAKE STDERR: $line" -ForegroundColor Red
+            }
+            
+            $process.WaitForExit()
+            $configExitCode = $process.ExitCode
+            
+            Write-Host "CMAKE process completed with exit code: $configExitCode"
+            
           } catch {
             Write-Host "EXCEPTION during CMake execution: $($_.Exception.Message)" -ForegroundColor Red
+            Write-Host "Exception details: $($_.Exception.ToString())" -ForegroundColor Red
             $configExitCode = 1
           }
           Write-Host "Configuration exit code: $configExitCode"
@@ -298,19 +313,41 @@ jobs:
             
             Write-Host "Attempting configuration without LA_AVDECC (keeping all other OpenAvnu features)..."
             Write-Host "=== Fallback CMake Configuration Output ==="
-            $fallbackOutput = & cmake .. -G "Visual Studio 17 2022" -A x64 `
-              -DOPENAVNU_BUILD_INTEL_HAL=ON `
-              -DOPENAVNU_BUILD_GPTP=ON `
-              -DOPENAVNU_BUILD_LA_AVDECC=OFF `
-              -DOPENAVNU_BUILD_MAAP=ON `
-              -DOPENAVNU_BUILD_MRPD=ON `
-              -DOPENAVNU_BUILD_AVTP_PIPELINE=ON `
-              -DOPENAVNU_BUILD_TESTING=ON 2>&1
             
-            # Display all fallback CMake output immediately
-            $fallbackOutput | ForEach-Object { Write-Host "FALLBACK CMAKE: $_" }
+            # Use same robust process approach for fallback
+            $fallbackInfo = New-Object System.Diagnostics.ProcessStartInfo
+            $fallbackInfo.FileName = "cmake"
+            $fallbackInfo.Arguments = ".. -G `"Visual Studio 17 2022`" -A x64 -DOPENAVNU_BUILD_INTEL_HAL=ON -DOPENAVNU_BUILD_GPTP=ON -DOPENAVNU_BUILD_LA_AVDECC=OFF -DOPENAVNU_BUILD_MAAP=ON -DOPENAVNU_BUILD_MRPD=ON -DOPENAVNU_BUILD_AVTP_PIPELINE=ON -DOPENAVNU_BUILD_TESTING=ON"
+            $fallbackInfo.UseShellExecute = $false
+            $fallbackInfo.RedirectStandardOutput = $true
+            $fallbackInfo.RedirectStandardError = $true
+            $fallbackInfo.WorkingDirectory = (Get-Location).Path
             
-            $fallbackExitCode = $LASTEXITCODE
+            $fallbackProcess = New-Object System.Diagnostics.Process
+            $fallbackProcess.StartInfo = $fallbackInfo
+            $fallbackProcess.Start() | Out-Null
+            
+            # Read fallback output in real-time
+            while (!$fallbackProcess.StandardOutput.EndOfStream) {
+                $line = $fallbackProcess.StandardOutput.ReadLine()
+                if ($line -match "Warning") {
+                    Write-Host "FALLBACK WARNING: $line" -ForegroundColor Yellow
+                } elseif ($line -match "Error|FATAL_ERROR|error:|failed") {
+                    Write-Host "FALLBACK ERROR: $line" -ForegroundColor Red
+                } else {
+                    Write-Host "FALLBACK CMAKE: $line"
+                }
+            }
+            
+            while (!$fallbackProcess.StandardError.EndOfStream) {
+                $line = $fallbackProcess.StandardError.ReadLine()
+                Write-Host "FALLBACK STDERR: $line" -ForegroundColor Red
+            }
+            
+            $fallbackProcess.WaitForExit()
+            $fallbackExitCode = $fallbackProcess.ExitCode
+            
+            Write-Host "Fallback CMAKE process completed with exit code: $fallbackExitCode"
             
             if ($fallbackExitCode -ne 0) {
               Write-Host "[ERROR] Even fallback configuration failed with exit code $fallbackExitCode"
