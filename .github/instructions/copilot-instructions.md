@@ -40,6 +40,86 @@ OpenAvnu is a comprehensive Audio Video Bridging (AVB)/Time-Sensitive Networking
 
 **Architecture**: Multi-layered system with hardware abstraction (Intel NICs), protocol stacks (gPTP/AVTP/AVDECC), daemons for system services, and example applications.
 
+## CRITICAL: Automation Scripts and Folder Structure
+
+### **📁 MANDATORY Folder Structure:**
+
+```
+OpenAvnu-2/                           ← Main repository root
+├── build/                           ← Main OpenAvnu CMake builds
+│   ├── Debug/Release/               ← Integrated builds (gptp2 target)
+│   └── thirdparty/gptp/Debug/       ← Main build gPTP location
+├── docs/                           ← Architecture documentation
+│   ├── tests/results/              ← Test output logs
+│   └── completed/archive/          ← Documentation lifecycle
+├── examples/                       ← Application examples
+│   └── asio-listener/              ← ASIO integration scripts
+├── testing/unified/                ← Cross-component testing
+│   └── generic_adapter_testing_framework.ps1
+├── thirdparty/
+│   ├── gptp/                       ← gPTP submodule
+│   │   ├── build_gptp/             ← ⚠️ CRITICAL: Milan test directory
+│   │   │   ├── Debug/              ← test_milan_compliance_validation.ps1 expects THIS
+│   │   │   │   ├── gptp.exe        ← Built executable
+│   │   │   │   ├── test_milan_config.ini ← Config files copied here
+│   │   │   │   └── *.log           ← Test output logs
+│   │   │   └── Release/            ← Production builds
+│   │   ├── build/                  ← Alternative build (main integration)
+│   │   └── *.ps1                   ← Milan/Automotive test scripts
+│   ├── intel-ethernet-hal/         ← Intel HAL submodule
+│   │   └── build_windows.bat       ← Windows build script
+│   └── intel_avb/                  ← IOCTL interface library
+└── lib/Standards/                  ← Hardware-agnostic protocols
+```
+
+### **🔧 Automation Scripts Inventory:**
+
+#### **Main Repository Scripts (Root Level):**
+- **Deployment**: `create_deployment_package*.ps1` - Production packaging
+- **Testing**: `test_*.ps1` - Component integration tests  
+- **ASIO Integration**: `debug_asio_integration.ps1`, `test_asio_*` - Audio integration
+- **Network Validation**: `verify_milan_*.ps1`, `diagnose_ptp_*.ps1` - Network testing
+- **Build Automation**: VS Code tasks.json with comprehensive build/test workflows
+
+#### **gPTP Submodule Scripts (thirdparty/gptp/):**
+- **🎯 KEY**: `test_milan_compliance_validation.ps1` - Main validation (expects build_gptp/Debug/)
+- **Profile Testing**: `test_automotive_profile.ps1`, `run_admin_milan.ps1`
+- **Hardware Validation**: `verify_pdelay_exchange.ps1`, `test_privileges.ps1`
+- **Diagnostics**: `simple_intel_diagnosis.ps1`, `final_intel_diagnosis*.ps1`
+
+#### **ASIO Integration Scripts (examples/asio-listener/):**
+- **Daemon Management**: `start_openavnu_final.ps1` - Multi-adapter daemon startup
+- **Testing**: `start_openavnu_corrected.ps1` - I219-specific testing
+
+#### **Hardware HAL Scripts (thirdparty/intel-ethernet-hal/):**
+- **Build**: `build_windows.bat` - Windows build automation
+
+### **⚠️ CRITICAL Build Directory Rules:**
+
+1. **Milan Testing**: ALWAYS use `thirdparty/gptp/build_gptp/` directory
+   ```powershell
+   cd "thirdparty/gptp"
+   cmake --build build_gptp --config Debug
+   .\test_milan_compliance_validation.ps1  # Expects build_gptp/Debug/
+   ```
+
+2. **Main Integration**: Use main `build/` for OpenAvnu integration
+   ```powershell
+   cmake --build build --config Release --target gptp2  # Main integration
+   ```
+
+3. **Log Management**: Scripts create logs in their respective build directories
+   - `build_gptp/Debug/milan_test_output.log` - Milan test logs
+   - `docs/tests/results/` - Main repository test results
+   - Component-specific logs in respective build directories
+
+### **🔄 Script Dependencies and Execution Order:**
+
+1. **Prerequisites**: Administrator privileges for hardware timestamping
+2. **Build Order**: Components → Integration → Testing
+3. **Configuration**: Scripts expect config files in build output directories
+4. **Network Testing**: Requires actual Milan-certified devices for full validation
+
 ## CRITICAL: IEEE Standards Reference Documents
 
 **IMPORTANT**: The following authoritative specification documents are available via MCP-Server "markitdown_standards" for compliance verification:
