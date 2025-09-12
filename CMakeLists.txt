@@ -43,13 +43,13 @@ endif()
 # This provides unified PCAP detection that can be used by OpenAvnu components
 # without requiring modifications to external submodules (L-Acoustics AVDECC, etc.)
 
-message(STATUS "[DETECT] Detecting PCAP libraries for OpenAvnu components...")
+message(STATUS "🔍 Detecting PCAP libraries for OpenAvnu components...")
 include(FindPCAP)
 
 # Export PCAP variables for subprojects that need them
 set(OPENAVNU_PCAP_AVAILABLE ${PCAP_FOUND})
 if(PCAP_FOUND)
-    message(STATUS "[OK] PCAP detection complete - Available for OpenAvnu components")
+    message(STATUS "✅ PCAP detection complete - Available for OpenAvnu components")
     
     # Set global variables for subprojects
     set(OPENAVNU_PCAP_FOUND ${PCAP_FOUND})
@@ -67,7 +67,7 @@ if(PCAP_FOUND)
         set(ENV{WPCAP_DIR} "${PCAP_INCLUDE_DIRS}/..")
     endif()
 else()
-    message(WARNING "[WARNING] PCAP not available - Some components may not build")
+    message(WARNING "⚠️  PCAP not available - Some components may not build")
     set(OPENAVNU_PCAP_FOUND FALSE)
 endif()
 
@@ -90,9 +90,9 @@ if(OPENAVNU_BUILD_INTEL_HAL)
     
     find_package(IntelHAL QUIET)
     if(IntelHAL_FOUND)
-        message(STATUS "[OK] Intel HAL found: ${IntelHAL_VERSION}")
+        message(STATUS "✅ Intel HAL found: ${IntelHAL_VERSION}")
         message(STATUS "   📍 Include Directory: ${IntelHAL_INCLUDE_DIRS}")
-        message(STATUS "   [LIB] Libraries: ${IntelHAL_LIBRARIES}")
+        message(STATUS "   📚 Libraries: ${IntelHAL_LIBRARIES}")
         
         # Export Intel HAL availability to OpenAvnu components
         set(OPENAVNU_INTEL_HAL_FOUND TRUE)
@@ -100,7 +100,7 @@ if(OPENAVNU_BUILD_INTEL_HAL)
         # Feature-based compilation flags based on actual hardware capabilities
         # Reference: Intel I210/I219/I225/I226 Controller Datasheets
         if(INTEL_HAL_HAS_TIMESTAMPING)
-            message(STATUS "   [TIME] Hardware timestamping support detected")
+            message(STATUS "   ⏱️  Hardware timestamping support detected")
             set(OPENAVNU_INTEL_TIMESTAMPING_AVAILABLE TRUE)
         endif()
         
@@ -115,12 +115,12 @@ if(OPENAVNU_BUILD_INTEL_HAL)
         endif()
         
         if(INTEL_HAL_HAS_LAUNCHTIME)
-            message(STATUS "   [TARGET] LAUNCHTIME timed transmission support detected")
+            message(STATUS "   🎯 LAUNCHTIME timed transmission support detected")
             set(OPENAVNU_INTEL_LAUNCHTIME_AVAILABLE TRUE)
         endif()
         
     else()
-        message(STATUS "[INFO] Intel HAL not found - using software fallback for advanced features")
+        message(WARNING "⚠️  Intel HAL not found - advanced features unavailable")
         set(OPENAVNU_INTEL_HAL_FOUND FALSE)
         set(OPENAVNU_INTEL_TIMESTAMPING_AVAILABLE FALSE)
         set(OPENAVNU_INTEL_TSN_TAS_AVAILABLE FALSE)
@@ -157,7 +157,7 @@ if(OPENAVNU_BUILD_GPTP)
         # Feature-based compilation flags for gPTP
         if(OPENAVNU_INTEL_TIMESTAMPING_AVAILABLE)
             target_compile_definitions(gptp2 PRIVATE INTEL_HAL_TIMESTAMPING=1)
-            message(STATUS "   [TIME] gPTP will use Intel hardware timestamping")
+            message(STATUS "   ⏱️  gPTP will use Intel hardware timestamping")
         endif()
         
         if(OPENAVNU_INTEL_TSN_TAS_AVAILABLE)
@@ -167,7 +167,7 @@ if(OPENAVNU_BUILD_GPTP)
         
     else()
         if(OPENAVNU_BUILD_INTEL_HAL)
-            message(STATUS "[WARNING] gPTP will use software timestamping (Intel HAL not found)")
+            message(STATUS "⚠️  gPTP will use software timestamping (Intel HAL not found)")
         else()
             message(STATUS "📝 gPTP using software timestamping (Intel HAL disabled)")
         endif()
@@ -182,8 +182,8 @@ if(OPENAVNU_BUILD_LA_AVDECC)
     
     # Pre-configure PCAP compatibility for L-Acoustics AVDECC before including the submodule
     if(WIN32 AND OPENAVNU_PCAP_FOUND)
-        message(STATUS "[CONFIG] Configuring L-Acoustics AVDECC with modern PCAP support")
-        message(STATUS "[OK] Using ${OPENAVNU_PCAP_TYPE} for L-Acoustics AVDECC")
+        message(STATUS "🔧 Configuring L-Acoustics AVDECC with modern PCAP support")
+        message(STATUS "✅ Using ${OPENAVNU_PCAP_TYPE} for L-Acoustics AVDECC")
         
         # L-Acoustics AVDECC expects winpcap in ${CU_ROOT_DIR}/externals/3rdparty/winpcap
         # We need to create the compatibility layer in the submodule directory
@@ -212,7 +212,7 @@ if(OPENAVNU_BUILD_LA_AVDECC)
                     file(COPY "${OPENAVNU_PCAP_INCLUDE_DIRS}/pcap" DESTINATION "${LA_AVDECC_WINPCAP_DIR}/Include")
                 endif()
                 
-                message(STATUS "[OK] Copied PCAP headers to L-Acoustics AVDECC compatibility layer")
+                message(STATUS "✅ Copied PCAP headers to L-Acoustics AVDECC compatibility layer")
             endif()
             
             # Copy/link library files
@@ -226,7 +226,7 @@ if(OPENAVNU_BUILD_LA_AVDECC)
                         file(COPY ${LIB} DESTINATION "${LA_AVDECC_WINPCAP_DIR}/Lib")
                     endif()
                 endforeach()
-                message(STATUS "[OK] Copied PCAP libraries to L-Acoustics AVDECC compatibility layer")
+                message(STATUS "✅ Copied PCAP libraries to L-Acoustics AVDECC compatibility layer")
             endif()
             
             # Create README explaining the compatibility layer
@@ -251,14 +251,14 @@ be ignored by git. See .gitignore for the appropriate entry.
         # Enable PCAP interface with compatibility layer
         set(BUILD_AVDECC_INTERFACE_PCAP ON CACHE BOOL "Enable PCAP interface with compatibility layer" FORCE)
         
-        message(STATUS "[OK] L-Acoustics AVDECC PCAP compatibility layer ready")
+        message(STATUS "✅ L-Acoustics AVDECC PCAP compatibility layer ready")
         message(STATUS "   WinPcap compatibility path: ${LA_AVDECC_WINPCAP_DIR}")
     else()
         # Linux: PCAP should work directly, or disable if not available
         if(OPENAVNU_PCAP_FOUND)
             set(BUILD_AVDECC_INTERFACE_PCAP ON CACHE BOOL "Enable PCAP interface" FORCE)
         else()
-            message(WARNING "[WARNING] PCAP not available - L-Acoustics AVDECC may not build correctly")
+            message(WARNING "⚠️  PCAP not available - L-Acoustics AVDECC may not build correctly")
             message(STATUS "Attempting to build L-Acoustics AVDECC without PCAP interface")
             set(BUILD_AVDECC_INTERFACE_PCAP OFF CACHE BOOL "Disable PCAP interface - PCAP not available" FORCE)
         endif()
@@ -277,7 +277,7 @@ be ignored by git. See .gitignore for the appropriate entry.
         set(CMAKE_CXX_STANDARD_REQUIRED ON)
     endif()
     
-    message(STATUS "[PKG] L-Acoustics AVDECC configuration:")
+    message(STATUS "📦 L-Acoustics AVDECC configuration:")
     message(STATUS "   PCAP Interface: ${BUILD_AVDECC_INTERFACE_PCAP}")
     message(STATUS "   Controller: ${AVDECC_BUILD_CONTROLLER}")
     message(STATUS "   Virtual Entity: ${AVDECC_BUILD_VIRTUAL}")
@@ -294,7 +294,7 @@ endif()
 # ==========================================
 
 # Always build the Generic Network HAL for gPTP integration
-message(STATUS "[CONFIG] Building Generic Network HAL for gPTP integration")
+message(STATUS "🔧 Building Generic Network HAL for gPTP integration")
 add_subdirectory("lib/common/hal")
 
 # Optional Milan v1.2 Protocol Implementation for Professional Audio AVB
@@ -313,7 +313,7 @@ if(OPENAVNU_BUILD_MILAN_V1_2)
     add_definitions(-DMILAN_VERSION_MINOR=2)
     add_definitions(-DMILAN_VERSION_PATCH=0)
     
-    message(STATUS "[PKG] Milan v1.2 configuration:")
+    message(STATUS "📦 Milan v1.2 configuration:")
     message(STATUS "   Professional Audio AVB Device (PAAD) Entity: ENABLED")
     message(STATUS "   Milan MVU Commands: ENABLED")
     message(STATUS "   Media Clock Management: ENABLED")
@@ -321,7 +321,7 @@ if(OPENAVNU_BUILD_MILAN_V1_2)
     message(STATUS "   Professional Tool Compatibility: ENABLED")
     message(STATUS "   Compatible with: Hive-AVDECC, L-Acoustics Network Manager")
 else()
-    message(STATUS "[WARNING] Milan v1.2 protocol implementation disabled")
+    message(STATUS "⚠️  Milan v1.2 protocol implementation disabled")
     message(STATUS "    Professional audio tool compatibility may be limited")
 endif()
 
@@ -405,14 +405,14 @@ endif()
 option(OPENAVNU_BUILD_AVDECC_ENTITIES "Build organized AVDECC entity implementations" ON)
 
 if(OPENAVNU_BUILD_AVDECC_ENTITIES)
-    message(STATUS "[TARGET] Building AVDECC entities with organized structure")
+    message(STATUS "🎯 Building AVDECC entities with organized structure")
     add_subdirectory("lib/avdecc-entities")
-    message(STATUS "[OK] AVDECC entities configured:")
+    message(STATUS "✅ AVDECC entities configured:")
     message(STATUS "   Production: intel_pcap_responsive (PRIMARY)")
     message(STATUS "   Production: hive_compatible (BACKUP)")
     message(STATUS "   Production: complete_standards (INTEGRATION)")
 else()
-    message(STATUS "[SKIP] AVDECC entities disabled")
+    message(STATUS "⏭️  AVDECC entities disabled")
 endif()
 
 # ==========================================
@@ -433,7 +433,7 @@ if(OPENAVNU_BUILD_UNIFIED_TESTING)
     set(OPENAVNU_BUILD_LEGACY_TESTS OFF CACHE BOOL "Forced OFF when unified testing is enabled" FORCE)
     
 elseif(OPENAVNU_BUILD_LEGACY_TESTS)
-    message(STATUS "[WARNING] Building with legacy testing structure (deprecated)")
+    message(STATUS "⚠️  Building with legacy testing structure (deprecated)")
     message(STATUS "🔄 Consider migrating to unified testing framework (OPENAVNU_BUILD_UNIFIED_TESTING=ON)")
     
     # Legacy individual test options
@@ -686,24 +686,6 @@ set_target_properties(test_tsn_fixed PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
 )
 
-# Only add Intel HAL dependency if Intel HAL is enabled
-if(OPENAVNU_BUILD_INTEL_HAL AND TARGET intel-ethernet-hal-static)
-    add_dependencies(test_tsn_fixed intel-ethernet-hal-static)
-endif()
+add_dependencies(test_tsn_fixed intel-ethernet-hal-static)
 
 message(STATUS "✅ TSN Fixed Test target added - tests our fixed TSN functions")
-
-# Test executable for Milan Hardware Integration
-add_executable(test_milan_hardware_integration test_milan_hardware_integration.cpp)
-
-# Handle Windows-specific linking
-if(WIN32)
-    target_link_libraries(test_milan_hardware_integration ws2_32 iphlpapi)
-endif()
-
-# Enable building if requested
-option(BUILD_MILAN_HARDWARE_TEST "Build Milan Hardware Integration Test" ON)
-
-if(BUILD_MILAN_HARDWARE_TEST)
-    message(STATUS "✅ Milan Hardware Integration Test target added - validates hardware integration")
-endif()
