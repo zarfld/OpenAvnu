@@ -1,0 +1,39 @@
+﻿=== DAW02 System Information ===
+Hostname: ATGRZWN313892
+Date: 07/13/2025 22:34:36
+OS: Microsoft Windows 11 Enterprise
+Version: 10.0.22631
+Architecture: 64-Bit
+
+=== Hardware Information ===
+CPU Information:
+
+Name                                  NumberOfCores NumberOfLogicalProcessors
+----                                  ------------- -------------------------
+13th Gen Intel(R) Core(TM) i5-13600HX            14                        20
+
+
+Memory Information:
+Total Physical Memory: 31.69 GB
+Network Interfaces:
+
+Name                         InterfaceDescription                      Status     
+----                         --------------------                      ------     
+Bluetooth-Netzwerkverbindung Bluetooth Device (Personal Area Network)  Disconne...
+Barracuda VPN                Barracuda Virtual Adapter (VPN)           Disconne...
+WLAN                         Intel(R) Wi-Fi 6E AX211 160MHz            Up         
+Ethernet 3                   RME MADIface USB Ethernet                 Up         
+Ethernet                     Intel(R) Ethernet Connection (22) I219-LM Disconne...
+
+
+Intel Network Hardware:
+
+Name     InterfaceDescription                     
+----     --------------------                     
+WLAN     Intel(R) Wi-Fi 6E AX211 160MHz           
+Ethernet Intel(R) Ethernet Connection (22) I219-LM
+
+
+Development Tools:
+CMake: cmake version 4.0.3
+Visual Studio: neoPackage Microsoft Visual Studio Code x64 1.96.0
