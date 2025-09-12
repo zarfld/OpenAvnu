@@ -1,4 +1,0 @@
-Name: nlohmann_json
-Description: JSON for Modern C++
-Version: 3.11.3
-Cflags: -ID:/Repos/OpenAvnu/build-intel-hal/lib/la_avdecc/Install/include

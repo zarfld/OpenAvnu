@@ -1,6 +1,7 @@
 *.o
 *.swp
 *build/
+*build_gptp/
 *build_avdecc/
 *CMakeFiles/
 CMakeCache.txt

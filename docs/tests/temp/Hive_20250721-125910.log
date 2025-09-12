@@ -1,6 +1,0 @@
-2025-07-21 - 12:58:09	Controller	Warning	[0xc047e0fffe167b89] [IEEE1722.1-2013 Clause 7.2.1] A device is required to have at least one Configuration Descriptor
-2025-07-21 - 12:58:09	Controller	Warning	[0xc047e0fffe167b89] Entity not fully IEEE1722.1 compliant
-2025-07-21 - 12:58:09	Controller	Info	[0xc047e0fffe167b89] AEM-CACHE: Cached model for EntityModelID 0x0017fffe00000001
-2025-07-21 - 12:58:55	Json Serializer	Warning	Unknown Enum value: 0x00800000
-2025-07-21 - 12:58:55	Json Serializer	Warning	Unknown Enum value: 0x10000000
-2025-07-21 - 12:58:55	Json Serializer	Warning	Unknown Enum value: 0x40000000
