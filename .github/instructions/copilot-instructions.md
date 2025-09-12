@@ -81,6 +81,147 @@ OpenAvnu-2/                           ← Main repository root
 - **Network Validation**: `verify_milan_*.ps1`, `diagnose_ptp_*.ps1` - Network testing
 - **Build Automation**: VS Code tasks.json with comprehensive build/test workflows
 
+## **📝 Practical Examples**
+
+### **Complete Development Workflow Example:**
+
+#### **Scenario: Adding New AVDECC Entity Support**
+```bash
+# 1. Setup and build environment
+git submodule update --init --recursive
+mkdir -p build && cd build
+cmake .. -DOPENAVNU_BUILD_LA_AVDECC=ON -DOPENAVNU_BUILD_GPTP=ON
+
+# 2. Build with proper configuration
+cmake --build . --config Release --target la_avdecc_cxx
+
+# 3. Test on real hardware
+cd ../testing/unified
+./generic_adapter_testing_framework.ps1 -AdapterFilter "I225" -TestPhase "avdecc"
+```
+
+#### **Example: AVDECC Entity Implementation**
+```cpp
+// Standards Layer - Hardware agnostic
+#include "../avdecc-lib/jdksavdecc-c/include/jdksavdecc_aem_command.h"
+
+// Use standard constants, never hardcoded values
+uint16_t command_type = JDKSAVDECC_AEM_COMMAND_READ_DESCRIPTOR;  // ✅ CORRECT
+// uint16_t command_type = 0x0004;  // ❌ WRONG - hardcoded
+
+// Calculate AEM checksum for descriptor integrity
+uint32_t calculate_aem_checksum(void* descriptor, size_t size, size_t checksum_offset) {
+    // IEEE 1722.1 compliant CRC32 calculation
+    return crc32_calculate(descriptor, size, checksum_offset);
+}
+```
+
+### **Architecture Pattern Examples:**
+
+#### **✅ CORRECT: Layered Architecture with Dependency Injection**
+```cpp
+// Standards Layer (lib/Standards/) - Pure protocol logic
+typedef struct {
+    int (*get_timestamp)(uint64_t* timestamp);
+    int (*send_packet)(const uint8_t* data, size_t length);
+} hardware_interface_t;
+
+void gptp_process_sync(const hardware_interface_t* hw_if) {
+    uint64_t tx_time;
+    if (hw_if->get_timestamp(&tx_time) == 0) {
+        // Process using timestamp
+    }
+}
+
+// Service Layer - Bridges Standards to Hardware
+void gptp_service_init() {
+    hardware_interface_t intel_interface = {
+        .get_timestamp = intel_hal_get_timestamp,  // Intel HAL function
+        .send_packet = intel_hal_send_packet
+    };
+    gptp_process_sync(&intel_interface);
+}
+```
+
+#### **❌ WRONG: Direct Hardware Coupling in Standards**
+```cpp
+// ❌ Standards Layer should NEVER include hardware headers
+#include "intel_ethernet_hal.h"  // ARCHITECTURAL VIOLATION!
+
+void gptp_process_sync() {
+    // ❌ Direct hardware calls in Standards layer
+    intel_hal_get_timestamp(&timestamp);
+}
+```
+
+### **Script Usage Examples:**
+
+#### **Milan Profile Testing Workflow:**
+```powershell
+# Complete Milan validation sequence
+cd "thirdparty/gptp"
+
+# Build for Milan testing (CRITICAL: use build_gptp directory)
+cmake --build build_gptp --config Debug
+
+# Run Milan compliance validation
+.\test_milan_compliance_validation.ps1  # Expects build_gptp/Debug/gptp.exe
+
+# Check specific Milan requirements
+Select-String "neighborPropDelay" .\build_gptp\Debug\milan_test_output.log
+Select-String "asCapable.*true" .\build_gptp\Debug\milan_test_output.log
+```
+
+#### **ASIO Integration Testing:**
+```powershell
+# Multi-adapter daemon startup
+cd examples/asio-listener
+.\start_openavnu_final.ps1
+
+# Test ASIO listener with hardware validation
+cd ../..
+.\test_asio_multiadapter_cmake.ps1 -Verbose -HardwareValidation
+```
+
+### **Common Error Examples and Solutions:**
+
+#### **Build Directory Confusion:**
+```
+ERROR: test_milan_compliance_validation.ps1 cannot find gptp.exe
+CAUSE: Script expects build_gptp/Debug/ but executable in build/thirdparty/gptp/Debug/
+SOLUTION: Always use correct build directory for Milan testing:
+  cmake --build build_gptp --config Debug  # For Milan tests
+  cmake --build build --config Release --target gptp2  # For main integration
+```
+
+#### **Hardware Timestamping Privilege Error:**
+```
+ERROR: Hardware timestamping initialization failed
+CAUSE: Insufficient privileges for Intel hardware access
+SOLUTION: Run PowerShell as Administrator:
+  Start-Process powershell -Verb RunAs
+  cd "path\to\OpenAvnu-2"
+  .\test_milan_compliance_validation.ps1
+```
+
+#### **PCAP Detection Issues:**
+```
+ERROR: CMake cannot find PCAP libraries
+CAUSE: Environment variables not set correctly
+SOLUTION: Set proper PCAP paths:
+  $env:NPCAP_DIR="C:\npcap-sdk"  # For modern Npcap
+  $env:WPCAP_DIR="C:\WpdPack"    # For legacy WinPcap fallback
+```
+
+### **🔧 Automation Scripts Inventory:**
+
+#### **Main Repository Scripts (Root Level):**
+- **Deployment**: `create_deployment_package*.ps1` - Production packaging
+- **Testing**: `test_*.ps1` - Component integration tests  
+- **ASIO Integration**: `debug_asio_integration.ps1`, `test_asio_*` - Audio integration
+- **Network Validation**: `verify_milan_*.ps1`, `diagnose_ptp_*.ps1` - Network testing
+- **Build Automation**: VS Code tasks.json with comprehensive build/test workflows
+
 #### **gPTP Submodule Scripts (thirdparty/gptp/):**
 - **🎯 KEY**: `test_milan_compliance_validation.ps1` - Main validation (expects build_gptp/Debug/)
 - **Profile Testing**: `test_automotive_profile.ps1`, `run_admin_milan.ps1`
@@ -146,30 +287,53 @@ OpenAvnu-2/                           ← Main repository root
 
 ## CRITICAL: Layered Architecture Principles
 
-### Standards Layer (`lib/Standards/`) - MUST BE HARDWARE AGNOSTIC
-- **ONLY pure protocol implementations** (IEEE, AVNu, AES, etc.)
+### **📋 Architecture Overview**
+OpenAvnu follows a strict 3-layer architecture to ensure maintainability, testability, and hardware abstraction:
+
+```
+┌─────────────────────────────────────────────────────┐
+│ Standards Layer (lib/Standards/)                    │
+│ • Hardware agnostic protocol implementations        │
+│ • IEEE 802.1AS, IEEE 1722, AVnu Milan profiles     │
+│ • Uses dependency injection for hardware access     │
+└─────────────────────────────────────────────────────┘
+                              ↕
+┌─────────────────────────────────────────────────────┐
+│ Service Layer (e.g., gPTP daemon)                  │
+│ • Bridges Standards to Hardware                     │
+│ • Routes protocol needs to hardware capabilities    │
+│ • Handles configuration and lifecycle management    │
+└─────────────────────────────────────────────────────┘
+                              ↕
+┌─────────────────────────────────────────────────────┐
+│ Intel Hardware Layer (intel-ethernet-hal)          │
+│ • Direct Intel NIC hardware access                 │
+│ • Timestamping, register access, device control    │
+│ • IOCTL interface to NDIS driver                   │
+└─────────────────────────────────────────────────────┘
+```
+
+### **🎯 Standards Layer Rules - MUST BE HARDWARE AGNOSTIC**
+- **ONLY pure protocol implementations** (IEEE, AVnu, AES, etc.)
 - **OS and hardware agnostic** - compilable without any specific hardware drivers
 - **Mockable/testable** without hardware present
 - **NEVER includes vendor-specific headers** (intel-ethernet-hal, intel_avb, etc.)
 - **Uses dependency injection** - receives hardware abstraction via interfaces/function pointers
 - **Responsibility**: Protocol logic, state machines, packet formats, timing calculations, standard-defined structures
 
-### Service Layer (e.g., gPTP daemon) - BRIDGES STANDARDS TO HARDWARE
-- **Uses Standards** for protocol logic implementation
-- **Connects to HAL** for hardware access
-### Service Layer (e.g., gPTP daemon) - BRIDGES STANDARDS TO HARDWARE
+### **🔌 Service Layer Rules - BRIDGES STANDARDS TO HARDWARE**
 - **Uses Standards** for protocol logic implementation
 - **Connects to Intel HAL** for hardware access via intel-ethernet-hal submodule
 - **Bridges Standards interfaces to Intel Hardware interfaces**
 - **Responsibility**: Routing timestamping requests, connecting protocol needs to hardware capabilities
 
-### Intel Hardware Layer - HARDWARE ACCESS ONLY
+### **⚙️ Intel Hardware Layer Rules - HARDWARE ACCESS ONLY**
 - **CRITICAL**: Use intel-ethernet-hal submodule (thirdparty/intel-ethernet-hal) as PRIMARY hardware interface
 - **NOT lib/common/hal/**: This is generic abstraction, USE Intel-specific submodules instead
 - **Standards should NEVER directly touch Intel Hardware Layer**
 - **Responsibility**: Intel NIC hardware abstraction, timestamping, register access, device control
 
-### Intel Hardware Access Chain (CRITICAL ORDER - MANDATORY):
+### **🔗 Intel Hardware Access Chain (CRITICAL ORDER - MANDATORY):**
 ```
 intel-ethernet-hal → intel_avb → NDISIntelFilterDriver → hardware
 ```
@@ -179,14 +343,14 @@ intel-ethernet-hal → intel_avb → NDISIntelFilterDriver → hardware
 - **Intel register access**: ONLY through this complete chain
 - **Functions like intel_hal_get_tx_timestamp()**: ONLY called within Intel HAL layer
 
-### ARCHITECTURAL VIOLATIONS TO AVOID:
+### **❌ ARCHITECTURAL VIOLATIONS TO AVOID:**
 1. **Standards contamination**: Direct hardware calls in Standards layer
 2. **Wrong abstraction direction**: HAL using Standards instead of Services using both
 3. **Redundant abstractions**: Duplicating existing intel-ethernet-hal functionality
 4. **Direct vendor coupling**: Standards including vendor-specific headers
 5. **⚠️ CRITICAL: Using lib/common/hal/ for Intel hardware** - USE intel-ethernet-hal submodule instead!
 
-### BEFORE MAKING CHANGES:
+### **🔧 BEFORE MAKING CHANGES:**
 1. **Understand call sites**: Find all places calling a function before moving it
 2. **Respect existing APIs**: Use intel-ethernet-hal and intel_avb as-is - DO NOT use lib/common/hal/ for Intel hardware
 3. **Create proper interfaces**: Abstract hardware access through dependency injection
